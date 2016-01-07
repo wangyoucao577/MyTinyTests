@@ -1,7 +1,6 @@
-#!/usr/bin/python
+#!/root/.pyenv/versions/3.5.1/bin/python
 # -*- coding: utf-8 -*-
 
-#!/usr/bin/python
 
 import serial
 import serial.tools.list_ports
@@ -43,11 +42,11 @@ operation_commands[available_commands[1]] = power_off_cmd
 #operation_commands.update({available_commands[1]:power_off_cmd})
 
 #print(sys.argv)
-if (len(sys.argv) < 3 or (sys.argv[1].upper() not in available_comports) or (sys.argv[2].upper() not in available_commands)) :
+if (len(sys.argv) < 3 or (sys.argv[1] not in available_comports) or (sys.argv[2].upper() not in available_commands)) :
 	print("Usage: ")
 	print("      python serial_power_on_off.py [COM1|COM2|...] [ON|OFF]")
 	print("Available Serial Ports: ", available_comports)
 else:
-	power_operate_com(sys.argv[1].upper(), operation_commands[sys.argv[2].upper()])
+	power_operate_com(sys.argv[1], operation_commands[sys.argv[2].upper()])
 	
 	
