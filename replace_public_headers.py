@@ -92,16 +92,24 @@ def do_files_delete(dst_path, files_to_delete):
 #TODO: debugging
 def do_svn_add(file_path):
     (exec_status, content) = commands.getstatusoutput("svn add " + file_path)
-    print exec_status
-    print content
-    return exec_status
+    #print exec_status
+    #print content
+    if 0 == exec_status:	#exit correctly
+        return True
+    else:
+        print "svn add return:" + content
+        return False
     
 #TODO: debugging
 def do_svn_delete(file_path):
     (exec_status, content) = commands.getstatusoutput("svn delete " + file_path)
-    print exec_status
-    print content
-    return exec_status
+    #print exec_status
+    #print content
+    if 0 == exec_status:	#exit correctly
+        return True
+    else:
+        print "svn delete return:" + content
+        return False
 
 def main():
     if (len(sys.argv) < 3):
@@ -114,9 +122,12 @@ def main():
     src_folder_path = sys.argv[2]
     (files_to_add, files_to_replace, files_to_delete) = compare_files_in_folder(dst_folder_path, src_folder_path, ".h")
 
-    do_files_copy(dst_folder_path, src_folder_path, files_to_add, "Add")
-    do_files_copy(dst_folder_path, src_folder_path, files_to_replace, "Replace")
-    do_files_delete(dst_folder_path, files_to_delete)
+    if len(files_to_add):
+        do_files_copy(dst_folder_path, src_folder_path, files_to_add, "Add")
+    if len(files_to_replace):
+        do_files_copy(dst_folder_path, src_folder_path, files_to_replace, "Replace")
+    if len(files_to_delete):
+        do_files_delete(dst_folder_path, files_to_delete)
     
     print "Replace Done!---------------------------------------------"
 
