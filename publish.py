@@ -87,7 +87,14 @@ def main():
     src_folder_path = sys.argv[3]
     new_version = sys.argv[4]
     old_version = sys.argv[5]
-    platform_list = sys.argv[6].split(" ")
+    platform_list = []
+    
+    #analyse platform values
+    argv_index = 0;
+    for argv_value in sys.argv:
+        if argv_index >= 6:
+            platform_list.append(argv_value)
+        argv_index += 1; 
     
     print "platform list :"
     print platform_list
