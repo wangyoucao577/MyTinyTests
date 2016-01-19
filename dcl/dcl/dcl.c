@@ -1,3 +1,7 @@
+/*
+* Reference from <C Programming Language> Chapter 5.12
+*
+*/
 
 #include <stdio.h>
 #include <string.h>
