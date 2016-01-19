@@ -26,6 +26,18 @@ enum {
 
 int main(int argc, char *argv[])
 {
+    if (argc < 2) {
+        printf("Usage : dcl <C declaration>\n");
+        printf("  For instance: dcl \'void (*comp)()\'\n");
+        goto Exit;
+    }
+    char * p_declaration = argv[1];
+    printf("C declaration ready to check :%s\n", p_declaration);
 
+    //TODO: add functions to check the declaration
+
+Exit:
+    printf("Press any key to continue...\n");
+    getchar(); 
     return 0;
 }
