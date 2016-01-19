@@ -26,9 +26,19 @@ enum {
     PARENS, 
     BRACKETS };
 
-int main()
+int main(int argc, char *argv[])
 {
+    while (gettoken() != EOF) { /* 1st token on line*/
+        strcpy(datatype, token);    /* is the data type*/
+        out[0] = '\0';
+        dcl();  /* parse rest of line */
+        if (tokentype != '\n') {
+            printf("syntax error\n");
+        }
+        printf("%s: %s %s\n", name, out, datatype);
+    }
 
+    return 0;
 }
 
 void dcl(void)
@@ -74,5 +84,35 @@ void dirdcl()
 
 int gettoken()
 {
+    int c, getch(void);
+    void ungetch(int);
 
+    char *p = token;
+
+    while ((c = getch()) == ' ' || c == '\t')
+    {
+        ;
+    }
+
+    if (c == '(') {
+        if ((c = getch()) == ')') {
+            strcpy(token, "()");
+        }
+        else {
+            ungetch(c);
+            return tokentype = '(';
+        }
+    }
+    else if (c == '[') {
+        for (*p++ = c; isalnum(c = getch()); ) {
+            *p++ = c;
+        }
+        *p = '\0';
+        ungetch(c);
+        return tokentype = NAME;
+    }
+    else {
+        return tokentype = c;
+    }
 }
+
