@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         strcpy(datatype, token);    /* is the data type*/
         out[0] = '\0';
         dcl();  /* parse rest of line */
-        if (tokentype != '\n') {
+        if (tokentype != '\r') {    /*on windows, should check whether \r first. on linux here should be \n*/
             printf("syntax error\n");
         }
         printf("%s: %s %s\n", name, out, datatype);
@@ -84,19 +84,19 @@ void dirdcl()
 
 int gettoken()
 {
-    int c, getch(void);
-    void ungetch(int);
+    int c;
 
     char *p = token;
 
-    while ((c = getch()) == ' ' || c == '\t')
+    while ((c = getche()) == ' ' || c == '\t')
     {
         ;
     }
 
     if (c == '(') {
-        if ((c = getch()) == ')') {
+        if ((c = getche()) == ')') {
             strcpy(token, "()");
+            return tokentype = PARENS;
         }
         else {
             ungetch(c);
@@ -104,7 +104,14 @@ int gettoken()
         }
     }
     else if (c == '[') {
-        for (*p++ = c; isalnum(c = getch()); ) {
+        for (*p++ = c; (*p++ = getche()) != ']'; ) {
+            ;
+        }
+        *p = '\0';
+        return tokentype = BRACKETS;
+    }
+    else if (isalpha(c)) {
+        for (*p++ = c; isalnum(c = getche()); ) {
             *p++ = c;
         }
         *p = '\0';
