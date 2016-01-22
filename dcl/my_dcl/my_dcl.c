@@ -2,6 +2,9 @@
 * My style dcl program
 * Author : wangyoucao577@gmail.com
 * Date : 2016.01.19
+* 虽然做了些拆分，但是还是感觉原来书上的思路比较好，面向过程的清晰明了
+* 如果按照面向对象的思路来考虑，如何更好的抽象？
+* 高级做法：一个正则搞定？
 */
 
 #include <stdio.h>
