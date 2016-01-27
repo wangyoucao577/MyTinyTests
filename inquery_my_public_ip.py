@@ -3,17 +3,21 @@
 import re
 import urllib2
 
+public_ip_inquery_url = ("http://www.whereismyip.com/",
+"http://ifconfig.me/ip", 
+"http://www.ip138.com/ip2city.asp")
+
 class Getmyip:
     def getip(self):
-        try:
-            myip = self.visit("http://www.ip138.com/ip2city.asp")
-        except:
+        for url in public_ip_inquery_url:
             try:
-                myip = self.visit("http://www.whereismyip.com/")
+                myip = self.visit(url)
+                return myip
             except:
-                myip = "So sorry!!!"
-        return myip
+                continue
+        return "So sorry!!!"
     def visit(self,url):
+        print "Try to inquery my public ip from :" + url
         opener = urllib2.urlopen(url)
         if url == opener.geturl():
             str = opener.read()
