@@ -1,6 +1,7 @@
 #!/usr/bin/python2
 
-import re,urllib2
+import re
+import urllib2
 
 class Getmyip:
     def getip(self):
@@ -19,7 +20,8 @@ class Getmyip:
             #print str + "\n\n"
             
         return re.search('\d+\.\d+\.\d+\.\d+',str).group(0)
-getmyip = Getmyip()
-localip = getmyip.getip()
-
-print "My Public IP:" + localip
+        
+if __name__ == '__main__':
+    getmyip = Getmyip()
+    publicip = getmyip.getip()
+    print "My Public IP:" + publicip
