@@ -1,5 +1,5 @@
 #!/usr/bin/python2
-# vim: set expandtab! tabstop=4 number! :
+# vim: set expandtab! tabstop=4 softtabstop=4 shiftwidth=4 number! :
 
 import re
 import urllib2
