@@ -1,4 +1,5 @@
 #!/usr/bin/python2
+# vim: set expandtab! tabstop=4 softtabstop=4 shiftwidth=4 number! :
 
 import re
 import urllib2
@@ -29,3 +30,5 @@ if __name__ == '__main__':
     getmyip = Getmyip()
     publicip = getmyip.getip()
     print "My Public IP:" + publicip
+
+
