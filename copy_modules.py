@@ -26,8 +26,8 @@ def main():
         print "Mkdir " + dst_folder_path + " Failed. Quit!\n\n"
         return
     
-    recurse_scan_folder_to_copy_files(dst_folder_path, src_folder_path, ".ko")  
-    
+    scan_folder_to_copy_files(dst_folder_path, src_folder_path, ".ko")  
+        
     print "Copy Kernel Modules Done!---------------------------------------------"
 
 if __name__ == '__main__':

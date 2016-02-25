@@ -4,7 +4,8 @@
 Description:
     public files operation
 Author:     wangyoucao577@gmail.com
-Version:    2016-01-11
+Created Date:   2016-01-11
+Version:        2016-02-25
 """
 
 import os
@@ -88,10 +89,12 @@ def do_mkdir(dir_path):
             return False
     return True
 
-    
-    
-def scan_folder_to_get_indicated_file_list(folder_path, wildcard):
-    file_list = []
+"""
+    return file name and file path list
+"""
+def scan_folder_to_get_indicated_files(folder_path, wildcard):
+    file_name_list = []
+    file_path_list = []
     print "Start Scan " + folder_path
     for root, dirs, files in os.walk(folder_path):
         for name in files:
@@ -99,34 +102,38 @@ def scan_folder_to_get_indicated_file_list(folder_path, wildcard):
             name_suffix = "." + name.split('.')[-1]
             if name_suffix == wildcard:
                 print(name)
-                file_list.append(name)
+                file_name_list.append(name)
+                file_path_list.append(os.path.join(root,file_name))
           
     print "End Scan " + folder_path + "\n\n"
-    return file_list
+    return (file_name_list, file_path_list)
 
-def recurse_scan_folder_to_copy_files(dst_folder_path, src_folder_path, wildcard):
-    #print "Start Scan " + src_folder_path
+"""
+    only return file name list
+"""
+def scan_folder_to_get_indicated_file_list(folder_path, wildcard):
+    (file_name_list, file_path_list) = scan_folder_to_get_indicated_files(folder_path, wildcard)
+    return file_name_list
+
+def scan_folder_to_copy_files(dst_folder_path, src_folder_path, wildcard):
+    print "Start Scan " + src_folder_path
     for root, dirs, files in os.walk(src_folder_path):
-        for dir_name in dirs:
-            #recurse into dir
-            sub_dir_path = src_folder_path + "/" + dir_name + "/"
-            recurse_scan_folder_to_copy_files(dst_folder_path, sub_dir_path, wildcard)
         for file_name in files:
             #if wildcard in name:
             name_suffix = "." + file_name.split('.')[-1]
             if name_suffix == wildcard:
-                print(file_name)
                 
-                src_file_path = src_folder_path + "/" + file_name
+                src_file_path = os.path.join(root,file_name)
                 dst_file_path = dst_folder_path + "/" + file_name
+                #print src_file_path
                 if os.path.isfile(dst_file_path):
-                    print "[ WARN] File Exist: " + dst_file_path 
+                    print "[ WARN] File Exist: " + dst_file_path + " Src File: " + src_file_path
                 elif do_file_copy(dst_file_path, src_file_path): 
                     print "Succeed Copy: " + src_file_path + " -> " + dst_file_path
                 else:
                     print "[ERROR]Failed Copy: " + src_file_path + " -> " + dst_file_path
                     exit(1)
-        
+    print "End Scan " + src_folder_path
     
 def main():
     print "Execute files_operation."
