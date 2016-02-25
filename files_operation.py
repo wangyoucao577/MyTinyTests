@@ -13,23 +13,13 @@ import shutil
 import filecmp
 import commands
 
-def scan_folder_to_get_indicated_file_list(folder_path, wildcard):
-    file_list = []
-    print "Start Scan " + folder_path
-    for root, dirs, files in os.walk(folder_path):
-        for name in files:
-            if wildcard in name:
-                print(name)
-                file_list.append(name)
-          
-    print "End Scan " + folder_path + "\n\n"
-    return file_list
 
+    
 def do_file_copy(dst_file_path, src_file_path):
     try:
         shutil.copyfile(src_file_path, dst_file_path)
     except IOError:
-        print dst_file_path + "can not write."
+        print dst_file_path + " can not write."
         return False
     return True
 
@@ -53,7 +43,10 @@ def do_svn_delete(file_path):
     else:
         print "svn delete return:" + content
         return False
-        
+
+"""
+    This functions is for single path
+"""
 def do_files_copy(dst_path, src_path, files_to_copy, mode):
     retval = True
     for file_name in files_to_copy:
@@ -74,7 +67,8 @@ def do_files_copy(dst_path, src_path, files_to_copy, mode):
                 retval = False
 
     return retval
-                
+
+    
 """
     return True if files the same
     return False if something different
@@ -93,12 +87,53 @@ def do_mkdir(dir_path):
             print "[ERROR]Failed mkdir: " + dir_path
             return False
     return True
+
+    
+    
+def scan_folder_to_get_indicated_file_list(folder_path, wildcard):
+    file_list = []
+    print "Start Scan " + folder_path
+    for root, dirs, files in os.walk(folder_path):
+        for name in files:
+            #if wildcard in name:
+            name_suffix = "." + name.split('.')[-1]
+            if name_suffix == wildcard:
+                print(name)
+                file_list.append(name)
+          
+    print "End Scan " + folder_path + "\n\n"
+    return file_list
+
+def recurse_scan_folder_to_copy_files(dst_folder_path, src_folder_path, wildcard):
+    #print "Start Scan " + src_folder_path
+    for root, dirs, files in os.walk(src_folder_path):
+        for dir_name in dirs:
+            #recurse into dir
+            sub_dir_path = src_folder_path + "/" + dir_name + "/"
+            recurse_scan_folder_to_copy_files(dst_folder_path, sub_dir_path, wildcard)
+        for file_name in files:
+            #if wildcard in name:
+            name_suffix = "." + file_name.split('.')[-1]
+            if name_suffix == wildcard:
+                print(file_name)
+                
+                src_file_path = src_folder_path + "/" + file_name
+                dst_file_path = dst_folder_path + "/" + file_name
+                if os.path.isfile(dst_file_path):
+                    print "[ WARN] File Exist: " + dst_file_path 
+                elif do_file_copy(dst_file_path, src_file_path): 
+                    print "Succeed Copy: " + src_file_path + " -> " + dst_file_path
+                else:
+                    print "[ERROR]Failed Copy: " + src_file_path + " -> " + dst_file_path
+                    exit(1)
+        
     
 def main():
     print "Execute files_operation."
 
 if __name__ == '__main__':
     main()
-
+else:
+    print "Module Loaded: files_operation."
 
 
