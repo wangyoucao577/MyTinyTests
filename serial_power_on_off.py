@@ -7,6 +7,10 @@ import serial.tools.list_ports
 import sys
 import traceback
 
+
+####################################################################
+#manufacture info: http://qhdxk.com/, https://xundaele.taobao.com/
+
 # command for port 1, could check return back
 #power_on_cmd = [0x55, 0x01, 0x12, 0x00, 0x00, 0x00, 0x01, 0x69]
 #power_off_cmd = [0x55, 0x01, 0x11, 0x00, 0x00, 0x00, 0x01, 0x68]
@@ -14,7 +18,7 @@ import traceback
 # command for all ports, could check return back
 power_on_cmd = [0x55, 0x01, 0x13, 0xFF, 0xFF, 0xFF, 0xFF, 0x65]
 power_off_cmd = [0x55, 0x01, 0x13, 0x00, 0x00, 0x00, 0x00, 0x69]
-
+####################################################################
 
 def scan_comports_out():
 	comport_list = list(serial.tools.list_ports.comports())
