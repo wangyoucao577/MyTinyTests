@@ -4,7 +4,8 @@
 import re
 import urllib2
 
-public_ip_inquery_url = ("http://www.whereismyip.com/",
+public_ip_inquery_url = ("http://ip.3322.net/", 
+"http://www.whereismyip.com/",
 "http://ifconfig.me/ip", 
 "http://www.ip138.com/ip2city.asp")
 
