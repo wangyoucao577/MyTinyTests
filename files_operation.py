@@ -5,7 +5,7 @@ Description:
     public files operation
 Author:     wangyoucao577@gmail.com
 Created Date:   2016-01-11
-Version:        2016-02-25
+Version:        2016-07-14
 """
 
 import os
@@ -95,7 +95,7 @@ def do_mkdir(dir_path):
 def scan_folder_to_get_indicated_files(folder_path, wildcard):
     file_name_list = []
     file_path_list = []
-    print "Start Scan " + folder_path
+    print "Start Scan \"" + folder_path + "\", suffix--->\"" + wildcard + "\""
     for root, dirs, files in os.walk(folder_path):
         for name in files:
             #if wildcard in name:
@@ -103,9 +103,9 @@ def scan_folder_to_get_indicated_files(folder_path, wildcard):
             if name_suffix == wildcard:
                 print(name)
                 file_name_list.append(name)
-                file_path_list.append(os.path.join(root,file_name))
+                file_path_list.append(os.path.join(root,name))
           
-    print "End Scan " + folder_path + "\n\n"
+    print "End Scan \"" + folder_path + "\", suffix--->\"" + wildcard + "\"\n\n"
     return (file_name_list, file_path_list)
 
 """
