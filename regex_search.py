@@ -25,7 +25,7 @@ def main():
         print "Usage: "
         print "      python regex_search.py <dir_path> <suffix[,suffix,...]> <partten>" 
         print "Sample: "
-        print "      python regex_search.py f:\\serial_log\\ .log,.txt \[curr_.{1,5}kbps_in:([0-9]{1,10})\]"
+        print "      python regex_search.py ./ .log,.txt \"\[curr_.{1,5}kbps_in:([0-9]{1,10})\]\""
         return
         
     dirpath = sys.argv[1]
@@ -53,7 +53,7 @@ def main():
             if match_result:
                 #print file_path + "(" + str(line_number) + "): " + line.strip('\n')
                 print file_path + "(" + str(line_number) + "): " + match_result.group(0)
-                #print "value:" +  match_result.group(1)
+                #print file_path + "(" + str(line_number) + "): " + "value--->" +  match_result.group(1)
 
 if __name__ == '__main__':
     main()
