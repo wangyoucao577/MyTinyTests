@@ -6,7 +6,7 @@ Description:
     regex search tools, read line from each file of indicated folder then search string via regex
 Author:     wangyoucao577@gmail.com
 Created Date:   2016-07-14
-Version:        2016-07-14
+Version:        2016-07-15
 """
 
 import re
