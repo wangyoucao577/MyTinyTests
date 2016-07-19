@@ -21,8 +21,8 @@ Just use to store my tiny test src files and solutions, may contains python, c#,
 - simple_cat.c  
   `cat` 的一个简单实现. `stdin/out/err` 都是文件描述符, 故可以以文件形式操作. `cat` 的标准行为即读取文件并输出到`stdout`中. 
 
-- dcl  
-  TODO: 补齐说明
+- dcl.c, my_dcl.c  
+  两个简单的`C`语法分析的例子, 在VS2015中实现(Linux上实现稍有区别, 未进行改造). `dcl.c`为书上的例子. `my_dcl.c`为参考`dcl.c`的实现进行的全局变量->局部变量的改造, 减少全局变量的使用. 
 
 
 ### webspider_qiushibaike_duanzi.py
