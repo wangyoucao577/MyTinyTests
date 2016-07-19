@@ -24,6 +24,12 @@ Just use to store my tiny test src files and solutions, may contains python, c#,
 - dcl.c, my_dcl.c  
   两个简单的`C`语法分析的例子, 在VS2015中实现(Linux上实现稍有区别, 未进行改造). `dcl.c`为书上的例子. `my_dcl.c`为参考`dcl.c`的实现进行的全局变量->局部变量的改造, 减少全局变量的使用. 
 
+### [C] C语言其他的一些小例子
+
+- minimum_int_test.c  
+  来自stackoverflow上的一个例子，`int`型最小整数的验证. `gcc -m32 minimum_int_test.c`, `./a.out`可发现此负数已超出了`int`的限制, 故而返回了true. 
+
+- TODO: 补充完整
 
 ### [Python2]webspider_qiushibaike_duanzi.py
 
