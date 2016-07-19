@@ -3,12 +3,12 @@ Just use to store my tiny test src files and solutions, may contains python, c#,
 
 # 说明
 
-### CheckGateway
+### [C#]CheckGateway
 
 基于C#的Console, VS2015中实现, 检查本机Gateway设置. 网络初学者经常会出现误设置多个网关导致一些网络异常的情况，此小工具可检查本机Gateway设置是否仅为一条，若为一条则认为设置正确，否则提示设置错误.
 
 
-### CProgrammingLanguage
+### [C]CProgrammingLanguage
 
 回顾《C Programming Language》时敲的一些小sample.
 
@@ -25,7 +25,7 @@ Just use to store my tiny test src files and solutions, may contains python, c#,
   两个简单的`C`语法分析的例子, 在VS2015中实现(Linux上实现稍有区别, 未进行改造). `dcl.c`为书上的例子. `my_dcl.c`为参考`dcl.c`的实现进行的全局变量->局部变量的改造, 减少全局变量的使用. 
 
 
-### webspider_qiushibaike_duanzi.py
+### [Python2]webspider_qiushibaike_duanzi.py
 
 学习Python爬虫，参考"静觅 » Python爬虫实战一之爬取糗事百科段子"实现的抓取糗事百科文字段子的小爬虫.
 
