@@ -5,7 +5,7 @@ Just use to store my tiny test src files and solutions, may contains python, c#,
 
 ### CheckGateway
 
-基于C#的Console, 检查本机Gateway设置. 网络初学者经常会出现误设置多个网关导致一些网络异常的情况，此小工具可检查本机Gateway设置是否仅为一条，若为一条则认为设置正确，否则提示设置错误.
+基于C#的Console, VS2015中实现, 检查本机Gateway设置. 网络初学者经常会出现误设置多个网关导致一些网络异常的情况，此小工具可检查本机Gateway设置是否仅为一条，若为一条则认为设置正确，否则提示设置错误.
 
 
 ### CProgrammingLanguage
