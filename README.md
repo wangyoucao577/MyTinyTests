@@ -1,5 +1,6 @@
 # MyTinyTests
-Just use to store my tiny test src files and solutions, may contains python, c#, c/c++ or something else.
+学习时写的一些简单的小例子或自动化使用的一些小工具集合, 包含c#, c/c++, python2/3, windows bat, linux bash等各种语言的实现.  尝试用最合适的而不是最熟悉的方法解决问题. 
+
 
 # 说明
 
