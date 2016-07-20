@@ -56,9 +56,33 @@ Just use to store my tiny test src files and solutions, may contains python, c#,
 - strcasestr_null_input_test.c  
   `strcasestr`传递`NULL`参数时的行为测试. 
 
+### [Python2] files_operation.py
+  自己实现的一个常用文件操作的接口集合, 包括`svn add/del`, `file copy/compare`, `mkdir`, `scan folder`等常用操作, 易于业务实现. 
+  
+### [Python2] regex_search.py
+  基于`files_operation.py`扩展实现的一个搜索文件夹中指定扩展名的文件进行正则匹配的小工具, 学习正则表达式时实现. 功能类似简单版的`grep`. 
+
+### [Python2] copy_modules.py
+  基于`files_operation.py`扩展实现的目录中的`.ko`文件拷贝的小工具. 
+  
+### [Python2] publish.py
+  基于`files_operation.py`扩展实现的小工具, 供`Jenkins`调用实现publish功能, 实际执行的任务为从`src_folder`拷贝各个平台的`debug/release`及`.h`内容到`dst_folder`中, 以实现本地编译后的新版本向服务器上`Release`目录中的发布功能. 
+  
+### [Python2] replace_public_headers.py
+  基于`files_operation.py`扩展实现的`.h`文件更新小工具. 设计目标为比较本地文件夹中的`.h`和服务器上指定版本的文件夹中的`.h`, 对应地修改本地文件夹中的`.h`, 并执行必要的`svn add/del`动作, 便于更新本机所使用的sdk版本时头文件的方便的更新.
+
 ### [Python2] webspider_qiushibaike_duanzi.py
 
-学习Python爬虫，参考"静觅 » Python爬虫实战一之爬取糗事百科段子"实现的抓取糗事百科文字段子的小爬虫.
+  学习Python爬虫，参考"静觅 » Python爬虫实战一之爬取糗事百科段子"实现的抓取糗事百科文字段子的小爬虫.
 
+### [Python2/Python3] inquery_my_public_ip.py, inquery_my_public_ip_py3.py
+  获取本机公网IP的小工具. 分别基于`python2`和`python3`实现. 由于功能本身比较简单, 没有太多区别. 
 
-### TODO: 补齐其他说明...
+### [Python3] lambda_map_sample.py
+  `lambda`表达式和函数式编程的`map`学习小例子.
+  
+### [Python3] serial_power_on_off.py
+  通过串口控制继电器上电/断电的小工具, 便于自动开关机测试. 
+
+### [Windows_bat] automatic_power_on_off.bat
+  自动定时开关机测试的小工具, 使用`serial_power_on_off.py`控制继电器进行实际的上电/断电控制, 在`Windows_bat`中实现定时循环. 
