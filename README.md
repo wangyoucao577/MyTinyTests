@@ -26,10 +26,35 @@ Just use to store my tiny test src files and solutions, may contains python, c#,
 
 ### [C] C语言其他的一些小例子
 
-- minimum_int_test.c  
-  来自stackoverflow上的一个例子，`int`型最小整数的验证. `gcc -m32 minimum_int_test.c`, `./a.out`可发现此负数已超出了`int`的限制, 故而返回了true. 
+- c_pointer_transfer.c  
+  `C`语言中的指针传递问题. 需注意的是指针本身也是一个普通类型, 取地址传递才能在函数内部修改其内容. 
 
-- TODO: 补充完整
+- c_struct_Inheritance.c  
+  `C`语言中的继承. 一般认为`C`语言不支持面向对象, 故没有OO语言的继承性. 但事实上完全可以通过`C`语言中清晰的内存布局特性来实现继承. `C`语言中结构体的地址等同于结构体第一个元素的地址, 所以某地址指向的结构体, 若认为其为指向此结构体首元素的结构体的地址, 同样是成立的. 也即可表述为此结构体的基类为其首元素. 
+
+- c_union.c  
+  `C`语言中union用法的一个小例子.
+
+- char_array_sizeof.c  
+  `C`语言中数组传递的一个小例子. 作为函数形参的`char []`等同于`char *`.
+
+- compare_and_swap.c  
+  `GCC`提供的一个原子操作的API, 通过汇编级别的代码来保证赋值类操作的原子性，除了此例子中用到的外还有其他一些. 相对于涉及到操作系统系统调用和应用层同步的锁和互斥量，这组api的效率要高很多. 一般来讲用不到, 仅做了解, 在极端情况下可考虑使用. 
+
+- endian.c  
+  判断本机字节序. 
+
+- minimum_int_test.c  
+  来自stackoverflow上的一个例子，`int`型最小整数的验证. `gcc -m32 minimum_int_test.c`, `./a.out`可发现此负数已超出了`int`的限制, 故而返回了true. 进行整数大小判断时, 需注意溢出的问题. 
+
+- printf_x.c  
+  `printf`打印16进制的用法, 包括大小写, `int64_t` 及 `uint64_t`.
+
+- rlimit_test.c  
+  获取和设置`linux`系统的软硬限制的接口, `getrlimit/setrlimit`.
+
+- strcasestr_null_input_test.c  
+  `strcasestr`传递`NULL`参数时的行为测试. 
 
 ### [Python2] webspider_qiushibaike_duanzi.py
 
