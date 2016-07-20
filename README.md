@@ -76,8 +76,12 @@
 
   学习Python爬虫，参考"静觅 » Python爬虫实战一之爬取糗事百科段子"实现的抓取糗事百科文字段子的小爬虫.
 
-### [Python2/Python3] inquery_my_public_ip.py, inquery_my_public_ip_py3.py
+### [Python2/Python3] inquery_my_public_ip
+- inquery_my_public_ip.py, inquery_my_public_ip_py3.py  
   获取本机公网IP的小工具. 分别基于`python2`和`python3`实现. 由于功能本身比较简单, 没有太多区别. 
+
+- inquery_my_public_ip.exe, inquery_my_public_ip_py3.exe  
+  分别对应于`inquery_my_public_ip.py`和`inquery_my_public_ip_py3.py`的在windows上打包后的exe, 便于在没有`Python`环境的PC上的使用. 
 
 ### [Python3] lambda_map_sample.py
   `lambda`表达式和函数式编程的`map`学习小例子.
