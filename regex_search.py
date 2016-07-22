@@ -70,5 +70,5 @@ def main():
 if __name__ == '__main__':
     main()
 else:
-    print "Module Loaded: regex_search."
+    print "Python2 Module Loaded: regex_search."
     

@@ -141,7 +141,7 @@ def main():
 if __name__ == '__main__':
     main()
 else:
-    print "Module Loaded: files_operation."
+    print "Python2 Module Loaded: files_operation."
     
 
 
