@@ -5,7 +5,7 @@ Description:
     public files operation
 Author:     wangyoucao577@gmail.com
 Created Date:   2016-01-11
-Version:        2016-07-14
+Version:        2016-07-22
 """
 
 import os
