@@ -27,7 +27,7 @@ def regex_search(to_check_files_path_list, pattern_rule, print_option):
     
     for file_path in to_check_files_path_list:
         line_number = 0
-        for line in fileinput.input(file_path):
+        for line in fileinput.input(file_path, mode="rb"):
             line_number += 1
             match_result = re.search(pattern, line)
             #print line
