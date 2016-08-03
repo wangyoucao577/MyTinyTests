@@ -30,7 +30,8 @@ void unserialize_sample_1()
 
     }
     else {
-        printf("Json parse failed, original string:\n%s\n\n", strValue.c_str());
+        printf("Json parse failed, original string:\n%s\n\nError message:%s\n",
+            strValue.c_str(), json_reader.getFormattedErrorMessages().c_str());
     }
 
     printf("\n\n");
@@ -79,7 +80,8 @@ void unserialize_sample_2()
         
     }
     else {
-        printf("Json parse failed, original string:\n%s\n\n", strValue.c_str());
+        printf("Json parse failed, original string:\n%s\n\nError message:%s\n", 
+            strValue.c_str(), json_reader.getFormattedErrorMessages().c_str());
     }
 
     printf("\n\n");
