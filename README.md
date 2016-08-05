@@ -61,6 +61,9 @@
   character system相关的一些小实验, 及windows下的MultiBytes字符编码与UTF-8字符编码的转换接口. linux与windows下默认的字符编码一般都是扩展的ANSI, 即所谓的MultiBytes. C++中支持wchar_t的类型定义, 其在linux下实现使用UTF-32即4字节, 在windows下实现使用UTF-16即2字节(windows下所谓的Unicode默认即UTF-16, 而不是UTF-8).
   代码文件保存为UTF-8, 在代码中写入的中文字符串编码方式即为UTF-8, vs中编译后printf输出为乱码, 需转换为MBCS方可正常显示. 而linux下貌似不受此限制, 无论代码文件保存为UTF-8还是GB2312, 都可以直接用printf正确输出. 
 
+### [C++] RESTClientSample
+  通过HTTP发送JSON格式数据的小例子, 熟悉JsonCpp库和libcurl库的使用. 
+  工程文件基于VS2015(VC14), 目前仅配置了x64_debug版本. 
 
 ### [Python2] files_operation.py
   自己实现的一个常用文件操作的接口集合, 包括`svn add/del`, `file copy/compare`, `mkdir`, `scan folder`等常用操作, 易于业务实现. 
