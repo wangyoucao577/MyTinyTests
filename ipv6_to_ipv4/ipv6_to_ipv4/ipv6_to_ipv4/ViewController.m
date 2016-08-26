@@ -34,13 +34,14 @@
 
 - (void) ipv6_to_ipv4_test {
     
-    uint8_t ipv4[4] = {192, 168, 16, 103};
+    //uint8_t ipv4[4] = {192, 168, 16, 103};
+    //    char ipv4_str_buf[INET_ADDRSTRLEN] = { 0 };
+    //    const char *ipv4_str = inet_ntop(AF_INET, &ipv4, ipv4_str_buf, sizeof(ipv4_str_buf));
+    const char *ipv4_str = "192.168.16.103";
+
     struct addrinfo hints, *res, *res0;
     int error, s;
     const char *cause = NULL;
-    
-    char ipv4_str_buf[INET_ADDRSTRLEN] = { 0 };
-    const char *ipv4_str = inet_ntop(AF_INET, &ipv4, ipv4_str_buf, sizeof(ipv4_str_buf));
     
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = PF_UNSPEC;
