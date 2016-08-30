@@ -73,7 +73,7 @@ void getaddrinfo_behavior_individual_case(const char* case_str, int ss_family, c
 
 //test interfaces
 //if local_ip_str is not NULL, the socket will bind this ip address before connect
-int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(int ss_family, char* local_ip_str, const char* peer_ipv4, unsigned short port);
+int test_tcp_connect_to_ipv4(char* local_ip_str, const char* peer_ipv4, unsigned short port);
 
 void getaddrinfo_behavior_test();
 void exported_test();

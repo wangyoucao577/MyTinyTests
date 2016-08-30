@@ -224,9 +224,12 @@ void getaddrinfo_behavior_test()
 
 }
 
-int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(int local_ss_family, char* local_ip_str, const char* peer_ipv4, unsigned short port)
+int test_tcp_connect_to_ipv4(char* local_ip_str, const char* peer_ipv4, unsigned short port)
 {
-    
+    int local_ss_family = AF_UNSPEC;
+    if (NULL != local_ip_str) {
+        local_ss_family = ip_str_family(local_ip_str);
+    }
     printf("\ntest_tcp_connect_to_ipv4-->%s local %s peer %s %d.\n", local_ss_family == AF_INET6 ? "AF_INET6" : (local_ss_family == AF_INET ? "AF_INET" : "AF_UNSPEC"), \
         NULL == local_ip_str ? "0" : local_ip_str, peer_ipv4, (int)port);
 
@@ -279,7 +282,7 @@ int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(int local_ss_family, char* loc
         goto End;
     }
 
-    printf("local %s %d try connect peer %s(%s) %d succeed.\n", local_ipstr, local_ip_str == NULL ? 0 : (int)ntohs(((struct sockaddr_in*)resLocal->ai_addr)->sin_port), \
+    printf("local %s %d try to connect peer %s(%s) %d succeed.\n", local_ipstr, local_ip_str == NULL ? 0 : (int)ntohs(((struct sockaddr_in*)resLocal->ai_addr)->sin_port), \
            peer_ipv4, peer_ipstr, (int)ntohs(((struct sockaddr_in*)resPeer->ai_addr)->sin_port));
     
 End:
@@ -313,23 +316,19 @@ void exported_test()
 
     char* ipstr = get_local_net(WifiName, (int)strlen(WifiName));
     if (NULL != ipstr) {
-        int ipstr_family = ip_str_family(ipstr);
-        assert(ipstr_family == AF_INET || ipstr_family == AF_INET6);
-        test_tcp_connect_to_ipv4_via_easy_getaddrinfo(ipstr_family, ipstr, PublicIpv4, PublicServicePort);
+        test_tcp_connect_to_ipv4(ipstr, PublicIpv4, PublicServicePort);
         free(ipstr);
     }
 
     ipstr = get_local_net(CellularName, (int)strlen(CellularName));
     if (NULL != ipstr) {
-        int ipstr_family = ip_str_family(ipstr);
-        assert(ipstr_family == AF_INET || ipstr_family == AF_INET6);
-        test_tcp_connect_to_ipv4_via_easy_getaddrinfo(ipstr_family, ipstr, PublicIpv4, PublicServicePort);
+        test_tcp_connect_to_ipv4(ipstr, PublicIpv4, PublicServicePort);
         free(ipstr);
     }
 #endif
 
     //system decide test
-    test_tcp_connect_to_ipv4_via_easy_getaddrinfo(AF_UNSPEC, NULL, PublicIpv4, PublicServicePort);
+    test_tcp_connect_to_ipv4(NULL, PublicIpv4, PublicServicePort);
 
 
 }
