@@ -362,29 +362,28 @@ int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(const struct sockaddr_ex* loca
     int err = 0;
     char* p_str = NULL;
     struct addrinfo *resLocal, *resPeer;
-    char ipstr[INET6_ADDRSTRLEN] = {0};
+    char local_ipstr[INET6_ADDRSTRLEN] = {0};
+    char peer_ipstr[INET6_ADDRSTRLEN] = {0};
     
     //get local
     err = easy_getaddrinfo(local_addr->sockaddr_info.ss_family, SOCK_STREAM, local_addr->ip_address_str, 0, &resLocal);
     assert(0 == err);
     assert(NULL == resLocal->ai_next);  //I want only one result.
-    memset(ipstr, 0, sizeof(ipstr));
-    p_str = inet_ntop_ipv4_ipv6_compatible(resLocal->ai_addr, ipstr, sizeof(ipstr));
+    p_str = inet_ntop_ipv4_ipv6_compatible(resLocal->ai_addr, local_ipstr, sizeof(local_ipstr));
     assert(NULL != p_str);
     printf("{%s} %s %s ip->%s port->%d addr_len->%d.\n", "local", resLocal->ai_family == AF_INET6 ? "AF_INET6" : "AF_INET", \
            resLocal->ai_socktype == SOCK_STREAM ? "SOCK_STREAM" : "SOCK_DGRAM", \
-           ipstr, (int)ntohs(((struct sockaddr_in*)resLocal->ai_addr)->sin_port), resLocal->ai_addrlen);
+           local_ipstr, (int)ntohs(((struct sockaddr_in*)resLocal->ai_addr)->sin_port), resLocal->ai_addrlen);
     
     //get peer
     err = easy_getaddrinfo(local_addr->sockaddr_info.ss_family, SOCK_STREAM, peer_ipv4, port, &resPeer);
     assert(0 == err);
     assert(NULL == resPeer->ai_next);  //I want only one result.
-    memset(ipstr, 0, sizeof(ipstr));
-    p_str = inet_ntop_ipv4_ipv6_compatible(resPeer->ai_addr, ipstr, sizeof(ipstr));
-    assert(NULL != p_str);
+    p_str = inet_ntop_ipv4_ipv6_compatible(resPeer->ai_addr, peer_ipstr, sizeof(peer_ipstr));
+    assert(NULL != peer_ipstr);
     printf("{%s} %s %s ip->%s port->%d addr_len->%d.\n", "peer", resPeer->ai_family == AF_INET6 ? "AF_INET6" : "AF_INET", \
            resPeer->ai_socktype == SOCK_STREAM ? "SOCK_STREAM" : "SOCK_DGRAM", \
-           ipstr, (int)ntohs(((struct sockaddr_in*)resPeer->ai_addr)->sin_port), resPeer->ai_addrlen);
+           peer_ipstr, (int)ntohs(((struct sockaddr_in*)resPeer->ai_addr)->sin_port), resPeer->ai_addrlen);
 
     
     
@@ -402,6 +401,8 @@ int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(const struct sockaddr_ex* loca
         ret = -1;
         goto End;
     }
+    printf("local %s %d try connect peer %s(%s) %d succeed.\n", local_ipstr, (int)ntohs(((struct sockaddr_in*)resLocal->ai_addr)->sin_port), \
+           peer_ipv4, peer_ipstr, (int)ntohs(((struct sockaddr_in*)resPeer->ai_addr)->sin_port));
     
 End:
     close(s);
@@ -414,7 +415,7 @@ void exported_test()
 {
     getaddrinfo_behavior_test();
     
-    static const char *PublicIpv4 = "114.114.114.114";  //change to your own Public IP address
+    static const char *PublicIpv4 = "115.239.211.112";  //change to your own Public IP address. here is the ip from baidu.com
     static const unsigned short PublicServicePort = 80; //Your Listening port
     static const char *WifiName = "en0" ;
     static const char *CellularName ="pdp_ip0";
