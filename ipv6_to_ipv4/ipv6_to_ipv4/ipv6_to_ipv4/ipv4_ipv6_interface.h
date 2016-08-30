@@ -50,7 +50,7 @@ char * inet_ntop_ipv4_ipv6_compatible(const struct sockaddr *sa, char *s, unsign
 
 
 /**
- @brief a easy way to get addrinfo when you as a client
+ @brief a easy way to get addrinfo when you as a client or a server.
  @param ss_family AF_INET or AF_INET6
  @param sock_type SOCK_STREAM or SOCK_DGRAM
  @param ip presentation format ip, could be ipv4 or ipv6. NULL if any ip. could not be a domain name(such as "www.google.com").
