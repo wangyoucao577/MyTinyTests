@@ -286,6 +286,15 @@ void getaddrinfo_behavior_individual_case(const char* case_str, int ss_family, c
     printf("{%s} %s %s ip->%s port->%d addr_len->%d.\n", case_str, res0->ai_family == AF_INET6 ? "AF_INET6" : "AF_INET", \
            res0->ai_socktype == SOCK_STREAM ? "SOCK_STREAM" : "SOCK_DGRAM", \
            ipstr, (int)ntohs(((struct sockaddr_in*)res0->ai_addr)->sin_port), res0->ai_addrlen);
+           
+    assert(res0->ai_family == ss_family);
+    assert(ntohs(((struct sockaddr_in*)res0->ai_addr)->sin_port) == port);
+    if (ss_family == AF_INET6){
+        assert(res0->ai_addrlen == sizeof(struct sockaddr_in6));
+    }else{
+        assert(res0->ai_addrlen == sizeof(struct sockaddr_in));
+    }
+           
     freeaddrinfo(res0);
     res0 = NULL;
 
