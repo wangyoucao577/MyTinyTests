@@ -66,7 +66,7 @@ void getaddrinfo_behavior_individual_case(const char* case_str, int ss_family, c
 
 //test interfaces
 int test_tcp_connect_to_ipv4(const struct sockaddr_ex* local_addr, const char* peer_ipv4, unsigned short port);
-
+int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(const struct sockaddr_ex* local_addr, const char* peer_ipv4, unsigned short port);
 
 void getaddrinfo_behavior_test();
 void exported_test();

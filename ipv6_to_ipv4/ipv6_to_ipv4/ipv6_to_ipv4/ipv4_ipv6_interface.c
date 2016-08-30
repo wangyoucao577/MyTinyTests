@@ -357,6 +357,59 @@ int test_tcp_connect_to_ipv4(const struct sockaddr_ex* local_addr, const char* p
     return ret;
 }
 
+int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(const struct sockaddr_ex* local_addr, const char* peer_ipv4, unsigned short port)
+{
+    int err = 0;
+    char* p_str = NULL;
+    struct addrinfo *resLocal, *resPeer;
+    char ipstr[INET6_ADDRSTRLEN] = {0};
+    
+    //get local
+    err = easy_getaddrinfo(local_addr->sockaddr_info.ss_family, SOCK_STREAM, local_addr->ip_address_str, 0, &resLocal);
+    assert(0 == err);
+    assert(NULL == resLocal->ai_next);  //I want only one result.
+    memset(ipstr, 0, sizeof(ipstr));
+    p_str = inet_ntop_ipv4_ipv6_compatible(resLocal->ai_addr, ipstr, sizeof(ipstr));
+    assert(NULL != p_str);
+    printf("{%s} %s %s ip->%s port->%d addr_len->%d.\n", "local", resLocal->ai_family == AF_INET6 ? "AF_INET6" : "AF_INET", \
+           resLocal->ai_socktype == SOCK_STREAM ? "SOCK_STREAM" : "SOCK_DGRAM", \
+           ipstr, (int)ntohs(((struct sockaddr_in*)resLocal->ai_addr)->sin_port), resLocal->ai_addrlen);
+    
+    //get peer
+    err = easy_getaddrinfo(local_addr->sockaddr_info.ss_family, SOCK_STREAM, peer_ipv4, port, &resPeer);
+    assert(0 == err);
+    assert(NULL == resPeer->ai_next);  //I want only one result.
+    memset(ipstr, 0, sizeof(ipstr));
+    p_str = inet_ntop_ipv4_ipv6_compatible(resPeer->ai_addr, ipstr, sizeof(ipstr));
+    assert(NULL != p_str);
+    printf("{%s} %s %s ip->%s port->%d addr_len->%d.\n", "peer", resPeer->ai_family == AF_INET6 ? "AF_INET6" : "AF_INET", \
+           resPeer->ai_socktype == SOCK_STREAM ? "SOCK_STREAM" : "SOCK_DGRAM", \
+           ipstr, (int)ntohs(((struct sockaddr_in*)resPeer->ai_addr)->sin_port), resPeer->ai_addrlen);
+
+    
+    
+    int s = socket(resLocal->ai_family, resLocal->ai_socktype, resLocal->ai_protocol);
+    assert (s >= 0);
+    
+    int ret = bind(s, resLocal->ai_addr, resLocal->ai_addrlen);
+    if (ret != 0){
+        printf("bind failed, return %d errno %d.\n", ret, errno);
+        goto End;
+    }
+    
+    if (connect(s, resPeer->ai_addr, resPeer->ai_addrlen) < 0) {
+        printf("connect failed, errno %d.\n", errno);
+        ret = -1;
+        goto End;
+    }
+    
+End:
+    close(s);
+    freeaddrinfo(resLocal);
+    freeaddrinfo(resPeer);
+    return ret;
+}
+
 void exported_test()
 {
     getaddrinfo_behavior_test();
@@ -372,13 +425,15 @@ void exported_test()
     
     struct sockaddr_ex * local_sock_ex = get_local_net(WifiName, (int)strlen(WifiName));
     if (NULL != local_sock_ex){
-        test_tcp_connect_to_ipv4(local_sock_ex, PublicIpv4, PublicServicePort);
+        //test_tcp_connect_to_ipv4(local_sock_ex, PublicIpv4, PublicServicePort);
+        test_tcp_connect_to_ipv4_via_easy_getaddrinfo(local_sock_ex, PublicIpv4, PublicServicePort);
         free_sockaddr_ex(local_sock_ex);
     }
     
     local_sock_ex = get_local_net(CellularName, (int)strlen(CellularName));
     if (NULL != local_sock_ex){
-        test_tcp_connect_to_ipv4(local_sock_ex, PublicIpv4, PublicServicePort);
+        //test_tcp_connect_to_ipv4(local_sock_ex, PublicIpv4, PublicServicePort);
+        test_tcp_connect_to_ipv4_via_easy_getaddrinfo(local_sock_ex, PublicIpv4, PublicServicePort);
         free_sockaddr_ex(local_sock_ex);
     }
 
