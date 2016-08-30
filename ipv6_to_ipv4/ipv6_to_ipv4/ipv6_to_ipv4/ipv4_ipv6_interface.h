@@ -41,12 +41,29 @@ int ip_str_family(char* ipstr);
 
 /**
  @brief a easy way to get addrinfo when you as a client or a server.
- @param ss_family AF_INET, AF_INET6 or AF_UNSPEC
+ @param ss_family AF_INET, AF_INET6 or AF_UNSPEC. 
+                if you want to bind a ipv4 local address, set AF_INET
+                if you want to bind a ipv6 local address, set AF_INET6
+                if you don't care what local address to use, set AF_UNSPEC, system will help you to decide.
  @param sock_type SOCK_STREAM or SOCK_DGRAM
  @param ip presentation format ip, could be ipv4 or ipv6. NULL if any ip. could not be a domain name(such as "www.google.com").
  @param port indicated port. 0 if any port.
  @param [out] output the constructed addrinfo, similar as getaddrinfo interface. but only output one res. call freeaddrinfo after use.
  @return 0 if it succeeds, otherwise failed. reference the errorcode of getaddrinfo interface if failed.
+
+ @known behavior list:
+    host_enviroment ss_family[IN]             ip[IN]   port[IN]   res->ai_addr[OUT]
+    ipv4 only       AF_INET/AF_UNSPEC         ipv4 str  0~65535   pointer to sockaddr_in (ipv4 version)
+    ipv4 only       AF_INET/AF_UNSPEC         NULL      >0        pointer to sockaddr_in (ipv4 version)
+
+    ///// (mac OSX shared wifi with NAT64 support)
+    ipv6 only       AF_INET6/AF_UNSPEC        ipv6 str  0~65535   pointer to sockaddr_in6(ipv6 version)
+    ipv6 only       AF_INET6/AF_UNSPEC        ipv4 str  0~65535   pointer to sockaddr_in6(ipv6 version, ipv4->ipv6 mapped)
+    ipv6 only       AF_INET6/AF_UNSPEC        NULL      >0        pointer to sockaddr_in6(ipv6 version)
+
+    ///// (both ipv4 and ipv6)
+    dual stack...
+
  */
 int easy_getaddrinfo(int ss_family, int sock_type, const char* ip, unsigned short port, struct addrinfo** res);
 
