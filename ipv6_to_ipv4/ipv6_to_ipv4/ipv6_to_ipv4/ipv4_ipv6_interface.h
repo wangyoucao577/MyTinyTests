@@ -26,18 +26,6 @@
 #endif
 
 
-
-struct sockaddr_ex{
-    struct sockaddr_storage sockaddr_info;
-    socklen_t sockaddr_len;
-    
-    char ip_address_str[INET6_ADDRSTRLEN];  //also enough space for ipv4, so compatible for ipv4 and ipv6
-    unsigned short port;
-    
-    int	ai_socktype;	/* SOCK_xxx */
-    int	ai_protocol;	/* 0 or IPPROTO_xxx for IPv4 and IPv6 */
-};
-
 #ifndef WIN32
 //return a mallocced memory pointer to the indicated device, indicated the ip address as presentation format.
 //should call free after use.
