@@ -9,6 +9,10 @@
 #ifndef ipv4_ipv6_interface_h
 #define ipv4_ipv6_interface_h
 
+#ifdef WIN32
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+#else
 #include <sys/socket.h>
 #include <netdb.h>
 #include <arpa/inet.h>
@@ -17,6 +21,11 @@
 #include <ifaddrs.h>
 #include <netinet/in.h>
 #include <net/if.h>
+#include <unistd.h>
+#include <errno.h>
+#endif
+
+
 
 struct sockaddr_ex{
     struct sockaddr_storage sockaddr_info;
@@ -31,10 +40,12 @@ struct sockaddr_ex{
 
 char * ipv4v6_inet_ntop(const struct sockaddr_ex*);
 
+#ifndef WIN32
 //return a malloced memory pointer to the indicated device.
 //should call free_sockaddr_ex after use.
 //if dev_name pass NULL as input, it's behavior will be printf all interfaces with ipv4 or ipv6 address, ignore LINKLOCAL
 struct sockaddr_ex* get_local_net(const char* dev_name, int dev_name_len);
+#endif
 
 //return a malloced memory pointer to the struct.
 //should call free_sockaddr_ex after use.

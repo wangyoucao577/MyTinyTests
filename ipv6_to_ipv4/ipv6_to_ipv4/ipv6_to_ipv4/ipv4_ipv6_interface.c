@@ -12,8 +12,6 @@
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
-#include <errno.h>
-#include <unistd.h>
 
 #ifndef __APPLE__
 #define IN_LINKLOCALNETNUM	(u_int32_t)0xA9FE0000 /* 169.254.0.0 */
@@ -64,6 +62,7 @@ char * inet_ntop_ipv4_ipv6_compatible(const struct sockaddr *sa, char *s, unsign
     return s;
 }
 
+#ifndef WIN32
 
 struct sockaddr_ex* get_local_net(const char* dev_name, int dev_name_len)
 {
@@ -132,6 +131,9 @@ struct sockaddr_ex* get_local_net(const char* dev_name, int dev_name_len)
     }
     return sock_ex;
 }
+
+#endif
+
 struct sockaddr_ex* get_ipv4_sockaddr_ex(int local_ss_family, int socktype, const char* ipv4)
 {
     assert(NULL != ipv4);
@@ -413,6 +415,7 @@ End:
 
 void exported_test()
 {
+
     getaddrinfo_behavior_test();
     
     static const char *PublicIpv4 = "115.239.211.112";  //change to your own Public IP address. here is the ip from baidu.com
@@ -420,23 +423,28 @@ void exported_test()
     static const char *WifiName = "en0" ;
     static const char *CellularName ="pdp_ip0";
 
+#ifndef WIN32
     //print all ipv4 and ipv6 interface and addressed, ignore LINKLOCAL
     get_local_net(NULL, 0);
 
-    
+
     struct sockaddr_ex * local_sock_ex = get_local_net(WifiName, (int)strlen(WifiName));
-    if (NULL != local_sock_ex){
+    if (NULL != local_sock_ex) {
         //test_tcp_connect_to_ipv4(local_sock_ex, PublicIpv4, PublicServicePort);
         test_tcp_connect_to_ipv4_via_easy_getaddrinfo(local_sock_ex, PublicIpv4, PublicServicePort);
         free_sockaddr_ex(local_sock_ex);
     }
-    
+
     local_sock_ex = get_local_net(CellularName, (int)strlen(CellularName));
-    if (NULL != local_sock_ex){
+    if (NULL != local_sock_ex) {
         //test_tcp_connect_to_ipv4(local_sock_ex, PublicIpv4, PublicServicePort);
         test_tcp_connect_to_ipv4_via_easy_getaddrinfo(local_sock_ex, PublicIpv4, PublicServicePort);
         free_sockaddr_ex(local_sock_ex);
     }
+#else
+    //TODO: ipv6 connect test on windows
+#endif
+
 
 }
 
@@ -444,7 +452,25 @@ void exported_test()
 #ifndef __APPLE__
 int main()
 {
+#ifdef WIN32
+    // Initialize Winsock
+    WSADATA wsaData;
+    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (iResult != NO_ERROR)
+        printf("Error at WSAStartup()\n");
+#endif
+
     exported_test();
+
+
+#ifdef WIN32
+    WSACleanup();
+
+    //wait before return
+    printf("Please press any key to continue...");
+    char a;
+    scanf_s("%c", &a, (int)sizeof(a));
+#endif
     return 0;
 }
 
