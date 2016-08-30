@@ -240,7 +240,7 @@ int easy_getaddrinfo(int ss_family, int sock_type, const char* ip, unsigned shor
         hints.ai_flags = hints.ai_flags | AI_V4MAPPED;
     }
     
-    static const char* kDefaultServiceName = "http";
+    static const char* kDefaultServiceName = "80";
     char* service_name = NULL;
     if (NULL == ip){
         hints.ai_flags |= AI_PASSIVE;   //automaticlly fill in the ip to INADDR_ANY or IN6ADDR_ANY_INIT
@@ -310,13 +310,16 @@ void getaddrinfo_behavior_test()
     const char* IPV4 = "114.114.114.114";
     const char* IPV6 = "2001:2::aab1:1c2d:6fd3:a33b:499b";
     
-    getaddrinfo_behavior_individual_case("client case1: ipv4 for local bind, ignore port", AF_INET, IPV4, 0);
-    getaddrinfo_behavior_individual_case("client case2: ipv6 for local bind. ignore port", AF_INET6, IPV6, 0);
-    getaddrinfo_behavior_individual_case("client case3: ipv4 for remote connect, local also ipv4", AF_INET, IPV4, 80);
-    getaddrinfo_behavior_individual_case("client case4: ipv4 for remote connect, local ipv6", AF_INET6, IPV4, 80);
-    getaddrinfo_behavior_individual_case("client case5: ipv6 for remote connect, local also ipv6", AF_INET6, IPV6, 80);
-    getaddrinfo_behavior_individual_case("server case1: ipv4 for local bind and listening, ignore ip address", AF_INET, NULL, 80);
-    getaddrinfo_behavior_individual_case("server case2: ipv6 for local bind and listening, ignore ip address", AF_INET6, NULL, 80);
+    //only ipv4
+    getaddrinfo_behavior_individual_case("case1 client: ipv4 for local bind, ignore port", AF_INET, IPV4, 0);
+    getaddrinfo_behavior_individual_case("case2 client: ipv4 for remote connect, local also ipv4", AF_INET, IPV4, 80);
+    getaddrinfo_behavior_individual_case("case3 server: ipv4 for local bind and listening, ignore ip address", AF_INET, NULL, 80);
+
+    //within ipv6
+    getaddrinfo_behavior_individual_case("case4 client: ipv6 for local bind. ignore port", AF_INET6, IPV6, 0);
+    getaddrinfo_behavior_individual_case("case5 client: ipv4 for remote connect, local ipv6", AF_INET6, IPV4, 80);
+    getaddrinfo_behavior_individual_case("case6 client: ipv6 for remote connect, local also ipv6", AF_INET6, IPV6, 80);
+    getaddrinfo_behavior_individual_case("case7 server: ipv6 for local bind and listening, ignore ip address", AF_INET6, NULL, 80);
 
 }
 
