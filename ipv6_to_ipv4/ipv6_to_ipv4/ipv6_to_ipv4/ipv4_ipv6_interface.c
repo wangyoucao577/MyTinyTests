@@ -45,6 +45,10 @@ char * ipv4v6_inet_ntop(const struct sockaddr_ex* s_ex)
 
 struct sockaddr_ex* get_local_net(const char* dev_name, int dev_name_len)
 {
+    if (NULL == dev_name){
+        printf("\n\nget_local_net printf all ipv4 and ipv6 here, ignore LINKLOCAL\n");
+    }
+
     struct sockaddr_ex* sock_ex = NULL;
     
     struct ifaddrs* addrs = 0;
@@ -74,7 +78,8 @@ struct sockaddr_ex* get_local_net(const char* dev_name, int dev_name_len)
                     memcpy(&sock_ex->sockaddr_info, addrs->ifa_addr, sock_ex->sockaddr_len);
                     ipv4v6_inet_ntop(sock_ex);
                 
-                    printf("%s first found indicated device-->ifa_name:%s, sa_family:%d(%s), addr->%s.\n", __func__, addrs->ifa_name, sock_ex->sockaddr_info.ss_family, \
+                    printf("%s dev_name:%s, first found indicated device-->ifa_name:%s, sa_family:%d(%s), addr->%s.\n", __func__, dev_name, \
+                    addrs->ifa_name, sock_ex->sockaddr_info.ss_family, \
                     sock_ex->sockaddr_info.ss_family == AF_INET6 ? "AF_INET6" : "AF_INET", sock_ex->ip_address_str);
 
                 }
@@ -100,6 +105,9 @@ struct sockaddr_ex* get_local_net(const char* dev_name, int dev_name_len)
     }
     freeifaddrs(head);
     
+    if (NULL == dev_name){
+        printf("\n\n");
+    }
     return sock_ex;
 }
 struct sockaddr_ex* get_ipv4_sockaddr_ex(int local_ss_family, int socktype, const char* ipv4)
@@ -232,8 +240,8 @@ int test_tcp_connect_to_ipv4(const struct sockaddr_ex* local_addr, const char* p
 
 void exported_test()
 {
-    static const char *PublicIpv4 = "114.114.114.114";  //change to your own Public IP address
-    static const unsigned short PublicServicePort = 80; //Your Listening port
+    static const char *PublicIpv4 = "180.166.99.67";  //change to your own Public IP address
+    static const unsigned short PublicServicePort = 22002; //Your Listening port
     static const char *WifiName = "en0" ;
     static const char *CellularName ="pdp_ip0";
 
