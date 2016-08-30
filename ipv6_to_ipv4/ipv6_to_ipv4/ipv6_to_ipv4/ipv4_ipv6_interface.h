@@ -58,7 +58,7 @@ char * inet_ntop_ipv4_ipv6_compatible(const struct sockaddr *sa, char *s, unsign
  @param [out] output the constructed addrinfo, similar as getaddrinfo interface. but only output one res. call freeaddrinfo after use.
  @return 0 if it succeeds, otherwise failed. reference the errorcode of getaddrinfo interface if failed.
  */
-int easy_client_getaddrinfo(int ss_family, int sock_type, const char* ip, unsigned short port, struct addrinfo** res);
+int easy_getaddrinfo(int ss_family, int sock_type, const char* ip, unsigned short port, struct addrinfo** res);
 
 //you can reference the easy_client_getaddrinfo interface sample here
 void getaddrinfo_behavior_individual_case(const char* case_str, int ss_family, const char* ip, unsigned short port);

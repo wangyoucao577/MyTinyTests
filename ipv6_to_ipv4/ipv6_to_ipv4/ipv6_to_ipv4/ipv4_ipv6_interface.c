@@ -226,7 +226,7 @@ int format_port_to_sockaddr_ex(struct sockaddr_ex* sock_ex, unsigned short port)
     return 0;
 }
 
-int easy_client_getaddrinfo(int ss_family, int sock_type, const char* ip, unsigned short port, struct addrinfo** output_res)
+int easy_getaddrinfo(int ss_family, int sock_type, const char* ip, unsigned short port, struct addrinfo** output_res)
 {
     struct addrinfo hints;
     
@@ -239,12 +239,17 @@ int easy_client_getaddrinfo(int ss_family, int sock_type, const char* ip, unsign
         hints.ai_flags = AI_ADDRCONFIG;
         hints.ai_flags = hints.ai_flags | AI_V4MAPPED;
     }
+    
+    static const char* kDefaultServiceName = "http";
+    char* service_name = NULL;
     if (NULL == ip){
         hints.ai_flags |= AI_PASSIVE;   //automaticlly fill in the ip to INADDR_ANY or IN6ADDR_ANY_INIT
+        service_name = (char*)kDefaultServiceName;
+        assert(0 != port);
     }
     
-    //getaddrinfo
-    int error = getaddrinfo(ip, NULL, &hints, output_res);
+    //getaddrinfo, at least one of ip and service_name should be set
+    int error = getaddrinfo(ip, service_name, &hints, output_res);
     if (0 != error){
         printf("getaddrinfo failed, error code:%d, msg:%s.\n", error, gai_strerror(error));
         return error;
@@ -277,7 +282,7 @@ void getaddrinfo_behavior_individual_case(const char* case_str, int ss_family, c
     char ipstr[INET6_ADDRSTRLEN] = {0};
 
     
-    err = easy_client_getaddrinfo(ss_family, SOCK_STREAM, ip, port, &res0);
+    err = easy_getaddrinfo(ss_family, SOCK_STREAM, ip, port, &res0);
     assert(0 == err);
     assert(NULL == res0->ai_next);  //I want only one result.
     memset(ipstr, 0, sizeof(ipstr));
@@ -305,11 +310,13 @@ void getaddrinfo_behavior_test()
     const char* IPV4 = "114.114.114.114";
     const char* IPV6 = "2001:2::aab1:1c2d:6fd3:a33b:499b";
     
-    getaddrinfo_behavior_individual_case("case1: ipv4 for local bind, ignore port", AF_INET, IPV4, 0);
-    getaddrinfo_behavior_individual_case("case2: ipv6 for local bind. ignore port", AF_INET6, IPV6, 0);
-    getaddrinfo_behavior_individual_case("case3: ipv4 for remote connect, local also ipv4", AF_INET, IPV4, 80);
-    getaddrinfo_behavior_individual_case("case4: ipv4 for remote connect, local ipv6", AF_INET6, IPV4, 80);
-    getaddrinfo_behavior_individual_case("case5: ipv6 for remote connect, local also ipv6", AF_INET6, IPV6, 80);
+    getaddrinfo_behavior_individual_case("client case1: ipv4 for local bind, ignore port", AF_INET, IPV4, 0);
+    getaddrinfo_behavior_individual_case("client case2: ipv6 for local bind. ignore port", AF_INET6, IPV6, 0);
+    getaddrinfo_behavior_individual_case("client case3: ipv4 for remote connect, local also ipv4", AF_INET, IPV4, 80);
+    getaddrinfo_behavior_individual_case("client case4: ipv4 for remote connect, local ipv6", AF_INET6, IPV4, 80);
+    getaddrinfo_behavior_individual_case("client case5: ipv6 for remote connect, local also ipv6", AF_INET6, IPV6, 80);
+    getaddrinfo_behavior_individual_case("server case1: ipv4 for local bind and listening, ignore ip address", AF_INET, NULL, 80);
+    getaddrinfo_behavior_individual_case("server case2: ipv6 for local bind and listening, ignore ip address", AF_INET6, NULL, 80);
 
 }
 
