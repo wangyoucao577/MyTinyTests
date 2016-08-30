@@ -19,27 +19,6 @@ static struct sockaddr_storage cellular_sockaddr;
 static int cellularOpened = 0;
 static int wifiOpened = 0;
 
-//Convert a struct sockaddr address to a string, IPv4 and IPv6:
-char * inet_ntop_ipv4_ipv6_compatible(const struct sockaddr *sa, char *s, unsigned int maxlen)
-{
-    memset(s, 0, maxlen);
-    switch(sa->sa_family) {
-        case AF_INET:
-            inet_ntop(AF_INET, &(((struct sockaddr_in *)sa)->sin_addr), s, maxlen);
-            break;
-            
-        case AF_INET6:
-            inet_ntop(AF_INET6, &(((struct sockaddr_in6 *)sa)->sin6_addr), s, maxlen);
-            break;
-            
-        default:
-            strncpy(s, "Unknown AF", maxlen);
-            return NULL;
-    }
-    
-    return s;
-}
-
 void refresh_local_net()
 {
     struct ifaddrs* addrs = 0;

@@ -43,6 +43,28 @@ char * ipv4v6_inet_ntop(const struct sockaddr_ex* s_ex)
     return (char*)s_ex->ip_address_str;
 }
 
+//Convert a struct sockaddr address to a string, IPv4 and IPv6:
+char * inet_ntop_ipv4_ipv6_compatible(const struct sockaddr *sa, char *s, unsigned int maxlen)
+{
+    memset(s, 0, maxlen);
+    switch(sa->sa_family) {
+        case AF_INET:
+            inet_ntop(AF_INET, &(((struct sockaddr_in *)sa)->sin_addr), s, maxlen);
+            break;
+            
+        case AF_INET6:
+            inet_ntop(AF_INET6, &(((struct sockaddr_in6 *)sa)->sin6_addr), s, maxlen);
+            break;
+            
+        default:
+            strncpy(s, "Unknown AF", maxlen);
+            return NULL;
+    }
+    
+    return s;
+}
+
+
 struct sockaddr_ex* get_local_net(const char* dev_name, int dev_name_len)
 {
     if (NULL == dev_name){
@@ -204,6 +226,84 @@ int format_port_to_sockaddr_ex(struct sockaddr_ex* sock_ex, unsigned short port)
     return 0;
 }
 
+int easy_client_getaddrinfo(int ss_family, int sock_type, const char* ip, unsigned short port, struct addrinfo** output_res)
+{
+    struct addrinfo hints;
+    
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = ss_family;
+    hints.ai_socktype = sock_type;
+    
+    if (ss_family == AF_INET6){
+        //ipv4 mapped to ipv6, or maybe original ipv6
+        hints.ai_flags = AI_ADDRCONFIG;
+        hints.ai_flags = hints.ai_flags | AI_V4MAPPED;
+    }
+    if (NULL == ip){
+        hints.ai_flags |= AI_PASSIVE;   //automaticlly fill in the ip to INADDR_ANY or IN6ADDR_ANY_INIT
+    }
+    
+    //getaddrinfo
+    int error = getaddrinfo(ip, NULL, &hints, output_res);
+    if (0 != error){
+        printf("getaddrinfo failed, error code:%d, msg:%s.\n", error, gai_strerror(error));
+        return error;
+    }
+    
+    //set port
+    if (0 != port){
+        if (ss_family == AF_INET6){
+            //NOTE!!! getaddrinfo can not specified port(such as "80") as the second parameter service_name, only service_name from /etc/services accept.
+            //Envrionment: iOS 9 and Mac OS X 10.11
+            //This is a bug impacting iOS 9 and Mac OS X 10.11. It has been fixed in iOS 10 and macOS 10.12 (as of beta 1), here is the reference link:
+            //http://stackoverflow.com/questions/37386161/service-port-is-missed-when-using-getaddrinfo-to-convert-ipv4-addr-to-ipv6-addr
+            
+            struct sockaddr_in6 * sockaddr_v6 = (struct sockaddr_in6 *)((*output_res)->ai_addr);
+            sockaddr_v6->sin6_port = htons(port);
+        }else{
+            struct sockaddr_in * sockaddr_v4 = (struct sockaddr_in *)((*output_res)->ai_addr);
+            sockaddr_v4->sin_port = htons(port);
+        }
+    }
+    
+    return 0;
+}
+
+void getaddrinfo_behavior_individual_case(const char* case_str, int ss_family, const char* ip, unsigned short port)
+{
+    int err = 0;
+    char* p_str = NULL;
+    struct addrinfo *res0;
+    char ipstr[INET6_ADDRSTRLEN] = {0};
+
+    
+    err = easy_client_getaddrinfo(ss_family, SOCK_STREAM, ip, port, &res0);
+    assert(0 == err);
+    assert(NULL == res0->ai_next);  //I want only one result.
+    memset(ipstr, 0, sizeof(ipstr));
+    p_str = inet_ntop_ipv4_ipv6_compatible(res0->ai_addr, ipstr, sizeof(ipstr));
+    assert(NULL != p_str);
+    printf("{%s} %s %s ip->%s port->%d addr_len->%d.\n", case_str, res0->ai_family == AF_INET6 ? "AF_INET6" : "AF_INET", \
+           res0->ai_socktype == SOCK_STREAM ? "SOCK_STREAM" : "SOCK_DGRAM", \
+           ipstr, (int)ntohs(((struct sockaddr_in*)res0->ai_addr)->sin_port), res0->ai_addrlen);
+    freeaddrinfo(res0);
+    res0 = NULL;
+
+}
+
+void getaddrinfo_behavior_test()
+{
+    const char* IPV4 = "114.114.114.114";
+    const char* IPV6 = "2001:2::aab1:1c2d:6fd3:a33b:499b";
+    
+    getaddrinfo_behavior_individual_case("case1: ipv4 for local bind, ignore port", AF_INET, IPV4, 0);
+    getaddrinfo_behavior_individual_case("case2: ipv6 for local bind. ignore port", AF_INET6, IPV6, 0);
+    getaddrinfo_behavior_individual_case("case3: ipv4 for remote connect, local also ipv4", AF_INET, IPV4, 80);
+    getaddrinfo_behavior_individual_case("case4: ipv4 for remote connect, local ipv6", AF_INET6, IPV4, 80);
+    getaddrinfo_behavior_individual_case("case5: ipv6 for remote connect, local also ipv6", AF_INET6, IPV6, 80);
+
+}
+
 int test_tcp_connect_to_ipv4(const struct sockaddr_ex* local_addr, const char* peer_ipv4, unsigned short port)
 {
     int ret = 0;
@@ -240,8 +340,10 @@ int test_tcp_connect_to_ipv4(const struct sockaddr_ex* local_addr, const char* p
 
 void exported_test()
 {
-    static const char *PublicIpv4 = "180.166.99.67";  //change to your own Public IP address
-    static const unsigned short PublicServicePort = 22002; //Your Listening port
+    getaddrinfo_behavior_test();
+    
+    static const char *PublicIpv4 = "114.114.114.114";  //change to your own Public IP address
+    static const unsigned short PublicServicePort = 80; //Your Listening port
     static const char *WifiName = "en0" ;
     static const char *CellularName ="pdp_ip0";
 

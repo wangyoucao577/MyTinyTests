@@ -45,11 +45,31 @@ void free_sockaddr_ex(struct sockaddr_ex*);
 int format_port_to_sockaddr_ex(struct sockaddr_ex*, unsigned short port);
 
 
+char * inet_ntop_ipv4_ipv6_compatible(const struct sockaddr *sa, char *s, unsigned int maxlen);
 
 
+
+/**
+ @brief a easy way to get addrinfo when you as a client
+ @param ss_family AF_INET or AF_INET6
+ @param sock_type SOCK_STREAM or SOCK_DGRAM
+ @param ip presentation format ip, could be ipv4 or ipv6. NULL if any ip. could not be a domain name(such as "www.google.com").
+ @param port indicated port. 0 if any port.
+ @param [out] output the constructed addrinfo, similar as getaddrinfo interface. but only output one res. call freeaddrinfo after use.
+ @return 0 if it succeeds, otherwise failed. reference the errorcode of getaddrinfo interface if failed.
+ */
+int easy_client_getaddrinfo(int ss_family, int sock_type, const char* ip, unsigned short port, struct addrinfo** res);
+
+//you can reference the easy_client_getaddrinfo interface sample here
+void getaddrinfo_behavior_individual_case(const char* case_str, int ss_family, const char* ip, unsigned short port);
+
+
+//test interfaces
 int test_tcp_connect_to_ipv4(const struct sockaddr_ex* local_addr, const char* peer_ipv4, unsigned short port);
 
 
+void getaddrinfo_behavior_test();
 void exported_test();
+
 
 #endif /* ipv4_ipv6_interface_h */
