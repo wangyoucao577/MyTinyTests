@@ -33,6 +33,7 @@ char * ipv4v6_inet_ntop(const struct sockaddr_ex*);
 
 //return a malloced memory pointer to the indicated device.
 //should call free_sockaddr_ex after use.
+//if dev_name pass NULL as input, it's behavior will be printf all interfaces with ipv4 or ipv6 address, ignore LINKLOCAL
 struct sockaddr_ex* get_local_net(const char* dev_name, int dev_name_len);
 
 //return a malloced memory pointer to the struct.

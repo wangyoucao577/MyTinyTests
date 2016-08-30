@@ -56,41 +56,45 @@ struct sockaddr_ex* get_local_net(const char* dev_name, int dev_name_len)
         //1, for ipv4, ignore the linklocal ip 169.254.0.0/16
         //2, for ipv6, ignore the linklocal ip fe80::...
         //3, only care about the indicated device, ignore other devices
-        if (    (   (addrs->ifa_addr->sa_family == AF_INET && 0 == IN_LINKLOCAL(ntohl(((struct sockaddr_in *)addrs->ifa_addr)->sin_addr.s_addr)))
-                 || (addrs->ifa_addr->sa_family == AF_INET6 && 0 == IN6_IS_ADDR_LINKLOCAL(&(((struct sockaddr_in6 *)addrs->ifa_addr)->sin6_addr))))
-            &&  (strncmp(dev_name, addrs->ifa_name, dev_name_len) == 0)){
-            
-            // for ipv6 will get two ipv6 addresses, one of them is temporary ipv6 address
-            // but seems we don't have any function to get the whether it's temporary on ios. so we just choose the first one.
-            // I have tried that we can use each one of them to connect outside.
-            // reference this link
-            // http://stackoverflow.com/questions/17833765/detect-temporary-ipv6-address-crossplatform
-            if (NULL == sock_ex){
-                sock_ex = (struct sockaddr_ex*)malloc(sizeof(struct sockaddr_ex));
-                assert(NULL != sock_ex);
-                memset(sock_ex, 0, sizeof(struct sockaddr_ex));
-                sock_ex->sockaddr_len = addrs->ifa_addr->sa_family == AF_INET6 ? sizeof(struct sockaddr_in6) : sizeof(struct sockaddr_in);
-                memcpy(&sock_ex->sockaddr_info, addrs->ifa_addr, sock_ex->sockaddr_len);
-                ipv4v6_inet_ntop(sock_ex);
-            
-                printf("%s first found indicated device-->ifa_name:%s, sa_family:%d, addr->%s.\n", __func__, addrs->ifa_name, sock_ex->sockaddr_info.ss_family, sock_ex->ip_address_str);
-
-            }
-            else{
-                //others only printf
-                struct sockaddr_ex temp;
-                memset(&temp, 0, sizeof(struct sockaddr_ex));
-                temp.sockaddr_len = addrs->ifa_addr->sa_family == AF_INET6 ? sizeof(struct sockaddr_in6) : sizeof(struct sockaddr_in);
-                memcpy(&temp.sockaddr_info, addrs->ifa_addr, temp.sockaddr_len);
-                ipv4v6_inet_ntop(&temp);
+        if (NULL == dev_name || (strncmp(dev_name, addrs->ifa_name, dev_name_len) == 0))
+        {
+            if (    (addrs->ifa_addr->sa_family == AF_INET && 0 == IN_LINKLOCAL(ntohl(((struct sockaddr_in *)addrs->ifa_addr)->sin_addr.s_addr)))
+                 || (addrs->ifa_addr->sa_family == AF_INET6 && 0 == IN6_IS_ADDR_LINKLOCAL(&(((struct sockaddr_in6 *)addrs->ifa_addr)->sin6_addr)))){
                 
-                printf("%s ifa_name:%s, sa_family:%d, addr->%s.\n", __func__, addrs->ifa_name, temp.sockaddr_info.ss_family, temp.ip_address_str);
+                // for ipv6 will get two ipv6 addresses, one of them is temporary ipv6 address
+                // but seems we don't have any function to get the whether it's temporary on ios. so we just choose the first one.
+                // I have tried that we can use each one of them to connect outside.
+                // reference this link
+                // http://stackoverflow.com/questions/17833765/detect-temporary-ipv6-address-crossplatform
+                if (NULL != dev_name && NULL == sock_ex){
+                    sock_ex = (struct sockaddr_ex*)malloc(sizeof(struct sockaddr_ex));
+                    assert(NULL != sock_ex);
+                    memset(sock_ex, 0, sizeof(struct sockaddr_ex));
+                    sock_ex->sockaddr_len = addrs->ifa_addr->sa_family == AF_INET6 ? sizeof(struct sockaddr_in6) : sizeof(struct sockaddr_in);
+                    memcpy(&sock_ex->sockaddr_info, addrs->ifa_addr, sock_ex->sockaddr_len);
+                    ipv4v6_inet_ntop(sock_ex);
+                
+                    printf("%s first found indicated device-->ifa_name:%s, sa_family:%d(%s), addr->%s.\n", __func__, addrs->ifa_name, sock_ex->sockaddr_info.ss_family, \
+                    sock_ex->sockaddr_info.ss_family == AF_INET6 ? "AF_INET6" : "AF_INET", sock_ex->ip_address_str);
 
+                }
+                else{
+                    //others only printf
+                    struct sockaddr_ex temp;
+                    memset(&temp, 0, sizeof(struct sockaddr_ex));
+                    temp.sockaddr_len = addrs->ifa_addr->sa_family == AF_INET6 ? sizeof(struct sockaddr_in6) : sizeof(struct sockaddr_in);
+                    memcpy(&temp.sockaddr_info, addrs->ifa_addr, temp.sockaddr_len);
+                    ipv4v6_inet_ntop(&temp);
+                    
+                    printf("%s ifa_name:%s, sa_family:%d(%s), addr->%s.\n", __func__, addrs->ifa_name, temp.sockaddr_info.ss_family, \
+                    temp.sockaddr_info.ss_family == AF_INET6 ? "AF_INET6" : "AF_INET", temp.ip_address_str);
+
+                }
+                
+                //printf("%s ifa_name:%s, ifa_family:%d, ifa_flags:%u, addr->%s. \n", __func__, addrs->ifa_name, \
+                       addrs->ifa_addr->sa_family, addrs->ifa_flags, \
+                       inet_ntop_ipv4_ipv6_compatible(addrs->ifa_addr, p_addr, sizeof(p_addr)));
             }
-            
-            //printf("%s ifa_name:%s, ifa_family:%d, ifa_flags:%u, addr->%s. \n", __func__, addrs->ifa_name, \
-                   addrs->ifa_addr->sa_family, addrs->ifa_flags, \
-                   inet_ntop_ipv4_ipv6_compatible(addrs->ifa_addr, p_addr, sizeof(p_addr)));
         }
         addrs = addrs->ifa_next;
     }
@@ -119,7 +123,7 @@ struct sockaddr_ex* get_ipv4_sockaddr_ex(int local_ss_family, int socktype, cons
         memset(&hints, 0, sizeof(hints));
         hints.ai_family = PF_UNSPEC;
         hints.ai_socktype = socktype;
-        hints.ai_flags = (AI_V4MAPPED_CFG | AI_ADDRCONFIG);
+        hints.ai_flags = (AI_V4MAPPED | AI_ADDRCONFIG);
 
     }else
     {
@@ -233,6 +237,9 @@ void exported_test()
     static const char *WifiName = "en0" ;
     static const char *CellularName ="pdp_ip0";
 
+    //print all ipv4 and ipv6 interface and addressed, ignore LINKLOCAL
+    get_local_net(NULL, 0);
+
     
     struct sockaddr_ex * local_sock_ex = get_local_net(WifiName, (int)strlen(WifiName));
     if (NULL != local_sock_ex){
@@ -247,3 +254,13 @@ void exported_test()
     }
 
 }
+
+
+#ifndef __APPLE__
+int main()
+{
+    exported_test();
+    return 0;
+}
+
+#endif
