@@ -38,27 +38,18 @@ struct sockaddr_ex{
     int	ai_protocol;	/* 0 or IPPROTO_xxx for IPv4 and IPv6 */
 };
 
-char * ipv4v6_inet_ntop(const struct sockaddr_ex*);
-
 #ifndef WIN32
-//return a malloced memory pointer to the indicated device.
-//should call free_sockaddr_ex after use.
+//return a mallocced memory pointer to the indicated device, indicated the ip address as presentation format.
+//should call free after use.
 //if dev_name pass NULL as input, it's behavior will be printf all interfaces with ipv4 or ipv6 address, ignore LINKLOCAL
-struct sockaddr_ex* get_local_net(const char* dev_name, int dev_name_len);
+char* get_local_net(const char* dev_name, int dev_name_len);
 #endif
 
-//return a malloced memory pointer to the struct.
-//should call free_sockaddr_ex after use.
-struct sockaddr_ex* get_ipv4_sockaddr_ex(int local_ss_family, int socktype, const char* ipv4);
-
-void free_sockaddr_ex(struct sockaddr_ex*);
-
-int format_port_to_sockaddr_ex(struct sockaddr_ex*, unsigned short port);
-
-
+//Convert a struct sockaddr address to a string, support IPv4 and IPv6
 char * inet_ntop_ipv4_ipv6_compatible(const struct sockaddr *sa, char *s, unsigned int maxlen);
 
-
+//check ss_family for ipstr, return AF_INET or AF_INET6 if succeed, otherwise failed.
+int ip_str_family(char* ipstr);
 
 /**
  @brief a easy way to get addrinfo when you as a client or a server.
@@ -76,8 +67,7 @@ void getaddrinfo_behavior_individual_case(const char* case_str, int ss_family, c
 
 
 //test interfaces
-int test_tcp_connect_to_ipv4(const struct sockaddr_ex* local_addr, const char* peer_ipv4, unsigned short port);
-int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(const struct sockaddr_ex* local_addr, const char* peer_ipv4, unsigned short port);
+int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(int ss_family, char* local_ipstr, const char* peer_ipv4, unsigned short port);
 
 void getaddrinfo_behavior_test();
 void exported_test();
