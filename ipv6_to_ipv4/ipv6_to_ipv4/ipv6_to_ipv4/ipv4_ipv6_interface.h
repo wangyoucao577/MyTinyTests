@@ -48,4 +48,7 @@ int format_port_to_sockaddr_ex(struct sockaddr_ex*, unsigned short port);
 
 int test_tcp_connect_to_ipv4(const struct sockaddr_ex* local_addr, const char* peer_ipv4, unsigned short port);
 
+
+void exported_test();
+
 #endif /* ipv4_ipv6_interface_h */

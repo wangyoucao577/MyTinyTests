@@ -250,17 +250,7 @@ void tcp_connect_ipv4(struct sockaddr_storage* local_addr, char* target_ipv4, un
 
 }
 - (void) ipv6_to_ipv4_test_2 {
-    struct sockaddr_ex * local_sock_ex = get_local_net(WifiName, strlen(WifiName));
-    if (NULL != local_sock_ex){
-        test_tcp_connect_to_ipv4(local_sock_ex, PublicIpv4, PublicServicePort);
-        free_sockaddr_ex(local_sock_ex);
-    }
-    
-    local_sock_ex = get_local_net(CellularName, strlen(CellularName));
-    if (NULL != local_sock_ex){
-        test_tcp_connect_to_ipv4(local_sock_ex, PublicIpv4, PublicServicePort);
-        free_sockaddr_ex(local_sock_ex);
-    }
+    exported_test();
 }
 
 - (IBAction)test_run:(id)sender {

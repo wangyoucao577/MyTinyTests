@@ -211,7 +211,6 @@ int test_tcp_connect_to_ipv4(const struct sockaddr_ex* local_addr, const char* p
         return ret;
     }
     
-    char p_addr[INET6_ADDRSTRLEN] = {0};    //could also compatible for ipv4
     printf("%s try to connect family->%d, addr->%s.\n", __func__, \
            peer_addr->sockaddr_info.ss_family, peer_addr->ip_address_str);
     
@@ -227,3 +226,24 @@ int test_tcp_connect_to_ipv4(const struct sockaddr_ex* local_addr, const char* p
     return ret;
 }
 
+void exported_test()
+{
+    static const char *PublicIpv4 = "114.114.114.114";  //change to your own Public IP address
+    static const unsigned short PublicServicePort = 80; //Your Listening port
+    static const char *WifiName = "en0" ;
+    static const char *CellularName ="pdp_ip0";
+
+    
+    struct sockaddr_ex * local_sock_ex = get_local_net(WifiName, (int)strlen(WifiName));
+    if (NULL != local_sock_ex){
+        test_tcp_connect_to_ipv4(local_sock_ex, PublicIpv4, PublicServicePort);
+        free_sockaddr_ex(local_sock_ex);
+    }
+    
+    local_sock_ex = get_local_net(CellularName, (int)strlen(CellularName));
+    if (NULL != local_sock_ex){
+        test_tcp_connect_to_ipv4(local_sock_ex, PublicIpv4, PublicServicePort);
+        free_sockaddr_ex(local_sock_ex);
+    }
+
+}
