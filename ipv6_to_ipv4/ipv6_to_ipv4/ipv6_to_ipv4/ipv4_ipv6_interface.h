@@ -41,7 +41,7 @@ int ip_str_family(char* ipstr);
 
 /**
  @brief a easy way to get addrinfo when you as a client or a server.
- @param ss_family AF_INET or AF_INET6
+ @param ss_family AF_INET, AF_INET6 or AF_UNSPEC
  @param sock_type SOCK_STREAM or SOCK_DGRAM
  @param ip presentation format ip, could be ipv4 or ipv6. NULL if any ip. could not be a domain name(such as "www.google.com").
  @param port indicated port. 0 if any port.
