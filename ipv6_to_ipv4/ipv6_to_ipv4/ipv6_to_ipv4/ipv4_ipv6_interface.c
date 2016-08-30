@@ -15,6 +15,11 @@
 #include <errno.h>
 #include <unistd.h>
 
+#ifndef __APPLE__
+#define IN_LINKLOCALNETNUM	(u_int32_t)0xA9FE0000 /* 169.254.0.0 */
+#define IN_LINKLOCAL(i)		(((u_int32_t)(i) & IN_CLASSB_NET) == IN_LINKLOCALNETNUM)
+#endif
+
 char * ipv4v6_inet_ntop(const struct sockaddr_ex* s_ex)
 {
     assert(NULL != s_ex);
