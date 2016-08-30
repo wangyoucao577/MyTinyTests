@@ -226,22 +226,29 @@ void getaddrinfo_behavior_test()
 
 int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(int local_ss_family, char* local_ip_str, const char* peer_ipv4, unsigned short port)
 {
+    
+    printf("\ntest_tcp_connect_to_ipv4-->%s local %s peer %s %d.\n", local_ss_family == AF_INET6 ? "AF_INET6" : (local_ss_family == AF_INET ? "AF_INET" : "AF_UNSPEC"), \
+        NULL == local_ip_str ? "0" : local_ip_str, peer_ipv4, (int)port);
+
     int err = 0;
     char* p_str = NULL;
     struct addrinfo *resLocal, *resPeer;
     char local_ipstr[INET6_ADDRSTRLEN] = {0};
     char peer_ipstr[INET6_ADDRSTRLEN] = {0};
     
-    //get local
-    err = easy_getaddrinfo(local_ss_family, SOCK_STREAM, local_ip_str, 0, &resLocal);
-    assert(0 == err);
-    assert(NULL == resLocal->ai_next);  //I want only one result.
-    p_str = inet_ntop_ipv4_ipv6_compatible(resLocal->ai_addr, local_ipstr, sizeof(local_ipstr));
-    assert(NULL != p_str);
-    printf("{%s} %s %s ip->%s port->%d addr_len->%d.\n", "local", resLocal->ai_family == AF_INET6 ? "AF_INET6" : "AF_INET", \
-           resLocal->ai_socktype == SOCK_STREAM ? "SOCK_STREAM" : "SOCK_DGRAM", \
-           local_ipstr, (int)ntohs(((struct sockaddr_in*)resLocal->ai_addr)->sin_port), resLocal->ai_addrlen);
-    
+    if (NULL != local_ip_str) {
+
+        //get local
+        err = easy_getaddrinfo(local_ss_family, SOCK_STREAM, local_ip_str, 0, &resLocal);
+        assert(0 == err);
+        assert(NULL == resLocal->ai_next);  //I want only one result.
+        p_str = inet_ntop_ipv4_ipv6_compatible(resLocal->ai_addr, local_ipstr, sizeof(local_ipstr));
+        assert(NULL != p_str);
+        printf("{%s} %s %s ip->%s port->%d addr_len->%d.\n", "local", resLocal->ai_family == AF_INET6 ? "AF_INET6" : "AF_INET", \
+            resLocal->ai_socktype == SOCK_STREAM ? "SOCK_STREAM" : "SOCK_DGRAM", \
+            local_ipstr, (int)ntohs(((struct sockaddr_in*)resLocal->ai_addr)->sin_port), resLocal->ai_addrlen);
+    }
+
     //get peer
     err = easy_getaddrinfo(local_ss_family, SOCK_STREAM, peer_ipv4, port, &resPeer);
     assert(0 == err);
@@ -254,26 +261,37 @@ int test_tcp_connect_to_ipv4_via_easy_getaddrinfo(int local_ss_family, char* loc
 
     
     
-    int s = socket(resLocal->ai_family, resLocal->ai_socktype, resLocal->ai_protocol);
+    int s = socket(resPeer->ai_family, resPeer->ai_socktype, resPeer->ai_protocol);
     assert (s >= 0);
     
-    int ret = bind(s, resLocal->ai_addr, resLocal->ai_addrlen);
-    if (ret != 0){
-        printf("bind failed, return %d errno %d.\n", ret, errno);
-        goto End;
+    int ret = 0;
+    if (NULL != local_ip_str) {
+        ret = bind(s, resLocal->ai_addr, resLocal->ai_addrlen);
+        if (ret != 0) {
+            printf("bind failed, return %d errno %d.\n", ret, errno);
+            goto End;
+        }
     }
-    
+
     if (connect(s, resPeer->ai_addr, resPeer->ai_addrlen) < 0) {
         printf("connect failed, errno %d.\n", errno);
         ret = -1;
         goto End;
     }
-    printf("local %s %d try connect peer %s(%s) %d succeed.\n", local_ipstr, (int)ntohs(((struct sockaddr_in*)resLocal->ai_addr)->sin_port), \
+
+    printf("local %s %d try connect peer %s(%s) %d succeed.\n", local_ipstr, local_ip_str == NULL ? 0 : (int)ntohs(((struct sockaddr_in*)resLocal->ai_addr)->sin_port), \
            peer_ipv4, peer_ipstr, (int)ntohs(((struct sockaddr_in*)resPeer->ai_addr)->sin_port));
     
 End:
+#ifdef WIN32
+    closesocket(s);
+#else
     close(s);
-    freeaddrinfo(resLocal);
+#endif
+    
+    if (NULL != local_ip_str) {
+        freeaddrinfo(resLocal);
+    }
     freeaddrinfo(resPeer);
     return ret;
 }
@@ -308,9 +326,10 @@ void exported_test()
         test_tcp_connect_to_ipv4_via_easy_getaddrinfo(ipstr_family, ipstr, PublicIpv4, PublicServicePort);
         free(ipstr);
     }
-#else
-    //TODO: ipv6 connect test on windows
 #endif
+
+    //system decide test
+    test_tcp_connect_to_ipv4_via_easy_getaddrinfo(AF_UNSPEC, NULL, PublicIpv4, PublicServicePort);
 
 
 }
