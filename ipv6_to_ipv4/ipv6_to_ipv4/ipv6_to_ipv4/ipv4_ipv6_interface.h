@@ -12,6 +12,8 @@
 #ifdef WIN32
 #include <WinSock2.h>
 #include <WS2tcpip.h>
+
+#define LAST_ERR GetLastError()
 #else
 #include <sys/socket.h>
 #include <netdb.h>
@@ -23,6 +25,9 @@
 #include <net/if.h>
 #include <unistd.h>
 #include <errno.h>
+
+#define LAST_ERR errno
+
 #endif
 
 

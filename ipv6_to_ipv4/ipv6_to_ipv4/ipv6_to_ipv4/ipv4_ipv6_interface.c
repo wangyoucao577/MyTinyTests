@@ -281,7 +281,7 @@ int test_tcp_connect(char* local_ip_str, const char* peer_ipv4, unsigned short p
         //bind socket to local
         ret = bind(s, resLocal->ai_addr, resLocal->ai_addrlen);
         if (ret != 0) {
-            printf("bind failed, return %d errno %d.\n", ret, errno);
+            printf("bind failed, return %d errno %d.\n", ret, LAST_ERR);
             freeaddrinfo(resLocal);
             goto End;
         }
@@ -290,7 +290,7 @@ int test_tcp_connect(char* local_ip_str, const char* peer_ipv4, unsigned short p
     }
 
     if (connect(s, resPeer->ai_addr, resPeer->ai_addrlen) < 0) {
-        printf("connect failed, errno %d.\n", errno);
+        printf("connect failed, errno %d.\n", LAST_ERR);
         ret = -1;
         goto End;
     }
