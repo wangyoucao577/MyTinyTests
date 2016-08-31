@@ -337,7 +337,7 @@ void exported_test()
     //system decide test
     test_tcp_connect_to_ipv4(NULL, PEER_IPV4, PEER_SERIVCE_PORT);
 
-    test_tcp_connect_to_ipv4(NULL, "2402:f000:1:405:166:111:5:99", PEER_SERIVCE_PORT);
+    test_tcp_connect_to_ipv4(NULL, PEER_IPV6, PEER_SERIVCE_PORT);
 }
 
 
