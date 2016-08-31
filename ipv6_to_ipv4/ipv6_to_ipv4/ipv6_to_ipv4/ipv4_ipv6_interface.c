@@ -205,21 +205,26 @@ void getaddrinfo_behavior_individual_case(const char* case_str, int ss_family, c
 
 void getaddrinfo_behavior_test()
 {
-    const char* IPV4 = "114.114.114.114";
-    const char* IPV6 = "2001:2::aab1:1c2d:6fd3:a33b:499b";
+    const char* PEER_IPV4 = "114.114.114.114";
+    const char* PEER_IPV6 = "2001:2::aab1:414d:8373:fe01:373e";
+    const char* LOCAL_IPV4 = "192.168.2.2";
+    const char* LOCAL_IPV6 = "2001:2::aab1:1c2d:6fd3:a33b:499b";
     
     //only ipv4
-    getaddrinfo_behavior_individual_case("case1 client: ipv4 for local bind, ignore port", AF_INET, IPV4, 0);
-    getaddrinfo_behavior_individual_case("case2 client: ipv4 for remote connect, local also ipv4", AF_INET, IPV4, 80);
+    getaddrinfo_behavior_individual_case("case1 client: ipv4 for local bind, ignore port", AF_INET, LOCAL_IPV4, 0);
+    getaddrinfo_behavior_individual_case("case2 client: ipv4 for remote connect, local also ipv4", AF_INET, PEER_IPV4, 80);
     getaddrinfo_behavior_individual_case("case3 server: ipv4 for local bind and listening, ignore ip address", AF_INET, NULL, 80);
 
-    //decide by system
-    getaddrinfo_behavior_individual_case("case4 client: ipv4 for remote connect, local depends on system, may ipv4 or ipv6", AF_UNSPEC, IPV4, 80);
+    //decide by system, output will be different depends on host ip stack
+    // local ipv4 only: same as case 2
+    // local ipv6 only: same as case 6
+    // local dual: ... //TODO:
+    getaddrinfo_behavior_individual_case("case4 client: ipv4 for remote connect, local depends on system, may ipv4 or ipv6", AF_UNSPEC, PEER_IPV4, 80);
 
     //use ipv6
-    getaddrinfo_behavior_individual_case("case5 client: ipv6 for local bind. ignore port", AF_INET6, IPV6, 0);
-    getaddrinfo_behavior_individual_case("case6 client: ipv4 for remote connect, local ipv6", AF_INET6, IPV4, 80);
-    getaddrinfo_behavior_individual_case("case7 client: ipv6 for remote connect, local also ipv6", AF_INET6, IPV6, 80);
+    getaddrinfo_behavior_individual_case("case5 client: ipv6 for local bind. ignore port", AF_INET6, LOCAL_IPV6, 0);
+    getaddrinfo_behavior_individual_case("case6 client: ipv4 for remote connect, local ipv6", AF_INET6, PEER_IPV4, 80);
+    getaddrinfo_behavior_individual_case("case7 client: ipv6 for remote connect, local also ipv6", AF_INET6, PEER_IPV6, 80);
     getaddrinfo_behavior_individual_case("case8 server: ipv6 for local bind and listening, ignore ip address", AF_INET6, NULL, 80);
 
 }
@@ -287,7 +292,7 @@ int test_tcp_connect_to_ipv4(char* local_ip_str, const char* peer_ipv4, unsigned
         goto End;
     }
 
-    printf("local %s %d try to connect peer %s(%s) %d succeed.\n", local_ipstr, local_port, \
+    printf("local %s %d try to connect peer %s(%s) %d succeed.\n\n\n", local_ipstr, local_port, \
            peer_ipv4, peer_ipstr, (int)ntohs(((struct sockaddr_in*)resPeer->ai_addr)->sin_port));
     
 End:
