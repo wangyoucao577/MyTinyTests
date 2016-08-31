@@ -18,6 +18,13 @@
 #define IN_LINKLOCAL(i)		(((u_int32_t)(i) & IN_CLASSB_NET) == IN_LINKLOCALNETNUM)
 #endif
 
+const char* PEER_IPV4 = "115.239.211.112";
+const char* PEER_IPV6 = "2001:2::aab1:414d:8373:fe01:373e";
+const char* LOCAL_IPV4 = "192.168.2.2";
+const char* LOCAL_IPV6 = "2001:2::aab1:1c2d:6fd3:a33b:499b";
+const int PEER_SERIVCE_PORT = 80;
+
+
 char * inet_ntop_ipv4_ipv6_compatible(const struct sockaddr *sa, char *s, unsigned int maxlen)
 {
     memset(s, 0, maxlen);
@@ -205,27 +212,23 @@ void getaddrinfo_behavior_individual_case(const char* case_str, int ss_family, c
 
 void getaddrinfo_behavior_test()
 {
-    const char* PEER_IPV4 = "114.114.114.114";
-    const char* PEER_IPV6 = "2001:2::aab1:414d:8373:fe01:373e";
-    const char* LOCAL_IPV4 = "192.168.2.2";
-    const char* LOCAL_IPV6 = "2001:2::aab1:1c2d:6fd3:a33b:499b";
     
     //only ipv4
     getaddrinfo_behavior_individual_case("case1 client: ipv4 for local bind, ignore port", AF_INET, LOCAL_IPV4, 0);
-    getaddrinfo_behavior_individual_case("case2 client: ipv4 for remote connect, local also ipv4", AF_INET, PEER_IPV4, 80);
-    getaddrinfo_behavior_individual_case("case3 server: ipv4 for local bind and listening, ignore ip address", AF_INET, NULL, 80);
+    getaddrinfo_behavior_individual_case("case2 client: ipv4 for remote connect, local also ipv4", AF_INET, PEER_IPV4, PEER_SERIVCE_PORT);
+    getaddrinfo_behavior_individual_case("case3 server: ipv4 for local bind and listening, ignore ip address", AF_INET, NULL, PEER_SERIVCE_PORT);
 
     //decide by system, output will be different depends on host ip stack
     // local ipv4 only: same as case 2
     // local ipv6 only: same as case 6
     // local dual: ... //TODO:
-    getaddrinfo_behavior_individual_case("case4 client: ipv4 for remote connect, local depends on system, may ipv4 or ipv6", AF_UNSPEC, PEER_IPV4, 80);
+    getaddrinfo_behavior_individual_case("case4 client: ipv4 for remote connect, local depends on system, may ipv4 or ipv6", AF_UNSPEC, PEER_IPV4, PEER_SERIVCE_PORT);
 
     //use ipv6
     getaddrinfo_behavior_individual_case("case5 client: ipv6 for local bind. ignore port", AF_INET6, LOCAL_IPV6, 0);
-    getaddrinfo_behavior_individual_case("case6 client: ipv4 for remote connect, local ipv6", AF_INET6, PEER_IPV4, 80);
-    getaddrinfo_behavior_individual_case("case7 client: ipv6 for remote connect, local also ipv6", AF_INET6, PEER_IPV6, 80);
-    getaddrinfo_behavior_individual_case("case8 server: ipv6 for local bind and listening, ignore ip address", AF_INET6, NULL, 80);
+    getaddrinfo_behavior_individual_case("case6 client: ipv4 for remote connect, local ipv6", AF_INET6, PEER_IPV4, PEER_SERIVCE_PORT);
+    getaddrinfo_behavior_individual_case("case7 client: ipv6 for remote connect, local also ipv6", AF_INET6, PEER_IPV6, PEER_SERIVCE_PORT);
+    getaddrinfo_behavior_individual_case("case8 server: ipv6 for local bind and listening, ignore ip address", AF_INET6, NULL, PEER_SERIVCE_PORT);
 
 }
 
@@ -310,8 +313,6 @@ void exported_test()
 
     getaddrinfo_behavior_test();
     
-    static const char *PublicIpv4 = "115.239.211.112";  //change to your own Public IP address. here is the ip from baidu.com
-    static const unsigned short PublicServicePort = 80; //Your Listening port
     static const char *WifiName = "en0" ;
     static const char *CellularName ="pdp_ip0";
 
@@ -322,21 +323,21 @@ void exported_test()
 
     char* ipstr = get_local_net(WifiName, (int)strlen(WifiName));
     if (NULL != ipstr) {
-        test_tcp_connect_to_ipv4(ipstr, PublicIpv4, PublicServicePort);
+        test_tcp_connect_to_ipv4(ipstr, PEER_IPV4, PEER_SERIVCE_PORT);
         free(ipstr);
     }
 
     ipstr = get_local_net(CellularName, (int)strlen(CellularName));
     if (NULL != ipstr) {
-        test_tcp_connect_to_ipv4(ipstr, PublicIpv4, PublicServicePort);
+        test_tcp_connect_to_ipv4(ipstr, PEER_IPV4, PEER_SERIVCE_PORT);
         free(ipstr);
     }
 #endif
 
     //system decide test
-    test_tcp_connect_to_ipv4(NULL, PublicIpv4, PublicServicePort);
+    test_tcp_connect_to_ipv4(NULL, PEER_IPV4, PEER_SERIVCE_PORT);
 
-
+    test_tcp_connect_to_ipv4(NULL, "2402:f000:1:405:166:111:5:99", PEER_SERIVCE_PORT);
 }
 
 
