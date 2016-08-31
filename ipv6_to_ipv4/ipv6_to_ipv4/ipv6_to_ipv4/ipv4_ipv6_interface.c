@@ -232,7 +232,7 @@ void getaddrinfo_behavior_test()
 
 }
 
-int test_tcp_connect_to_ipv4(char* local_ip_str, const char* peer_ipv4, unsigned short port)
+int test_tcp_connect(char* local_ip_str, const char* peer_ipv4, unsigned short port)
 {
     int local_ss_family = AF_UNSPEC;
     if (NULL != local_ip_str) {
@@ -323,21 +323,20 @@ void exported_test()
 
     char* ipstr = get_local_net(WifiName, (int)strlen(WifiName));
     if (NULL != ipstr) {
-        test_tcp_connect_to_ipv4(ipstr, PEER_IPV4, PEER_SERIVCE_PORT);
+        test_tcp_connect(ipstr, PEER_IPV4, PEER_SERIVCE_PORT);
         free(ipstr);
     }
 
     ipstr = get_local_net(CellularName, (int)strlen(CellularName));
     if (NULL != ipstr) {
-        test_tcp_connect_to_ipv4(ipstr, PEER_IPV4, PEER_SERIVCE_PORT);
+        test_tcp_connect(ipstr, PEER_IPV4, PEER_SERIVCE_PORT);
         free(ipstr);
     }
 #endif
 
     //system decide test
-    test_tcp_connect_to_ipv4(NULL, PEER_IPV4, PEER_SERIVCE_PORT);
-
-    test_tcp_connect_to_ipv4(NULL, PEER_IPV6, PEER_SERIVCE_PORT);
+    test_tcp_connect(NULL, PEER_IPV4, PEER_SERIVCE_PORT);
+    test_tcp_connect(NULL, PEER_IPV6, PEER_SERIVCE_PORT);
 }
 
 
