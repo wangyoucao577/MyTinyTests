@@ -9,8 +9,9 @@
 基于C#的Console, VS2015中实现, 检查本机Gateway设置. 网络初学者经常会出现误设置多个网关导致一些网络异常的情况，此小工具可检查本机Gateway设置是否仅为一条，若为一条则认为设置正确，否则提示设置错误.
 
 ### [C] ipv6_to_ipv4
+
 由于`iOS`上架Apple Store必须要支持`IPv6 only`, 故研究了下`ipv4`和`ipv6`兼容的实现方法, 详见:
-https://github.com/wangyoucao577/MyTinyTests/blob/master/ipv6_to_ipv4/ipv6_to_ipv4/README.md
+- https://github.com/wangyoucao577/MyTinyTests/blob/master/ipv6_to_ipv4/ipv6_to_ipv4/README.md
 
 
 ### [C] CProgrammingLanguage
