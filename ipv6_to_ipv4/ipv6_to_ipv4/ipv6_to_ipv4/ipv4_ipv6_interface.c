@@ -164,7 +164,7 @@ int easy_getaddrinfo(int ss_family, int sock_type, const char* ip, unsigned shor
     if (0 != port){
         if (ss_family == AF_INET6){
             //NOTE!!! getaddrinfo can not specified port(such as "80") as the second parameter service_name, only service_name from /etc/services accept.
-            //Envrionment: iOS 9 and Mac OS X 10.11
+            //Environment: iOS 9 and Mac OS X 10.11
             //This is a bug impacting iOS 9 and Mac OS X 10.11. It has been fixed in iOS 10 and macOS 10.12 (as of beta 1), here is the reference link:
             //http://stackoverflow.com/questions/37386161/service-port-is-missed-when-using-getaddrinfo-to-convert-ipv4-addr-to-ipv6-addr
             

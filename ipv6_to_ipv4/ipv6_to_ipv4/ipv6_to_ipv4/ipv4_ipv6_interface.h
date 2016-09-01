@@ -54,7 +54,7 @@ int ip_str_family(char* ipstr);
  @param ip presentation format ip, could be ipv4 or ipv6. NULL if any ip. could not be a domain name(such as "www.google.com").
  @param port indicated port. 0 if any port.
  @param [out] output the constructed addrinfo, similar as getaddrinfo interface. but only output one res. call freeaddrinfo after use.
- @return 0 if it succeeds, otherwise failed. reference the errorcode of getaddrinfo interface if failed.
+ @return 0 if it succeeds, otherwise failed. reference the error code of getaddrinfo interface if failed.
 
  @known behavior list:
     host_enviroment ss_family[IN]             ip[IN]   port[IN]   res->ai_addr[OUT]
