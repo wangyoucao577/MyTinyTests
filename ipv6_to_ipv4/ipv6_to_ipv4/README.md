@@ -1,5 +1,62 @@
-### [C] ipv6_to_ipv4
+# [C] ipv6_to_ipv4
 
-核心文件为ipv6_to_ipv4_interface.c, 其中封装了`easy_getaddrinfo`, `ip_str_family`, `inet_ntop_ipv4_ipv6_compatible` 三个典型接口(support Windows, Linux, iOS and Android), 同时实现了`iOS`上获取本地网卡ip地址的`get_local_net`(support Linux, iOS and Android)函数, 可供实际业务中需要时参考.
-由于`iOS`上架Apple Store必须要支持`IPv6 only`, 故研究了下`ipv4`和`ipv6`兼容的实现方法, 其核心即为`getaddrinfo`函数. 此函数个人认为非常复杂，难以理解. 同时也由于测试环境的限制(仅有普通的`IPv4 only`环境和`mac OSX`模拟的支持`NAT64`的`IPv6 only`环境), 故也无法测试所有的条件以明确此函数的行为. 在有限的条件下, 封装了相对简单的`easy_getaddrinfo`接口供使用. 
+由于`iOS`上架Apple Store必须要支持`IPv6 only`, 故研究了下在`iOS`上标准`C`调用底层`socket`实现网络通信时`ipv4`和`ipv6`兼容的实现方法, 同时为保证移植性, 在`Linux`, `Windows` 和`Android`上也都相应进行了实验.
 
+## 核心文件
+- ipv6_to_ipv4_interface.c
+
+## 全平台支持的几个典型接口
+
+tested on iOS, Android, Linux and Windows
+
+- `easy_getaddrinfo`  
+
+此接口核心为`getaddrinfo`函数, Apple推荐使用底层`socket`的开发者使用此`getaddrinfo`函数来实现`ipv4`和`ipv6`的全面兼容. 但个人认为此函数过于复杂，难以理解. 而测试其行为又需要各种环境. 故由于测试环境的限制(仅有普通的`IPv4 only`环境和`mac OSX`模拟的支持`NAT64`的`IPv6 only`环境), 在有限的条件下, 测试其行为并封装了相对简单的`easy_getaddrinfo`接口以供更方便地使用. 
+
+- `ip_str_family`
+
+根据`IP Address String`分析其为`AF_INET` or `AF_INET6`. 
+
+- `inet_ntop_ipv4_ipv6_compatible`   
+
+## 获取本地网卡ip地址的接口
+
+tested on iOS, Linux and Android (Unavailable on Windows)
+- `get_local_net`  
+
+## 各平台上的不同
+#### AF_INET6值的定义
+- iOS:     
+#define AF_INET6 30  
+- Linux:   
+#define AF_INET6 10  
+- Windows:  
+#define AF_INET6 23
+
+#### ipv4->ipv6 map的行为不同
+- iOS:  
+在ipv4地址前追加了` 64:ff9b::`   (RFC 6146 、RFC 6147)
+- Linux, Windows:  
+都是在ipv4地址前追加了 ` ::ffff:`,  所以即使连接上mac的NAT64, 也无法通过其访问外网 (RFC 4291)
+
+正因为此，相当于mac OSX share出来的NAT64，仅Apple自己的设备可用...
+
+#### getaddrinfo行为不同
+这个接口在各个平台上都有些不同的参数、行为，本身功能设计也很复杂，应仔细弄清楚其行为再使用. 
+
+- iOS, Linux:   
+在Local ipv6(NAT64) 时，输入为ipv4时可自动map成ipv6的地址输出，以供connect调用.
+- Windows: 
+貌似不支持AI_V4MAPPED参数. 虽然MSDN online上有写此参数, 但实验结果却未进行转换. 也可能因为测试代码依赖、宏等定义问题，从而没生效. 不明白为何如此，甚至在C#中也没找到对应的可自动map的接口. (也不排除在windows上的使用还有些问题...)
+
+
+## Reference Links
+- https://en.wikipedia.org/wiki/IPv6#Address_representation  
+- https://developer.apple.com/library/ios/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/UnderstandingandPreparingfortheIPv6Transition/UnderstandingandPreparingfortheIPv6Transition.html  
+- https://github.com/WeMobileDev/article/blob/master/IPv6%20socket%E7%BC%96%E7%A8%8B.md  
+- https://msdn.microsoft.com/en-us/library/system.net.ipaddress.maptoipv4(v=vs.110).aspx  
+- http://stackoverflow.com/questions/37386161/service-port-is-missed-when-using-getaddrinfo-to-convert-ipv4-addr-to-ipv6-addr  
+- http://stackoverflow.com/questions/17833765/detect-temporary-ipv6-address-crossplatform  
+
+### Contacts
+Author's Email: wangyoucao577@gmail.com.
