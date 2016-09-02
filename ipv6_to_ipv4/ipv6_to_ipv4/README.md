@@ -49,6 +49,11 @@ tested on iOS, Linux and Android (Unavailable on Windows)
 - Windows: 
 貌似不支持AI_V4MAPPED参数. 虽然MSDN online上有写此参数, 但实验结果却未进行转换. 也可能因为测试代码依赖、宏等定义问题，从而没生效. 不明白为何如此，甚至在C#中也没找到对应的可自动map的接口. (也不排除在windows上的使用还有些问题...)
 
+## 补充
+- 测试UDP时发现TTL的值IPV6没有，参考 http://www.jianshu.com/p/a6bab07c4062 应适应如下  
+`setsockopt(send_sock, IPPROTO_IPV6, IPV6_UNICAST_HOPS, &ttl, sizeof(ttl))`  
+`setsockopt(send_sock, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl))`
+
 
 ## Reference Links
 - https://en.wikipedia.org/wiki/IPv6#Address_representation  
@@ -57,6 +62,7 @@ tested on iOS, Linux and Android (Unavailable on Windows)
 - https://msdn.microsoft.com/en-us/library/system.net.ipaddress.maptoipv4(v=vs.110).aspx  
 - http://stackoverflow.com/questions/37386161/service-port-is-missed-when-using-getaddrinfo-to-convert-ipv4-addr-to-ipv6-addr  
 - http://stackoverflow.com/questions/17833765/detect-temporary-ipv6-address-crossplatform  
+- http://www.jianshu.com/p/a6bab07c4062
 
 ### Contacts
 Author's Email: wangyoucao577@gmail.com.
