@@ -24,6 +24,24 @@ tested on iOS, Android, Linux and Windows
 tested on iOS, Linux and Android (Unavailable on Windows)
 - `get_local_net`  
 
+## test project
+#### Linux
+`gcc ipv6_to_ipv4_interface.c`  
+`./a.out`
+
+#### Windows
+- 如果你有`Visual Studio 2015`  
+打开ipv6_to_ipv4.sln，编译运行即可
+
+- 如果你仅有其他版本的`Visual Studio`  
+新建空的Win32控制台项目，添加`ipv6_to_ipv4_interface.c`和`ipv6_to_ipv4_interface.h`两个文件即可，同时项目配置中新增`Ws2_32.lib`链接库，enjoy yourself!
+
+#### iOS
+打开`ipv6_to_ipv4.xcodeproj`, `Run`即可(接好你的`iOS`设备)
+
+#### Android
+//TODO:
+
 ## 各平台上的不同
 #### AF_INET6值的定义
 - iOS:     
