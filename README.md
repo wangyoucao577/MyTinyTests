@@ -65,6 +65,10 @@
 - showip.c  
   `getaddrinfo`接口的取`domain name`对应的`ip addresss`的功能尝试, 参考自"Beej's Guide to Network Programming"
 
+- rlnumd.c  
+  读"Effective Tcp/Ip Programming"时的"技巧17 让`inetd`启动应用程序"中使用`inetd`启动`network services`的方法. 挺有意思的一个用法，简单实验.
+
+
 ### [C++] char_system
   character system相关的一些小实验, 及windows下的MultiBytes字符编码与UTF-8字符编码的转换接口. linux与windows下默认的字符编码一般都是扩展的ANSI, 即所谓的MultiBytes. C++中支持wchar_t的类型定义, 其在linux下实现使用UTF-32即4字节, 在windows下实现使用UTF-16即2字节(windows下所谓的Unicode默认即UTF-16, 而不是UTF-8).
   代码文件保存为UTF-8, 在代码中写入的中文字符串编码方式即为UTF-8, vs中编译后printf输出为乱码, 需转换为MBCS方可正常显示. 而linux下貌似不受此限制, 无论代码文件保存为UTF-8还是GB2312, 都可以直接用printf正确输出. 
