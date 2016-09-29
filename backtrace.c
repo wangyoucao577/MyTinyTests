@@ -1,4 +1,10 @@
 
+/**
+  `libc`中提供的可在程序运行时获取当前堆栈信息的方法. 编译时需加上`-rdynamic`选项以导出符号至`.dynsym`符号表, 输出才能正确显示函数名.   
+    `gcc -rdynamic backtrace.c`  
+    `./a.out`
+**/
+
 #include <execinfo.h>
 #include <stdio.h>
 #include <stdlib.h>
