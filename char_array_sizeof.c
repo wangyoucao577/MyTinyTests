@@ -11,6 +11,7 @@ void pass_char_array(char arr[])
 int main()
 {
 	char a[16] = {0};
+    printf("array len:%d.\n", sizeof(a));
 	pass_char_array(a);
 
 	return 0;
