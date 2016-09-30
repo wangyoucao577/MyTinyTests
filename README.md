@@ -72,6 +72,9 @@
   `libc`中提供的可在程序运行时获取当前堆栈信息的方法. 编译时需加上`-rdynamic`选项以导出符号至`.dynsym`符号表, 输出才能正确显示函数名.   
     `gcc -rdynamic backtrace.c`  
     `./a.out`
+    
+- capture_icmp.c  
+  通过`SOCK_RAW`捕获`ICMP`消息的实验小代码，参考自"Effective Tcp/Ip Programming"的"技巧40 创建和使用捕获`ICMP`消息的工具".  
 
 ### [C++] char_system
   character system相关的一些小实验, 及windows下的MultiBytes字符编码与UTF-8字符编码的转换接口. linux与windows下默认的字符编码一般都是扩展的ANSI, 即所谓的MultiBytes. C++中支持wchar_t的类型定义, 其在linux下实现使用UTF-32即4字节, 在windows下实现使用UTF-16即2字节(windows下所谓的Unicode默认即UTF-16, 而不是UTF-8).
