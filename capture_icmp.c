@@ -1,4 +1,10 @@
 
+/*
+
+通过SOCK_RAW捕获ICMP消息的实验小代码，参考自"Effective Tcp/Ip Programming"的"技巧40 创建和使用捕获ICMP消息的工具".
+
+*/
+
 #include <stdio.h>
 #include <errno.h>
 #include <sys/types.h>
