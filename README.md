@@ -15,8 +15,8 @@
 
 ### [C] simple_top  
 参考`top`源码实现的简单的`top`, 实现了`system`的详细`cpu`信息刷新，进程和线程的cpu、虚拟内存、实际内存等信息快照的获取. 若需要实现类似`top`的显示所有进程和线程的`cpu`和`memory`占用，则需要将快照进行计算、排序再显示(需要时可实现).  
-详见：  
--
+详见:  
+- https://github.com/wangyoucao577/MyTinyTests/blob/master/linux_c_simple_top/README.md  
 
 
 ### [C] CProgrammingLanguage
