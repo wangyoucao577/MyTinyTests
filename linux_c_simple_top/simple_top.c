@@ -94,8 +94,18 @@ void refresh_cpu()
             + last_cu.irq + last_cu.softirq + last_cu.steal + last_cu.guest;
         unsigned long long new_total_cpu = new_cu.user + new_cu.nice + new_cu.sys + new_cu.idle + new_cu.iowait \
             + new_cu.irq + new_cu.softirq + new_cu.steal + new_cu.guest;
-        unsigned long long pcpu = 100 * ((new_total_cpu - last_total_cpu) - (new_cu.idle - last_cu.idle)) / (new_total_cpu - last_total_cpu);
-        printf("cpu usage:%f%%\n", (double)pcpu);
+        unsigned long long total_cpu_delta = new_total_cpu - last_total_cpu;
+        
+        unsigned long long pcpu = 100 * ((new_total_cpu - last_total_cpu) - (new_cu.idle - last_cu.idle)) / total_cpu_delta;
+        printf("cpu usage: %.2f%% total %.2f%% user %.2f%% sys %.2f%% nice %.2f%% idle %.2f%% iowait %.2f%% irq %.2f%% sirq\n", \
+            (double)pcpu, \
+            (double)100 * (new_cu.user - last_cu.user) / total_cpu_delta, \
+            (double)100 * (new_cu.sys - last_cu.sys) / total_cpu_delta, \
+            (double)100 * (new_cu.nice - last_cu.nice) / total_cpu_delta, \
+            (double)100 * (new_cu.idle - last_cu.idle) / total_cpu_delta, \
+            (double)100 * (new_cu.iowait - last_cu.iowait) / total_cpu_delta, \
+            (double)100 * (new_cu.irq - last_cu.irq) / total_cpu_delta, \
+            (double)100 * (new_cu.softirq - last_cu.softirq) / total_cpu_delta); 
         
         memcpy(&last_cu, &new_cu, sizeof(struct cpu_usage_t));
     }
