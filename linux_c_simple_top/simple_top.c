@@ -82,7 +82,7 @@ void refresh_cpu()
 {
     struct cpu_usage_t last_cu;
     get_cpu_stat(&last_cu);
-    printf("cpu user:%llu nice:%llu sys:%llu idle:%llu iowait:%llu irq:%llu softirq:%llu steal:%llu guest:%llu\n", \
+    //printf("cpu user:%llu nice:%llu sys:%llu idle:%llu iowait:%llu irq:%llu softirq:%llu steal:%llu guest:%llu\n", \
         last_cu.user, last_cu.nice, last_cu.sys, last_cu.idle, last_cu.iowait, last_cu.irq, last_cu.softirq, last_cu.steal, last_cu.guest);
     while (1)
     {
@@ -136,26 +136,28 @@ void refresh_proc_info(int want_threads)
     static proc_t buf, buf2; 
     while (readproc(new_proc_tab, &buf))
     {
+        if (want_threads){
+            while (readtask(new_proc_tab, &buf, &buf2))
+            {
+                //标示线程的一些信息. 主要是cpu时间，可区分usr和sys层的占用
+                printf("tid:%5d(tgid/pid:%d) cmd:%s state:%c utime:%llu stime:%llu\n", \
+                    buf2.tid, buf2.tgid, buf2.cmd, buf2.state, buf2.utime, buf2.stime);                
+            }
+        }
+        else{
             printf("pid:%5d(tgid:%d) cmd:%s cmdline:%s threads:%d state:%c\n", \
                 buf.tid, buf.tgid, buf.cmd, ((NULL == buf.cmdline) || (NULL == *(buf.cmdline))) ? "" : *(buf.cmdline), buf.nlwp, buf.state);
             printf("         stat--->{utime:%llu stime:%llu cutime:%llu cstime:%llu vsize:%lukb start_code:0x%x end_code:0x%x start_stack:0x%x}\n", \
                 buf.utime, buf.stime, buf.cutime, buf.cstime, buf.vsize, buf.start_code, buf.end_code, buf.start_stack);
             printf("         stat--->{min_flt:%u, maj_flt:%u, cmin_flt:%u, cmaj_flt:%u}\n", \
                 buf.min_flt, buf.maj_flt, buf.cmin_flt, buf.cmaj_flt);
+                
+            //仅用于标注进程的信息
             printf("         statm-->{size:%ld, resident:%ld, share:%ld, trs:%ld, lrs:%ld, drs:%ld, dt:%ld}\n", \
                 buf.size, buf.resident, buf.share, buf.trs, buf.lrs, buf.drs, buf.dt);
             printf("         status->{vm_size(TOP_VIRT):%ukb, vm_lock:%ukb, vm_rss(TOP_RES):%ukb, vm_data:%ukb, vm_stack:%ukb, vm_swap:%ukb, vm_exe:%ukb, vm_lib:%ukb}\n", \
                 buf.vm_size, buf.vm_lock, buf.vm_rss, buf.vm_data, buf.vm_stack, buf.vm_swap, buf.vm_exe, buf.vm_lib);
-
-        if (want_threads){
-            while (readtask(new_proc_tab, &buf, &buf2))
-            {
-                //标示线程的一些信息
-                printf("tid:%5d(tgid/pid:%d) cmd:%s state:%c utime:%llu stime:%llu\n", \
-                    buf2.tid, buf2.tgid, buf2.cmd, buf2.state, buf2.utime, buf2.stime);                
-            }
         }
-        
         
     }
     closeproc(new_proc_tab);
@@ -184,20 +186,29 @@ void refresh_proc_info_tab()
 
 
 
-int main()
+int main(int argc, char* argv[])
 {
-    refresh_cpu();
-    /* while (1)
-    {
-        refresh_proc_info(0);
-        printf("\n\n\n");
-        refresh_proc_info(1);
-        //refresh_proc_info_tab();
-        
-        sleep(1);
-    } */
-        
+    if (argc <= 1){
+        refresh_cpu();
+        goto End;
+    }
+    else if (argc == 2){
+        if (*(argv[1]) == 'H'){
+            refresh_proc_info(1);
+            goto End;
+        }else if (*(argv[1]) == 'p'){
+            refresh_proc_info(0);
+            goto End;
+        }
+    }
     
+    printf("Usage: \n");
+    printf("     1, refresh system cpu info:  simple_top\n");
+    printf("     2, capture one snapshot of processes: simple_top p\n");
+    printf("     3, capture one snapshot of threads: simple_top H\n");
+        
+    //refresh_proc_info_tab();
+End:
     return 0;
 }
 
