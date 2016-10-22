@@ -85,7 +85,14 @@
   `C`中的`const`关键字仅描述变量名为`readonly`, 但实际上还是可以通过地址去修改其内容。小例子。  
 
 - c_usual_arithmetic_conversion.c  
-  `ANSI C`中的寻常算术转换(usual arithmetic conversion)的例子. `ANSI C`标准中规定, 不同类型的算术运算/比较时，总是向精度更高的类型进行默认转换，所以可能存在signed int转换为unsigned int的情况，符号变化导致结果出错. 此例子源码`gcc -m32`编译运行即可看到。
+  `ANSI C`中的寻常算术转换(usual arithmetic conversion)的例子. `ANSI C`标准中规定, 不同类型的算术运算/比较时，总是向精度更高的类型进行默认转换，所以可能存在signed int转换为unsigned int的情况，符号变化导致结果出错. 此例子源码`gcc -m32`编译运行即可看到。  
+
+- c_sizeof_operator.c  
+  `C`中的`sizeof`实际是一个操作符, 而不是函数. 在操作变量时，可以不用加括号，以`sizeof x`的风格, 在操作类型时，则必须加上括号，如`sizeof(int)`.
+
+- c_str_auto_connect.c  
+  `C`中的两个相邻字符串常量会忽略中间的空格, 自动连接为一个字符串, 以方便长字符串的表达.
+
 
 ### [C++] char_system
   character system相关的一些小实验, 及windows下的MultiBytes字符编码与UTF-8字符编码的转换接口. linux与windows下默认的字符编码一般都是扩展的ANSI, 即所谓的MultiBytes. C++中支持wchar_t的类型定义, 其在linux下实现使用UTF-32即4字节, 在windows下实现使用UTF-16即2字节(windows下所谓的Unicode默认即UTF-16, 而不是UTF-8).
