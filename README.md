@@ -19,9 +19,9 @@
 - https://github.com/wangyoucao577/MyTinyTests/blob/master/linux_c_simple_top/README.md  
 
 
-### [C] CProgrammingLanguage
+### [C] TheCProgrammingLanguage
 
-回顾《C Programming Language》时敲的一些小sample.
+回顾《The C Programming Language》时敲的一些小sample.
 
 - bit_fields.c  
   C语言中按bit定义变量的用法. 多年前该是为了节约内存设计的, 现在应该早已不需要了. 不过由于C语言中没有bool类型, 其实也可以用这个用法自定义1个bit的bool, 赋值在0和1以外则会报warning, 有助于防止误写.
@@ -93,6 +93,8 @@
 - c_str_auto_connect.c  
   `C`中的两个相邻字符串常量会忽略中间的空格, 自动连接为一个字符串, 以方便长字符串的表达.
 
+- c_array_pointer.c  
+  `C`语言中的数组和指针本质上是不同的, 最主要的表现是取数据时的操作不同. 具体参考《Expert C Programming》第4章.  
 
 ### [C++] char_system
   character system相关的一些小实验, 及windows下的MultiBytes字符编码与UTF-8字符编码的转换接口. linux与windows下默认的字符编码一般都是扩展的ANSI, 即所谓的MultiBytes. C++中支持wchar_t的类型定义, 其在linux下实现使用UTF-32即4字节, 在windows下实现使用UTF-16即2字节(windows下所谓的Unicode默认即UTF-16, 而不是UTF-8).
