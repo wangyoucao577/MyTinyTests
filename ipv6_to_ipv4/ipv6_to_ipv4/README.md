@@ -11,11 +11,11 @@ tested on iOS, Android, Linux and Windows
 
 - `easy_getaddrinfo`  
 
-此接口核心为`getaddrinfo`函数, Apple推荐使用底层`socket`的开发者使用此`getaddrinfo`函数来实现`ipv4`和`ipv6`的全面兼容. 但个人认为此函数过于复杂，难以理解. 而测试其行为又需要各种环境. 故由于测试环境的限制(仅有普通的`IPv4 only`环境和`mac OSX`模拟的支持`NAT64`的`IPv6 only`环境), 在有限的条件下, 测试其行为并封装了相对简单的`easy_getaddrinfo`接口以供更方便地使用. 
+此接口核心为`getaddrinfo`函数, Apple推荐使用底层`socket`的开发者使用此`getaddrinfo`函数来实现`ipv4`和`ipv6`的全面兼容. 但个人认为此函数过于复杂，难以理解. 而测试其行为又需要各种环境. 故由于测试环境的限制(仅有普通的`IPv4 only`环境和`mac OSX`模拟的支持`NAT64`的`IPv6 only`环境), 在有限的条件下, 测试其行为并封装了相对简单的`easy_getaddrinfo`接口以供更方便地使用.
 
 - `ip_str_family`
 
-根据`IP Address String`分析其为`AF_INET` or `AF_INET6`. 
+根据`IP Address String`分析其为`AF_INET` or `AF_INET6`.
 
 - `inet_ntop_ipv4_ipv6_compatible`   
 
@@ -60,11 +60,11 @@ tested on iOS, Linux and Android (Unavailable on Windows)
 正因为此，相当于mac OSX share出来的NAT64，仅Apple自己的设备可用...
 
 #### getaddrinfo行为不同
-这个接口在各个平台上都有些不同的参数、行为，本身功能设计也很复杂，应仔细弄清楚其行为再使用. 
+这个接口在各个平台上都有些不同的参数、行为，本身功能设计也很复杂，应仔细弄清楚其行为再使用.
 
 - iOS, Linux:   
 在Local ipv6(NAT64) 时，输入为ipv4时可自动map成ipv6的地址输出，以供connect调用.
-- Windows: 
+- Windows:
 貌似不支持AI_V4MAPPED参数. 虽然MSDN online上有写此参数, 但实验结果却未进行转换. 也可能因为测试代码依赖、宏等定义问题，从而没生效. 不明白为何如此，甚至在C#中也没找到对应的可自动map的接口. (也不排除在windows上的使用还有些问题...)
 
 ## 补充
@@ -72,6 +72,8 @@ tested on iOS, Linux and Android (Unavailable on Windows)
 `setsockopt(send_sock, IPPROTO_IPV6, IPV6_UNICAST_HOPS, &ttl, sizeof(ttl))`  
 `setsockopt(send_sock, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl))`
 
+- find_ipv6_incompatible.sh  
+搜索代码中是否存在`ipv6`不兼容的接口的一个脚本, 默认搜索当前目录的`trunk`路径下的代码.
 
 ## Reference Links
 - https://en.wikipedia.org/wiki/IPv6#Address_representation  
