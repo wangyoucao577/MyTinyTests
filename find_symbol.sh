@@ -6,7 +6,7 @@ if [ $# != 2 ];then
   exit
 fi
 
-GREP_SO_LIST=`find $1 -type f -name '*.so'`
+GREP_SO_LIST=`find $1 -type f -name '*.so.*'`
 
 for i in $GREP_SO_LIST
 do
