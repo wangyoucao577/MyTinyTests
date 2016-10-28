@@ -18,6 +18,10 @@
 详见:  
 - https://github.com/wangyoucao577/MyTinyTests/blob/master/linux_c_simple_top/README.md  
 
+### [C] c_interpositioning
+读《Expert C Programming》 5.4 警惕Interpositioning问题时做的实验, 可以通过`LD_PRELOAD`替换将要运行的程序的符号.  不失为一个方便的调试/hack方法, 但使用时还是要足够小心.  
+详见:  
+- https://github.com/wangyoucao577/MyTinyTests/blob/master/c_interpositioning/Readme.md
 
 ### [C] TheCProgrammingLanguage
 
