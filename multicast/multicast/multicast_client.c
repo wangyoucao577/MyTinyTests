@@ -57,6 +57,20 @@ int main(int argc, char* argv[])
 
     SOCKET sock = socket(AF_INET, SOCK_DGRAM, 0);
 
+//#define SET_MULTICAST_IF
+#if defined(SET_MULTICAST_IF)
+    //set if for multicast
+    if (IN_MULTICAST(ntohl(peer_addr.sin_addr.s_addr))) {
+        char * interface_ip = "192.168.16.103";
+        struct in_addr interface_addr;
+        interface_addr.s_addr = inet_addr(interface_ip);
+        int ret = setsockopt(sock, IPPROTO_IP, IP_MULTICAST_IF, &interface_addr, sizeof(interface_addr));
+        if (0 != ret) {
+            printf("sock %d setsockopt IP_MULTICAST_IF to %s failed, error code %d.\n", (int)sock, interface_ip, LAST_ERR);
+        }
+    }
+#endif
+
     //set ttl for unicast or multicast
     int ttl_optname = IP_TTL;
     if (IN_MULTICAST(ntohl(peer_addr.sin_addr.s_addr))) {
