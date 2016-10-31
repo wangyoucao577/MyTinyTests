@@ -23,6 +23,10 @@
 详见:  
 - https://github.com/wangyoucao577/MyTinyTests/blob/master/c_interpositioning/Readme.md
 
+### [C] multicast
+`multicast client`的一个实验, 程序主要实现的就是基于`UDP`的`multicast`组播推流, 支持指定网卡和设置`TTL`. 代码本身支持`Windows`和`Linux`, 实验主要是在`Windows`下验证了多网卡时该如何设置组播路由. `Linux`下仅使用`gcc`试了下编译代码, 暂未实施具体实验. 
+
+
 ### [C] TheCProgrammingLanguage
 
 回顾《The C Programming Language》时敲的一些小sample.
