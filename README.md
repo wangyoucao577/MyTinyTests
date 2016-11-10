@@ -107,6 +107,9 @@
 - c_longjmp.c  
   `C`语言中的`longjmp/setjmp`, 可支持调到不同文件的不同函数. 主要用途为错误恢复, 约等于`C++`中的异常.  
 
+- c_segmentationfault.c  
+  `C`语言中`segmentation fault`的一种典型场景, 即空指针访问. 做这个简单的实验代码的来源是要尝试`segmentation fault`时是否会生成`coredump`。 对应在`linux`系统上先配置`ulimit -c unlimited`, 然后选择性配置`core_pattern`即`coredump`文件的生成路径, 代码再加上`-g`编译, 则总是可以生成`coredump`文件。  
+  
 ### [C++] char_system
   character system相关的一些小实验, 及windows下的MultiBytes字符编码与UTF-8字符编码的转换接口. linux与windows下默认的字符编码一般都是扩展的ANSI, 即所谓的MultiBytes. C++中支持wchar_t的类型定义, 其在linux下实现使用UTF-32即4字节, 在windows下实现使用UTF-16即2字节(windows下所谓的Unicode默认即UTF-16, 而不是UTF-8).
   代码文件保存为UTF-8, 在代码中写入的中文字符串编码方式即为UTF-8, vs中编译后printf输出为乱码, 需转换为MBCS方可正常显示. 而linux下貌似不受此限制, 无论代码文件保存为UTF-8还是GB2312, 都可以直接用printf正确输出.
