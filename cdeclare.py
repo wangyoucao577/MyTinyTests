@@ -10,7 +10,7 @@ Version:        2016-11-10
 
 import sys
 
-c_basic_types = ["char", "short", "int", "unsigned", "long"]
+c_basic_types = ["void", "char", "short", "int", "unsigned", "long"]
 c_basic_marks = ['*', '(', ')', '[', ']', "const", "volatile"]
 
 def search_first_identifier(declare_array):
