@@ -13,6 +13,24 @@ import sys
 c_basic_types = ["void", "char", "short", "int", "unsigned", "long"]
 c_basic_marks = ['*', '(', ')', '[', ']', "const", "volatile"]
 
+def split_tokens(declare_str):
+    #print len(declare_str)
+    declare_array = []
+    temp_str = ""
+    for c in declare_str:
+        #print c
+        if c == ' ' or c in c_basic_marks: #separator
+            if temp_str != "":
+                declare_array.append(temp_str)
+                temp_str = ""
+        if c in c_basic_marks:  #only will cmp single charactor
+            declare_array.append(c)
+        elif c != ' ':
+            temp_str += c
+            #print temp_str
+
+    return declare_array
+
 def search_first_identifier(declare_array):
     left_stack = []
     right_stack = []
@@ -131,11 +149,10 @@ def main():
         return
         
     declare_str = sys.argv[1]
-    print "Going to analyse--->" + declare_str
+    #print "Going to analyse--->" + declare_str
 
-    # step1: TODO: split tokens into an array
-    # NOTE: simple to split via SPACE now
-    declare_array = declare_str.split(' ');
+    # step1: split tokens into an array
+    declare_array = split_tokens(declare_str)
     for c in declare_array:
         pass
         #print c
