@@ -10,7 +10,7 @@ Version:        2016-11-10
 
 import sys
 
-c_basic_types = ["void", "char", "short", "int", "unsigned", "long"]
+c_basic_types = ["void", "char", "short", "int", "long", "float", "double", "signed", "unsigned"]
 c_basic_marks = ['*', '(', ')', '[', ']', "const", "volatile"]
 
 def split_tokens(declare_str):
