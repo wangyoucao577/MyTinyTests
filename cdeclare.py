@@ -140,7 +140,7 @@ def main():
         pass
         #print c
 
-    # step2: TODO: search the array as the flowchart, find first identifider
+    # step2: search the array as the flowchart, find first identifider
     (first_identifier, left_stack, right_stack) = search_first_identifier(declare_array)
     description_str = "\'" + first_identifier + "\' is "
 
