@@ -89,19 +89,18 @@ def analyse_expression(left_stack, right_stack):
             right_bracket_index = find_next_right_bracket_index(right_stack)
             description_str += ("an function ")
             if right_bracket_index == 1 :
-                description_str += ", the function don't have any parameter, "
+                description_str += ", the function don't have any parameter, return "
                 right_stack.pop(0)
                 right_stack.pop(0)
             else:
                 description_str += ", the function have parameters \' "
                 for i in range(1, right_bracket_index): #ignore '(' and ')'
                     description_str += (right_stack[i] + " ")
-                description_str += " \' , "
+                description_str += " \' , return "
                 for i in range(0, right_bracket_index + 1):
                     right_stack.pop(0)
             #print description_str
 
-    first_enter_return = False
     while ((len(left_stack) > 0)):
         if (left_stack[0] == '(' ):  
             if (right_stack[0] == ')'):
@@ -113,10 +112,6 @@ def analyse_expression(left_stack, right_stack):
                 print  "format error: " + str(right_stack)
                 exit() 
         else:
-            if (not first_enter_return) and len(right_stack) == 0:
-                description_str += " return "
-                first_enter_return = True
-
             if (left_stack[0] == "const"):
                 description_str += " readonly "
                 left_stack.pop(0)
@@ -145,7 +140,12 @@ def main():
         print "      python cdeclare.py <'c declare string'>" 
         #print "NOTE: split tokens with SPACE"
         print "Sample: "
-        print "      python cdeclare.py 'char * const * ( * next ) ( )'"
+        print "      python cdeclare.py 'int*f()'"
+        print "      python cdeclare.py '(*pa[])()'"
+        print "      python cdeclare.py 'char*const*(*next)()'"
+        print "      python cdeclare.py 'char*(*c[10])(int**p)'"
+        print "      python cdeclare.py 'char(*(*x())[])()'"
+        print "      python cdeclare.py 'void(*signal(int sig,void(*func)(int)))(int)'"
         return
         
     declare_str = sys.argv[1]
@@ -174,7 +174,7 @@ def main():
         for c in right_stack:
             print "right_stack remain: " + c 
 
-    print "\n\nResult:"
+    #print "\n\nResult:"
     print description_str
 
 if __name__ == '__main__':
