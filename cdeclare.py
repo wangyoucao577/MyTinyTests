@@ -143,7 +143,7 @@ def main():
     if (len(sys.argv) < 2):
         print "Usage: "
         print "      python cdeclare.py <'c declare string'>" 
-        print "NOTE: split tokens with SPACE"
+        #print "NOTE: split tokens with SPACE"
         print "Sample: "
         print "      python cdeclare.py 'char * const * ( * next ) ( )'"
         return
