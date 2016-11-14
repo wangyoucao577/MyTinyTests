@@ -118,6 +118,9 @@
   通过HTTP发送JSON格式数据的小例子, 熟悉JsonCpp库和libcurl库的使用.
   工程文件基于VS2015(VC14), 目前仅配置了x64_debug版本.
 
+### [Python2] cdeclare.py
+  参考《Expert C Programming》书中的规则实现的`cdecl`程序, 未按照书中用`C`实现, 而是用更方便的`python`实现了下. 支持较为复杂的函数声明的分析, 未支持包括`struct`, `enum`,`union`等类型. 比上文中《The C Programming Language》中的`cdcl`实现支持更为全面些. 不过对`C`声明的一些细节规则还是不太理解的，再要深入可能需要看标准了.
+
 ### [Python2] files_operation.py
   自己实现的一个常用文件操作的接口集合, 包括`svn add/del`, `file copy/compare`, `mkdir`, `scan folder`等常用操作, 易于业务实现.
 
