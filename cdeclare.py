@@ -34,10 +34,16 @@ def search_first_identifier(declare_array):
 def find_next_right_bracket_index(right_stack) :
     #print right_stack
     #print len(right_stack)
-    for i in range(0, len(right_stack)):
-        if (right_stack[i] == ')'):
-            #print i
-            return i
+    match_right_bracket_index = 0
+    for i in range(1, len(right_stack)):    # right_stack[0] mush be '('
+        if (right_stack[i] == '('):
+            match_right_bracket_index += 1
+        elif (right_stack[i] == ')'):
+            if match_right_bracket_index == 0:
+                #print i
+                return i
+            else:
+                match_right_bracket_index -= 1
         else:
             pass
     print "format error : no \')\' found"
@@ -71,10 +77,11 @@ def analyse_expression(left_stack, right_stack):
             else:
                 description_str += ", the function have parameters \' "
                 for i in range(1, right_bracket_index): #ignore '(' and ')'
-                    description_str += right_stack[i]
+                    description_str += (right_stack[i] + " ")
                 description_str += " \' , "
                 for i in range(0, right_bracket_index + 1):
                     right_stack.pop(0)
+            #print description_str
 
     first_enter_return = False
     while ((len(left_stack) > 0)):
