@@ -111,7 +111,7 @@
   `C`语言中`segmentation fault`的一种典型场景, 即空指针访问. 做这个简单的实验代码的来源是要尝试`segmentation fault`时是否会生成`coredump`。 对应在`linux`系统上先配置`ulimit -c unlimited`, 然后选择性配置`core_pattern`即`coredump`文件的生成路径, 代码再加上`-g`编译, 则总是可以生成`coredump`文件。  
 
 - c_getchar_sttyraw.c, c_getchar_curses.c  
-  `Windows`上原生支持单字符获取, 但`Unix`系系统上一般都需要按回车后整行供程序获取. 这两个小例子实验了下`Linux`上单字符获取的方法, 其中`c_getchar_sttyraw.c`是通过`stty`程序改变`terminal`属性的方法, `c_getchar_curses.c`则是基于`libcurses`库实现, 链接时应加上`-lcurses`. (此功能很少的可能性用到, 故未深究其原理. 有需要时再研究.)
+  `Windows`上原生支持单字符获取, 但`Unix`系系统上一般都需要按回车后整行供程序获取. 这两个小例子实验了下`Linux`上单字符获取的方法(来源《Expert C Programming》 8.6节), 其中`c_getchar_sttyraw.c`是通过`stty`程序改变`terminal`属性的方法, `c_getchar_curses.c`则是基于`libcurses`库实现, 链接时应加上`-lcurses`. (此功能很少的可能性用到, 故未深究其原理. 有需要时再研究.)
 
 
   
