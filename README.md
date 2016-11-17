@@ -109,6 +109,11 @@
 
 - c_segmentationfault.c  
   `C`语言中`segmentation fault`的一种典型场景, 即空指针访问. 做这个简单的实验代码的来源是要尝试`segmentation fault`时是否会生成`coredump`。 对应在`linux`系统上先配置`ulimit -c unlimited`, 然后选择性配置`core_pattern`即`coredump`文件的生成路径, 代码再加上`-g`编译, 则总是可以生成`coredump`文件。  
+
+- c_getchar_sttyraw.c, c_getchar_curses.c  
+  `Windows`上原生支持单字符获取, 但`Unix`系系统上一般都需要按回车后整行供程序获取. 这两个小例子实验了下`Linux`上单字符获取的方法, 其中`c_getchar_sttyraw.c`是通过`stty`程序改变`terminal`属性的方法, `c_getchar_curses.c`则是基于`libcurses`库实现, 链接时应加上`-lcurses`. (此功能很少的可能性用到, 故未深究其原理. 有需要时再研究.)
+
+
   
 ### [C++] char_system
   character system相关的一些小实验, 及windows下的MultiBytes字符编码与UTF-8字符编码的转换接口. linux与windows下默认的字符编码一般都是扩展的ANSI, 即所谓的MultiBytes. C++中支持wchar_t的类型定义, 其在linux下实现使用UTF-32即4字节, 在windows下实现使用UTF-16即2字节(windows下所谓的Unicode默认即UTF-16, 而不是UTF-8).
