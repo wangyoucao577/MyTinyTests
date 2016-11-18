@@ -101,8 +101,8 @@
 - c_str_auto_connect.c  
   `C`中的两个相邻字符串常量会忽略中间的空格, 自动连接为一个字符串, 以方便长字符串的表达.
 
-- c_array_pointer.c  
-  `C`语言中的数组和指针本质上是不同的, 最主要的表现是取数据时的操作不同. 具体参考《Expert C Programming》第4章.  
+- c_array_pointer.c, c_array_pointer_2.c  
+  `C`语言中的数组和指针本质上是不同的, 最主要的表现是取数据时的操作不同. 具体参考《Expert C Programming》第4章和第9章.  
 
 - c_longjmp.c  
   `C`语言中的`longjmp/setjmp`, 可支持调到不同文件的不同函数. 主要用途为错误恢复, 约等于`C++`中的异常.  
