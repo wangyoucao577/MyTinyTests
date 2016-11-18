@@ -29,6 +29,10 @@ def split_tokens(declare_str):
             temp_str += c
             #print temp_str
 
+    # consider if the last temp_str is the identifier
+    if (temp_str != ""):
+        declare_array.append(temp_str)
+
     return declare_array
 
 def search_first_identifier(declare_array):
