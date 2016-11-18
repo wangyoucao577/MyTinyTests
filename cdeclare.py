@@ -89,6 +89,7 @@ def analyse_expression(left_stack, right_stack):
                 print "format error: " + str(right_stack)
                 exit()
 
+    if len(right_stack) > 0:
         if (right_stack[0] == '(') :
             right_bracket_index = find_next_right_bracket_index(right_stack)
             description_str += ("an function ")
