@@ -104,6 +104,9 @@
 - c_array_pointer.c, c_array_pointer_2.c  
   `C`语言中的数组和指针本质上是不同的, 最主要的表现是取数据时的操作不同. 具体参考《Expert C Programming》第4章和第9章.  
 
+- c_multi_array.c  
+  `C`语言中多维数组的一个实验, 理解指向其中一维的指针及其运算. 来自《Expert C Programming》 9.6多维数组.
+
 - c_longjmp.c  
   `C`语言中的`longjmp/setjmp`, 可支持调到不同文件的不同函数. 主要用途为错误恢复, 约等于`C++`中的异常.  
 
