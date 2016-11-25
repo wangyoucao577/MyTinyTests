@@ -116,7 +116,8 @@
 - c_getchar_sttyraw.c, c_getchar_curses.c  
   `Windows`上原生支持单字符获取, 但`Unix`系系统上一般都需要按回车后整行供程序获取. 这两个小例子实验了下`Linux`上单字符获取的方法(来源《Expert C Programming》 8.6节), 其中`c_getchar_sttyraw.c`是通过`stty`程序改变`terminal`属性的方法, `c_getchar_curses.c`则是基于`libcurses`库实现, 链接时应加上`-lcurses`. (此功能很少的可能性用到, 故未深究其原理. 有需要时再研究.)
 
-
+- c_determin_sign.c  
+  `C`语言判断变量/值/类型是有符号还是无符号类型的实验, 来自《Expert C Programming》. 综合书上和网上的一些提示, 给出的三种方法. 其中方法1和方法2都有其固有的缺陷, 主要是不能支持`char/unsigned char/short/unsigned short`这几种低于4字节的类型, 因为`C`的表达式默认类型提升. 方法三目前基本比较完美, 原理也简单. (实验环境:`CentOS 7 64bit, GCC-4.8.5`)
   
 ### [C++] char_system
   character system相关的一些小实验, 及windows下的MultiBytes字符编码与UTF-8字符编码的转换接口. linux与windows下默认的字符编码一般都是扩展的ANSI, 即所谓的MultiBytes. C++中支持wchar_t的类型定义, 其在linux下实现使用UTF-32即4字节, 在windows下实现使用UTF-16即2字节(windows下所谓的Unicode默认即UTF-16, 而不是UTF-8).
