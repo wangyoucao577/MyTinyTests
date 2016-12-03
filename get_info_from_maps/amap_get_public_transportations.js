@@ -7,7 +7,7 @@ function errorHandler(e) {
 
 
 //公交线路搜索的回调, 处理查询到的数据
-function lineSearch_Callback(result)
+function lineSearch_Callback(city, result)
 {
     document.getElementById("result").innerHTML = result.info;
 
@@ -37,7 +37,7 @@ function lineSearch_Callback(result)
     window.webkitRequestFileSystem(window.TEMPORARY, 5*1024*1024, function onInitFs(fs) {
       console.log('Opened file system: ' + fs.name);
 
-      fs.root.getFile('stops2.txt', {create: true}, function(fileEntry) {
+      fs.root.getFile(city + '_stops.txt', {create: true}, function(fileEntry) {
             fileEntry.createWriter(function(writer) {
                 writer.onerror = errorHandler;
                 writer.onwriteend = function(e) {
@@ -47,7 +47,7 @@ function lineSearch_Callback(result)
             });
       }, errorHandler);
 
-      fs.root.getFile('path2.txt', {create: true}, function(fileEntry) {
+      fs.root.getFile(city + '_path.txt', {create: true}, function(fileEntry) {
             fileEntry.createWriter(function(writer) {
                 writer.onerror = errorHandler;
                 writer.onwriteend = function(e) {
@@ -81,7 +81,7 @@ AMap.service(["AMap.LineSearch"], function search_line_in_city() {
     if(status === 'complete' && result.info === 'OK'){
                 //取得了正确的公交路线结果
  
-        lineSearch_Callback(result);
+        lineSearch_Callback(expect_city, result);
                 //结果处理函数，demo中绘制了线路
  
     }else{
