@@ -1,4 +1,11 @@
 
+//初始化文件系统失败的错误处理
+function errorHandler(e) {
+
+  console.log(e.name + ": " + e.message);
+}
+
+
 //公交线路搜索的回调, 处理查询到的数据
 function lineSearch_Callback(result)
 {
@@ -24,6 +31,33 @@ function lineSearch_Callback(result)
 
     document.getElementById("stops").innerHTML = stops_txt
     document.getElementById("path").innerHTML = path_txt
+
+    
+    //申请空间
+    window.webkitRequestFileSystem(window.TEMPORARY, 5*1024*1024, function onInitFs(fs) {
+      console.log('Opened file system: ' + fs.name);
+
+      fs.root.getFile('stops2.txt', {create: true}, function(fileEntry) {
+            fileEntry.createWriter(function(writer) {
+                writer.onerror = errorHandler;
+                writer.onwriteend = function(e) {
+                    console.log('write complete');
+                };
+                writer.write(new Blob([stops_txt.replace(/<\/br>/g, "\n")], {type: 'text/plain'}));
+            });
+      }, errorHandler);
+
+      fs.root.getFile('path2.txt', {create: true}, function(fileEntry) {
+            fileEntry.createWriter(function(writer) {
+                writer.onerror = errorHandler;
+                writer.onwriteend = function(e) {
+                    console.log('write complete');
+                };
+                writer.write(new Blob([path_txt.replace(/<\/br>/g, "\n")], {type: 'text/plain'}));
+            });
+
+      }, errorHandler);
+    }, errorHandler);
 
 }
 
