@@ -1,4 +1,6 @@
 
+
+
 //初始化文件系统失败的错误处理
 function errorHandler(e) {
 
@@ -7,7 +9,7 @@ function errorHandler(e) {
 
 
 //公交线路搜索的回调, 处理查询到的数据
-function lineSearch_Callback(city, result)
+function lineSearch_Callback(city, line, result)
 {
     document.getElementById("result").innerHTML = result.info;
 
@@ -21,11 +23,11 @@ function lineSearch_Callback(city, result)
         var stops = lineArr[i].via_stops;
         //stops_txt += "stops: </br>";
         for (var j = 0; j < stops.length; j++) {
-            stops_txt += (stops[j].location + "," + stops[j].name + "</br>");
+            stops_txt += (city + "," + line + "," + lineArr[i].name + "," + "stops" + "," + (j + 1) + "," +  stops[j].location + "," + stops[j].name + "</br>");
         }
         //stops_txt += "paths: </br>"
         for (var j = 0; j < pathArr.length; j++) {
-            path_txt += (pathArr[j].toString() + "</br>")
+            path_txt += (city + "," + line + "," + lineArr[i].name + "," + "path" + "," + (j + 1) + "," + pathArr[j].toString() + "</br>")
         }
     }
 
@@ -37,16 +39,17 @@ function lineSearch_Callback(city, result)
     window.webkitRequestFileSystem(window.TEMPORARY, 5*1024*1024, function onInitFs(fs) {
       console.log('Opened file system: ' + fs.name);
 
-      fs.root.getFile(city + '_stops.txt', {create: true}, function(fileEntry) {
+      fs.root.getFile(city + "_" + (new Date()).toString(), {create: true}, function(fileEntry) {
             fileEntry.createWriter(function(writer) {
                 writer.onerror = errorHandler;
                 writer.onwriteend = function(e) {
                     console.log('write complete');
                 };
-                writer.write(new Blob([stops_txt.replace(/<\/br>/g, "\n")], {type: 'text/plain'}));
+                writer.write(new Blob([stops_txt.replace(/<\/br>/g, "\n"), path_txt.replace(/<\/br>/g, "\n")], {type: 'text/plain'}));
             });
       }, errorHandler);
 
+/*
       fs.root.getFile(city + '_path.txt', {create: true}, function(fileEntry) {
             fileEntry.createWriter(function(writer) {
                 writer.onerror = errorHandler;
@@ -56,7 +59,7 @@ function lineSearch_Callback(city, result)
                 writer.write(new Blob([path_txt.replace(/<\/br>/g, "\n")], {type: 'text/plain'}));
             });
 
-      }, errorHandler);
+      }, errorHandler);*/
     }, errorHandler);
 
 }
@@ -81,7 +84,7 @@ AMap.service(["AMap.LineSearch"], function search_line_in_city() {
     if(status === 'complete' && result.info === 'OK'){
                 //取得了正确的公交路线结果
  
-        lineSearch_Callback(expect_city, result);
+        lineSearch_Callback(expect_city, expect_line, result);
                 //结果处理函数，demo中绘制了线路
  
     }else{
