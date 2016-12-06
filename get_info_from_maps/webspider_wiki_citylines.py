@@ -5,7 +5,7 @@
 Description:
 Author:     wangyoucao577@gmail.com
 Created Date:   2016-12-05
-Version:        2016-12-05
+Version:        2016-12-06
 """
 
 import urllib
@@ -13,7 +13,9 @@ import urllib2
 import re
 import sys
 
-wiki_url = 'https://zh.wikipedia.org/wiki/%E6%B7%B1%E5%9C%B3%E5%85%AC%E4%BA%A4%E5%B7%B4%E5%A3%AB%E7%BA%BF%E8%B7%AF%E8%A1%A8#.E9.AB.98.E5.B3.B0.E4.B8.93.E7.BA.BF'
+#wiki_url = 'https://zh.wikipedia.org/wiki/%E5%B9%BF%E5%B7%9E%E5%B7%B4%E5%A3%AB' #广州
+#wiki_url = 'https://zh.wikipedia.org/wiki/%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%85%AC%E4%BA%A4%E7%BA%BF%E8%B7%AF%E8%A1%A8'    #上海
+#wiki_url = 'https://zh.wikipedia.org/zh-hans/%E6%B7%B1%E5%9C%B3%E5%85%AC%E4%BA%A4%E5%B7%B4%E5%A3%AB%E7%BA%BF%E8%B7%AF%E8%A1%A8' #深圳
 
 def main():
     url = wiki_url
@@ -32,7 +34,10 @@ def main():
         str_items = content.split('</tr>')
         #print len(str_items)
 
-        pattern = re.compile(r'<td style=".+?"><b><a href=".+?".+?title=".+?">(.+?)</a></b></td>', re.S)
+        #pattern = re.compile(r'<td style=".+?"><b><a href=".+?".+?title=".+?">(.+?)</a></b></td>', re.S) #深圳
+        #pattern = re.compile(r'<td style=".+?"><b>(.+?)</b></td>', re.S)    #广州
+        #pattern = re.compile(r'<td><b.*>(.+?)<.*/b></td>', re.S)    #上海
+
 
         matched_items = []
         for i in str_items:
