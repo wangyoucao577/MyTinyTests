@@ -16,6 +16,27 @@ var outStr = "";    //统一输出
 var searchSucceedCallbackCount = 0;
 var searchFailedCallbackCount = 0;
 
+function write_to_file()
+{
+    if ((searchSucceedCallbackCount + searchFailedCallbackCount) == city_lines.length)
+    {
+        //申请空间, save to File
+        window.webkitRequestFileSystem(window.TEMPORARY, 100*1024*1024, function onInitFs(fs) {
+          console.log('Opened file system: ' + fs.name);
+
+          fs.root.getFile(expect_city + "_" + (new Date()).toString(), {create: true}, function(fileEntry) {
+                fileEntry.createWriter(function(writer) {
+                    writer.onerror = errorHandler;
+                    writer.onwriteend = function(e) {
+                        console.log('write complete, total search succeed count ' + searchSucceedCallbackCount + ", failed count " + searchFailedCallbackCount);
+                    };
+                    writer.write(new Blob([outStr.replace(/<\/br>/g, "\n")], {type: 'text/plain'}));
+                });
+          }, errorHandler);
+        }, errorHandler);
+    }
+}
+
 //公交线路搜索的回调, 处理查询到的数据
 function lineSearch_Callback(result)
 {
@@ -49,23 +70,7 @@ function lineSearch_Callback(result)
     ++searchSucceedCallbackCount;
     console.log("search succeed count " + searchSucceedCallbackCount + ", Line:" + lineArr[0].name);
 
-    if ((searchSucceedCallbackCount + searchFailedCallbackCount) == city_lines.length)
-    {
-        //申请空间, save to File
-        window.webkitRequestFileSystem(window.TEMPORARY, 100*1024*1024, function onInitFs(fs) {
-          console.log('Opened file system: ' + fs.name);
-
-          fs.root.getFile(expect_city + "_" + (new Date()).toString(), {create: true}, function(fileEntry) {
-                fileEntry.createWriter(function(writer) {
-                    writer.onerror = errorHandler;
-                    writer.onwriteend = function(e) {
-                        console.log('write complete, total search succeed count ' + searchSucceedCallbackCount + ", failed count " + searchFailedCallbackCount);
-                    };
-                    writer.write(new Blob([outStr.replace(/<\/br>/g, "\n")], {type: 'text/plain'}));
-                });
-          }, errorHandler);
-        }, errorHandler);
-    }
+    write_to_file();
 }
 
 
@@ -73,6 +78,7 @@ function lineSearch_Callback(result)
 //实例化公交线路查询类，只取回一条路线
 AMap.service(["AMap.LineSearch"], function search_line_in_city() {
 
+    console.log("city:" + expect_city + ", lines_count:" + city_lines.length);
     for (var n in city_lines)
     {
         var expect_line = city_lines[n];
@@ -100,6 +106,8 @@ AMap.service(["AMap.LineSearch"], function search_line_in_city() {
                 //document.getElementById("result").innerHTML = status + " " + result.info;
                 ++searchFailedCallbackCount;
                 console.log("search failed count " + searchFailedCallbackCount + ", error info: "+ status + ", " + result.info);
+
+                write_to_file();
             }
         });
     }
