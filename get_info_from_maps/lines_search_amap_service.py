@@ -34,7 +34,7 @@ def rest_request(url):
         content = response.read()#.decode('utf-8')
         #content = content.encode(sys.getfilesystemencoding())   #for windows default correctly print
         #print content
-        print "read bytes: " + str(len(content))
+        #print "read bytes: " + str(len(content))
         return content
 
         #raw_input("Press any key to continue...")
@@ -53,8 +53,8 @@ def rest_request(url):
     return ""
 
 def nearby_search_for_lines_via_location(base_reqest_url, city, location, in_out_stations, in_out_stations_location, in_out_lines):
-    for page in range(1, 100):
-        print "request page: " + str(page)
+    for page in range(1, 20):
+        #print "request page: " + str(page)
         url = base_reqest_url + "&city=" + city + "&page=" + str(page) + "&location=" + location
         content = rest_request(url)
         if not content:
@@ -62,13 +62,13 @@ def nearby_search_for_lines_via_location(base_reqest_url, city, location, in_out
             break
         json_content = json.loads(content)
 
-        print "result.status: " + str(json_content["status"]) + ", result.info: " + json_content["info"]
+        #print "result.status: " + str(json_content["status"]) + ", result.info: " + json_content["info"]
         if 0 == json_content["status"] or "OK" != json_content["info"]:
             print "result failed: " + json_content["info"]
             break
 
-        print "result count: " + str(json_content["count"])
-        print "pois len: " + str(len(json_content["pois"]))
+        #print "result count: " + str(json_content["count"])
+        #print "pois len: " + str(len(json_content["pois"]))
         for a_pois in json_content["pois"]:
             if a_pois['name'] not in in_out_stations:
                 in_out_stations.append(a_pois['name'])
@@ -90,8 +90,8 @@ def place_search_for_stations_lines(city, base_reqest_url):
     out_stations_location = []
     out_lines = []
     
-    for page in range(1, 100):
-        print "request page: " + str(page)
+    for page in range(1, 20):
+        #print "request page: " + str(page)
         url = base_reqest_url + "&city=" + city + "&page=" + str(page)
         content = rest_request(url)
         if not content:
@@ -99,13 +99,13 @@ def place_search_for_stations_lines(city, base_reqest_url):
             break
         json_content = json.loads(content)
 
-        print "result.status: " + str(json_content["status"]) + ", result.info: " + json_content["info"]
+        #print "result.status: " + str(json_content["status"]) + ", result.info: " + json_content["info"]
         if 0 == json_content["status"] or "OK" != json_content["info"]:
             print "result failed: " + json_content["info"]
             break
         
-        print "result count: " + str(json_content["count"])
-        print "pois len: " + str(len(json_content["pois"]))
+        #print "result count: " + str(json_content["count"])
+        #print "pois len: " + str(len(json_content["pois"]))
         for a_pois in json_content["pois"]:
             #print a_pois
             if a_pois['name'] not in out_stations:
@@ -137,25 +137,27 @@ def main():
     tick2 = time.time();
     print "tick2: " + str(tick2) + ", place_search cost seconds: " + str(tick2 - tick1) + "."
 
-    # print "ready to search nearby."
-    # stations_location_copy
+    print "ready to search nearby."
+    stations_location_copy = stations_location
+    nearby_count = 0
+    for x in stations_location_copy:
+        print "nearby search count: " + str(nearby_count)
+        nearby_count += 1
+        (stations, stations_location, lines) = nearby_search_for_lines_via_location(amap_nearby_search_url, city, x, stations, stations_location, lines)
+    print "len(stations): " + str(len(stations)) + "len(stations_location): " + str(len(stations_location)) + ", len(lines): " + str(len(lines))
+
+    tick3 = time.time();
+    print "tick3: " + str(tick3) + ", nearby search cost seconds: " + str(tick3 - tick2) + ", ready for nearby search again."
+
     # stations_location_copy = stations_location
     # for x in stations_location_copy:
     #     (stations, stations_location, lines) = nearby_search_for_lines_via_location(amap_nearby_search_url, city, x, stations, stations_location, lines)
-    # print "len(stations): " + str(len(stations)) + "len(stations_location): " + str(len(stations_location)) + ", len(lines): " + str(len(lines))
-    #
-    # tick3 = time.time();
-    # print "tick3: " + str(tick3) + ", nearby search cost seconds: " + str(tick3 - tick2) + ", ready for nearby search again."
-    #
-    #  = stations_location
-    # for x in stations_location_copy:
-    #     (stations, stations_location, lines) = nearby_search_for_lines_via_location(amap_nearby_search_url, city, x, stations, stations_location, lines)
-    #
-    # print_list(lines)
-    # print "len(stations): " + str(len(stations)) + "len(stations_location): " + str(len(stations_location)) + ", len(lines): " + str(len(lines))
-    #
-    # tick4 = time.time();
-    # print "tick4: " + str(tick4) + ", nearby search again cost seconds: " + str(tick4 - tick3) + ", app total cost seconds: " + str(tick4 - tick1)
+
+    print_list(lines)
+    print "len(stations): " + str(len(stations)) + "len(stations_location): " + str(len(stations_location)) + ", len(lines): " + str(len(lines))
+
+    tick4 = time.time();
+    print "tick4: " + str(tick4) + ", nearby search again cost seconds: " + str(tick4 - tick3) + ", app total cost seconds: " + str(tick4 - tick1)
 
 
 if __name__ == '__main__':
