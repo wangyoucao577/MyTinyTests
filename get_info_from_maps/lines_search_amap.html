@@ -23,10 +23,11 @@ function errorHandler(e) {
   console.log(e.name + ": " + e.message);
 }
 
-function sleep(ms) {
+search_global.sleep = function (ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+search_global.searched_count = 0;
 
 </script>
 <script src="place_search_amap.js"></script>
@@ -40,17 +41,48 @@ search_global.placeSearchDone_Callback = function (city_lines_result, city_stati
 	//console.log(city_lines_result);
 	console.log("placeSearchDone_Callback, city_lines_result.length: " + city_lines_result.length + ", city_stations_result.length: " 
 		+ city_stations_result.length + ", city_stations_location_result.length: " + city_stations_location_result.length);
+	++search_global.searched_count;
+	
+	if (city_stations_location_result.length > 0){
+			
+		//deep copy
+		var wait_for_nearby_search_locations = [];
+		for (var i in city_stations_location_result){
 
-	// 触发nearby搜索
-	executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city);
+			wait_for_nearby_search_locations.push(city_stations_location_result[i]);
+		}
+		var loc = wait_for_nearby_search_locations.pop();
+
+		// 触发nearby搜索
+		executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations);
+	}
+
 }
-search_global.placeNearbySearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result)
+search_global.placeNearbySearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result, wait_for_nearby_search_locations_result)
 {
 	console.log("placeNearbySearchDone_Callback, city_lines_result.length: " + city_lines_result.length 
-		+ ", city_stations_result.length: " + city_stations_result.length + ", city_stations_location_result.length: " + city_stations_location_result.length);
+		+ ", city_stations_result.length: " + city_stations_result.length 
+		+ ", city_stations_location_result.length: " + city_stations_location_result.length
+		+ ", wait_for_nearby_search_locations_result.length: " + wait_for_nearby_search_locations_result.length);
+	document.getElementById('result').innerHTML = wait_for_nearby_search_locations_result.length;
 
-	// 触发Line搜索
-	executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result);
+	++search_global.searched_count;
+	if (search_global.searched_count % 30 == 0){
+		//try to avoid the AMAP human verification
+		search_global.sleep(15 * 1000);
+	}
+
+	if (0 == wait_for_nearby_search_locations_result.length){
+		
+		// 触发Line搜索
+		executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result);
+	}else{
+		var loc = wait_for_nearby_search_locations_result.pop();
+
+		// 触发nearby搜索
+		executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations_result);
+	}
+
 
 }
 search_global.lineSearchDone_Callback = function (out_str_result)
