@@ -15,6 +15,7 @@ var search_global = {};
 
 //NOTE:输入参数, 目标城市
 search_global.expect_city = '上海';
+//search_global.city_lines = ['20路', '791路']
 
 
 //通用的error handler
@@ -95,7 +96,13 @@ search_global.lineSearchDone_Callback = function (out_str_result)
 }
 
 //入口
-executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
+if (search_global.city_lines){
+	//已有线路list, 直接搜索线路详细
+	executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, search_global.city_lines);
+}else{
+	//需要POI迭代搜索以尝试枚举
+	executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
+}
 </script>
 
 </body>
