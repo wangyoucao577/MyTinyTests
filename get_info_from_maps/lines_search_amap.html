@@ -23,8 +23,14 @@ function errorHandler(e) {
   console.log(e.name + ": " + e.message);
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
 </script>
 <script src="place_search_amap.js"></script>
+<script src="place_search_nearby_amap.js"></script>
 <script src="lines_search_amap.js"></script>
 <script src="write_to_file.js"></script>
 
@@ -32,11 +38,20 @@ function errorHandler(e) {
 search_global.placeSearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result)
 {
 	//console.log(city_lines_result);
-	console.log("city_lines_result.length: " + city_lines_result.length + ", city_stations_result.length: " 
+	console.log("placeSearchDone_Callback, city_lines_result.length: " + city_lines_result.length + ", city_stations_result.length: " 
 		+ city_stations_result.length + ", city_stations_location_result.length: " + city_stations_location_result.length);
 
-	//TODO: 触发Line搜索
+	// 触发nearby搜索
+	executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city);
+}
+search_global.placeNearbySearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result)
+{
+	console.log("placeNearbySearchDone_Callback, city_lines_result.length: " + city_lines_result.length 
+		+ ", city_stations_result.length: " + city_stations_result.length + ", city_stations_location_result.length: " + city_stations_location_result.length);
+
+	// 触发Line搜索
 	executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result);
+
 }
 search_global.lineSearchDone_Callback = function (out_str_result)
 {
