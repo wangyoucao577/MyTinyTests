@@ -1,0 +1,84 @@
+
+//文件内的全局变量
+var place_search_global = {};
+
+//NOTE:城市对应的线路列表
+place_search_global.city_lines = [];
+
+// 等待站点搜索结果, 并触发线路搜索
+place_search_global.expect_total_place_search_result_count = 0;
+place_search_global.total_place_search_result_count = 0;
+function waitForPlaceSearchResult_Callback(){
+    if (0 != place_search_global.expect_total_place_search_result_count
+        && place_search_global.total_place_search_result_count == place_search_global.expect_total_place_search_result_count){
+        // 已完成公交站点的搜索, 并完成了city_lines的生成
+        console.log("All place search succeed, city_lines.length: " + place_search_global.city_lines.length);
+        console.log(place_search_global.city_lines);
+
+        // 触发外部的callback
+        place_search_global.allDone_Callback(place_search_global.city_lines);
+
+    }else{
+        setTimeout(waitForPlaceSearchResult_Callback, 1000);
+    }
+}
+
+function placeSearch_Callback(result)
+{
+    console.log("placeSearch callback, count " + result.poiList.count + ", pageIndex " + result.poiList.pageIndex);
+
+    if (0 == place_search_global.expect_total_place_search_result_count){
+        place_search_global.expect_total_place_search_result_count = result.poiList.count;
+    }
+    
+    var pois = result.poiList.pois;
+    for (var i = 0; i < pois.length; i++) {
+        var lines_address = pois[i].address;
+        var this_lines = lines_address.replace('...', "").split(';');
+        for (var j in this_lines){
+            if (-1 == place_search_global.city_lines.indexOf(this_lines[j])){
+                place_search_global.city_lines.push(this_lines[j]);
+            }
+        }
+    }
+
+    place_search_global.total_place_search_result_count += pois.length;
+    console.log("city_lines.length: " + place_search_global.city_lines.length + ", total place search result count: " + place_search_global.total_place_search_result_count);
+}
+
+function executePlaceSearchForCity(allPlaceSearchDone_Callback, city){
+    place_search_global.allDone_Callback = allPlaceSearchDone_Callback;
+
+    //先查询城市的公交站点
+    AMap.service('AMap.PlaceSearch',function(){//回调函数
+
+        for (var i = 1; i <= 100; i++){ //pageIndex range 1~100
+
+            //实例化PlaceSearch
+            var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
+                pageSize: 100,
+                pageIndex: i,
+                type:"公交车站",
+                city: city, //城市
+                extensions:'all'//返回全部信息
+            });
+
+            //使用placeSearch对象调用关键字搜索的功能
+
+            //关键字查询
+            placeSearch.search('', function(status, result) {
+                //取回公交站点的查询结果
+                if(status === 'complete' && result.info === 'OK'){
+                    //取得了正确的公交站点结果
+
+                    placeSearch_Callback(result);
+                }else{
+                    //无数据或者查询失败, 输出错误信息
+                    //console.log("placeSearch failed, ignored.");
+                }    
+            });
+        }
+        setTimeout(waitForPlaceSearchResult_Callback, 1000);
+    });
+
+}
