@@ -29,10 +29,11 @@ function errorHandler(e) {
 <script src="write_to_file.js"></script>
 
 <script >
-search_global.placeSearchDone_Callback = function (city_lines_result)
+search_global.placeSearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result)
 {
 	//console.log(city_lines_result);
-	console.log("city_lines_result len: " + city_lines_result.length);
+	console.log("city_lines_result.length: " + city_lines_result.length + ", city_stations_result.length: " 
+		+ city_stations_result.length + ", city_stations_location_result.length: " + city_stations_location_result.length);
 
 	//TODO: 触发Line搜索
 	executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result);
