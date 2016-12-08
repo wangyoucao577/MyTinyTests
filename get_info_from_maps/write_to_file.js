@@ -3,7 +3,8 @@
 //申请空间, 线路的搜索结果写入文件
 function write_to_file(city, out_str)
 {
-    var new_file = city + "_" + (new Date()).toString() + ".txt";
+    var now_str = (new Date()).Format("yyyyMMdd_HHmmss")
+    var new_file = city + "_LinesDetails_" + now_str + ".txt";
 
     //申请空间, save to File
     window.webkitRequestFileSystem(window.TEMPORARY, 100*1024*1024, function onInitFs(fs) {
