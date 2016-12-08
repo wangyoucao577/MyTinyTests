@@ -1,5 +1,5 @@
 ﻿#!/usr/bin/python2
-# -*- coding: utf-8 -*-
+# coding=utf-8
 
 """
 Description:
@@ -14,6 +14,8 @@ import re
 import sys
 import json
 import time
+import datetime
+import codecs
 
 amap_place_search_url = 'http://restapi.amap.com/v3/place/text?key=ec001ba28cef4168991d5dc2063ea2d1&types=150700&extensions=all&children=1'
 amap_nearby_search_url = 'http://restapi.amap.com/v3/place/around?key=ec001ba28cef4168991d5dc2063ea2d1&types=150700&extensions&children=1&radius=50000'
@@ -122,6 +124,20 @@ def place_search_for_stations_lines(city, base_reqest_url):
             
     return (out_stations, out_stations_location, out_lines)
 
+
+def write_to_file(city, lines):
+    target_file_name = city + "_Lines_" + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + ".txt"
+    f = codecs.open(target_file_name,'w+','utf-8')
+    f.write("count = " + str(len(lines)) + "\n")
+    f.write("var city_lines = [")
+    for l in lines:
+        f.write("\'" + l + "\'")
+        if l != lines[len(lines) - 1]:
+            f.write(", ")
+    f.write("]")
+    f.close()
+
+
 def main():
     city = '021'
 
@@ -133,7 +149,7 @@ def main():
     #print_list(stations_location)
     #print_list(lines)
     print "len(stations): " + str(len(stations)) + "len(stations_location): " + str(len(stations_location)) + ", len(lines): " + str(len(lines))
-    
+
     tick2 = time.time();
     print "tick2: " + str(tick2) + ", place_search cost seconds: " + str(tick2 - tick1) + "."
 
@@ -164,8 +180,9 @@ def main():
     tick4 = time.time();
     print "tick4: " + str(tick4) + ", nearby search again cost seconds: " + str(tick4 - tick3) + ", app total cost seconds: " + str(tick4 - tick1)
 
-    #TODO: format and then output to file
-    print_list(lines)
+    # format and then output to file
+    #print_list(lines)
+    write_to_file(city, lines)
 
 if __name__ == '__main__':
     main()
