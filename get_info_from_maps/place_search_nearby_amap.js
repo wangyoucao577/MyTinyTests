@@ -20,13 +20,13 @@ function waitForPlaceSearchNearbyResult_Callback(){
 
     }else{
         place_search_nearby_global.last_remember_succeed_callback_count = place_search_nearby_global.total_nearby_search_succeed_callback_count;
-        setTimeout(waitForPlaceSearchNearbyResult_Callback, 5000);
+        setTimeout(waitForPlaceSearchNearbyResult_Callback, 10000);
     }
 }
 
 function placeSearchNearby_Callback(result)
 {
-    console.log("placeSearchNearby_Callback, pois count " + result.poiList.count + ", pageIndex " + result.poiList.pageIndex);
+    //console.log("placeSearchNearby_Callback, pois count " + result.poiList.count + ", pageIndex " + result.poiList.pageIndex);
     
     var pois = result.poiList.pois;
     for (var i = 0; i < pois.length; i++) {
@@ -49,10 +49,10 @@ function placeSearchNearby_Callback(result)
     }
 
     ++place_search_nearby_global.total_nearby_search_succeed_callback_count;
-    console.log("city_lines.length: " + place_search_nearby_global.city_lines.length 
-        + ", city_stations.length: " + place_search_nearby_global.city_stations.length 
-        + ", city_stations_location.length: " + place_search_nearby_global.city_stations_location.length 
-        + ", total_nearby_search_succeed_callback_count: " + place_search_nearby_global.total_nearby_search_succeed_callback_count);
+    // console.log("city_lines.length: " + place_search_nearby_global.city_lines.length 
+    //     + ", city_stations.length: " + place_search_nearby_global.city_stations.length 
+    //     + ", city_stations_location.length: " + place_search_nearby_global.city_stations_location.length 
+    //     + ", total_nearby_search_succeed_callback_count: " + place_search_nearby_global.total_nearby_search_succeed_callback_count);
 }
 
 function executePlaceSearchNearbyForCity(allPlaceSearchNearbyDone_Callback, city_lines, city_stations, city_stations_location, city){
@@ -82,7 +82,7 @@ function executePlaceSearchNearbyForCity(allPlaceSearchNearbyDone_Callback, city
                 //使用placeSearch对象调用关键字搜索的功能
 
                 //关键字查询
-                placeSearch.searchNearBy('', city_stations_location[location_index], 5000, function(status, result) {
+                placeSearch.searchNearBy('', city_stations_location[location_index], 50000, function(status, result) {
                     //取回公交站点的查询结果
                     if(status === 'complete' && result.info === 'OK'){
                         //取得了正确的公交站点结果
@@ -91,14 +91,13 @@ function executePlaceSearchNearbyForCity(allPlaceSearchNearbyDone_Callback, city
                     }else{
                         //无数据或者查询失败, 输出错误信息
                         ++place_search_nearby_global.total_nearby_search_failed_callback_count;
-                        console.log("placeSearch nearby failed count: " + place_search_nearby_global.total_nearby_search_failed_callback_count 
-                            + ", " + status + ": " + result.info + ", ignored.");
+                        //console.log("placeSearch nearby failed count: " + place_search_nearby_global.total_nearby_search_failed_callback_count + ", " + status + ": " + result.info + ", ignored.");
                     }    
                 });
             }    
-            sleep(1000);    //execute next query after 1000 ms
+            sleep(2000);    //execute next query after 1000 ms
         }
-        setTimeout(waitForPlaceSearchNearbyResult_Callback, 5000);
+        setTimeout(waitForPlaceSearchNearbyResult_Callback, 10000);
 
     });
 

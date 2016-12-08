@@ -28,7 +28,7 @@ function waitForPlaceSearchResult_Callback(){
 
 function placeSearch_Callback(result)
 {
-    console.log("placeSearch callback, count " + result.poiList.count + ", pageIndex " + result.poiList.pageIndex);
+    //console.log("placeSearch callback, count " + result.poiList.count + ", pageIndex " + result.poiList.pageIndex);
 
     if (0 == place_search_global.expect_total_place_search_result_count){
         place_search_global.expect_total_place_search_result_count = result.poiList.count;
@@ -55,7 +55,7 @@ function placeSearch_Callback(result)
     }
 
     place_search_global.total_place_search_result_count += pois.length;
-    console.log("city_lines.length: " + place_search_global.city_lines.length + ", city_stations.length: " + place_search_global.city_stations.length + ", city_stations_location.length: " + place_search_global.city_stations_location.length + ", total place search result count: " + place_search_global.total_place_search_result_count);
+    //console.log("city_lines.length: " + place_search_global.city_lines.length + ", city_stations.length: " + place_search_global.city_stations.length + ", city_stations_location.length: " + place_search_global.city_stations_location.length + ", total place search result count: " + place_search_global.total_place_search_result_count);
 }
 
 function executePlaceSearchForCity(allPlaceSearchDone_Callback, city){

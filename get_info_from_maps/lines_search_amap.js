@@ -15,13 +15,13 @@ function waitForLineSearchResult_Callback(){
     if ((lines_search_global.searchSucceedCallbackCount + lines_search_global.searchFailedCallbackCount) == lines_search_global.city_lines.length)
     {
         //all callback comes, write succeed to file
-        console.log("All callback executed, we'll write.");
+        console.log("All lineSearch callback executed, we'll write.");
         lines_search_global.allDone_callback(lines_search_global.outStr);
         //write_to_file();
     }
     else if (0 != lines_search_global.last_remember_count && (lines_search_global.searchSucceedCallbackCount + lines_search_global.searchFailedCallbackCount) == lines_search_global.last_remember_count)
     {
-        console.log("Lost search callback count: " + (lines_search_global.city_lines.length - lines_search_global.last_remember_count) + ", we'll write.");
+        console.log("Lost lineSearch callback count: " + (lines_search_global.city_lines.length - lines_search_global.last_remember_count) + ", we'll write.");
         lines_search_global.allDone_callback(lines_search_global.outStr);
         //write_to_file();
     }
@@ -64,7 +64,7 @@ function lineSearch_Callback(result)
     lines_search_global.outStr += stops_txt;
     lines_search_global.outStr += path_txt;
     ++lines_search_global.searchSucceedCallbackCount;
-    console.log("line search succeed count " + lines_search_global.searchSucceedCallbackCount + ", Line:" + lineArr[0].name);
+    //console.log("line search succeed count " + lines_search_global.searchSucceedCallbackCount + ", Line:" + lineArr[0].name);
 }
 
 function executeLineSearch(allLineSearchDone_Callback, city, city_lines){
@@ -103,7 +103,7 @@ function executeLineSearch(allLineSearchDone_Callback, city, city_lines){
                     //无数据或者查询失败, 输出错误信息
                     //document.getElementById("result").innerHTML = status + " " + result.info;
                     ++lines_search_global.searchFailedCallbackCount;
-                    console.log("line search failed count " + lines_search_global.searchFailedCallbackCount + ", error info: "+ status + ", " + result.info);
+                    //console.log("line search failed count " + lines_search_global.searchFailedCallbackCount + ", error info: "+ status + ", " + result.info);
                 }
             });
         }
