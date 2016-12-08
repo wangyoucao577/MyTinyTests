@@ -138,13 +138,18 @@ def main():
     print "tick2: " + str(tick2) + ", place_search cost seconds: " + str(tick2 - tick1) + "."
 
     print "ready to search nearby."
-    stations_location_copy = stations_location
+
+    #DeepCopy
+    stations_location_copy = []
+    for loc in stations_location:
+        stations_location_copy.append(loc)
+
     nearby_count = 0
     for x in stations_location_copy:
-        print "nearby search count: " + str(nearby_count)
+        print "nearby search count: " + str(nearby_count) + ", total count: " + str(len(stations_location_copy))
         nearby_count += 1
         (stations, stations_location, lines) = nearby_search_for_lines_via_location(amap_nearby_search_url, city, x, stations, stations_location, lines)
-    print "len(stations): " + str(len(stations)) + "len(stations_location): " + str(len(stations_location)) + ", len(lines): " + str(len(lines))
+    print "len(stations): " + str(len(stations)) + ", len(stations_location): " + str(len(stations_location)) + ", len(lines): " + str(len(lines))
 
     tick3 = time.time();
     print "tick3: " + str(tick3) + ", nearby search cost seconds: " + str(tick3 - tick2) + ", ready for nearby search again."
@@ -153,12 +158,14 @@ def main():
     # for x in stations_location_copy:
     #     (stations, stations_location, lines) = nearby_search_for_lines_via_location(amap_nearby_search_url, city, x, stations, stations_location, lines)
 
-    print_list(lines)
-    print "len(stations): " + str(len(stations)) + "len(stations_location): " + str(len(stations_location)) + ", len(lines): " + str(len(lines))
+    #print_list(lines)
+    print "len(stations): " + str(len(stations)) + ", len(stations_location): " + str(len(stations_location)) + ", len(lines): " + str(len(lines))
 
     tick4 = time.time();
     print "tick4: " + str(tick4) + ", nearby search again cost seconds: " + str(tick4 - tick3) + ", app total cost seconds: " + str(tick4 - tick1)
 
+    #TODO: format and then output to file
+    print_list(lines)
 
 if __name__ == '__main__':
     main()
