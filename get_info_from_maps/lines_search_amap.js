@@ -64,7 +64,7 @@ function lineSearch_Callback(result)
     lines_search_global.outStr += stops_txt;
     lines_search_global.outStr += path_txt;
     ++lines_search_global.searchSucceedCallbackCount;
-    //console.log("line search succeed count " + lines_search_global.searchSucceedCallbackCount + ", Line:" + lineArr[0].name);
+    console.log("line search succeed count " + lines_search_global.searchSucceedCallbackCount + ", Line:" + lineArr[0].name);
 }
 
 function executeLineSearch(allLineSearchDone_Callback, city, city_lines){

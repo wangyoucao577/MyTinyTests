@@ -49,10 +49,10 @@ function placeSearchNearby_Callback(result)
     }
 
     ++place_search_nearby_global.total_nearby_search_succeed_callback_count;
-    // console.log("city_lines.length: " + place_search_nearby_global.city_lines.length 
-    //     + ", city_stations.length: " + place_search_nearby_global.city_stations.length 
-    //     + ", city_stations_location.length: " + place_search_nearby_global.city_stations_location.length 
-    //     + ", total_nearby_search_succeed_callback_count: " + place_search_nearby_global.total_nearby_search_succeed_callback_count);
+    console.log("city_lines.length: " + place_search_nearby_global.city_lines.length 
+        + ", city_stations.length: " + place_search_nearby_global.city_stations.length 
+        + ", city_stations_location.length: " + place_search_nearby_global.city_stations_location.length 
+        + ", total_nearby_search_succeed_callback_count: " + place_search_nearby_global.total_nearby_search_succeed_callback_count);
 }
 
 function executePlaceSearchNearbyForCity(allPlaceSearchNearbyDone_Callback, city_lines, city_stations, city_stations_location, city){
