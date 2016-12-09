@@ -27,7 +27,7 @@ search_global.MapProvider = {
 
 //NOTE: options
 search_global.options = {
-	map_provider: search_global.MapProvider.AMap,				//选择地图提供商
+	map_provider: search_global.MapProvider.BaiduMap,				//选择地图提供商
 	is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
 	is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
 	is_search_via_exist_city_lines: (search_global.city_lines ? true : false)	//根据现有的city_lines进行LineSearch or 从PlaceSearch开始
@@ -38,11 +38,18 @@ search_global.options = {
 search_global.searched_count = 0;
 
 </script>
+
+<!-- 公用功能 -->
 <script src="my_base_tools.js"></script>
+<script src="write_to_file.js"></script>
+
+<!-- 引用AMAP功能 -->
 <script src="place_search_amap.js"></script>
 <script src="place_search_nearby_amap.js"></script>
 <script src="lines_search_amap.js"></script>
-<script src="write_to_file.js"></script>
+
+<!-- 引用Baidu Map功能 -->
+<script src="local_search_baidumap.js"></script>
 
 <script >
 search_global.placeSearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result)
@@ -114,7 +121,7 @@ search_global.lineSearchDone_Callback = function (out_str_result)
 }
 
 //入口
-if (search_global.map_provider === search_global.MapProvider.AMAP){
+if (search_global.options.map_provider === search_global.MapProvider.AMAP){
 	if (search_global.options.is_search_via_exist_city_lines){
 		//已有线路list, 直接搜索线路详细
 		executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, search_global.city_lines);
@@ -122,9 +129,11 @@ if (search_global.map_provider === search_global.MapProvider.AMAP){
 		//需要POI迭代搜索以尝试枚举
 		executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
 	}
-}else if (search_global.map_provider === search_global.MapProvider.BaiduMap){
+}else if (search_global.options.map_provider === search_global.MapProvider.BaiduMap){
 	//TODO: 
-}else if (search_global.map_provider === search_global.MapProvider.GoogleMap){
+	local_search_global_bmap.execute_local_search(search_global.expect_city, "徐家汇");
+
+}else if (search_global.options.map_provider === search_global.MapProvider.GoogleMap){
 	//TODO:
 }
 </script>
