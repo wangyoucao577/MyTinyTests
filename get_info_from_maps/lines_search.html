@@ -20,14 +20,15 @@ search_global.city_lines = ['20路', '791路']
 
 //地图提供商的枚举
 search_global.MapProvider = {
-	AMap: 1,
-	BaiduMap: 2,
-	GoogleMap: 3
+	AMap: 0,
+	BaiduMap: 1,
+	GoogleMap: 2
 }
+search_global.MapProviderName = ["AMap", "BaiduMap", "GoogleMap"];
 
 //NOTE: options
 search_global.options = {
-	map_provider: search_global.MapProvider.BaiduMap,				//选择地图提供商
+	map_provider: search_global.MapProvider.AMap,				//选择地图提供商
 	is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
 	is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
 	is_search_via_exist_city_lines: (search_global.city_lines ? true : false)	//根据现有的city_lines进行LineSearch or 从PlaceSearch开始
@@ -116,13 +117,14 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
 
 
 }
-search_global.lineSearchDone_Callback = function (out_str_result)
+search_global.lineSearchDone_Callback = function (out_str_result, map_provider_name)
 {
 	//console.log(out_str_result);
 	console.log("out_str_result len: " + out_str_result.length);
 
 	// 触发文件写入
-	write_to_file(search_global.expect_city, "LinesDetails", out_str_result.replace(/<\/br>/g, "\n"));
+	write_to_file(search_global.expect_city, "LinesDetails_" + map_provider_name, 
+		out_str_result.replace(/<\/br>/g, "\n"));
 }
 
 //入口

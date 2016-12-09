@@ -23,7 +23,7 @@ busline_search_global_bmap.waitForAllBusLineResult_Callback = function(){
     {
         //NOTE: 结果不再变化, 触发外部的下一步动作 
         console.log("total busline search complete count: " + busline_search_global_bmap.onGetBusLineComplete + ", we'll write.");
-        busline_search_global_bmap.allDone_callback(busline_search_global_bmap.outStr);
+        busline_search_global_bmap.allDone_callback(busline_search_global_bmap.outStr, "BaiduMap");
     }
     else
     {

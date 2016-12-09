@@ -16,7 +16,7 @@ function waitForLineSearchResult_Callback(){
     {
         //all callback comes, write succeed to file
         console.log("All lineSearch callback executed, we'll write.");
-        lines_search_global_amap.allDone_callback(lines_search_global_amap.outStr);
+        lines_search_global_amap.allDone_callback(lines_search_global_amap.outStr, "AMap");
         //write_to_file();
     }
     else if (0 != lines_search_global_amap.last_remember_count && (lines_search_global_amap.searchSucceedCallbackCount + lines_search_global_amap.searchFailedCallbackCount) == lines_search_global_amap.last_remember_count)
