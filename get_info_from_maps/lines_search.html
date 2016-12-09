@@ -92,6 +92,10 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
 		//try to avoid the AMAP human verification
 		sleep(15 * 1000);
 	}
+	if (search_global.searched_count % 100 == 0){
+		//NOTE: 过程中也把city_lines写入文件, 以免由于高德的拖动认证问题导致成果作废...
+		write_city_lines_to_file(search_global.expect_city, "NearbySearchCityLines_temp_" + search_global.searched_count, out_str);
+	}
 
 	if (0 == wait_for_nearby_search_locations_result.length){
 
