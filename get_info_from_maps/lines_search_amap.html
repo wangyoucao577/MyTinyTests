@@ -1,5 +1,6 @@
 ﻿<head>
 <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=04ecec4d88bce342a194b284491e5098"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vkRFW7tPwUzAtZgfWG3XwG7tjI2TRDjm"></script>
 
 </head>
 <body>
@@ -15,15 +16,25 @@ var search_global = {};
 
 //NOTE:输入参数, 目标城市
 search_global.expect_city = '上海';
-//search_global.city_lines = ['20路', '791路']
+search_global.city_lines = ['20路', '791路']
+
+//地图提供商的枚举
+search_global.MapProvider = {
+	AMap: 1,
+	BaiduMap: 2,
+	GoogleMap: 3
+}
 
 //NOTE: options
 search_global.options = {
-	is_write_city_lines_to_file_after_place_search: true,
-	is_write_city_lines_to_file_after_nearby_search: true,
-	is_search_via_exist_city_lines: (search_global.city_lines ? true : false)
+	map_provider: search_global.MapProvider.AMap,				//选择地图提供商
+	is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
+	is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
+	is_search_via_exist_city_lines: (search_global.city_lines ? true : false)	//根据现有的city_lines进行LineSearch or 从PlaceSearch开始
 }
 
+
+//统计
 search_global.searched_count = 0;
 
 </script>
@@ -103,12 +114,18 @@ search_global.lineSearchDone_Callback = function (out_str_result)
 }
 
 //入口
-if (search_global.options.is_search_via_exist_city_lines){
-	//已有线路list, 直接搜索线路详细
-	executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, search_global.city_lines);
-}else{
-	//需要POI迭代搜索以尝试枚举
-	executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
+if (search_global.map_provider === search_global.MapProvider.AMAP){
+	if (search_global.options.is_search_via_exist_city_lines){
+		//已有线路list, 直接搜索线路详细
+		executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, search_global.city_lines);
+	}else{
+		//需要POI迭代搜索以尝试枚举
+		executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
+	}
+}else if (search_global.map_provider === search_global.MapProvider.BaiduMap){
+	//TODO: 
+}else if (search_global.map_provider === search_global.MapProvider.GoogleMap){
+	//TODO:
 }
 </script>
 
