@@ -15,13 +15,14 @@ var search_global = {};
 
 //NOTE:输入参数, 目标城市
 search_global.expect_city = '上海';
-search_global.city_lines = ['20路', '791路']
+//search_global.city_lines = ['20路', '791路']
 
 //NOTE: options
-search_global.is_write_city_lines_to_file_after_place_search = true;
-search_global.is_write_city_lines_to_file_after_nearby_search = true;
-search_global.is_search_via_exist_city_lines = search_global.city_lines ? true : false;
-
+search_global.options = {
+	is_write_city_lines_to_file_after_place_search: true,
+	is_write_city_lines_to_file_after_place_search: true,
+	is_search_via_exist_city_lines: (search_global.city_lines ? true : false)
+}
 
 search_global.searched_count = 0;
 
@@ -40,7 +41,7 @@ search_global.placeSearchDone_Callback = function (city_lines_result, city_stati
 		+ city_stations_result.length + ", city_stations_location_result.length: " + city_stations_location_result.length);
 	++search_global.searched_count;
 
-	if (search_global.is_write_city_lines_to_file_after_place_search){
+	if (search_global.options.is_write_city_lines_to_file_after_place_search){
 
 		//format
 		var out_str = "count = " + city_lines_result.length + "\nvar city_lines = [";
@@ -108,7 +109,7 @@ search_global.lineSearchDone_Callback = function (out_str_result)
 }
 
 //入口
-if (search_global.is_search_via_exist_city_lines){
+if (search_global.options.is_search_via_exist_city_lines){
 	//已有线路list, 直接搜索线路详细
 	executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, search_global.city_lines);
 }else{
