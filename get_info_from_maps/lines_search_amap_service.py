@@ -170,9 +170,14 @@ def main():
     tick3 = time.time();
     print "tick3: " + str(tick3) + ", nearby search cost seconds: " + str(tick3 - tick2) + ", ready for nearby search again."
 
-    # stations_location_copy = stations_location
-    # for x in stations_location_copy:
-    #     (stations, stations_location, lines) = nearby_search_for_lines_via_location(amap_nearby_search_url, city, x, stations, stations_location, lines)
+    #DeepCopy
+    stations_location_copy_2 = []
+    for loc in stations_location:
+        if loc not in stations_location_copy:   #ignore the items which has been searched
+            stations_location_copy_2.append(loc)
+    for x in stations_location_copy_2:
+        print "nearby search count: " + str(nearby_count) + ", total count: " + str(len(stations_location_copy_2))
+        (stations, stations_location, lines) = nearby_search_for_lines_via_location(amap_nearby_search_url, city, x, stations, stations_location, lines)
 
     #print_list(lines)
     print "len(stations): " + str(len(stations)) + ", len(stations_location): " + str(len(stations_location)) + ", len(lines): " + str(len(lines))
