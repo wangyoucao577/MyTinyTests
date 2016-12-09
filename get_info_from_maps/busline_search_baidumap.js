@@ -11,29 +11,7 @@ busline_search_global_bmap.getBusListCount = 0;
 busline_search_global_bmap.getBusLineCount = 0;
 busline_search_global_bmap.last_remember_count = 0;
 
-busline_search_global_bmap.waitForAllBusLineResult_Callback = function(){
-    console.log("time waked up, buslist succeed count: " + busline_search_global_bmap.onGetBusListCompleteCount
-      + ", busline succeed count: " + busline_search_global_bmap.onGetBusLineCompleteCount
-      + ", getBusList Count: " + busline_search_global_bmap.getBusListCount
-      + ", getBusLine Count: " + busline_search_global_bmap.getBusLineCount 
-      + ", last_remember_count: " + busline_search_global_bmap.last_remember_count);
-
-
-    if (0 != busline_search_global_bmap.last_remember_count && (busline_search_global_bmap.onGetBusListCompleteCount + busline_search_global_bmap.onGetBusLineCompleteCount) == busline_search_global_bmap.last_remember_count)
-    {
-        //NOTE: 结果不再变化, 触发外部的下一步动作 
-        console.log("total busline search complete count: " + busline_search_global_bmap.onGetBusLineComplete + ", we'll write.");
-        busline_search_global_bmap.allDone_callback(busline_search_global_bmap.outStr, "BaiduMap");
-    }
-    else
-    {
-        busline_search_global_bmap.last_remember_count = busline_search_global_bmap.onGetBusListCompleteCount + busline_search_global_bmap.onGetBusLineCompleteCount;
-        setTimeout(busline_search_global_bmap.waitForAllBusLineResult_Callback , 1000);
-    }
-
-}
-
-busline_search_global_bmap.execute_buslines_search = function (allLineSearchDone_Callback, city, city_lines){
+busline_search_global_bmap.execute_buslines_search = function (allLineSearchDone_Callback, city, city_lines, map_provider_name){
   busline_search_global_bmap.allDone_callback = allLineSearchDone_Callback;
 
   var busline = new BMap.BusLineSearch(city,{
@@ -95,6 +73,29 @@ busline_search_global_bmap.execute_buslines_search = function (allLineSearchDone
     busline_search_global_bmap.getBusListCount++;
   }
 
-  setTimeout(busline_search_global_bmap.waitForAllBusLineResult_Callback , 1000);
+  waitForAllBusLineResult_Callback = function(){
+    console.log("time waked up, buslist succeed count: " + busline_search_global_bmap.onGetBusListCompleteCount
+      + ", busline succeed count: " + busline_search_global_bmap.onGetBusLineCompleteCount
+      + ", getBusList Count: " + busline_search_global_bmap.getBusListCount
+      + ", getBusLine Count: " + busline_search_global_bmap.getBusLineCount 
+      + ", last_remember_count: " + busline_search_global_bmap.last_remember_count);
+
+
+    if (0 != busline_search_global_bmap.last_remember_count && (busline_search_global_bmap.onGetBusListCompleteCount + busline_search_global_bmap.onGetBusLineCompleteCount) == busline_search_global_bmap.last_remember_count)
+    {
+        //NOTE: 结果不再变化, 触发外部的下一步动作 
+        console.log("total busline search complete count: " + busline_search_global_bmap.onGetBusLineComplete + ", we'll write.");
+        busline_search_global_bmap.allDone_callback(busline_search_global_bmap.outStr, map_provider_name);
+    }
+    else
+    {
+        busline_search_global_bmap.last_remember_count = busline_search_global_bmap.onGetBusListCompleteCount + busline_search_global_bmap.onGetBusLineCompleteCount;
+        setTimeout(waitForAllBusLineResult_Callback , 1000);
+    }
+
+}
+
+
+  setTimeout(waitForAllBusLineResult_Callback , 1000);
 }
 

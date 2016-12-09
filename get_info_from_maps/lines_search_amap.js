@@ -16,7 +16,7 @@ function waitForLineSearchResult_Callback(){
     {
         //all callback comes, write succeed to file
         console.log("All lineSearch callback executed, we'll write.");
-        lines_search_global_amap.allDone_callback(lines_search_global_amap.outStr, "AMap");
+        lines_search_global_amap.allDone_callback(lines_search_global_amap.outStr, lines_search_global_amap.map_provider_name);
         //write_to_file();
     }
     else if (0 != lines_search_global_amap.last_remember_count && (lines_search_global_amap.searchSucceedCallbackCount + lines_search_global_amap.searchFailedCallbackCount) == lines_search_global_amap.last_remember_count)
@@ -67,10 +67,11 @@ function lineSearch_Callback(result)
     console.log("line search succeed count " + lines_search_global_amap.searchSucceedCallbackCount + ", Line:" + lineArr[0].name);
 }
 
-lines_search_global_amap.executeLineSearch = function (allLineSearchDone_Callback, city, city_lines){
+lines_search_global_amap.executeLineSearch = function (allLineSearchDone_Callback, city, city_lines, map_provider_name){
     lines_search_global_amap.allDone_callback = allLineSearchDone_Callback;
     lines_search_global_amap.city_lines = city_lines;
     lines_search_global_amap.expect_city = city;
+    lines_search_global_amap.map_provider_name = map_provider_name;
 
     //加载公交路线查询服务
     //实例化公交线路查询类，只取回一条路线

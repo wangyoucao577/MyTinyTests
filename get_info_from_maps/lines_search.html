@@ -132,7 +132,8 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
 	if (search_global.options.is_search_via_exist_city_lines){
 		//已有线路list, 直接搜索线路详细
 		lines_search_global_amap.executeLineSearch(search_global.lineSearchDone_Callback, 
-			search_global.expect_city, search_global.city_lines);
+			search_global.expect_city, search_global.city_lines, 
+			search_global.MapProviderName[search_global.options.map_provider]);
 	}else{
 		//需要POI迭代搜索以尝试枚举
 		place_search_global_amap.executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
@@ -141,7 +142,8 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
 	//TODO: 
 	//local_search_global_bmap.execute_local_search(search_global.expect_city, "公交");
 	busline_search_global_bmap.execute_buslines_search(search_global.lineSearchDone_Callback, 
-		search_global.expect_city, search_global.city_lines);
+		search_global.expect_city, search_global.city_lines, 
+		search_global.MapProviderName[search_global.options.map_provider]);
 
 }else if (search_global.options.map_provider === search_global.MapProvider.GoogleMap){
 	//TODO:
