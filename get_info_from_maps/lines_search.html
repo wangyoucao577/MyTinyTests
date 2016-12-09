@@ -16,7 +16,7 @@ var search_global = {};
 
 //NOTE:输入参数, 目标城市
 search_global.expect_city = '上海';
-search_global.city_lines = ['20路', '791路']
+//search_global.city_lines = ['20路', '791路']
 
 //地图提供商的枚举
 search_global.MapProvider = {
@@ -27,7 +27,7 @@ search_global.MapProvider = {
 
 //NOTE: options
 search_global.options = {
-	map_provider: search_global.MapProvider.BaiduMap,				//选择地图提供商
+	map_provider: search_global.MapProvider.AMap,				//选择地图提供商
 	is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
 	is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
 	is_search_via_exist_city_lines: (search_global.city_lines ? true : false)	//根据现有的city_lines进行LineSearch or 从PlaceSearch开始
@@ -75,7 +75,7 @@ search_global.placeSearchDone_Callback = function (city_lines_result, city_stati
 		var loc = wait_for_nearby_search_locations.pop();
 
 		// 触发nearby搜索
-		executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations);
+		nearby_search_global_amap.executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations);
 	}
 
 }
@@ -101,12 +101,12 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
 		}
 		
 		// 触发Line搜索
-		executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result);
+		lines_search_global_amap.executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result);
 	}else{
 		var loc = wait_for_nearby_search_locations_result.pop();
 
 		// 触发nearby搜索
-		executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations_result);
+		nearby_search_global_amap.executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations_result);
 	}
 
 
@@ -121,13 +121,13 @@ search_global.lineSearchDone_Callback = function (out_str_result)
 }
 
 //入口
-if (search_global.options.map_provider === search_global.MapProvider.AMAP){
+if (search_global.options.map_provider === search_global.MapProvider.AMap){
 	if (search_global.options.is_search_via_exist_city_lines){
 		//已有线路list, 直接搜索线路详细
-		executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, search_global.city_lines);
+		lines_search_global_amap.executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, search_global.city_lines);
 	}else{
 		//需要POI迭代搜索以尝试枚举
-		executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
+		place_search_global_amap.executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
 	}
 }else if (search_global.options.map_provider === search_global.MapProvider.BaiduMap){
 	//TODO: 

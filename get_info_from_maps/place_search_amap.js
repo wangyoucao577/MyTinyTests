@@ -1,25 +1,25 @@
 
 //文件内的全局变量
-var place_search_global = {};
+var place_search_global_amap = {};
 
 //NOTE:城市对应的线路列表
-place_search_global.city_lines = [];
-place_search_global.city_stations = [];
-place_search_global.city_stations_location = [];
+place_search_global_amap.city_lines = [];
+place_search_global_amap.city_stations = [];
+place_search_global_amap.city_stations_location = [];
 
 // 等待站点搜索结果, 并触发线路搜索
-place_search_global.expect_total_place_search_result_count = 0;
-place_search_global.total_place_search_result_count = 0;
+place_search_global_amap.expect_total_place_search_result_count = 0;
+place_search_global_amap.total_place_search_result_count = 0;
 function waitForPlaceSearchResult_Callback(){
-    if (0 != place_search_global.expect_total_place_search_result_count
-        && place_search_global.total_place_search_result_count == place_search_global.expect_total_place_search_result_count){
+    if (0 != place_search_global_amap.expect_total_place_search_result_count
+        && place_search_global_amap.total_place_search_result_count == place_search_global_amap.expect_total_place_search_result_count){
         // 已完成公交站点的搜索, 并完成了city_lines的生成
-        console.log("All place search succeed, city_lines.length: " + place_search_global.city_lines.length 
-            + ", city_stations.length: " + place_search_global.city_stations.length + ", city_stations_location.length: " + place_search_global.city_stations_location.length);
-        //console.log(place_search_global.city_lines);
+        console.log("All place search succeed, city_lines.length: " + place_search_global_amap.city_lines.length 
+            + ", city_stations.length: " + place_search_global_amap.city_stations.length + ", city_stations_location.length: " + place_search_global_amap.city_stations_location.length);
+        //console.log(place_search_global_amap.city_lines);
 
         // 触发外部的callback
-        place_search_global.allDone_Callback(place_search_global.city_lines, place_search_global.city_stations, place_search_global.city_stations_location);
+        place_search_global_amap.allDone_Callback(place_search_global_amap.city_lines, place_search_global_amap.city_stations, place_search_global_amap.city_stations_location);
 
     }else{
         setTimeout(waitForPlaceSearchResult_Callback, 1000);
@@ -30,36 +30,36 @@ function placeSearch_Callback(result)
 {
     //console.log("placeSearch callback, count " + result.poiList.count + ", pageIndex " + result.poiList.pageIndex);
 
-    if (0 == place_search_global.expect_total_place_search_result_count){
-        place_search_global.expect_total_place_search_result_count = result.poiList.count;
+    if (0 == place_search_global_amap.expect_total_place_search_result_count){
+        place_search_global_amap.expect_total_place_search_result_count = result.poiList.count;
     }
     
     var pois = result.poiList.pois;
     for (var i = 0; i < pois.length; i++) {
 
-        if (-1 == place_search_global.city_stations.indexOf(pois[i].name)){
-            place_search_global.city_stations.push(pois[i].name);
+        if (-1 == place_search_global_amap.city_stations.indexOf(pois[i].name)){
+            place_search_global_amap.city_stations.push(pois[i].name);
         }
-        if (-1 == place_search_global.city_stations_location.indexOf(pois[i].location)){
-            place_search_global.city_stations_location.push(pois[i].location);
+        if (-1 == place_search_global_amap.city_stations_location.indexOf(pois[i].location)){
+            place_search_global_amap.city_stations_location.push(pois[i].location);
         }
 
         var lines_address = pois[i].address;
         var this_lines = lines_address.replace('...', "").split(';');
         for (var j in this_lines){
-            if (-1 == place_search_global.city_lines.indexOf(this_lines[j])){
-                place_search_global.city_lines.push(this_lines[j]);
+            if (-1 == place_search_global_amap.city_lines.indexOf(this_lines[j])){
+                place_search_global_amap.city_lines.push(this_lines[j]);
             }
 
         }
     }
 
-    place_search_global.total_place_search_result_count += pois.length;
-    console.log("city_lines.length: " + place_search_global.city_lines.length + ", city_stations.length: " + place_search_global.city_stations.length + ", city_stations_location.length: " + place_search_global.city_stations_location.length + ", total place search result count: " + place_search_global.total_place_search_result_count);
+    place_search_global_amap.total_place_search_result_count += pois.length;
+    console.log("city_lines.length: " + place_search_global_amap.city_lines.length + ", city_stations.length: " + place_search_global_amap.city_stations.length + ", city_stations_location.length: " + place_search_global_amap.city_stations_location.length + ", total place search result count: " + place_search_global_amap.total_place_search_result_count);
 }
 
-function executePlaceSearchForCity(allPlaceSearchDone_Callback, city){
-    place_search_global.allDone_Callback = allPlaceSearchDone_Callback;
+place_search_global_amap.executePlaceSearchForCity = function (allPlaceSearchDone_Callback, city){
+    place_search_global_amap.allDone_Callback = allPlaceSearchDone_Callback;
 
     //先查询城市的公交站点
     AMap.service('AMap.PlaceSearch',function(){//回调函数
