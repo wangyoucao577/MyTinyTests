@@ -20,7 +20,7 @@ search_global.expect_city = '上海';
 //NOTE: options
 search_global.options = {
 	is_write_city_lines_to_file_after_place_search: true,
-	is_write_city_lines_to_file_after_place_search: true,
+	is_write_city_lines_to_file_after_nearby_search: true,
 	is_search_via_exist_city_lines: (search_global.city_lines ? true : false)
 }
 
@@ -42,19 +42,8 @@ search_global.placeSearchDone_Callback = function (city_lines_result, city_stati
 	++search_global.searched_count;
 
 	if (search_global.options.is_write_city_lines_to_file_after_place_search){
-
-		//format
-		var out_str = "count = " + city_lines_result.length + "\nvar city_lines = [";
-		for (var i in city_lines_result){
-			out_str += "\'" + city_lines_result[i] + "\'";
-			if (i < city_lines_result.length - 1){
-				out_str += ", ";
-			}
-		}
-		out_str += "]";
-
-		//把结果写入文件
-		write_to_file(search_global.expect_city, "PlaceSearchCityLines", out_str);
+		//把city_lines写入文件
+		write_city_lines_to_file(search_global.expect_city, "PlaceSearchCityLines", city_lines_result);
 	}
 	
 	if (city_stations_location_result.length > 0){
@@ -87,6 +76,11 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
 	}
 
 	if (0 == wait_for_nearby_search_locations_result.length){
+
+		if (search_global.options.is_write_city_lines_to_file_after_nearby_search){
+			//把city_lines写入文件
+			write_city_lines_to_file(search_global.expect_city, "NearbySearchCityLines", out_str);
+		}
 		
 		// 触发Line搜索
 		executeLineSearch(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result);

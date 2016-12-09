@@ -22,3 +22,18 @@ function write_to_file(city, type, out_str)
     }, errorHandler);
 }
 
+function write_city_lines_to_file(city, type, city_lines){
+
+    //format
+    var out_str = "count = " + city_lines.length + "\nvar city_lines = [";
+    for (var i in city_lines){
+        out_str += "\'" + city_lines[i] + "\'";
+        if (i < city_lines.length - 1){
+            out_str += ", ";
+        }
+    }
+    out_str += "]";
+
+    //把结果写入文件
+    write_to_file(city, type, out_str);
+}
