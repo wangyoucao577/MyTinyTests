@@ -20,15 +20,14 @@ search_global.city_lines = ['20路', '791路']
 
 //地图提供商的枚举
 search_global.MapProvider = {
-	AMap: 0,
-	BaiduMap: 1,
-	GoogleMap: 2
+	AMap: "AMap",
+	BaiduMap: "BaiduMap",
+	GoogleMap: "GoogleMap"
 }
-search_global.MapProviderName = ["AMap", "BaiduMap", "GoogleMap"];
 
 //NOTE: options
 search_global.options = {
-	map_provider: search_global.MapProvider.AMap,				//选择地图提供商
+	map_provider: search_global.MapProvider.BaiduMap,				//选择地图提供商
 	is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
 	is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
 	is_search_via_exist_city_lines: (search_global.city_lines ? true : false)	//根据现有的city_lines进行LineSearch or 从PlaceSearch开始
@@ -133,7 +132,7 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
 		//已有线路list, 直接搜索线路详细
 		lines_search_global_amap.executeLineSearch(search_global.lineSearchDone_Callback, 
 			search_global.expect_city, search_global.city_lines, 
-			search_global.MapProviderName[search_global.options.map_provider]);
+			search_global.MapProvider.AMap);
 	}else{
 		//需要POI迭代搜索以尝试枚举
 		place_search_global_amap.executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
@@ -143,7 +142,7 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
 	//local_search_global_bmap.execute_local_search(search_global.expect_city, "公交");
 	busline_search_global_bmap.execute_buslines_search(search_global.lineSearchDone_Callback, 
 		search_global.expect_city, search_global.city_lines, 
-		search_global.MapProviderName[search_global.options.map_provider]);
+		search_global.MapProvider.BaiduMap);
 
 }else if (search_global.options.map_provider === search_global.MapProvider.GoogleMap){
 	//TODO:
