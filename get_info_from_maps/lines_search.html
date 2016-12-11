@@ -16,7 +16,7 @@ var search_global = {};
 
 //NOTE:输入参数, 目标城市
 search_global.expect_city = '上海';
-search_global.city_lines = ['20路', '791路']
+//search_global.city_lines = ['20路', '791路']
 
 //地图提供商的枚举
 search_global.MapProvider = {
@@ -116,6 +116,8 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
 
 
 }
+
+//AMap, BaiduMap的通用busline搜索完成时的回调，以触发写入文件
 search_global.lineSearchDone_Callback = function (out_str_result, map_provider_name)
 {
 	//console.log(out_str_result);
@@ -138,11 +140,13 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
 		place_search_global_amap.executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
 	}
 }else if (search_global.options.map_provider === search_global.MapProvider.BaiduMap){
-	//TODO: 
-	//local_search_global_bmap.execute_local_search(search_global.expect_city, "公交");
+	if (search_global.options.is_search_via_exist_city_lines){
 	busline_search_global_bmap.execute_buslines_search(search_global.lineSearchDone_Callback, 
 		search_global.expect_city, search_global.city_lines, 
 		search_global.MapProvider.BaiduMap);
+	}else{
+		local_search_global_bmap.execute_local_search(search_global.expect_city, "公交车站");
+	}
 
 }else if (search_global.options.map_provider === search_global.MapProvider.GoogleMap){
 	//TODO:
