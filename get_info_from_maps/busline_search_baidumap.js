@@ -4,11 +4,15 @@ var busline_search_global_bmap = {};
 //输出
 busline_search_global_bmap.outStr = "";
 
+//输出的city_lines
+busline_search_global_bmap.out_city_lines = [];
+
 //统计
 busline_search_global_bmap.onGetBusListCompleteCount = 0;
 busline_search_global_bmap.onGetBusLineCompleteCount = 0;
 busline_search_global_bmap.getBusListCount = 0;
 busline_search_global_bmap.getBusLineCount = 0;
+busline_search_global_bmap.repeatBusLineCount = 0;
 busline_search_global_bmap.last_remember_count = 0;
 
 busline_search_global_bmap.execute_buslines_search = function (allLineSearchDone_Callback, city, city_lines, map_provider_name){
@@ -23,8 +27,18 @@ busline_search_global_bmap.execute_buslines_search = function (allLineSearchDone
 
                 // 触发线路详细的搜索
                 var fstLine = result.getBusListItem(i);
-                busline.getBusLine(fstLine);
-                ++busline_search_global_bmap.getBusLineCount;
+
+                //不要左括号后面的内容
+                //因为baidumap的返回结果，同一条线路的正反两个方向在结果中是两条线路
+                var clean_fstLine = (-1 == fstLine.name.indexOf('(')) ? fstLine.name : fstLine.name.substring(0, fstLine.name.indexOf('('));
+                if (-1 == busline_search_global_bmap.out_city_lines.indexOf(clean_fstLine)){
+
+                  busline.getBusLine(fstLine);
+                  busline_search_global_bmap.out_city_lines.push(clean_fstLine);
+                  ++busline_search_global_bmap.getBusLineCount;
+                }else{
+                  ++busline_search_global_bmap.repeatBusLineCount;
+                }
             }
             ++busline_search_global_bmap.onGetBusListCompleteCount;
 
@@ -77,6 +91,7 @@ busline_search_global_bmap.execute_buslines_search = function (allLineSearchDone
     console.log("time waked up, getBusList count: " + busline_search_global_bmap.getBusListCount
           + ", getBusList complete count: " + busline_search_global_bmap.onGetBusListCompleteCount
           + ", getBusLine count: " + busline_search_global_bmap.getBusLineCount
+          + ", repeat&ignored busLine count: " + busline_search_global_bmap.repeatBusLineCount 
           + ", getBusLine complete count: " + busline_search_global_bmap.onGetBusLineCompleteCount
           + ", last_remember_count: " + busline_search_global_bmap.last_remember_count);
 
@@ -88,6 +103,7 @@ busline_search_global_bmap.execute_buslines_search = function (allLineSearchDone
           + ", getBusList count: " + busline_search_global_bmap.getBusListCount
           + ", getBusList complete count: " + busline_search_global_bmap.onGetBusListCompleteCount
           + ", getBusLine count: " + busline_search_global_bmap.getBusLineCount
+          + ", repeat&ignored busLine count: " + busline_search_global_bmap.repeatBusLineCount 
           + ", getBusLine complete count: " + busline_search_global_bmap.onGetBusLineCompleteCount
           + ", we'll write.");
         busline_search_global_bmap.allDone_callback(busline_search_global_bmap.outStr, map_provider_name);
