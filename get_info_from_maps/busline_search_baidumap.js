@@ -74,17 +74,22 @@ busline_search_global_bmap.execute_buslines_search = function (allLineSearchDone
   }
 
   waitForAllBusLineResult_Callback = function(){
-    console.log("time waked up, buslist succeed count: " + busline_search_global_bmap.onGetBusListCompleteCount
-      + ", busline succeed count: " + busline_search_global_bmap.onGetBusLineCompleteCount
-      + ", getBusList Count: " + busline_search_global_bmap.getBusListCount
-      + ", getBusLine Count: " + busline_search_global_bmap.getBusLineCount 
-      + ", last_remember_count: " + busline_search_global_bmap.last_remember_count);
+    console.log("time waked up, getBusList count: " + busline_search_global_bmap.getBusListCount
+          + ", getBusList complete count: " + busline_search_global_bmap.onGetBusListCompleteCount
+          + ", getBusLine count: " + busline_search_global_bmap.getBusLineCount
+          + ", getBusLine complete count: " + busline_search_global_bmap.onGetBusLineCompleteCount
+          + ", last_remember_count: " + busline_search_global_bmap.last_remember_count);
 
 
     if (0 != busline_search_global_bmap.last_remember_count && (busline_search_global_bmap.onGetBusListCompleteCount + busline_search_global_bmap.onGetBusLineCompleteCount) == busline_search_global_bmap.last_remember_count)
     {
         //NOTE: 结果不再变化, 触发外部的下一步动作 
-        console.log("total busline search complete count: " + busline_search_global_bmap.onGetBusLineComplete + ", we'll write.");
+        console.log("bus list/line search result has no change" 
+          + ", getBusList count: " + busline_search_global_bmap.getBusListCount
+          + ", getBusList complete count: " + busline_search_global_bmap.onGetBusListCompleteCount
+          + ", getBusLine count: " + busline_search_global_bmap.getBusLineCount
+          + ", getBusLine complete count: " + busline_search_global_bmap.onGetBusLineCompleteCount
+          + ", we'll write.");
         busline_search_global_bmap.allDone_callback(busline_search_global_bmap.outStr, map_provider_name);
     }
     else
