@@ -53,6 +53,8 @@ search_global.searched_count = 0;
 <script src="busline_search_baidumap.js"></script>
 
 <script >
+
+//AMap, BaiduMap的PlaceSearch完成时的回调, 触发NearbySearch
 search_global.placeSearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result)
 {
 	//console.log(city_lines_result);
@@ -141,11 +143,11 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
 	}
 }else if (search_global.options.map_provider === search_global.MapProvider.BaiduMap){
 	if (search_global.options.is_search_via_exist_city_lines){
-	busline_search_global_bmap.execute_buslines_search(search_global.lineSearchDone_Callback, 
-		search_global.expect_city, search_global.city_lines, 
-		search_global.MapProvider.BaiduMap);
+		busline_search_global_bmap.execute_buslines_search(search_global.lineSearchDone_Callback, 
+			search_global.expect_city, search_global.city_lines, search_global.MapProvider.BaiduMap);
 	}else{
-		local_search_global_bmap.execute_local_search(search_global.expect_city, "公交车站");
+		local_search_global_bmap.execute_local_search(search_global.placeSearchDone_Callback, 
+			search_global.expect_city, "公交车站");
 	}
 
 }else if (search_global.options.map_provider === search_global.MapProvider.GoogleMap){
