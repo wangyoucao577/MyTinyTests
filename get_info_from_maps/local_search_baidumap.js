@@ -49,7 +49,7 @@ local_search_global_bmap.execute_local_search = function (all_done_callback, cit
           }
 
           //后续还有结果页面, 应翻页
-          if (result.getPageIndex() + 1 < result.getNumPages()){
+          if (result.getNumPages() !== undefined && result.getPageIndex() + 1 < result.getNumPages()){
             local.gotoPage(result.getPageIndex() + 1);
           }else{
             console.log("all pages completed.");
