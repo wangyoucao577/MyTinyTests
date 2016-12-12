@@ -25,20 +25,26 @@ local_search_global_bmap.execute_local_search = function (all_done_callback, cit
               + ", address: " + poi.address);
             poi_index++;
 
-            if (-1 == city_stations.indexOf(poi.title)){
-              city_stations.push(poi.title);
-            }
-            if (-1 == city_stations_location.indexOf(poi.point)){
-              city_stations_location.push(poi.point);
+            if (poi.type == BMAP_POI_TYPE_BUSSTOP || poi.type == BMAP_POI_TYPE_SUBSTOP){
+              //过滤掉normal一般位置点, 因为一般位置点的address不是经过站点的线路
+
+              if (-1 == city_stations.indexOf(poi.title)){
+                city_stations.push(poi.title);
+              }
+              if (-1 == city_stations_location.indexOf(poi.point)){
+                city_stations_location.push(poi.point);
+              }
+
+              if (poi.address.length > 0 && poi.address !== 'null'){  //过滤掉空的address
+                var this_lines = poi.address.split(';');
+                for (var j in this_lines){
+                  if (-1 == city_lines.indexOf(this_lines[j])){
+                      city_lines.push(this_lines[j]);
+                  }
+                }
+              }
             }
 
-            //TODO: BaiduMap返回的Address中有些并不是经过此站点的线路，而是真实的地址，应想办法过滤
-            var this_lines = poi.address.split(';');
-            for (var j in this_lines){
-                if (-1 == city_lines.indexOf(this_lines[j])){
-                    city_lines.push(this_lines[j]);
-                }
-            }
 
           }
 
