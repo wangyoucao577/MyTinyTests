@@ -27,7 +27,7 @@ search_global.MapProvider = {
 
 //NOTE: options
 search_global.options = {
-	map_provider: search_global.MapProvider.BaiduMap,				//选择地图提供商
+	map_provider: search_global.MapProvider.AMap,				//选择地图提供商
 	is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
 	is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
 	is_search_via_exist_city_lines: (search_global.city_lines ? true : false)	//根据现有的city_lines进行LineSearch or 从PlaceSearch开始
@@ -55,7 +55,7 @@ search_global.searched_count = 0;
 <script >
 
 //AMap, BaiduMap的PlaceSearch完成时的回调, 触发NearbySearch
-search_global.placeSearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result)
+search_global.placeSearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result, map_provider_name)
 {
 	//console.log(city_lines_result);
 	console.log("placeSearchDone_Callback, city_lines_result.length: " + city_lines_result.length + ", city_stations_result.length: " 
@@ -64,7 +64,7 @@ search_global.placeSearchDone_Callback = function (city_lines_result, city_stati
 
 	if (search_global.options.is_write_city_lines_to_file_after_place_search){
 		//把city_lines写入文件
-		write_city_lines_to_file(search_global.expect_city, "PlaceSearchCityLines", city_lines_result);
+		write_city_lines_to_file(search_global.expect_city, "CityLines_" + map_provider_name, city_lines_result);
 	}
 	
 	if (city_stations_location_result.length > 0){
@@ -139,7 +139,7 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
 			search_global.MapProvider.AMap);
 	}else{
 		//需要POI迭代搜索以尝试枚举
-		place_search_global_amap.executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city);
+		place_search_global_amap.executePlaceSearchForCity(search_global.placeSearchDone_Callback, search_global.expect_city, search_global.MapProvider.AMap);
 	}
 }else if (search_global.options.map_provider === search_global.MapProvider.BaiduMap){
 	if (search_global.options.is_search_via_exist_city_lines){
@@ -147,7 +147,7 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
 			search_global.expect_city, search_global.city_lines, search_global.MapProvider.BaiduMap);
 	}else{
 		local_search_global_bmap.execute_local_search(search_global.placeSearchDone_Callback, 
-			search_global.expect_city, "公交车站");
+			search_global.expect_city, "公交车站", search_global.MapProvider.BaiduMap);
 	}
 
 }else if (search_global.options.map_provider === search_global.MapProvider.GoogleMap){

@@ -2,7 +2,7 @@
 var local_search_global_bmap = {};
 
 
-local_search_global_bmap.execute_local_search = function (all_done_callback, city, place){
+local_search_global_bmap.execute_local_search = function (all_done_callback, city, place, map_provider_name){
 
   //输出站点
   var city_lines = [];
@@ -47,7 +47,7 @@ local_search_global_bmap.execute_local_search = function (all_done_callback, cit
             local.gotoPage(result.getPageIndex() + 1);
           }else{
             console.log("all pages completed.");
-            all_done_callback(city_lines, city_stations, city_stations_location);
+            all_done_callback(city_lines, city_stations, city_stations_location, map_provider_name);
           }
 
       },    
