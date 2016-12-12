@@ -78,11 +78,11 @@ search_global.placeSearchDone_Callback = function (city_lines_result, city_stati
 		var loc = wait_for_nearby_search_locations.pop();
 
 		// 触发nearby搜索
-		nearby_search_global_amap.executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations);
+		nearby_search_global_amap.executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations, map_provider_name);
 	}
 
 }
-search_global.placeNearbySearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result, wait_for_nearby_search_locations_result)
+search_global.placeNearbySearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result, wait_for_nearby_search_locations_result, map_provider_name)
 {
 	console.log("placeNearbySearchDone_Callback, city_lines_result.length: " + city_lines_result.length 
 		+ ", city_stations_result.length: " + city_stations_result.length 
@@ -97,14 +97,15 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
 	}
 	if (search_global.searched_count % 100 == 0){
 		//NOTE: 过程中也把city_lines写入文件, 以免由于高德的拖动认证问题导致成果作废...
-		write_city_lines_to_file(search_global.expect_city, "NearbySearchCityLines_temp_" + search_global.searched_count, out_str);
+		write_city_lines_to_file(search_global.expect_city, "CityLines_temp_" 
+			+ search_global.searched_count + "_" + map_provider_name, city_lines_result);
 	}
 
 	if (0 == wait_for_nearby_search_locations_result.length){
 
 		if (search_global.options.is_write_city_lines_to_file_after_nearby_search){
-			//把city_lines写入文件
-			write_city_lines_to_file(search_global.expect_city, "NearbySearchCityLines", out_str);
+			//Nearby搜索完成, 把city_lines写入文件
+			write_city_lines_to_file(search_global.expect_city, "CityLines_whole_" + map_provider_name, city_lines_result);
 		}
 		
 		// 触发Line搜索
@@ -113,7 +114,7 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
 		var loc = wait_for_nearby_search_locations_result.pop();
 
 		// 触发nearby搜索
-		nearby_search_global_amap.executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations_result);
+		nearby_search_global_amap.executePlaceSearchNearbyForCity(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations_result, map_provider_name);
 	}
 
 

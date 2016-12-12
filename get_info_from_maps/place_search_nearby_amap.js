@@ -16,7 +16,8 @@ function waitForPlaceSearchNearbyResult_Callback(){
             + ", total_nearby_search_failed_callback_count: " + nearby_search_global_amap.total_nearby_search_failed_callback_count);
 
         // 触发外部的callback
-        nearby_search_global_amap.allDone_Callback(nearby_search_global_amap.city_lines, nearby_search_global_amap.city_stations, nearby_search_global_amap.city_stations_location, nearby_search_global_amap.wait_for_nearby_search_locations);
+        nearby_search_global_amap.allDone_Callback(nearby_search_global_amap.city_lines, nearby_search_global_amap.city_stations, 
+            nearby_search_global_amap.city_stations_location, nearby_search_global_amap.wait_for_nearby_search_locations, nearby_search_global_amap.map_provider_name);
 
     }else{
         nearby_search_global_amap.last_remember_succeed_callback_count = nearby_search_global_amap.total_nearby_search_succeed_callback_count;
@@ -55,7 +56,7 @@ function placeSearchNearby_Callback(result)
         + ", total_nearby_search_succeed_callback_count: " + nearby_search_global_amap.total_nearby_search_succeed_callback_count);
 }
 
-nearby_search_global_amap.executePlaceSearchNearbyForCity = function (allPlaceSearchNearbyDone_Callback, city_lines, city_stations, city_stations_location, city, loc, wait_for_nearby_search_locations){
+nearby_search_global_amap.executePlaceSearchNearbyForCity = function (allPlaceSearchNearbyDone_Callback, city_lines, city_stations, city_stations_location, city, loc, wait_for_nearby_search_locations, map_provider_name){
 
     console.log("executePlaceSearchNearbyForCity, location: " + loc);
 
@@ -66,6 +67,7 @@ nearby_search_global_amap.executePlaceSearchNearbyForCity = function (allPlaceSe
     nearby_search_global_amap.city = city;
     nearby_search_global_amap.location = loc;
     nearby_search_global_amap.wait_for_nearby_search_locations = wait_for_nearby_search_locations;
+    nearby_search_global_amap.map_provider_name = map_provider_name;
 
     //clear before this search
     nearby_search_global_amap.total_nearby_search_succeed_callback_count = 0;
