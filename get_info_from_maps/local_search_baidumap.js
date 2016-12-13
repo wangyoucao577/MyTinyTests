@@ -2,7 +2,8 @@
 var local_search_global_bmap = {};
 
 
-local_search_global_bmap.execute_local_search = function (all_done_callback, city, place, map_provider_name){
+local_search_global_bmap.execute_local_search = function (all_done_callback, city, map_provider_name){
+
 
   //输出站点
   var city_lines = [];
@@ -59,7 +60,7 @@ local_search_global_bmap.execute_local_search = function (all_done_callback, cit
       },    
       pageCapacity:50
   });     
-  local.search(place, {forceLocal:true});
+  local.search('公交车站', {forceLocal:true});
 
 }
 
