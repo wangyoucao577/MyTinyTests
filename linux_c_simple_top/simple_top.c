@@ -72,6 +72,11 @@ struct process_usage_t
     unsigned long stime;
     long int cutime;
     long int cstime;
+    long int priority;
+    long int nice;
+    long int num_threads;
+    long int itreadvalue;
+    unsigned long long starttime;
     //TODO: 补齐...
 };
 
@@ -191,6 +196,35 @@ int get_cpu_stat(struct cpu_usage_t* cu)
     return ret;
 }
 
+// get system up time via /proc/uptime
+// return 0 if succeed, otherwise failed
+int get_uptime(double *sys_uptime_seconds, double* idle_uptime_seconds)
+{
+    char *file_name = "/proc/uptime";
+    FILE* fp = fopen(file_name, "r");  
+    if(fp == NULL)  
+    {  
+        printf("Open %s failed, errno %d.\n", file_name, errno);
+        return -3;
+    }
+    
+    char buf[512] = {0};
+    fgets(buf, sizeof(buf), fp);
+    //printf("%s\n", buf);
+    float up1 = 0.0, up2 = 0.0;
+    sscanf(buf, "%f %f", &up1, &up2);
+    //printf("%f %f\n", up1, up2);
+
+    if (NULL != sys_uptime_seconds){
+        *sys_uptime_seconds = up1;
+    }
+    if (NULL != idle_uptime_seconds){
+        *idle_uptime_seconds = up2;
+    }
+
+    return 0;
+}
+
 // get proc info via /proc/[pid]/stat
 //return 0 if succeed, otherwise failed
 int get_process_stat(int pid, struct process_usage_t* usage)
@@ -215,9 +249,10 @@ int get_process_stat(int pid, struct process_usage_t* usage)
     fgets(buf, sizeof(buf), fp);
     //printf("%s\n", buf);
     memset(usage, 0, sizeof(struct process_usage_t));
-    int sscanfed = sscanf(buf, "%d%s %c%d%d%d%d%d%u%lu%lu%lu%lu%lu%lu%ld%ld", \
+    int sscanfed = sscanf(buf, "%d%s %c%d%d%d%d%d%u%lu%lu%lu%lu%lu%lu%ld%ld%ld%ld%ld%ld%llu", \
         &usage->pid, usage->comm, &usage->state, &usage->ppid, &usage->pgrp, &usage->session, &usage->tty_nr, &usage->tpgid, &usage->flags, \
-        &usage->minflt, &usage->cminflt, &usage->majflt, &usage->cmajflt, &usage->utime, &usage->stime, &usage->cutime, &usage->cstime);
+        &usage->minflt, &usage->cminflt, &usage->majflt, &usage->cmajflt, &usage->utime, &usage->stime, &usage->cutime, &usage->cstime, \
+        &usage->priority, &usage->nice, &usage->num_threads, &usage->itreadvalue, &usage->starttime);
     
 #if 0
     printf("sscanf get: %d\n", sscanfed);
@@ -238,6 +273,12 @@ int get_process_stat(int pid, struct process_usage_t* usage)
     printf("%s:%lu\n", VNAME(usage->stime), usage->stime);
     printf("%s:%ld\n", VNAME(usage->cutime), usage->cutime);
     printf("%s:%ld\n", VNAME(usage->cstime), usage->cstime);
+    printf("%s:%ld\n", VNAME(usage->priority), usage->priority);
+    printf("%s:%ld\n", VNAME(usage->nice), usage->nice);
+    printf("%s:%ld\n", VNAME(usage->num_threads), usage->num_threads);
+    printf("%s:%ld\n", VNAME(usage->itreadvalue), usage->itreadvalue);
+    printf("%s:%llu\n", VNAME(usage->starttime), usage->starttime);
+
     //TODO: 补齐..
 #endif
 
@@ -287,6 +328,8 @@ void refresh_cpu(int pid)
         sleep(1);   //sample interval. could adjust
         struct cpu_usage_t new_cu;
         get_cpu_stat(&new_cu);
+        double new_sysuptime, new_idleuptime;
+        get_uptime(&new_sysuptime, &new_idleuptime);
         
         if (pid >= 0){
             new_out_proc_count = MAX_PROCESS_COUNT;
@@ -347,6 +390,14 @@ void refresh_cpu(int pid)
                 (double)100 * (new_proc_usage.stime - last_proc_usage.stime) / total_cpu_delta, \
                 (double)100 * (new_proc_usage.cutime - last_proc_usage.cutime) / total_cpu_delta, \
                 (double)100 * (new_proc_usage.cstime - last_proc_usage.cstime) / total_cpu_delta);
+
+            double total_process_uptime_seconds = new_sysuptime - (double)new_proc_usage.starttime / sysconf(_SC_CLK_TCK);
+            printf(" </proc/[pid]/stat with uptime(ps)> pid %05d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
+                (double)100 * ((double)pid_new_total_cpu / sysconf(_SC_CLK_TCK)) / total_process_uptime_seconds, \
+                (double)100 * ((double)new_proc_usage.utime / sysconf(_SC_CLK_TCK)) / total_process_uptime_seconds, \
+                (double)100 * ((double)new_proc_usage.stime / sysconf(_SC_CLK_TCK)) / total_process_uptime_seconds, \
+                (double)100 * ((double)new_proc_usage.cutime / sysconf(_SC_CLK_TCK)) / total_process_uptime_seconds, \
+                (double)100 * ((double)new_proc_usage.cstime / sysconf(_SC_CLK_TCK)) / total_process_uptime_seconds);
         }
         
         //保存回last
@@ -358,6 +409,7 @@ void refresh_cpu(int pid)
             memcpy(&last_proc_usage, &new_proc_usage, sizeof(struct process_usage_t));
             last_proc_usage_valid = new_proc_usage_valid;
         }
+        printf("\n");
     }
     
 }
@@ -388,6 +440,8 @@ void get_proc_info_tab()
 
 int main(int argc, char* argv[])
 {
+    printf("clock_per_second:%d\n", sysconf(_SC_CLK_TCK));
+
     if (argc <= 1){
         refresh_cpu(-1);
         goto End;
