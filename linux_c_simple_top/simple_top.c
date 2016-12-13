@@ -391,6 +391,7 @@ void refresh_cpu(int pid)
                 (double)100 * (new_proc_usage.cutime - last_proc_usage.cutime) / total_cpu_delta, \
                 (double)100 * (new_proc_usage.cstime - last_proc_usage.cstime) / total_cpu_delta);
 
+            //Reference: http://unix.stackexchange.com/questions/58539/top-and-ps-not-showing-the-same-cpu-result
             double total_process_uptime_seconds = new_sysuptime - (double)new_proc_usage.starttime / sysconf(_SC_CLK_TCK);
             printf(" </proc/[pid]/stat with uptime(ps)> pid %05d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
                 (double)100 * ((double)pid_new_total_cpu / sysconf(_SC_CLK_TCK)) / total_process_uptime_seconds, \
