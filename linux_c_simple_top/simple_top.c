@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
+#include <assert.h>
 #include "proc/readproc.h"
 
 /*
@@ -48,6 +49,91 @@ struct cpu_usage_t
     unsigned long long guest_nice;
 };
 
+// pid[in]: 0 if all processes, otherwise the indicated process
+// want_threads[in]: 0 if don't want threads info, 1 if want
+// b_print[in]: 0 if not want to printf, 1 if to printf
+// proc_buf[in/out]: input memory, output indicated process's info, for process
+// proc_buf_len[in/out]: how many proc_t bytes can be use, for process
+//TODO: add output for threads
+void get_proc_info(int pid, int want_threads, int b_print, proc_t* proc_buf, int * proc_buf_len)
+{
+    //printf("%d %d %d %p %p(value:%d)\n", pid, want_threads, b_print, proc_buf, proc_buf_len, NULL == proc_buf_len ? 0 : *proc_buf_len);
+    
+    int openproc_flags = PROC_FILLMEM | PROC_FILLSTAT | PROC_FILLSTATUS | PROC_FILLCOM;
+    if (want_threads){
+        openproc_flags |= PROC_LOOSE_TASKS;
+    }
+    //openproc_flags |= PROC_FILL_LXC; //what's the meaning of LXC???
+    
+    //NOTE:若希望仅关注某几个进程，应在此接口中传入pid的list进行预过滤，而不是一次全搞出来再过滤 
+    PROCTAB* new_proc_tab = openproc(openproc_flags);
+    if (NULL == new_proc_tab){
+        printf("openproc failed, errno %d.\n", errno);
+        return;
+    }
+    
+    //NOTE: 虽然readproc/readtask接口也可以传入内存，以避免内部分配，但实际上如果需要cmdline参数的话，其始终是
+    //      内部分配的，所以还是应由readproc直接全部分配后再调用freeproc即可。否则预分配内存了传入，而又需要cmdline的话，
+    //      会造成内存泄露
+    //reference: http://stackoverflow.com/questions/17359517/how-can-i-properly-free-memory-when-using-libproc
+    //          http://www.cnblogs.com/westfly/p/4230956.html
+    
+    int stored_procs = 0;
+    proc_t buf, buf2; 
+    memset(&buf, 0, sizeof(proc_t));
+    memset(&buf2, 0, sizeof(proc_t));
+    
+    while (readproc(new_proc_tab, &buf))
+    {
+        if (0 != pid && buf.tid != pid){
+            //不关心的pid, 忽略掉
+            continue;
+        }
+        
+        if (want_threads){
+            while (readtask(new_proc_tab, &buf, &buf2))
+            {
+                //标示线程的一些信息. 主要是cpu时间，可区分usr和sys层的占用
+                if (b_print){
+                    printf("tid:%5d(tgid/pid:%d) cmd:%s state:%c utime:%llu stime:%llu\n", \
+                        buf2.tid, buf2.tgid, buf2.cmd, buf2.state, buf2.utime, buf2.stime);                
+                }
+            }
+        }
+        else{
+            if (NULL != proc_buf && NULL != proc_buf_len){
+                
+                //保存进程的proc信息以输出
+                if (stored_procs < *proc_buf_len){
+                    memcpy(proc_buf + sizeof(proc_t) * stored_procs, &buf, sizeof(proc_t));
+                    ++stored_procs;
+                }
+            }
+            if (b_print){
+                printf("pid:%5d(tgid:%d) cmd:%s cmdline:%s threads:%d state:%c\n", \
+                    buf.tid, buf.tgid, buf.cmd, ((NULL == buf.cmdline) || (NULL == *(buf.cmdline))) ? "" : *(buf.cmdline), buf.nlwp, buf.state);
+                printf("         stat--->{utime:%llu stime:%llu cutime:%llu cstime:%llu vsize:%lukb start_code:0x%x end_code:0x%x start_stack:0x%x}\n", \
+                    buf.utime, buf.stime, buf.cutime, buf.cstime, buf.vsize, buf.start_code, buf.end_code, buf.start_stack);
+                printf("         stat--->{min_flt:%u, maj_flt:%u, cmin_flt:%u, cmaj_flt:%u}\n", \
+                    buf.min_flt, buf.maj_flt, buf.cmin_flt, buf.cmaj_flt);
+                    
+                //仅用于标注进程的信息
+                printf("         statm-->{size:%ld, resident:%ld, share:%ld, trs:%ld, lrs:%ld, drs:%ld, dt:%ld}\n", \
+                    buf.size, buf.resident, buf.share, buf.trs, buf.lrs, buf.drs, buf.dt);
+                printf("         status->{vm_size(TOP_VIRT):%ukb, vm_lock:%ukb, vm_rss(TOP_RES):%ukb, vm_data:%ukb, vm_stack:%ukb, vm_swap:%ukb, vm_exe:%ukb, vm_lib:%ukb}\n", \
+                    buf.vm_size, buf.vm_lock, buf.vm_rss, buf.vm_data, buf.vm_stack, buf.vm_swap, buf.vm_exe, buf.vm_lib);
+            }
+        }
+        
+    }
+
+    closeproc(new_proc_tab);
+    
+    if (NULL != proc_buf_len){
+        *proc_buf_len = stored_procs;
+    }
+}
+
 //reference: procps-ng-3.3.11 sysinfo.c "void getstat(...)"
 //精简了大部分不需要的内容
 //return 0 if succeed, otherwise failed.
@@ -78,18 +164,43 @@ int get_cpu_stat(struct cpu_usage_t* cu)
     return ret;
 }
 
-void refresh_cpu()
+// pid[in]: < 0 means only monitor total 
+//          == 0 means also monitor all processes
+//          > 0 means monitor one indicated process too
+void refresh_cpu(int pid)
 {
     struct cpu_usage_t last_cu;
     get_cpu_stat(&last_cu);
     //printf("cpu user:%llu nice:%llu sys:%llu idle:%llu iowait:%llu irq:%llu softirq:%llu steal:%llu guest:%llu\n", \
         last_cu.user, last_cu.nice, last_cu.sys, last_cu.idle, last_cu.iowait, last_cu.irq, last_cu.softirq, last_cu.steal, last_cu.guest);
+        
+    const static int MAX_PROCESS_COUNT = 512;
+    proc_t last_proc_buf[MAX_PROCESS_COUNT];
+    memset(last_proc_buf, 0, sizeof(proc_t) * MAX_PROCESS_COUNT);
+    proc_t new_proc_buf[MAX_PROCESS_COUNT];
+    memset(new_proc_buf, 0, sizeof(proc_t) * MAX_PROCESS_COUNT);
+    
+    int last_out_proc_count, new_out_proc_count;
+    if (pid >= 0){
+        last_out_proc_count = MAX_PROCESS_COUNT;
+        get_proc_info(pid, 0, 0, last_proc_buf, &last_out_proc_count);
+        assert((pid == 0) || (pid > 0 && last_out_proc_count <= 1));
+    }
+        
+        
     while (1)
     {
         sleep(1);   //sample interval. could adjust
         struct cpu_usage_t new_cu;
         get_cpu_stat(&new_cu);
         
+        if (pid >= 0){
+            new_out_proc_count = MAX_PROCESS_COUNT;
+            get_proc_info(pid, 0, 0, new_proc_buf, &new_out_proc_count);
+            assert((pid == 0) || (pid > 0 && new_out_proc_count <= 1));
+        }
+        
+        //计算总的CPU占用
         unsigned long long last_total_cpu = last_cu.user + last_cu.nice + last_cu.sys + last_cu.idle + last_cu.iowait \
             + last_cu.irq + last_cu.softirq + last_cu.steal + last_cu.guest;
         unsigned long long new_total_cpu = new_cu.user + new_cu.nice + new_cu.sys + new_cu.idle + new_cu.iowait \
@@ -97,6 +208,8 @@ void refresh_cpu()
         unsigned long long total_cpu_delta = new_total_cpu - last_total_cpu;
         
         unsigned long long pcpu = 100 * ((new_total_cpu - last_total_cpu) - (new_cu.idle - last_cu.idle)) / total_cpu_delta;
+        
+        //打印总的cpu占用
         printf("<cpu usage> total:%.2f%% user:%.2f%% sys:%.2f%% nice:%.2f%% idle:%.2f%% iowait:%.2f%% irq:%.2f%% sirq:%.2f%% steal:%0.2f%% guest:%0.2f%%\n", \
             (double)pcpu, \
             (double)100 * (new_cu.user - last_cu.user) / total_cpu_delta, \
@@ -108,65 +221,36 @@ void refresh_cpu()
             (double)100 * (new_cu.softirq - last_cu.softirq) / total_cpu_delta, \
             (double)100 * (new_cu.steal - last_cu.steal) / total_cpu_delta, \
             (double)100 * (new_cu.guest - last_cu.guest) / total_cpu_delta); 
+            
+        //计算指定线程的cpu占用
+        //TODO: 待完善。 先简化下, 假设只有一个进程
+        if (pid >= 0 && new_out_proc_count == 1 && last_out_proc_count == 1){
+            assert(new_proc_buf[0].tid == last_proc_buf[0].tid && new_proc_buf[0].tid == pid);
+            
+            unsigned long long pid_last_total_cpu = last_proc_buf[0].utime + last_proc_buf[0].stime + last_proc_buf[0].cutime + last_proc_buf[0].cstime;
+            unsigned long long pid_new_total_cpu = new_proc_buf[0].utime + new_proc_buf[0].stime + new_proc_buf[0].cutime + new_proc_buf[0].cstime;
+            
+            printf(" pid %05d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
+                (double)100 * (pid_new_total_cpu - pid_last_total_cpu) / total_cpu_delta, \
+                (double)100 * (new_proc_buf[0].utime - last_proc_buf[0].utime) / total_cpu_delta, \
+                (double)100 * (new_proc_buf[0].stime - last_proc_buf[0].stime) / total_cpu_delta, \
+                (double)100 * (new_proc_buf[0].cutime - last_proc_buf[0].cutime) / total_cpu_delta, \
+                (double)100 * (new_proc_buf[0].cstime - last_proc_buf[0].cstime) / total_cpu_delta);
+        }
         
+        //保存回last
         memcpy(&last_cu, &new_cu, sizeof(struct cpu_usage_t));
+        if (pid >= 0){
+            memcpy(last_proc_buf, new_proc_buf, sizeof(struct proc_t) * MAX_PROCESS_COUNT);
+            last_out_proc_count = new_out_proc_count;
+        }
     }
     
 }
 
-void refresh_proc_info(int want_threads)
-{
-    int openproc_flags = PROC_FILLMEM | PROC_FILLSTAT | PROC_FILLSTATUS | PROC_FILLCOM;
-    if (want_threads){
-        openproc_flags |= PROC_LOOSE_TASKS;
-    }
-    //openproc_flags |= PROC_FILL_LXC; //what's the meaning of LXC???
-    
-    //NOTE:若希望仅关注某几个进程，应在此接口中传入pid的list进行预过滤，而不是一次全搞出来再过滤 
-    PROCTAB* new_proc_tab = openproc(openproc_flags);
-    if (NULL == new_proc_tab){
-        printf("openproc failed, errno %d.\n", errno);
-        return;
-    }
-    
-    //NOTE: 虽然readproc/readtask接口也可以传入内存，以避免内部分配，但实际上如果需要cmdline参数的话，其始终是
-    //      内部分配的，所以还是应由readproc直接全部分配后再调用freeproc即可。否则预分配内存了传入，而又需要cmdline的话，
-    //      会造成内存泄露
-    //reference: http://stackoverflow.com/questions/17359517/how-can-i-properly-free-memory-when-using-libproc
-    //          http://www.cnblogs.com/westfly/p/4230956.html
-    
-    static proc_t buf, buf2; 
-    while (readproc(new_proc_tab, &buf))
-    {
-        if (want_threads){
-            while (readtask(new_proc_tab, &buf, &buf2))
-            {
-                //标示线程的一些信息. 主要是cpu时间，可区分usr和sys层的占用
-                printf("tid:%5d(tgid/pid:%d) cmd:%s state:%c utime:%llu stime:%llu\n", \
-                    buf2.tid, buf2.tgid, buf2.cmd, buf2.state, buf2.utime, buf2.stime);                
-            }
-        }
-        else{
-            printf("pid:%5d(tgid:%d) cmd:%s cmdline:%s threads:%d state:%c\n", \
-                buf.tid, buf.tgid, buf.cmd, ((NULL == buf.cmdline) || (NULL == *(buf.cmdline))) ? "" : *(buf.cmdline), buf.nlwp, buf.state);
-            printf("         stat--->{utime:%llu stime:%llu cutime:%llu cstime:%llu vsize:%lukb start_code:0x%x end_code:0x%x start_stack:0x%x}\n", \
-                buf.utime, buf.stime, buf.cutime, buf.cstime, buf.vsize, buf.start_code, buf.end_code, buf.start_stack);
-            printf("         stat--->{min_flt:%u, maj_flt:%u, cmin_flt:%u, cmaj_flt:%u}\n", \
-                buf.min_flt, buf.maj_flt, buf.cmin_flt, buf.cmaj_flt);
-                
-            //仅用于标注进程的信息
-            printf("         statm-->{size:%ld, resident:%ld, share:%ld, trs:%ld, lrs:%ld, drs:%ld, dt:%ld}\n", \
-                buf.size, buf.resident, buf.share, buf.trs, buf.lrs, buf.drs, buf.dt);
-            printf("         status->{vm_size(TOP_VIRT):%ukb, vm_lock:%ukb, vm_rss(TOP_RES):%ukb, vm_data:%ukb, vm_stack:%ukb, vm_swap:%ukb, vm_exe:%ukb, vm_lib:%ukb}\n", \
-                buf.vm_size, buf.vm_lock, buf.vm_rss, buf.vm_data, buf.vm_stack, buf.vm_swap, buf.vm_exe, buf.vm_lib);
-        }
-        
-    }
-    closeproc(new_proc_tab);
-    
-}
 
-void refresh_proc_info_tab()
+
+void get_proc_info_tab()
 {
     int openproc_flags = PROC_FILLMEM | PROC_FILLSTAT | PROC_LOOSE_TASKS;   
     
@@ -191,15 +275,15 @@ void refresh_proc_info_tab()
 int main(int argc, char* argv[])
 {
     if (argc <= 1){
-        refresh_cpu();
+        refresh_cpu(-1);
         goto End;
     }
     else if (argc == 2){
         if (*(argv[1]) == 'H'){
-            refresh_proc_info(1);
+            get_proc_info(0, 1, 1, NULL, NULL);
             goto End;
         }else if (*(argv[1]) == 'p'){
-            refresh_proc_info(0);
+            get_proc_info(0, 0, 1, NULL, NULL);
             goto End;
         }
     }
@@ -207,8 +291,8 @@ int main(int argc, char* argv[])
         if (NULL != strstr(argv[1], "-p")){ //want to monitor one process
             int pid = atoi(argv[2]);
             if (0 != pid){  //valid pid
-                //TODO: refresh for one proc
-                printf("TODO: monitor process %d\n", pid);
+                printf("monitor process %d\n", pid);
+                refresh_cpu(pid);
                 goto End;
             }
             else {  //TODO: monitor all processes
@@ -220,10 +304,11 @@ int main(int argc, char* argv[])
     
     printf("Usage: \n");
     printf("     1, refresh system cpu info:  simple_top\n");
-    printf("     2, capture one snapshot of processes: simple_top p\n");
-    printf("     3, capture one snapshot of threads: simple_top H\n");
+    printf("     2, refresh cpu info include system and one process:  simple_top -p pid\n");
+    printf("     3, capture one snapshot of processes: simple_top p\n");
+    printf("     4, capture one snapshot of threads: simple_top H\n");
         
-    //refresh_proc_info_tab();
+    //get_proc_info_tab();
 End:
     return 0;
 }
