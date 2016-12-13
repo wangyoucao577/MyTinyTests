@@ -27,10 +27,11 @@ search_global.MapProvider = {
 
 //NOTE: options
 search_global.options = {
-	map_provider: search_global.MapProvider.AMap,				//选择地图提供商
+	map_provider: search_global.MapProvider.BaiduMap,				//选择地图提供商
 	is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
 	is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
-	is_search_via_exist_city_lines: (search_global.city_lines ? true : false)	//根据现有的city_lines进行LineSearch or 从PlaceSearch开始
+	is_search_via_exist_city_lines: (search_global.city_lines ? true : false),	//根据现有的city_lines进行LineSearch or 从PlaceSearch开始
+    nearby_iterate_count: 2    //nearby迭代搜索的次数
 }
 
 
@@ -61,6 +62,8 @@ search_global.functions = {
 	nearby_search: nearby_search_global_amap.executePlaceSearchNearbyForCity,
 	lines_search: lines_search_global_amap.executeLineSearch
 }
+
+//根据map_provider绑定不同的函数
 if (search_global.options.map_provider === search_global.MapProvider.AMap){
 	//default values, nothing to change
 
@@ -126,18 +129,38 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
 
 	if (0 == wait_for_nearby_search_locations_result.length){
 
-		if (search_global.options.is_write_city_lines_to_file_after_nearby_search){
-			//Nearby搜索完成, 把city_lines写入文件
-			write_city_lines_to_file(search_global.expect_city, "CityLines_whole_" + map_provider_name, city_lines_result);
-		}
-		
-		// 触发Line搜索
-		search_global.functions.lines_search(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result);
+        if (search_global.options.is_write_city_lines_to_file_after_nearby_search){
+            //Nearby搜索完成, 把city_lines写入文件
+            write_city_lines_to_file(search_global.expect_city, "CityLines_whole_" + map_provider_name, city_lines_result);
+        }
+
+
+        search_global.options.nearby_iterate_count--;
+	    if (search_global.options.nearby_iterate_count == 0){
+
+            // Nearby搜索完成, 触发Line搜索
+            search_global.functions.lines_search(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result);
+        }else{
+	        // 进行下一次Nearby迭代
+	        console.log("ready to next nearby iterate. remain count: " + search_global.options.nearby_iterate_count);
+
+            var wait_for_nearby_search_locations = [];
+            for (var i in city_stations_location_result){
+
+                wait_for_nearby_search_locations.push(city_stations_location_result[i]);
+            }
+            var loc = wait_for_nearby_search_locations.pop();
+
+            // 触发nearby搜索
+            search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations, map_provider_name);
+
+        }
+
 
 	}else{
 		var loc = wait_for_nearby_search_locations_result.pop();
 
-		// 触发nearby搜索, AMap
+		// 触发nearby搜索
 		search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations_result, map_provider_name);
 	}
 
