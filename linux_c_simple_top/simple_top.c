@@ -203,6 +203,20 @@ int main(int argc, char* argv[])
             goto End;
         }
     }
+    else if(argc == 3){
+        if (NULL != strstr(argv[1], "-p")){ //want to monitor one process
+            int pid = atoi(argv[2]);
+            if (0 != pid){  //valid pid
+                //TODO: refresh for one proc
+                printf("TODO: monitor process %d\n", pid);
+                goto End;
+            }
+            else {  //TODO: monitor all processes
+                printf("TODO: monitor all processes\n");
+                goto End;
+            }
+        }
+    }
     
     printf("Usage: \n");
     printf("     1, refresh system cpu info:  simple_top\n");
