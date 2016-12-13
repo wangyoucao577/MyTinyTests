@@ -7,6 +7,8 @@
 #include <assert.h>
 #include "proc/readproc.h"
 
+#define VNAME(name) (#name)
+
 /*
     reference: http://www.linuxhowtos.org/manpages/5/proc.htm
 
@@ -49,11 +51,36 @@ struct cpu_usage_t
     unsigned long long guest_nice;
 };
 
-// pid[in]: 0 if all processes, otherwise the indicated process
-// want_threads[in]: 0 if don't want threads info, 1 if want
-// b_print[in]: 0 if not want to printf, 1 if to printf
-// proc_buf[in/out]: input memory, output indicated process's info, for process
-// proc_buf_len[in/out]: how many proc_t bytes can be use, for process
+//Reference: http://man7.org/linux/man-pages/man5/proc.5.html
+//NOTE: Capture a process info from /proc/[pid]/stat
+struct process_usage_t
+{
+    int pid;
+    char comm[256];
+    char state;
+    int ppid;
+    int pgrp;
+    int session;
+    int tty_nr;
+    int tpgid;
+    unsigned int flags;
+    unsigned long minflt;
+    unsigned long cminflt;
+    unsigned long majflt;
+    unsigned long cmajflt;
+    unsigned long utime;
+    unsigned long stime;
+    long int cutime;
+    long int cstime;
+    //TODO: 补齐...
+};
+
+// get_proc_info via libprocps.so (top from procps-ng)
+//   pid[in]: 0 if all processes, otherwise the indicated process
+//   want_threads[in]: 0 if don't want threads info, 1 if want
+//   b_print[in]: 0 if not want to printf, 1 if to printf
+//   proc_buf[in/out]: input memory, output indicated process's info, for process
+//   proc_buf_len[in/out]: how many proc_t bytes can be use, for process
 //TODO: add output for threads
 void get_proc_info(int pid, int want_threads, int b_print, proc_t* proc_buf, int * proc_buf_len)
 {
@@ -164,6 +191,61 @@ int get_cpu_stat(struct cpu_usage_t* cu)
     return ret;
 }
 
+// get proc info via /proc/[pid]/stat
+//return 0 if succeed, otherwise failed
+int get_process_stat(int pid, struct process_usage_t* usage)
+{
+    if (pid <= 0){
+        return -1;
+    }
+    if (NULL == usage){
+        return -2;
+    }
+    
+    char file_name[128];
+    sprintf(file_name, "/proc/%d/stat", pid);
+    FILE* fp = fopen(file_name, "r");  
+    if(fp == NULL)  
+    {  
+        printf("Open %s failed, pid %d may not exist, errno %d.\n", file_name, pid, errno);
+        return -3;
+    }
+    
+    char buf[512] = {0};
+    fgets(buf, sizeof(buf), fp);
+    //printf("%s\n", buf);
+    memset(usage, 0, sizeof(struct process_usage_t));
+    int sscanfed = sscanf(buf, "%d%s %c%d%d%d%d%d%u%lu%lu%lu%lu%lu%lu%ld%ld", \
+        &usage->pid, usage->comm, &usage->state, &usage->ppid, &usage->pgrp, &usage->session, &usage->tty_nr, &usage->tpgid, &usage->flags, \
+        &usage->minflt, &usage->cminflt, &usage->majflt, &usage->cmajflt, &usage->utime, &usage->stime, &usage->cutime, &usage->cstime);
+    
+#if 0
+    printf("sscanf get: %d\n", sscanfed);
+    printf("%s:%d\n", VNAME(usage->pid), usage->pid);
+    printf("%s:%s\n", VNAME(usage->comm), usage->comm);
+    printf("%s:%c\n", VNAME(usage->state), usage->state);
+    printf("%s:%d\n", VNAME(usage->ppid), usage->ppid);
+    printf("%s:%d\n", VNAME(usage->pgrp), usage->pgrp);
+    printf("%s:%d\n", VNAME(usage->session), usage->session);
+    printf("%s:%d\n", VNAME(usage->tty_nr), usage->tty_nr);
+    printf("%s:%d\n", VNAME(usage->tpgid), usage->tpgid);
+    printf("%s:%u\n", VNAME(usage->flags), usage->flags);
+    printf("%s:%lu\n", VNAME(usage->minflt), usage->minflt);
+    printf("%s:%lu\n", VNAME(usage->cminflt), usage->cminflt);
+    printf("%s:%lu\n", VNAME(usage->majflt), usage->majflt);
+    printf("%s:%lu\n", VNAME(usage->cmajflt), usage->cmajflt);
+    printf("%s:%lu\n", VNAME(usage->utime), usage->utime);
+    printf("%s:%lu\n", VNAME(usage->stime), usage->stime);
+    printf("%s:%ld\n", VNAME(usage->cutime), usage->cutime);
+    printf("%s:%ld\n", VNAME(usage->cstime), usage->cstime);
+    //TODO: 补齐..
+#endif
+
+    fclose(fp);
+    
+    return 0;
+}
+
 // pid[in]: < 0 means only monitor total 
 //          == 0 means also monitor all processes
 //          > 0 means monitor one indicated process too
@@ -174,6 +256,7 @@ void refresh_cpu(int pid)
     //printf("cpu user:%llu nice:%llu sys:%llu idle:%llu iowait:%llu irq:%llu softirq:%llu steal:%llu guest:%llu\n", \
         last_cu.user, last_cu.nice, last_cu.sys, last_cu.idle, last_cu.iowait, last_cu.irq, last_cu.softirq, last_cu.steal, last_cu.guest);
         
+    //get process info from libprocps.so
     const static int MAX_PROCESS_COUNT = 512;
     proc_t last_proc_buf[MAX_PROCESS_COUNT];
     memset(last_proc_buf, 0, sizeof(proc_t) * MAX_PROCESS_COUNT);
@@ -186,7 +269,18 @@ void refresh_cpu(int pid)
         get_proc_info(pid, 0, 0, last_proc_buf, &last_out_proc_count);
         assert((pid == 0) || (pid > 0 && last_out_proc_count <= 1));
     }
+
+    //get process info from /proc/[pid]/stat
+    int last_proc_usage_valid = 0, new_proc_usage_valid = 0;
+    struct process_usage_t last_proc_usage, new_proc_usage;
+    memset(&last_proc_usage, 0, sizeof(struct process_usage_t));
+    memset(&new_proc_usage, 0, sizeof(struct process_usage_t));
         
+    if (pid > 0){
+        if (0 == get_process_stat(pid, &last_proc_usage)){
+            last_proc_usage_valid = 1;
+        }
+    }
         
     while (1)
     {
@@ -198,6 +292,11 @@ void refresh_cpu(int pid)
             new_out_proc_count = MAX_PROCESS_COUNT;
             get_proc_info(pid, 0, 0, new_proc_buf, &new_out_proc_count);
             assert((pid == 0) || (pid > 0 && new_out_proc_count <= 1));
+            
+            new_proc_usage_valid = 0;
+            if (0 == get_process_stat(pid, &new_proc_usage)){
+                new_proc_usage_valid = 1;
+            }
         }
         
         //计算总的CPU占用
@@ -230,7 +329,7 @@ void refresh_cpu(int pid)
             unsigned long long pid_last_total_cpu = last_proc_buf[0].utime + last_proc_buf[0].stime + last_proc_buf[0].cutime + last_proc_buf[0].cstime;
             unsigned long long pid_new_total_cpu = new_proc_buf[0].utime + new_proc_buf[0].stime + new_proc_buf[0].cutime + new_proc_buf[0].cstime;
             
-            printf(" pid %05d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
+            printf(" <libprocps>        pid %05d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
                 (double)100 * (pid_new_total_cpu - pid_last_total_cpu) / total_cpu_delta, \
                 (double)100 * (new_proc_buf[0].utime - last_proc_buf[0].utime) / total_cpu_delta, \
                 (double)100 * (new_proc_buf[0].stime - last_proc_buf[0].stime) / total_cpu_delta, \
@@ -238,11 +337,26 @@ void refresh_cpu(int pid)
                 (double)100 * (new_proc_buf[0].cstime - last_proc_buf[0].cstime) / total_cpu_delta);
         }
         
+        if (pid > 0 && new_proc_usage_valid && last_proc_usage_valid){
+            unsigned long long pid_last_total_cpu = last_proc_usage.utime + last_proc_usage.stime + last_proc_usage.cutime + last_proc_usage.cstime;
+            unsigned long long pid_new_total_cpu = new_proc_usage.utime + new_proc_usage.stime + new_proc_usage.cutime + new_proc_usage.cstime;
+            
+            printf(" </proc/[pid]/stat> pid %05d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
+                (double)100 * (pid_new_total_cpu - pid_last_total_cpu) / total_cpu_delta, \
+                (double)100 * (new_proc_usage.utime - last_proc_usage.utime) / total_cpu_delta, \
+                (double)100 * (new_proc_usage.stime - last_proc_usage.stime) / total_cpu_delta, \
+                (double)100 * (new_proc_usage.cutime - last_proc_usage.cutime) / total_cpu_delta, \
+                (double)100 * (new_proc_usage.cstime - last_proc_usage.cstime) / total_cpu_delta);
+        }
+        
         //保存回last
         memcpy(&last_cu, &new_cu, sizeof(struct cpu_usage_t));
         if (pid >= 0){
             memcpy(last_proc_buf, new_proc_buf, sizeof(struct proc_t) * MAX_PROCESS_COUNT);
             last_out_proc_count = new_out_proc_count;
+            
+            memcpy(&last_proc_usage, &new_proc_usage, sizeof(struct process_usage_t));
+            last_proc_usage_valid = new_proc_usage_valid;
         }
     }
     
