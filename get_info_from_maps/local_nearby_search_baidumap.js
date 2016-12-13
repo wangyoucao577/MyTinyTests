@@ -7,15 +7,15 @@ nearby_search_global_bmap.execute_local_nearby_search = function (all_done_callb
   var local = new BMap.LocalSearch(city, {      
       onSearchComplete: function (result) {
           //console.log(result);
-          console.log("NumPages: " + result.getNumPages() + ", NumPois: " + result.getNumPois() 
-            + ", CurrentNumPois: " + result.getCurrentNumPois() + ", PageIndex: " + result.getPageIndex());
+          // console.log("NumPages: " + result.getNumPages() + ", NumPois: " + result.getNumPois() 
+          //   + ", CurrentNumPois: " + result.getCurrentNumPois() + ", PageIndex: " + result.getPageIndex());
 
           
 
           for (var i = 0; i < result.getCurrentNumPois(); ++i){
             var poi = result.getPoi(i);
-            console.log("local poi result " + i + ", title: " + poi.title  + ", type: " + poi.type + ", location: " + poi.point.lng + "," + poi.point.lat
-              + ", address: " + poi.address);
+            // console.log("local poi result " + i + ", title: " + poi.title  + ", type: " + poi.type + ", location: " + poi.point.lng + "," + poi.point.lat
+            //   + ", address: " + poi.address);
 
             if (poi.type == BMAP_POI_TYPE_BUSSTOP || poi.type == BMAP_POI_TYPE_SUBSTOP){
               //过滤掉normal一般位置点, 因为一般位置点的address不是经过站点的线路
