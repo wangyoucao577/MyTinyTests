@@ -28,8 +28,11 @@ arm-none-linux-gnueabi-gcc -DWITHOUT_LIBPROCPS simple_top.c -o simple_top</code>
 ## Links
 - http://stackoverflow.com/questions/17359517/how-can-i-properly-free-memory-when-using-libproc
 - http://unix.stackexchange.com/questions/58539/top-and-ps-not-showing-the-same-cpu-result
+- http://stackoverflow.com/questions/41134205/different-processs-cpu-output-via-top-from-busybox-and-procps-ng
+- https://gitlab.com/procps-ng/procps/issues/48
 - http://www.cnblogs.com/westfly/p/4230956.html
 - http://www.blogjava.net/fjzag/articles/317773.html    
 - http://man7.org/linux/man-pages/man1/top.1.html  
 - http://www.linuxhowtos.org/manpages/5/proc.htm
 - procps-ng-3.3.11源码
+- busybox-1.3.2源码
