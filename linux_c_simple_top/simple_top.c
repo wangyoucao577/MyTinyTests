@@ -87,7 +87,8 @@ struct process_usage_t
 //   proc_buf[in/out]: input memory, output indicated process's info, for process
 //   proc_buf_len[in/out]: how many proc_t bytes can be use, for process
 //TODO: add output for threads
-void get_proc_info(int pid, int want_threads, int b_print, proc_t* proc_buf, int * proc_buf_len)
+//TODO: 当前临时通过返回值返回了所有进程的总的cpu占用统计. 
+unsigned long long get_proc_info(int pid, int want_threads, int b_print, proc_t* proc_buf, int * proc_buf_len)
 {
     //printf("%d %d %d %p %p(value:%d)\n", pid, want_threads, b_print, proc_buf, proc_buf_len, NULL == proc_buf_len ? 0 : *proc_buf_len);
     
@@ -101,7 +102,7 @@ void get_proc_info(int pid, int want_threads, int b_print, proc_t* proc_buf, int
     PROCTAB* new_proc_tab = openproc(openproc_flags);
     if (NULL == new_proc_tab){
         printf("openproc failed, errno %d.\n", errno);
-        return;
+        return 0LL;
     }
     
     //NOTE: 虽然readproc/readtask接口也可以传入内存，以避免内部分配，但实际上如果需要cmdline参数的话，其始终是
@@ -115,8 +116,13 @@ void get_proc_info(int pid, int want_threads, int b_print, proc_t* proc_buf, int
     memset(&buf, 0, sizeof(proc_t));
     memset(&buf2, 0, sizeof(proc_t));
     
+    unsigned long long sum_processes_ticks = 0LL;
+
     while (readproc(new_proc_tab, &buf))
     {
+        //统计所有进程的ticks
+        sum_processes_ticks += (buf.utime + buf.stime + buf.cutime + buf.cstime);
+
         if (0 != pid && buf.tid != pid){
             //不关心的pid, 忽略掉
             continue;
@@ -164,6 +170,7 @@ void get_proc_info(int pid, int want_threads, int b_print, proc_t* proc_buf, int
     if (NULL != proc_buf_len){
         *proc_buf_len = stored_procs;
     }
+    return sum_processes_ticks;
 }
 
 //reference: procps-ng-3.3.11 sysinfo.c "void getstat(...)"
@@ -303,11 +310,13 @@ void refresh_cpu(int pid)
     memset(last_proc_buf, 0, sizeof(proc_t) * MAX_PROCESS_COUNT);
     proc_t new_proc_buf[MAX_PROCESS_COUNT];
     memset(new_proc_buf, 0, sizeof(proc_t) * MAX_PROCESS_COUNT);
-    
+
+    unsigned long long last_sum_processes_ticks = 0LL, new_sum_processes_ticks = 0LL;
+
     int last_out_proc_count, new_out_proc_count;
     if (pid >= 0){
         last_out_proc_count = MAX_PROCESS_COUNT;
-        get_proc_info(pid, 0, 0, last_proc_buf, &last_out_proc_count);
+        last_sum_processes_ticks = get_proc_info(pid, 0, 0, last_proc_buf, &last_out_proc_count);
         assert((pid == 0) || (pid > 0 && last_out_proc_count <= 1));
     }
 
@@ -322,6 +331,8 @@ void refresh_cpu(int pid)
             last_proc_usage_valid = 1;
         }
     }
+
+
         
     while (1)
     {
@@ -333,7 +344,7 @@ void refresh_cpu(int pid)
         
         if (pid >= 0){
             new_out_proc_count = MAX_PROCESS_COUNT;
-            get_proc_info(pid, 0, 0, new_proc_buf, &new_out_proc_count);
+            new_sum_processes_ticks = get_proc_info(pid, 0, 0, new_proc_buf, &new_out_proc_count);
             assert((pid == 0) || (pid > 0 && new_out_proc_count <= 1));
             
             new_proc_usage_valid = 0;
@@ -372,19 +383,36 @@ void refresh_cpu(int pid)
             unsigned long long pid_last_total_cpu = last_proc_buf[0].utime + last_proc_buf[0].stime + last_proc_buf[0].cutime + last_proc_buf[0].cstime;
             unsigned long long pid_new_total_cpu = new_proc_buf[0].utime + new_proc_buf[0].stime + new_proc_buf[0].cutime + new_proc_buf[0].cstime;
             
-            printf(" <libprocps>        pid %05d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
+            printf(" <libprocps>                   pid %5d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
                 (double)100 * (pid_new_total_cpu - pid_last_total_cpu) / total_cpu_delta, \
                 (double)100 * (new_proc_buf[0].utime - last_proc_buf[0].utime) / total_cpu_delta, \
                 (double)100 * (new_proc_buf[0].stime - last_proc_buf[0].stime) / total_cpu_delta, \
                 (double)100 * (new_proc_buf[0].cutime - last_proc_buf[0].cutime) / total_cpu_delta, \
                 (double)100 * (new_proc_buf[0].cstime - last_proc_buf[0].cstime) / total_cpu_delta);
+
+            //Reference from busybox-1.3.2
+             /*
+             * CPU% = s->pcpu/sum(s->pcpu) * busy_cpu_ticks/total_cpu_ticks
+             * (pcpu is delta of sys+user time between samples)
+             */
+            unsigned long long last_busy_cpu = last_total_cpu - last_cu.idle - last_cu.iowait;
+            unsigned long long new_busy_cpu = new_total_cpu - new_cu.idle - new_cu.iowait;
+            unsigned long long busy_cpu_delta = new_busy_cpu - last_busy_cpu;
+            unsigned long long sum_processes_ticks_delta = new_sum_processes_ticks - last_sum_processes_ticks;
+            printf(" <libprocps busybox>           pid %5d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
+                (double)100 * (pid_new_total_cpu - pid_last_total_cpu) / sum_processes_ticks_delta * busy_cpu_delta / total_cpu_delta, \
+                (double)100 * (new_proc_buf[0].utime - last_proc_buf[0].utime) / sum_processes_ticks_delta * busy_cpu_delta / total_cpu_delta, \
+                (double)100 * (new_proc_buf[0].stime - last_proc_buf[0].stime) / sum_processes_ticks_delta * busy_cpu_delta / total_cpu_delta, \
+                (double)100 * (new_proc_buf[0].cutime - last_proc_buf[0].cutime) / sum_processes_ticks_delta * busy_cpu_delta / total_cpu_delta, \
+                (double)100 * (new_proc_buf[0].cstime - last_proc_buf[0].cstime) / sum_processes_ticks_delta * busy_cpu_delta / total_cpu_delta);
+
         }
         
         if (pid > 0 && new_proc_usage_valid && last_proc_usage_valid){
             unsigned long long pid_last_total_cpu = last_proc_usage.utime + last_proc_usage.stime + last_proc_usage.cutime + last_proc_usage.cstime;
             unsigned long long pid_new_total_cpu = new_proc_usage.utime + new_proc_usage.stime + new_proc_usage.cutime + new_proc_usage.cstime;
             
-            printf(" </proc/[pid]/stat> pid %05d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
+            printf(" </proc/[pid]/stat>            pid %5d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
                 (double)100 * (pid_new_total_cpu - pid_last_total_cpu) / total_cpu_delta, \
                 (double)100 * (new_proc_usage.utime - last_proc_usage.utime) / total_cpu_delta, \
                 (double)100 * (new_proc_usage.stime - last_proc_usage.stime) / total_cpu_delta, \
@@ -393,7 +421,7 @@ void refresh_cpu(int pid)
 
             //Reference: http://unix.stackexchange.com/questions/58539/top-and-ps-not-showing-the-same-cpu-result
             double total_process_uptime_seconds = new_sysuptime - (double)new_proc_usage.starttime / sysconf(_SC_CLK_TCK);
-            printf(" </proc/[pid]/stat with uptime(ps)> pid %05d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
+            printf(" </proc/[pid]/stat uptime(ps)> pid %5d  total:%.2f%% user:%.2f%% sys:%.2f%% cuser:%.2f%% csys:%.2f%%\n", pid, \
                 (double)100 * ((double)pid_new_total_cpu / sysconf(_SC_CLK_TCK)) / total_process_uptime_seconds, \
                 (double)100 * ((double)new_proc_usage.utime / sysconf(_SC_CLK_TCK)) / total_process_uptime_seconds, \
                 (double)100 * ((double)new_proc_usage.stime / sysconf(_SC_CLK_TCK)) / total_process_uptime_seconds, \
@@ -404,6 +432,7 @@ void refresh_cpu(int pid)
         //保存回last
         memcpy(&last_cu, &new_cu, sizeof(struct cpu_usage_t));
         if (pid >= 0){
+            last_sum_processes_ticks = new_sum_processes_ticks;
             memcpy(last_proc_buf, new_proc_buf, sizeof(struct proc_t) * MAX_PROCESS_COUNT);
             last_out_proc_count = new_out_proc_count;
             
