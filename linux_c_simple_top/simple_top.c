@@ -222,6 +222,8 @@ int get_uptime(double *sys_uptime_seconds, double* idle_uptime_seconds)
     sscanf(buf, "%f %f", &up1, &up2);
     //printf("%f %f\n", up1, up2);
 
+    fclose(fp);
+    
     if (NULL != sys_uptime_seconds){
         *sys_uptime_seconds = up1;
     }
