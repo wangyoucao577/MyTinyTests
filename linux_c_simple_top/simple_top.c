@@ -5,7 +5,11 @@
 #include <fcntl.h>
 #include <string.h>
 #include <assert.h>
+#include <unistd.h>
+
+#ifndef WITHOUT_LIBPROCPS    
 #include "proc/readproc.h"
+#endif
 
 #define VNAME(name) (#name)
 
@@ -79,6 +83,9 @@ struct process_usage_t
     unsigned long long starttime;
     //TODO: 补齐...
 };
+
+
+#ifndef WITHOUT_LIBPROCPS
 
 // get_proc_info via libprocps.so (top from procps-ng)
 //   pid[in]: 0 if all processes, otherwise the indicated process
@@ -173,6 +180,29 @@ unsigned long long get_proc_info(int pid, int want_threads, int b_print, proc_t*
     return sum_processes_ticks;
 }
 
+
+void get_proc_info_tab()
+{
+    int openproc_flags = PROC_FILLMEM | PROC_FILLSTAT | PROC_LOOSE_TASKS;   
+    
+    //NOTE：readproctab的内存只能通过exit进行释放，故这个接口无法在需要循环调用的程序中使用。
+    proc_t ** pt = readproctab(openproc_flags);
+    if (NULL == pt){
+        printf("readproctab failed, errno %d.\n", errno);
+        return;
+    }
+    
+    proc_t *t = NULL;
+    int i = 0;
+    while (t = pt[i++])
+    {
+        printf("tid:%d(ppid:%d pid:%d) cmd:%s state:%c utime:%llu stime:%llu cutime:%llu cstime:%llu \n", \
+            t->tid, t->ppid, t->tgid, t->cmd, t->state, t->utime, t->stime, t->cutime, t->cstime);
+    }
+}
+
+#endif
+
 //reference: procps-ng-3.3.11 sysinfo.c "void getstat(...)"
 //精简了大部分不需要的内容
 //return 0 if succeed, otherwise failed.
@@ -223,7 +253,7 @@ int get_uptime(double *sys_uptime_seconds, double* idle_uptime_seconds)
     //printf("%f %f\n", up1, up2);
 
     fclose(fp);
-    
+
     if (NULL != sys_uptime_seconds){
         *sys_uptime_seconds = up1;
     }
@@ -301,11 +331,13 @@ int get_process_stat(int pid, struct process_usage_t* usage)
 //          > 0 means monitor one indicated process too
 void refresh_cpu(int pid)
 {
+    //printf("clock_per_second:%d\n", sysconf(_SC_CLK_TCK));
     struct cpu_usage_t last_cu;
     get_cpu_stat(&last_cu);
     //printf("cpu user:%llu nice:%llu sys:%llu idle:%llu iowait:%llu irq:%llu softirq:%llu steal:%llu guest:%llu\n", \
         last_cu.user, last_cu.nice, last_cu.sys, last_cu.idle, last_cu.iowait, last_cu.irq, last_cu.softirq, last_cu.steal, last_cu.guest);
         
+#ifndef WITHOUT_LIBPROCPS
     //get process info from libprocps.so
     const static int MAX_PROCESS_COUNT = 512;
     proc_t last_proc_buf[MAX_PROCESS_COUNT];
@@ -321,6 +353,7 @@ void refresh_cpu(int pid)
         last_sum_processes_ticks = get_proc_info(pid, 0, 0, last_proc_buf, &last_out_proc_count);
         assert((pid == 0) || (pid > 0 && last_out_proc_count <= 1));
     }
+#endif
 
     //get process info from /proc/[pid]/stat
     int last_proc_usage_valid = 0, new_proc_usage_valid = 0;
@@ -334,7 +367,6 @@ void refresh_cpu(int pid)
         }
     }
 
-
         
     while (1)
     {
@@ -345,10 +377,12 @@ void refresh_cpu(int pid)
         get_uptime(&new_sysuptime, &new_idleuptime);
         
         if (pid >= 0){
+#ifndef WITHOUT_LIBPROCPS
             new_out_proc_count = MAX_PROCESS_COUNT;
             new_sum_processes_ticks = get_proc_info(pid, 0, 0, new_proc_buf, &new_out_proc_count);
             assert((pid == 0) || (pid > 0 && new_out_proc_count <= 1));
-            
+#endif
+
             new_proc_usage_valid = 0;
             if (0 == get_process_stat(pid, &new_proc_usage)){
                 new_proc_usage_valid = 1;
@@ -376,7 +410,8 @@ void refresh_cpu(int pid)
             (double)100 * (new_cu.softirq - last_cu.softirq) / total_cpu_delta, \
             (double)100 * (new_cu.steal - last_cu.steal) / total_cpu_delta, \
             (double)100 * (new_cu.guest - last_cu.guest) / total_cpu_delta); 
-            
+        
+#ifndef WITHOUT_LIBPROCPS    
         //计算指定线程的cpu占用
         //TODO: 待完善。 先简化下, 假设只有一个进程
         if (pid >= 0 && new_out_proc_count == 1 && last_out_proc_count == 1){
@@ -409,7 +444,8 @@ void refresh_cpu(int pid)
                 (double)100 * (new_proc_buf[0].cstime - last_proc_buf[0].cstime) / sum_processes_ticks_delta * busy_cpu_delta / total_cpu_delta);
 
         }
-        
+#endif
+
         if (pid > 0 && new_proc_usage_valid && last_proc_usage_valid){
             unsigned long long pid_last_total_cpu = last_proc_usage.utime + last_proc_usage.stime + last_proc_usage.cutime + last_proc_usage.cstime;
             unsigned long long pid_new_total_cpu = new_proc_usage.utime + new_proc_usage.stime + new_proc_usage.cutime + new_proc_usage.cstime;
@@ -434,50 +470,31 @@ void refresh_cpu(int pid)
         //保存回last
         memcpy(&last_cu, &new_cu, sizeof(struct cpu_usage_t));
         if (pid >= 0){
+#ifndef WITHOUT_LIBPROCPS                
             last_sum_processes_ticks = new_sum_processes_ticks;
             memcpy(last_proc_buf, new_proc_buf, sizeof(struct proc_t) * MAX_PROCESS_COUNT);
             last_out_proc_count = new_out_proc_count;
-            
+#endif
             memcpy(&last_proc_usage, &new_proc_usage, sizeof(struct process_usage_t));
             last_proc_usage_valid = new_proc_usage_valid;
+
+            //打印进程cpu占用时, 加个换行好看一些
+            printf("\n");
+
         }
-        printf("\n");
     }
     
 }
-
-
-
-void get_proc_info_tab()
-{
-    int openproc_flags = PROC_FILLMEM | PROC_FILLSTAT | PROC_LOOSE_TASKS;   
-    
-    //NOTE：readproctab的内存只能通过exit进行释放，故这个接口无法在需要循环调用的程序中使用。
-    proc_t ** pt = readproctab(openproc_flags);
-    if (NULL == pt){
-        printf("readproctab failed, errno %d.\n", errno);
-        return;
-    }
-    
-    proc_t *t = NULL;
-    int i = 0;
-    while (t = pt[i++])
-    {
-        printf("tid:%d(ppid:%d pid:%d) cmd:%s state:%c utime:%llu stime:%llu cutime:%llu cstime:%llu \n", \
-            t->tid, t->ppid, t->tgid, t->cmd, t->state, t->utime, t->stime, t->cutime, t->cstime);
-    }
-}
-
 
 
 int main(int argc, char* argv[])
 {
-    printf("clock_per_second:%d\n", sysconf(_SC_CLK_TCK));
 
     if (argc <= 1){
         refresh_cpu(-1);
         goto End;
     }
+#ifndef WITHOUT_LIBPROCPS    
     else if (argc == 2){
         if (*(argv[1]) == 'H'){
             get_proc_info(0, 1, 1, NULL, NULL);
@@ -487,6 +504,7 @@ int main(int argc, char* argv[])
             goto End;
         }
     }
+#endif
     else if(argc == 3){
         if (NULL != strstr(argv[1], "-p")){ //want to monitor one process
             int pid = atoi(argv[2]);
@@ -505,9 +523,11 @@ int main(int argc, char* argv[])
     printf("Usage: \n");
     printf("     1, refresh system cpu info:  simple_top\n");
     printf("     2, refresh cpu info include system and one process:  simple_top -p pid\n");
+#ifndef WITHOUT_LIBPROCPS    
     printf("     3, capture one snapshot of processes: simple_top p\n");
     printf("     4, capture one snapshot of threads: simple_top H\n");
-        
+#endif
+
     //get_proc_info_tab();
 End:
     return 0;
