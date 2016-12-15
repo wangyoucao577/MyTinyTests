@@ -2,9 +2,9 @@
 //定义一个自己的全局变量
 var search_global = {};
 
-//NOTE:输入参数, 目标城市
+//输入参数, 目标城市
+//TODO: 挪到search_param_in.js中去
 search_global.expect_city = '上海';
-search_global.city_lines = ['20路', '791路']
 
 //地图提供商的枚举
 search_global.MapProvider = {
@@ -22,7 +22,7 @@ search_global.Step = {
 //NOTE: options
 search_global.options = {
     map_provider: search_global.MapProvider.BaiduMap,			//选择地图提供商
-    start_step: search_global.Step.NearbySearch,               //选择此次任务的起始步骤
+    start_step: search_global.Step.BusLineSearch,               //选择此次任务的起始步骤
 
     is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
     is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
@@ -206,7 +206,7 @@ search_global.my_main = function() {
 
         //已有线路list, 直接搜索线路详细
         search_global.functions.lines_search(search_global.lineSearchDone_Callback,
-            search_global.expect_city, search_global.city_lines,
+            search_global.expect_city, search_param_in.city_lines,
             search_global.options.map_provider);
     }else if (search_global.options.start_step === search_global.Step.NearbySearch){
         //TODO: 已有初步的 city_lines, city_stations, city_stations_location, 直接启动Nearby迭代以期更多的结果
@@ -214,7 +214,7 @@ search_global.my_main = function() {
         //console.log("start with NearbySearch, city_lines.length: " + search_global.city_lines.length + ", city_stations.length: " + search_global.city_stations.length + ", city_stations_location.length: " + search_global.city_stations_location.length);
 
         //location的格式AMap和BaiduMap表示方式各不同相同, 需先转换为其能识别的格式
-        var city_stations_location = search_global.functions.location_array_convert(search_global.city_stations_location);
+        var city_stations_location = search_global.functions.location_array_convert(search_param_in.city_stations_location);
 
         //迭代array
         var wait_for_nearby_search_locations = [];
@@ -225,7 +225,7 @@ search_global.my_main = function() {
         var loc = wait_for_nearby_search_locations.pop();
 
         search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback,
-            search_global.city_lines, search_global.city_stations, city_stations_location,
+            search_param_in.city_lines, search_param_in.city_stations, city_stations_location,
             search_global.expect_city, loc, wait_for_nearby_search_locations, search_global.options.map_provider);
 
     }
