@@ -31,3 +31,17 @@ Date.prototype.Format = function (fmt) { //author: meizz
     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
+
+function array_to_string(arr) {
+    var out_str = "[";
+    for (var i in arr){
+        out_str += "\'" + arr[i] + "\'";
+        if (i < arr.length - 1){
+            out_str += ", ";
+        }
+    }
+    out_str += "]";
+
+    return out_str;
+
+}
