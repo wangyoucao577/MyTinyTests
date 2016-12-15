@@ -4,7 +4,7 @@ var search_global = {};
 
 //NOTE:输入参数, 目标城市
 search_global.expect_city = '上海';
-//search_global.city_lines = ['20路', '791路']
+search_global.city_lines = ['20路', '791路']
 
 //地图提供商的枚举
 search_global.MapProvider = {
@@ -78,7 +78,7 @@ search_global.write_city_lines_stations_locations_to_file = function(city, type,
 
 
     //把结果写入文件
-    write_to_file(city, type + "_" + map_provider_name, out_str);
+    write_to_file(city, type + "_" + map_provider_name, out_str, true);
 
 }
 
@@ -183,7 +183,7 @@ search_global.lineSearchDone_Callback = function (out_str_result, map_provider_n
 
     // 触发文件写入
     write_to_file(search_global.expect_city, "LinesDetails_" + map_provider_name,
-        out_str_result.replace(/<\/br>/g, "\n"));
+        out_str_result.replace(/<\/br>/g, "\n"), false);
 }
 
 /************************** 三种Search动作的分别的回调 *******************************/

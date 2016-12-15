@@ -1,10 +1,16 @@
 
 
 //申请空间, 线路的搜索结果写入文件
-function write_to_file(city, type, out_str)
+function write_to_file(city, type, out_str, insert_file_description)
 {
     var now_str = (new Date()).Format("yyyyMMdd_HHmmss")
     var new_file = city + "_" + type + "_" + now_str + ".txt";
+
+    var file_description = "";
+    if (insert_file_description){
+        //文件名插入到文件的第一行, 以便区分
+        file_description += (new_file + "\n\n");
+    }
 
     //申请空间, save to File
     window.webkitRequestFileSystem(window.TEMPORARY, 100*1024*1024, function onInitFs(fs) {
@@ -16,7 +22,7 @@ function write_to_file(city, type, out_str)
                 writer.onwriteend = function(e) {
                     console.log('write complete, file:' + new_file);
                 };
-                writer.write(new Blob([out_str], {type: 'text/plain'}));
+                writer.write(new Blob([file_description + out_str], {type: 'text/plain'}));
             });
       }, errorHandler);
     }, errorHandler);
@@ -35,5 +41,5 @@ function write_city_lines_to_file(city, type, city_lines){
     out_str += "]";
 
     //把结果写入文件
-    write_to_file(city, type, out_str);
+    write_to_file(city, type, out_str, true);
 }
