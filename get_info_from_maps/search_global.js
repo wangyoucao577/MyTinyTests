@@ -4,7 +4,7 @@ var search_global = {};
 
 //NOTE:输入参数, 目标城市
 search_global.expect_city = '上海';
-search_global.city_lines = ['20路', '791路']
+//search_global.city_lines = ['20路', '791路']
 
 //地图提供商的枚举
 search_global.MapProvider = {
@@ -15,7 +15,7 @@ search_global.MapProvider = {
 
 //NOTE: options
 search_global.options = {
-    map_provider: search_global.MapProvider.AMap,				//选择地图提供商
+    map_provider: search_global.MapProvider.BaiduMap,				//选择地图提供商
     is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
     is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
     is_search_via_exist_city_lines: (search_global.city_lines ? true : false),	//根据现有的city_lines进行LineSearch or 从PlaceSearch开始
@@ -49,6 +49,39 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
     //Unknown map provider
 }
 
+//Search的返回city_lines, city_stations, city_stations_lcation写入文件的工具函数, 以便用于后续的迭代搜索
+search_global.write_city_lines_stations_locations_to_file = function(city, type, map_provider_name, city_lines, city_stations, city_stations_location)
+{
+    var out_str = "";
+
+    //显示下三个返回数据的长度, 仅用于人看以了解
+    out_str += "city_lines_count = " + city_lines.length + "\n";
+    out_str += "city_stations_count = " + city_stations.length + "\n";
+    out_str += "city_stations_location_count = " + city_stations_location.length + "\n";
+    out_str += "\n";
+
+    out_str += "search_global.city_lines = ";
+    out_str += array_to_string(city_lines);
+    out_str += "\n\n";
+
+    out_str += "search_global.city_stations = ";
+    out_str += array_to_string(city_stations);
+    out_str += "\n\n";
+
+    out_str += "search_global.city_stations_location = ";
+    if (map_provider_name === search_global.MapProvider.AMap){
+        out_str += tools_amap.location_array_to_string(city_stations_location);
+    }else if(map_provider_name === search_global.MapProvider.BaiduMap){
+        out_str += tools_bmap.location_array_to_string(city_stations_location);
+    }
+    out_str += "\n";
+
+
+    //把结果写入文件
+    write_to_file(city, type + "_" + map_provider_name, out_str);
+
+}
+
 /************************** 三种Search动作的分别的回调 *******************************/
 
 //AMap, BaiduMap的PlaceSearch完成时的回调, 触发NearbySearch
@@ -61,7 +94,8 @@ search_global.placeSearchDone_Callback = function (city_lines_result, city_stati
 
     if (search_global.options.is_write_city_lines_to_file_after_place_search){
         //把city_lines写入文件
-        write_city_lines_to_file(search_global.expect_city, "CityLines_" + map_provider_name, city_lines_result);
+        //write_city_lines_to_file(search_global.expect_city, "CityLines_" + map_provider_name, city_lines_result);
+        search_global.write_city_lines_stations_locations_to_file(search_global.expect_city, "Lines_Stations_Locations",  map_provider_name, city_lines_result, city_stations_result, city_stations_location_result);
     }
 
     if (city_stations_location_result.length > 0){
@@ -94,15 +128,19 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
     }
     if (search_global.searched_count % 100 == 0){
         //NOTE: 过程中也把city_lines写入文件, 以免由于高德的拖动认证问题导致成果作废...
-        write_city_lines_to_file(search_global.expect_city, "CityLines_temp_"
-            + search_global.searched_count + "_" + map_provider_name, city_lines_result);
+        //write_city_lines_to_file(search_global.expect_city, "CityLines_temp_"
+        //   + search_global.searched_count + "_" + map_provider_name, city_lines_result);
+        search_global.write_city_lines_stations_locations_to_file(search_global.expect_city, "Lines_Stations_Locations_temp",  map_provider_name, city_lines_result, city_stations_result, city_stations_location_result);
+
     }
 
     if (0 == wait_for_nearby_search_locations_result.length){
 
         if (search_global.options.is_write_city_lines_to_file_after_nearby_search){
             //Nearby搜索完成, 把city_lines写入文件
-            write_city_lines_to_file(search_global.expect_city, "CityLines_whole_" + map_provider_name, city_lines_result);
+            //write_city_lines_to_file(search_global.expect_city, "CityLines_whole_" + map_provider_name, city_lines_result);
+            search_global.write_city_lines_stations_locations_to_file(search_global.expect_city, "Lines_Stations_Locations_whole",  map_provider_name, city_lines_result, city_stations_result, city_stations_location_result);
+
         }
 
 
