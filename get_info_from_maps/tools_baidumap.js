@@ -19,3 +19,12 @@ tools_bmap.location_array_to_string = function(location_array){
 
     return out_str;
 }
+
+//from presentation format to BaiduMap format
+tools_bmap.location_array_convert = function (str) {
+    var location_arr_bmap = [];
+
+    //TODO:
+
+    return location_arr_bmap;
+}

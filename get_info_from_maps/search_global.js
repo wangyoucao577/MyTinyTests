@@ -22,7 +22,7 @@ search_global.Step = {
 //NOTE: options
 search_global.options = {
     map_provider: search_global.MapProvider.BaiduMap,			//选择地图提供商
-    start_step: search_global.Step.BusLineSearch,               //选择此次任务的起始步骤
+    start_step: search_global.Step.NearbySearch,               //选择此次任务的起始步骤
 
     is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
     is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
@@ -35,9 +35,13 @@ search_global.searched_count = 0;
 
 //动态函数调用
 search_global.functions = {
+
+    //三个搜索入口
     local_search: place_search_global_amap.executePlaceSearchForCity,
     nearby_search: nearby_search_global_amap.executePlaceSearchNearbyForCity,
-    lines_search: lines_search_global_amap.executeLineSearch
+    lines_search: lines_search_global_amap.executeLineSearch,
+
+    location_str_to_array: tools_amap.location_array_convert
 }
 
 //根据map_provider绑定不同的函数 及 参数
@@ -49,6 +53,8 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
     search_global.functions.local_search = local_search_global_bmap.execute_local_search;
     search_global.functions.nearby_search = nearby_search_global_bmap.execute_local_nearby_search;
     search_global.functions.lines_search = busline_search_global_bmap.execute_buslines_search;
+
+    search_global.functions.location_str_to_array = tools_bmap.location_array_convert;
 
 }else if (search_global.options.map_provider === search_global.MapProvider.GoogleMap){
     //TODO:
@@ -130,11 +136,7 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
     document.getElementById('result').innerHTML = wait_for_nearby_search_locations_result.length;
 
     ++search_global.searched_count;
-    if (search_global.searched_count % 30 == 0){
-        //try to avoid the AMAP human verification
-//		sleep(15 * 1000);
-    }
-    if (search_global.searched_count % 100 == 0){
+    if (search_global.searched_count % 50 == 0){
         //NOTE: 过程中也把city_lines写入文件, 以免由于高德的拖动认证问题导致成果作废...
         //write_city_lines_to_file(search_global.expect_city, "CityLines_temp_"
         //   + search_global.searched_count + "_" + map_provider_name, city_lines_result);
@@ -209,10 +211,28 @@ search_global.my_main = function() {
     }else if (search_global.options.start_step === search_global.Step.NearbySearch){
         //TODO: 已有初步的 city_lines, city_stations, city_stations_location, 直接启动Nearby迭代以期更多的结果
 
+        //console.log("start with NearbySearch, city_lines.length: " + search_global.city_lines.length + ", city_stations.length: " + search_global.city_stations.length + ", city_stations_location.length: " + search_global.city_stations_location.length);
+
+        //location的格式AMap和BaiduMap表示方式各不同相同, 需先转换为其能识别的格式
+        var city_stations_location = search_global.functions.location_array_convert(search_global.city_stations_location);
+
+        //迭代array
+        var wait_for_nearby_search_locations = [];
+        for (var i in city_stations_location){
+
+            wait_for_nearby_search_locations.push(city_stations_location[i]);
+        }
+        var loc = wait_for_nearby_search_locations.pop();
+
+        search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback,
+            search_global.city_lines, search_global.city_stations, city_stations_location,
+            search_global.expect_city, loc, wait_for_nearby_search_locations, search_global.options.map_provider);
+
     }
     else{
         //默认从Local/Place Search开始, 先取得初步的信息, 再进入Nearby迭代
-        search_global.functions.local_search(search_global.placeSearchDone_Callback, search_global.expect_city, search_global.options.map_provider);
+        search_global.functions.local_search(search_global.placeSearchDone_Callback,
+            search_global.expect_city, search_global.options.map_provider);
     }
 
 }
