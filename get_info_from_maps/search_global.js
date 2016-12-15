@@ -12,13 +12,21 @@ search_global.MapProvider = {
     BaiduMap: "BaiduMap",
     GoogleMap: "GoogleMap"
 }
+//启动步骤的枚举
+search_global.Step = {
+    LocalSearch: "local search",
+    NearbySearch: "nearby search",
+    BusLineSearch: "busline search"
+}
 
 //NOTE: options
 search_global.options = {
-    map_provider: search_global.MapProvider.BaiduMap,				//选择地图提供商
+    map_provider: search_global.MapProvider.BaiduMap,			//选择地图提供商
+    start_step: search_global.Step.BusLineSearch,               //选择此次任务的起始步骤
+
     is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
     is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
-    is_search_via_exist_city_lines: (search_global.city_lines ? true : false),	//根据现有的city_lines进行LineSearch or 从PlaceSearch开始
+
     nearby_iterate_count: 1   //nearby迭代搜索的次数
 }
 
@@ -32,7 +40,7 @@ search_global.functions = {
     lines_search: lines_search_global_amap.executeLineSearch
 }
 
-//根据map_provider绑定不同的函数
+//根据map_provider绑定不同的函数 及 参数
 if (search_global.options.map_provider === search_global.MapProvider.AMap){
     //default values, nothing to change
 
@@ -191,13 +199,19 @@ search_global.lineSearchDone_Callback = function (out_str_result, map_provider_n
 
 //入口函数
 search_global.my_main = function() {
-    if (search_global.options.is_search_via_exist_city_lines){
+    console.log("start with " + search_global.options.start_step);
+    if (search_global.options.start_step === search_global.Step.BusLineSearch){
+
         //已有线路list, 直接搜索线路详细
         search_global.functions.lines_search(search_global.lineSearchDone_Callback,
             search_global.expect_city, search_global.city_lines,
             search_global.options.map_provider);
-    }else{
-        //需要POI迭代搜索以尝试枚举
+    }else if (search_global.options.start_step === search_global.Step.NearbySearch){
+        //TODO: 已有初步的 city_lines, city_stations, city_stations_location, 直接启动Nearby迭代以期更多的结果
+
+    }
+    else{
+        //默认从Local/Place Search开始, 先取得初步的信息, 再进入Nearby迭代
         search_global.functions.local_search(search_global.placeSearchDone_Callback, search_global.expect_city, search_global.options.map_provider);
     }
 
