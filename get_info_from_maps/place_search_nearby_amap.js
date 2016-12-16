@@ -16,7 +16,7 @@ function waitForPlaceSearchNearbyResult_Callback(){
             + ", total_nearby_search_failed_callback_count: " + nearby_search_global_amap.total_nearby_search_failed_callback_count);
 
         // 触发外部的callback
-        nearby_search_global_amap.allDone_Callback(nearby_search_global_amap.city_lines, nearby_search_global_amap.city_stations, 
+        nearby_search_global_amap.allDone_Callback(nearby_search_global_amap.city, nearby_search_global_amap.city_lines, nearby_search_global_amap.city_stations,
             nearby_search_global_amap.city_stations_location, nearby_search_global_amap.wait_for_nearby_search_locations, nearby_search_global_amap.map_provider_name);
 
     }else{

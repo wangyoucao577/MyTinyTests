@@ -4,13 +4,13 @@ var nearby_search_global_bmap = {};
 
 nearby_search_global_bmap.execute_local_nearby_search = function (all_done_callback, city_lines, city_stations, city_stations_location, city, loc, wait_for_nearby_search_locations, map_provider_name){
 
-  var local = new BMap.LocalSearch(city, {      
+  var local = new BMap.LocalSearch(city, {
       onSearchComplete: function (result) {
           //console.log(result);
-          // console.log("NumPages: " + result.getNumPages() + ", NumPois: " + result.getNumPois() 
+          // console.log("NumPages: " + result.getNumPages() + ", NumPois: " + result.getNumPois()
           //   + ", CurrentNumPois: " + result.getCurrentNumPois() + ", PageIndex: " + result.getPageIndex());
 
-          
+
 
           for (var i = 0; i < result.getCurrentNumPois(); ++i){
             var poi = result.getPoi(i);
@@ -44,7 +44,7 @@ nearby_search_global_bmap.execute_local_nearby_search = function (all_done_callb
             local.gotoPage(result.getPageIndex() + 1);
           }else{
             console.log("all pages completed.");
-            all_done_callback(city_lines, city_stations, city_stations_location, wait_for_nearby_search_locations, map_provider_name);
+            all_done_callback(city, city_lines, city_stations, city_stations_location, wait_for_nearby_search_locations, map_provider_name);
           }
       },    
       pageCapacity:50

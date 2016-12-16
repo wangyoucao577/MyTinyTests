@@ -2,10 +2,6 @@
 //定义一个自己的全局变量, 串联执行流程
 var search_global = {};
 
-//输入参数, 目标城市
-//TODO: 挪到search_param_in.js中去
-search_global.expect_city = '上海';
-
 
 
 //统计
@@ -80,7 +76,7 @@ search_global.write_city_lines_stations_locations_to_file = function(city, type,
 /************************** 三种Search动作的分别的回调 *******************************/
 
 //AMap, BaiduMap的PlaceSearch完成时的回调, 触发NearbySearch
-search_global.placeSearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result, map_provider_name)
+search_global.placeSearchDone_Callback = function (city, city_lines_result, city_stations_result, city_stations_location_result, map_provider_name)
 {
     //console.log(city_lines_result);
     console.log("placeSearchDone_Callback, city_lines_result.length: " + city_lines_result.length + ", city_stations_result.length: "
@@ -90,7 +86,7 @@ search_global.placeSearchDone_Callback = function (city_lines_result, city_stati
     if (search_config.options.is_write_city_lines_to_file_after_place_search){
         //把city_lines写入文件
         //write_city_lines_to_file(search_global.expect_city, "CityLines_" + map_provider_name, city_lines_result);
-        search_global.write_city_lines_stations_locations_to_file(search_global.expect_city, "Lines_Stations_Locations",  map_provider_name, city_lines_result, city_stations_result, city_stations_location_result);
+        search_global.write_city_lines_stations_locations_to_file(city, "Lines_Stations_Locations",  map_provider_name, city_lines_result, city_stations_result, city_stations_location_result);
     }
 
     if (city_stations_location_result.length > 0){
@@ -104,11 +100,11 @@ search_global.placeSearchDone_Callback = function (city_lines_result, city_stati
         var loc = wait_for_nearby_search_locations.pop();
 
         // 触发nearby搜索, AMap
-        search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations, map_provider_name);
+        search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, city, loc, wait_for_nearby_search_locations, map_provider_name);
     }
 
 }
-search_global.placeNearbySearchDone_Callback = function (city_lines_result, city_stations_result, city_stations_location_result, wait_for_nearby_search_locations_result, map_provider_name)
+search_global.placeNearbySearchDone_Callback = function (city, city_lines_result, city_stations_result, city_stations_location_result, wait_for_nearby_search_locations_result, map_provider_name)
 {
     console.log("placeNearbySearchDone_Callback, city_lines_result.length: " + city_lines_result.length
         + ", city_stations_result.length: " + city_stations_result.length
@@ -121,7 +117,7 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
         //NOTE: 过程中也把city_lines写入文件, 以免由于高德的拖动认证问题导致成果作废...
         //write_city_lines_to_file(search_global.expect_city, "CityLines_temp_"
         //   + search_global.searched_count + "_" + map_provider_name, city_lines_result);
-        search_global.write_city_lines_stations_locations_to_file(search_global.expect_city, "Lines_Stations_Locations_temp",  map_provider_name, city_lines_result, city_stations_result, city_stations_location_result);
+        search_global.write_city_lines_stations_locations_to_file(city, "Lines_Stations_Locations_temp",  map_provider_name, city_lines_result, city_stations_result, city_stations_location_result);
 
     }
 
@@ -130,7 +126,7 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
         if (search_config.options.is_write_city_lines_to_file_after_nearby_search){
             //Nearby搜索完成, 把city_lines写入文件
             //write_city_lines_to_file(search_global.expect_city, "CityLines_whole_" + map_provider_name, city_lines_result);
-            search_global.write_city_lines_stations_locations_to_file(search_global.expect_city, "Lines_Stations_Locations_whole",  map_provider_name, city_lines_result, city_stations_result, city_stations_location_result);
+            search_global.write_city_lines_stations_locations_to_file(city, "Lines_Stations_Locations_whole",  map_provider_name, city_lines_result, city_stations_result, city_stations_location_result);
 
         }
 
@@ -139,7 +135,7 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
         if (search_config.options.nearby_iterate_count == 0){
 
             // Nearby搜索完成, 触发Line搜索
-            search_global.functions.lines_search(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result, map_provider_name);
+            search_global.functions.lines_search(search_global.lineSearchDone_Callback, city, city_lines_result, map_provider_name);
         }else{
             // 进行下一次Nearby迭代
             console.log("ready to next nearby iterate. remain count: " + search_config.options.nearby_iterate_count);
@@ -152,7 +148,7 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
             var loc = wait_for_nearby_search_locations.pop();
 
             // 触发nearby搜索
-            search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations, map_provider_name);
+            search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, city, loc, wait_for_nearby_search_locations, map_provider_name);
 
         }
 
@@ -161,19 +157,19 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
         var loc = wait_for_nearby_search_locations_result.pop();
 
         // 触发nearby搜索
-        search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, search_global.expect_city, loc, wait_for_nearby_search_locations_result, map_provider_name);
+        search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, city, loc, wait_for_nearby_search_locations_result, map_provider_name);
     }
 
 }
 
 //AMap, BaiduMap的通用busline搜索完成时的回调，以触发写入文件
-search_global.lineSearchDone_Callback = function (out_str_result, map_provider_name)
+search_global.lineSearchDone_Callback = function (city, out_str_result, map_provider_name)
 {
     //console.log(out_str_result);
     console.log("out_str_result len: " + out_str_result.length);
 
     // 触发文件写入
-    write_to_file(search_global.expect_city, "LinesDetails_" + map_provider_name,
+    write_to_file(city, "LinesDetails_" + map_provider_name,
         out_str_result.replace(/<\/br>/g, "\n"), false);
 }
 
@@ -187,7 +183,7 @@ search_global.my_main = function(param_in) {
 
         //已有线路list, 直接搜索线路详细
         search_global.functions.lines_search(search_global.lineSearchDone_Callback,
-            search_global.expect_city, param_in.city_lines,
+            param_in.expect_city, param_in.city_lines,
             search_config.options.map_provider);
     }else if (search_config.options.start_step === search_config.Step.NearbySearch){
         // 已有初步的 city_lines, city_stations, city_stations_location, 直接启动Nearby迭代以期更多的结果
@@ -207,13 +203,13 @@ search_global.my_main = function(param_in) {
 
         search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback,
             param_in.city_lines, param_in.city_stations, city_stations_location,
-            search_global.expect_city, loc, wait_for_nearby_search_locations, search_config.options.map_provider);
+            param_in.expect_city, loc, wait_for_nearby_search_locations, search_config.options.map_provider);
 
     }
     else{
         //默认从Local/Place Search开始, 先取得初步的信息, 再进入Nearby迭代
         search_global.functions.local_search(search_global.placeSearchDone_Callback,
-            search_global.expect_city, search_config.options.map_provider);
+            param_in.expect_city, search_config.options.map_provider);
     }
 
 }

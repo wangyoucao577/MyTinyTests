@@ -54,7 +54,7 @@ local_search_global_bmap.execute_local_search = function (all_done_callback, cit
             local.gotoPage(result.getPageIndex() + 1);
           }else{
             console.log("all pages completed.");
-            all_done_callback(city_lines, city_stations, city_stations_location, map_provider_name);
+            all_done_callback(city, city_lines, city_stations, city_stations_location, map_provider_name);
           }
 
       },    

@@ -19,7 +19,7 @@ function waitForPlaceSearchResult_Callback(){
         //console.log(place_search_global_amap.city_lines);
 
         // 触发外部的callback
-        place_search_global_amap.allDone_Callback(place_search_global_amap.city_lines, place_search_global_amap.city_stations, place_search_global_amap.city_stations_location, place_search_global_amap.map_provider_name);
+        place_search_global_amap.allDone_Callback(place_search_global_amap.city, place_search_global_amap.city_lines, place_search_global_amap.city_stations, place_search_global_amap.city_stations_location, place_search_global_amap.map_provider_name);
 
     }else{
         setTimeout(waitForPlaceSearchResult_Callback, 1000);
@@ -61,6 +61,7 @@ function placeSearch_Callback(result)
 place_search_global_amap.executePlaceSearchForCity = function (allPlaceSearchDone_Callback, city, map_provider_name){
     place_search_global_amap.allDone_Callback = allPlaceSearchDone_Callback;
     place_search_global_amap.map_provider_name = map_provider_name;
+    place_search_global_amap.city = city;
 
     //先查询城市的公交站点
     AMap.service('AMap.PlaceSearch',function(){//回调函数
