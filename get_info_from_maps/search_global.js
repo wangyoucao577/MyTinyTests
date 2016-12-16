@@ -57,7 +57,7 @@ if (search_global.options.map_provider === search_global.MapProvider.AMap){
     search_global.functions.location_array_convert = tools_bmap.location_array_convert;
 
 }else if (search_global.options.map_provider === search_global.MapProvider.GoogleMap){
-    //TODO:
+    //TODO: for GoogleMap
     search_global.functions.local_search = place_search_global_gmap.execute_nearby_search;
 }else{
     //Unknown map provider
@@ -209,7 +209,7 @@ search_global.my_main = function() {
             search_global.expect_city, search_param_in.city_lines,
             search_global.options.map_provider);
     }else if (search_global.options.start_step === search_global.Step.NearbySearch){
-        //TODO: 已有初步的 city_lines, city_stations, city_stations_location, 直接启动Nearby迭代以期更多的结果
+        // 已有初步的 city_lines, city_stations, city_stations_location, 直接启动Nearby迭代以期更多的结果
 
         console.log("start with NearbySearch, city_lines.length: " + search_param_in.city_lines.length + ", city_stations.length: " + search_param_in.city_stations.length + ", city_stations_location.length: " + search_param_in.city_stations_location.length);
 

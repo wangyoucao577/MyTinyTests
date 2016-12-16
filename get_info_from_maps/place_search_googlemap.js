@@ -31,7 +31,7 @@ place_search_global_gmap.execute_nearby_search = function (all_done_callback, ci
               if (status == google.maps.places.PlacesServiceStatus.OK){
                   for (var i = 0; i < results.length; ++i) {
                       console.log("index: " + i + ", name: " + results[i].name + ", place_id: " + results[i].place_id + ", vicinity: " +  results[i].vicinity + "\n");
-                      //TODO:...
+                      //TODO: for GoogleMap
                   }
 
               }
