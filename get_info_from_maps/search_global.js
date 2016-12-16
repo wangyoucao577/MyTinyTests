@@ -69,20 +69,23 @@ search_global.write_city_lines_stations_locations_to_file = function(city, type,
     var out_str = "";
 
     //显示下三个返回数据的长度, 仅用于人看以了解
-    out_str += "city_lines_count = " + city_lines.length + "\n";
-    out_str += "city_stations_count = " + city_stations.length + "\n";
-    out_str += "city_stations_location_count = " + city_stations_location.length + "\n";
+    out_str += "// city_lines_count = " + city_lines.length + "\n";
+    out_str += "// city_stations_count = " + city_stations.length + "\n";
+    out_str += "// city_stations_location_count = " + city_stations_location.length + "\n";
     out_str += "\n";
 
-    out_str += "city_lines = ";
+    out_str += "var expect_city = " + city;
+    out_str += "\n\n";
+
+    out_str += "var city_lines = ";
     out_str += array_to_string(city_lines);
     out_str += "\n\n";
 
-    out_str += "city_stations = ";
+    out_str += "var city_stations = ";
     out_str += array_to_string(city_stations);
     out_str += "\n\n";
 
-    out_str += "city_stations_location = ";
+    out_str += "var city_stations_location = ";
     if (map_provider_name === search_global.MapProvider.AMap){
         out_str += tools_amap.location_array_to_string(city_stations_location);
     }else if(map_provider_name === search_global.MapProvider.BaiduMap){

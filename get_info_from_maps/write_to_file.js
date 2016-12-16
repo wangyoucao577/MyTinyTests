@@ -9,7 +9,7 @@ function write_to_file(city, type, out_str, insert_file_description)
     var file_description = "";
     if (insert_file_description){
         //文件名插入到文件的第一行, 以便区分
-        file_description += (new_file + "\n\n");
+        file_description += ("//" + new_file + "\n\n");
     }
 
     //申请空间, save to File
