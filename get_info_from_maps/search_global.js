@@ -22,7 +22,7 @@ search_global.Step = {
 //NOTE: options
 search_global.options = {
     map_provider: search_global.MapProvider.AMap,			//选择地图提供商
-    start_step: search_global.Step.NearbySearch,               //选择此次任务的起始步骤
+    start_step: search_global.Step.LocalSearch,               //选择此次任务的起始步骤
 
     is_write_city_lines_to_file_after_place_search: true,		//选择基于城市的初步 PlaceSearch后的结果city_lines是否写入文件
     is_write_city_lines_to_file_after_nearby_search: true,		//选择迭代的 PlaceNearbySearch 后的结果city_lines是否写入文件
@@ -74,15 +74,15 @@ search_global.write_city_lines_stations_locations_to_file = function(city, type,
     out_str += "city_stations_location_count = " + city_stations_location.length + "\n";
     out_str += "\n";
 
-    out_str += "search_global.city_lines = ";
+    out_str += "city_lines = ";
     out_str += array_to_string(city_lines);
     out_str += "\n\n";
 
-    out_str += "search_global.city_stations = ";
+    out_str += "city_stations = ";
     out_str += array_to_string(city_stations);
     out_str += "\n\n";
 
-    out_str += "search_global.city_stations_location = ";
+    out_str += "city_stations_location = ";
     if (map_provider_name === search_global.MapProvider.AMap){
         out_str += tools_amap.location_array_to_string(city_stations_location);
     }else if(map_provider_name === search_global.MapProvider.BaiduMap){
