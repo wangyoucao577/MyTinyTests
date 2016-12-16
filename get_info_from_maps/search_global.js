@@ -11,16 +11,22 @@ search_global.searched_count = 0;
 search_global.functions = {
 
     //三个搜索入口
-    local_search: place_search_global_amap.executePlaceSearchForCity,
-    nearby_search: nearby_search_global_amap.executePlaceSearchNearbyForCity,
-    lines_search: lines_search_global_amap.executeLineSearch,
+    local_search: notImplementFunction,
+    nearby_search: notImplementFunction,
+    lines_search: notImplementFunction,
 
-    location_array_convert: tools_amap.location_array_convert
+    //工具函数
+    location_array_convert: notImplementFunction
 }
 
 //根据map_provider绑定不同的函数 及 参数
 if (search_config.options.map_provider === search_config.MapProvider.AMap){
-    //default values, nothing to change
+
+    search_global.functions.local_search = place_search_global_amap.executePlaceSearchForCity;
+    search_global.functions.nearby_search = nearby_search_global_amap.executePlaceSearchNearbyForCity;
+    search_global.functions.lines_search = lines_search_global_amap.executeLineSearch;
+
+    search_global.functions.location_array_convert = tools_amap.location_array_convert;
 
 }else if (search_config.options.map_provider === search_config.MapProvider.BaiduMap){
 
@@ -31,8 +37,10 @@ if (search_config.options.map_provider === search_config.MapProvider.AMap){
     search_global.functions.location_array_convert = tools_bmap.location_array_convert;
 
 }else if (search_config.options.map_provider === search_config.MapProvider.GoogleMap){
+
     //TODO: for GoogleMap
     search_global.functions.local_search = place_search_global_gmap.execute_nearby_search;
+
 }else{
     //Unknown map provider
 }

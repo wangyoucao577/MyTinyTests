@@ -6,6 +6,10 @@ function errorHandler(e) {
   console.log(e.name + ": " + e.message);
 }
 
+function notImplementFunction() {
+    console.log("not implement function");
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
