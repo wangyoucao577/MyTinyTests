@@ -22,7 +22,7 @@ function waitForLineSearchResult_Callback(){
     else if (0 != lines_search_global_amap.last_remember_count && (lines_search_global_amap.searchSucceedCallbackCount + lines_search_global_amap.searchFailedCallbackCount) == lines_search_global_amap.last_remember_count)
     {
         console.log("Lost lineSearch callback count: " + (lines_search_global_amap.city_lines.length - lines_search_global_amap.last_remember_count) + ", we'll write.");
-        lines_search_global_amap.allDone_callback(lines_search_global_amap.outStr);
+        lines_search_global_amap.allDone_callback(lines_search_global_amap.outStr, lines_search_global_amap.map_provider_name);
         //write_to_file();
     }
     else

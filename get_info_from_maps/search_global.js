@@ -158,7 +158,7 @@ search_global.placeNearbySearchDone_Callback = function (city_lines_result, city
         if (search_global.options.nearby_iterate_count == 0){
 
             // Nearby搜索完成, 触发Line搜索
-            search_global.functions.lines_search(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result);
+            search_global.functions.lines_search(search_global.lineSearchDone_Callback, search_global.expect_city, city_lines_result, map_provider_name);
         }else{
             // 进行下一次Nearby迭代
             console.log("ready to next nearby iterate. remain count: " + search_global.options.nearby_iterate_count);
