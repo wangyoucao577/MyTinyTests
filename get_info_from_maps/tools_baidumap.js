@@ -21,10 +21,18 @@ tools_bmap.location_array_to_string = function(location_array){
 }
 
 //from presentation format to BaiduMap format
-tools_bmap.location_array_convert = function (str) {
+tools_bmap.location_array_convert = function (location_arr) {
     var location_arr_bmap = [];
 
-    //TODO:
+    //BaiduMap的location 需要用BMap的Point结构进行存储
+    for (var i = 0; i < location_arr.length; ++i){
+        var loc = location_arr[i].split(',');
+        if (!(loc.length == 2)){
+            console.log("loc length " + loc.length + " error, ignore this value: " + loc + "\n");
+            continue;
+        }
+        location_arr_bmap.push(new BMap.Point(loc[0], loc[1]));
+    }
 
     return location_arr_bmap;
 }
