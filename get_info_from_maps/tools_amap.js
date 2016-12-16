@@ -13,9 +13,7 @@ tools_amap.location_array_to_string = function(location_array){
 
 //from presentation format to AMap format
 tools_amap.location_array_convert = function (location_array) {
-    var location_arr_amap = [];
 
-    //TODO:
-
-    return location_arr_amap;
+    //NOTE: AMap的location存储方式为所见即所得, 不需要转换
+    return location_array;
 }
