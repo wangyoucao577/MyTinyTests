@@ -22,7 +22,7 @@ search_config.Step = {
 function * next_step_generator() {
     yield search_config.Step.LocalSearch;
     //yield search_config.Step.NearbySearch;
-    //yield search_config.Step.BusLineSearch;
+    yield search_config.Step.BusLineSearch;
 }
 search_config.get_next_step = next_step_generator();
 

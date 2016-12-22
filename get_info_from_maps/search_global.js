@@ -114,6 +114,10 @@ search_global.placeSearchDone_Callback = function (city, city_lines_result, city
             // 触发nearby搜索
             search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, city, loc, wait_for_nearby_search_locations, map_provider_name);
         }
+    }else if (next_step.value === search_config.Step.BusLineSearch){
+
+        // Nearby搜索完成, 触发Line搜索
+        search_global.functions.lines_search(search_global.lineSearchDone_Callback, city, city_lines_result, map_provider_name);
     }
 
 }
