@@ -97,18 +97,23 @@ search_global.placeSearchDone_Callback = function (city, city_lines_result, city
         search_global.write_city_lines_stations_locations_to_file(city, "Lines_Stations_Locations",  map_provider_name, city_lines_result, city_stations_result, city_stations_location_result);
     }
 
-    if (city_stations_location_result.length > 0){
+    // 触发 Next Step
+    var next_step = search_config.get_next_step.next();
+    console.log("next_step: " + next_step.value);
+    if (next_step.value === search_config.Step.NearbySearch){
+        if (city_stations_location_result.length > 0){
 
-        //deep copy
-        var wait_for_nearby_search_locations = [];
-        for (var i in city_stations_location_result){
+            //deep copy
+            var wait_for_nearby_search_locations = [];
+            for (var i in city_stations_location_result){
 
-            wait_for_nearby_search_locations.push(city_stations_location_result[i]);
+                wait_for_nearby_search_locations.push(city_stations_location_result[i]);
+            }
+            var loc = wait_for_nearby_search_locations.pop();
+
+            // 触发nearby搜索
+            search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, city, loc, wait_for_nearby_search_locations, map_provider_name);
         }
-        var loc = wait_for_nearby_search_locations.pop();
-
-        // 触发nearby搜索, AMap
-        search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, city, loc, wait_for_nearby_search_locations, map_provider_name);
     }
 
 }
@@ -142,8 +147,15 @@ search_global.placeNearbySearchDone_Callback = function (city, city_lines_result
         search_config.options.nearby_iterate_count--;
         if (search_config.options.nearby_iterate_count == 0){
 
-            // Nearby搜索完成, 触发Line搜索
-            search_global.functions.lines_search(search_global.lineSearchDone_Callback, city, city_lines_result, map_provider_name);
+            // 触发 Next Step
+            var next_step = search_config.get_next_step.next();
+            console.log("next_step: " + next_step.value);
+            if (next_step.value === search_config.Step.BusLineSearch){
+
+                // Nearby搜索完成, 触发Line搜索
+                search_global.functions.lines_search(search_global.lineSearchDone_Callback, city, city_lines_result, map_provider_name);
+            }
+
         }else{
             // 进行下一次Nearby迭代
             console.log("ready to next nearby iterate. remain count: " + search_config.options.nearby_iterate_count);
@@ -159,7 +171,6 @@ search_global.placeNearbySearchDone_Callback = function (city, city_lines_result
             search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, city, loc, wait_for_nearby_search_locations, map_provider_name);
 
         }
-
 
     }else{
         var loc = wait_for_nearby_search_locations_result.pop();
@@ -186,14 +197,15 @@ search_global.lineSearchDone_Callback = function (city, out_str_result, map_prov
 
 //入口函数
 search_global.my_main = function(param_in) {
-    console.log("start with " + search_config.options.start_step);
-    if (search_config.options.start_step === search_config.Step.BusLineSearch){
+    var next_step = search_config.get_next_step.next();
+    console.log("start_step: " + next_step.value);
+    if (next_step.value === search_config.Step.BusLineSearch){
 
         //已有线路list, 直接搜索线路详细
         search_global.functions.lines_search(search_global.lineSearchDone_Callback,
             param_in.expect_city, param_in.city_lines,
             search_config.options.map_provider);
-    }else if (search_config.options.start_step === search_config.Step.NearbySearch){
+    }else if (next_step.value === search_config.Step.NearbySearch){
         // 已有初步的 city_lines, city_stations, city_stations_location, 直接启动Nearby迭代以期更多的结果
 
         console.log("start with NearbySearch, city_lines.length: " + param_in.city_lines.length + ", city_stations.length: " + param_in.city_stations.length + ", city_stations_location.length: " + param_in.city_stations_location.length);
@@ -214,7 +226,7 @@ search_global.my_main = function(param_in) {
             param_in.expect_city, loc, wait_for_nearby_search_locations, search_config.options.map_provider);
 
     }
-    else{
+    else if (next_step.value === search_config.Step.LocalSearch) {
         //默认从Local/Place Search开始, 先取得初步的信息, 再进入Nearby迭代
         search_global.functions.local_search(search_global.placeSearchDone_Callback,
             param_in.expect_city, search_config.options.map_provider);
