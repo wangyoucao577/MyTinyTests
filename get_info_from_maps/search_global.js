@@ -20,30 +20,44 @@ search_global.functions = {
 }
 
 //根据map_provider绑定不同的函数 及 参数
-if (search_config.options.map_provider === search_config.MapProvider.AMap){
+search_global.reset_functions_for_map_provider = function(map_provider) {
+    if (map_provider === search_config.MapProvider.AMap){
 
-    search_global.functions.local_search = place_search_global_amap.executePlaceSearchForCity;
-    search_global.functions.nearby_search = nearby_search_global_amap.executePlaceSearchNearbyForCity;
-    search_global.functions.lines_search = lines_search_global_amap.executeLineSearch;
+        search_global.functions.local_search = place_search_global_amap.executePlaceSearchForCity;
+        search_global.functions.nearby_search = nearby_search_global_amap.executePlaceSearchNearbyForCity;
+        search_global.functions.lines_search = lines_search_global_amap.executeLineSearch;
 
-    search_global.functions.location_array_convert = tools_amap.location_array_convert;
+        search_global.functions.location_array_convert = tools_amap.location_array_convert;
 
-}else if (search_config.options.map_provider === search_config.MapProvider.BaiduMap){
+    }else if (map_provider === search_config.MapProvider.BaiduMap){
 
-    search_global.functions.local_search = local_search_global_bmap.execute_local_search;
-    search_global.functions.nearby_search = nearby_search_global_bmap.execute_local_nearby_search;
-    search_global.functions.lines_search = busline_search_global_bmap.execute_buslines_search;
+        search_global.functions.local_search = local_search_global_bmap.execute_local_search;
+        search_global.functions.nearby_search = nearby_search_global_bmap.execute_local_nearby_search;
+        search_global.functions.lines_search = busline_search_global_bmap.execute_buslines_search;
 
-    search_global.functions.location_array_convert = tools_bmap.location_array_convert;
+        search_global.functions.location_array_convert = tools_bmap.location_array_convert;
 
-}else if (search_config.options.map_provider === search_config.MapProvider.GoogleMap){
+    }else if (map_provider === search_config.MapProvider.GoogleMap){
 
-    //TODO: for GoogleMap
-    search_global.functions.local_search = place_search_global_gmap.execute_nearby_search;
 
-}else{
-    //Unknown map provider
+        search_global.functions.local_search = place_search_global_gmap.execute_nearby_search;
+
+        //TODO: for GoogleMap
+        search_global.functions.nearby_search = notImplementFunction;
+        search_global.functions.lines_search = notImplementFunction;
+
+        search_global.functions.location_array_convert = notImplementFunction;
+
+    }else{
+        //Unknown map provider
+        search_global.functions.local_search = notImplementFunction;
+        search_global.functions.nearby_search = notImplementFunction;
+        search_global.functions.lines_search = notImplementFunction;
+
+        search_global.functions.location_array_convert = notImplementFunction;
+    }
 }
+
 
 //Search的返回city_lines, city_stations, city_stations_lcation写入文件的工具函数, 以便用于后续的迭代搜索
 search_global.write_city_lines_stations_locations_to_file = function(city, type, map_provider_name, city_lines, city_stations, city_stations_location)
@@ -87,7 +101,7 @@ search_global.write_city_lines_stations_locations_to_file = function(city, type,
 search_global.placeSearchDone_Callback = function (city, city_lines_result, city_stations_result, city_stations_location_result, map_provider_name)
 {
     //console.log(city_lines_result);
-    console.log("placeSearchDone_Callback, city_lines_result.length: " + city_lines_result.length + ", city_stations_result.length: "
+    console.log(map_provider_name + " placeSearchDone_Callback, city_lines_result.length: " + city_lines_result.length + ", city_stations_result.length: "
         + city_stations_result.length + ", city_stations_location_result.length: " + city_stations_location_result.length);
     ++search_global.searched_count;
 
@@ -99,8 +113,9 @@ search_global.placeSearchDone_Callback = function (city, city_lines_result, city
 
     // 触发 Next Step
     var next_step = search_config.get_next_step.next();
-    console.log("next_step: " + next_step.value);
-    if (next_step.value === search_config.Step.NearbySearch){
+    console.log("start_step: " + next_step.value.step + ", map_provider: " + next_step.value.map_provider);
+    search_global.reset_functions_for_map_provider(next_step.value.map_provider);
+    if (next_step.value.step === search_config.Step.NearbySearch){
         if (city_stations_location_result.length > 0){
 
             //deep copy
@@ -112,18 +127,18 @@ search_global.placeSearchDone_Callback = function (city, city_lines_result, city
             var loc = wait_for_nearby_search_locations.pop();
 
             // 触发nearby搜索
-            search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, city, loc, wait_for_nearby_search_locations, map_provider_name);
+            search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback, city_lines_result, city_stations_result, city_stations_location_result, city, loc, wait_for_nearby_search_locations, next_step.value.map_provider);
         }
-    }else if (next_step.value === search_config.Step.BusLineSearch){
+    }else if (next_step.value.step === search_config.Step.BusLineSearch){
 
         // Nearby搜索完成, 触发Line搜索
-        search_global.functions.lines_search(search_global.lineSearchDone_Callback, city, city_lines_result, map_provider_name);
+        search_global.functions.lines_search(search_global.lineSearchDone_Callback, city, city_lines_result, next_step.value.map_provider);
     }
 
 }
 search_global.placeNearbySearchDone_Callback = function (city, city_lines_result, city_stations_result, city_stations_location_result, wait_for_nearby_search_locations_result, map_provider_name)
 {
-    console.log("placeNearbySearchDone_Callback, city_lines_result.length: " + city_lines_result.length
+    console.log(map_provider_name + " placeNearbySearchDone_Callback, city_lines_result.length: " + city_lines_result.length
         + ", city_stations_result.length: " + city_stations_result.length
         + ", city_stations_location_result.length: " + city_stations_location_result.length
         + ", wait_for_nearby_search_locations_result.length: " + wait_for_nearby_search_locations_result.length);
@@ -153,11 +168,12 @@ search_global.placeNearbySearchDone_Callback = function (city, city_lines_result
 
             // 触发 Next Step
             var next_step = search_config.get_next_step.next();
-            console.log("next_step: " + next_step.value);
-            if (next_step.value === search_config.Step.BusLineSearch){
+            console.log("start_step: " + next_step.value.step + ", map_provider: " + next_step.value.map_provider);
+            search_global.reset_functions_for_map_provider(next_step.value.map_provider);
+            if (next_step.value.step === search_config.Step.BusLineSearch){
 
                 // Nearby搜索完成, 触发Line搜索
-                search_global.functions.lines_search(search_global.lineSearchDone_Callback, city, city_lines_result, map_provider_name);
+                search_global.functions.lines_search(search_global.lineSearchDone_Callback, city, city_lines_result, next_step.value.map_provider);
             }
 
         }else{
@@ -189,7 +205,7 @@ search_global.placeNearbySearchDone_Callback = function (city, city_lines_result
 search_global.lineSearchDone_Callback = function (city, out_str_result, map_provider_name)
 {
     //console.log(out_str_result);
-    console.log("out_str_result len: " + out_str_result.length);
+    console.log(map_provider_name + " lineSearchDone_Callback out_str_result len: " + out_str_result.length);
 
     // 触发文件写入
     write_to_file(city, "LinesDetails_" + map_provider_name,
@@ -202,14 +218,17 @@ search_global.lineSearchDone_Callback = function (city, out_str_result, map_prov
 //入口函数
 search_global.my_main = function(param_in) {
     var next_step = search_config.get_next_step.next();
-    console.log("start_step: " + next_step.value);
-    if (next_step.value === search_config.Step.BusLineSearch){
+    console.log("start_step: " + next_step.value.step + ", map_provider: " + next_step.value.map_provider);
+    search_global.reset_functions_for_map_provider(next_step.value.map_provider);
+
+    if (next_step.value.step === search_config.Step.BusLineSearch){
 
         //已有线路list, 直接搜索线路详细
         search_global.functions.lines_search(search_global.lineSearchDone_Callback,
             param_in.expect_city, param_in.city_lines,
-            search_config.options.map_provider);
-    }else if (next_step.value === search_config.Step.NearbySearch){
+            next_step.value.map_provider);
+    }else if (next_step.value.step === search_config.Step.NearbySearch){
+
         // 已有初步的 city_lines, city_stations, city_stations_location, 直接启动Nearby迭代以期更多的结果
 
         console.log("start with NearbySearch, city_lines.length: " + param_in.city_lines.length + ", city_stations.length: " + param_in.city_stations.length + ", city_stations_location.length: " + param_in.city_stations_location.length);
@@ -227,13 +246,14 @@ search_global.my_main = function(param_in) {
 
         search_global.functions.nearby_search(search_global.placeNearbySearchDone_Callback,
             param_in.city_lines, param_in.city_stations, city_stations_location,
-            param_in.expect_city, loc, wait_for_nearby_search_locations, search_config.options.map_provider);
+            param_in.expect_city, loc, wait_for_nearby_search_locations, next_step.value.map_provider);
 
     }
-    else if (next_step.value === search_config.Step.LocalSearch) {
+    else if (next_step.value.step === search_config.Step.LocalSearch) {
+
         //默认从Local/Place Search开始, 先取得初步的信息, 再进入Nearby迭代
         search_global.functions.local_search(search_global.placeSearchDone_Callback,
-            param_in.expect_city, search_config.options.map_provider);
+            param_in.expect_city, next_step.value.map_provider);
     }
 
 }
