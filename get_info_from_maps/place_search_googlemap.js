@@ -55,32 +55,10 @@ place_search_global_gmap.place_search = function(all_done_callback, bounds, map_
 
 }
 
-place_search_global_gmap.convert_city_to_bounds = function(city){
-
-    var geo_promise = new Promise(function (resolve, reject) {
-        var geo = new google.maps.Geocoder();
-        geo.geocode({address: city}, function (results, status) {
-            if (status == google.maps.places.PlacesServiceStatus.OK){
-                console.log("convert " + city + " to location ok, use the first one.\n");
-                for (var i = 0; i < results.length; ++i) {
-                    console.log("index: " + i + ", " + results[i].geometry.bounds + "\n");
-                }
-
-                //choose the first result for use
-                resolve(results[0].geometry.bounds);
-            }
-            else {
-                console.log("convert " + city + " to location failed, status " + status + "\n");
-            }
-        });
-    });
-    return geo_promise;
-}
-
 place_search_global_gmap.execute_place_search = function (all_done_callback, city, map_provider_name){
 
     //could transfer city to location
-    place_search_global_gmap.convert_city_to_bounds(city).then(function (bounds) {
+    tools_gmap.convert_city_to_bounds(city).then(function (bounds) {
 
         place_search_global_gmap.place_search(all_done_callback, bounds, map_provider_name);
     });
