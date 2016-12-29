@@ -1,3 +1,7 @@
+/**
+ * @file global search configs, you can change configs here
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
 
 /*
 * 搜索的配置项

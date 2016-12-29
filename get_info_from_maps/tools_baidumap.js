@@ -1,8 +1,7 @@
-
-/*
- * 针对BaiduMap的专用的工具函数
- *
- * */
+/**
+ * @file 针对BaiduMap的专用的工具函数
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
 
 
 var tools_bmap = {};

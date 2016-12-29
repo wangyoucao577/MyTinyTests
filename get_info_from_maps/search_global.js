@@ -1,3 +1,7 @@
+/**
+ * @file functions to connect steps and the entrance
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
 
 //定义一个自己的全局变量, 串联执行流程
 var search_global = {};

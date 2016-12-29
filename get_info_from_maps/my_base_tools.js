@@ -1,3 +1,7 @@
+/**
+ * @file my common tools set
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
 
 
 //通用的error handler

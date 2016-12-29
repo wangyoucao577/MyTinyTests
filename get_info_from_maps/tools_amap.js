@@ -1,8 +1,8 @@
+/**
+ * @file 针对AMap的专用的工具函数
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
 
-/*
-* 针对AMap的专用的工具函数
-*
-* */
 
 var tools_amap = {};
 

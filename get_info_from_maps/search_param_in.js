@@ -1,3 +1,7 @@
+/**
+ * @file global parameters
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
 
 /*
 * 搜索的输入参数

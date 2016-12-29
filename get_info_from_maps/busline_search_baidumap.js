@@ -1,3 +1,7 @@
+/**
+ * @file busline search function on baidu map
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
 
 var busline_search_global_bmap = {};
 

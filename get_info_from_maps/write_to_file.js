@@ -1,3 +1,7 @@
+/**
+ * @file filesystem operation on Chrome
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
 
 
 //申请空间, 线路的搜索结果写入文件

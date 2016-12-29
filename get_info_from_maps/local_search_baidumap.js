@@ -1,3 +1,7 @@
+/**
+ * @file local search function on baidu map
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
 
 var local_search_global_bmap = {};
 

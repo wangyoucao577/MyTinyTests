@@ -1,3 +1,9 @@
+/**
+ * @file busline search function on AMap
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
+
+
 //文件内的全局变量
 var lines_search_global_amap = {};
 

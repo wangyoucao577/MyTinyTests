@@ -1,3 +1,7 @@
+/**
+ * @file local naerby search function on baidu map
+ * @author wangyoucao577(wangyoucao577@gmail.com)
+ */
 
 var nearby_search_global_bmap = {};
 
