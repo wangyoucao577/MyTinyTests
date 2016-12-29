@@ -44,7 +44,7 @@ search_global.reset_functions_for_map_provider = function(map_provider) {
     }else if (map_provider === search_config.MapProvider.GoogleMap){
 
 
-        search_global.functions.local_search = place_search_global_gmap.execute_nearby_search;
+        search_global.functions.local_search = place_search_global_gmap.execute_place_search;
 
         //TODO: for GoogleMap
         search_global.functions.nearby_search = notImplementFunction;

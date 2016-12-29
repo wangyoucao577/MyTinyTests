@@ -13,7 +13,7 @@
 
 var place_search_global_gmap = {};
 
-place_search_global_gmap.execute_get_details = function (service, place_id) {
+place_search_global_gmap.get_details = function (service, place_id) {
     service.getDetails({
         placeId: place_id
     }, 
@@ -26,17 +26,10 @@ place_search_global_gmap.execute_get_details = function (service, place_id) {
     });
 }
 
-
-place_search_global_gmap.execute_nearby_search = function (all_done_callback, city, map_provider_name){
-
-    //TODO: could transfer city to location
-    var pyrmont = new google.maps.LatLng(31.1770572,121.4232641);
-
-    var map = new google.maps.Map(document.createElement('map'), {
-        center: pyrmont,
-        zoom: 15
-    });
-
+place_search_global_gmap.place_search = function(all_done_callback, bounds, map_provider_name){
+    //var pyrmont = new google.maps.LatLng(31.1770572,121.4232641);
+    //var map = new google.maps.Map(document.createElement('map'), {center: pyrmont, zoom: 15});
+    var map = new google.maps.Map(document.createElement('map'));
     var service = new google.maps.places.PlacesService(map);
 
     function place_search_callback(results, status) {
@@ -46,20 +39,50 @@ place_search_global_gmap.execute_nearby_search = function (all_done_callback, ci
                 console.log("index: " + i + ", name: " + results[i].name + ", place_id: " + results[i].place_id + ", vicinity: " +  results[i].vicinity + "\n");
                 //TODO: for GoogleMap
 
-                place_search_global_gmap.execute_get_details(service, results[i].place_id);
+                place_search_global_gmap.get_details(service, results[i].place_id);
             }
         }
     }
     //NOTE: 以下三种Search, 三选一
     //Text Search
-    service.textSearch({query: '地铁站'}, place_search_callback);
+    //service.textSearch({query: '地铁站', bounds: bounds}, place_search_callback);
 
     //Nearby Search
-    //service.nearbySearch({location: pyrmont, radius: '50000'}, place_search_callback);
+    //service.nearbySearch({keyword: '地铁站', bounds: bounds}, place_search_callback);
 
     //Radar Search
-    //service.radarSearch({keyword: '公交车站', location: pyrmont, radius: '50000'}, place_search_callback);
+    service.radarSearch({keyword: '地铁站', bounds: bounds}, place_search_callback);
 
+}
 
+place_search_global_gmap.convert_city_to_bounds = function(city){
+
+    var geo_promise = new Promise(function (resolve, reject) {
+        var geo = new google.maps.Geocoder();
+        geo.geocode({address: city}, function (results, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK){
+                console.log("convert " + city + " to location ok, use the first one.\n");
+                for (var i = 0; i < results.length; ++i) {
+                    console.log("index: " + i + ", " + results[i].geometry.bounds + "\n");
+                }
+
+                //choose the first result for use
+                resolve(results[0].geometry.bounds);
+            }
+            else {
+                console.log("convert " + city + " to location failed, status " + status + "\n");
+            }
+        });
+    });
+    return geo_promise;
+}
+
+place_search_global_gmap.execute_place_search = function (all_done_callback, city, map_provider_name){
+
+    //could transfer city to location
+    place_search_global_gmap.convert_city_to_bounds(city).then(function (bounds) {
+
+        place_search_global_gmap.place_search(all_done_callback, bounds, map_provider_name);
+    });
 }
 
