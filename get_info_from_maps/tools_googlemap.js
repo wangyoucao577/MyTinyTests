@@ -14,7 +14,7 @@ tools_gmap.convert_city_to_bounds = function (city) {
             if (status == google.maps.places.PlacesServiceStatus.OK){
                 console.log("convert " + city + " to location ok, use the first one.\n");
                 for (var i = 0; i < results.length; ++i) {
-                    console.log("index: " + i + ", " + results[i].geometry.bounds + "\n");
+                    console.log("index: " + i + ", location: " + results[i].geometry.location + ", bounds: " + results[i].geometry.bounds + "\n");
                 }
 
                 //choose the first result for use
