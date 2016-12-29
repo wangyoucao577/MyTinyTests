@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Description:
+Description: 从wiki页面抓取城市的线路名信息, 并按后续js格式导出
 Author:     wangyoucao577@gmail.com
 Created Date:   2016-12-05
 Version:        2016-12-06

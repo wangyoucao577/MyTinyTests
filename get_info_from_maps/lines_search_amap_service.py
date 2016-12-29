@@ -2,7 +2,8 @@
 # coding=utf-8
 
 """
-Description:
+Description: 通过web service接口迭代抓取amap/baidumap的城市公交线路信息
+           注：AMap和BaiduMap的后端REST接口都有调用次数限制, 一般日千次左右免费
 Author:     wangyoucao577@gmail.com
 Created Date:   2016-12-07
 Version:        2016-12-07
