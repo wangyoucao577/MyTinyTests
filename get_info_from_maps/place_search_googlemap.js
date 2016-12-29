@@ -36,10 +36,15 @@ place_search_global_gmap.place_search = function(all_done_callback, bounds, map_
         console.log(status);
         if (status == google.maps.places.PlacesServiceStatus.OK){
             for (var i = 0; i < results.length; ++i) {
-                console.log("index: " + i + ", name: " + results[i].name + ", place_id: " + results[i].place_id + ", vicinity: " +  results[i].vicinity + "\n");
-                //TODO: for GoogleMap
+                console.log("index: " + i + ", name: " + results[i].name + ", place_id: " + results[i].place_id + ", vicinity: " + results[i].vicinity + "\n");
 
-                place_search_global_gmap.get_details(service, results[i].place_id);
+                //发起地点详情Search for GoogleMap
+                setTimeout(function (serv, place_id) {
+                    place_search_global_gmap.get_details(serv, place_id);
+
+                    //NOTE: 因GoogleMap的JavaScriptAPI的请求限制问题
+                    // 时间设置为每秒钟内最多10次请求, 每两批请求间间隔5s, 可较大程度上避免Google的`OVER_QUERY_LIMIT`
+                }, i / 10 * 5000, service, results[i].place_id);
             }
         }
     }
@@ -48,10 +53,10 @@ place_search_global_gmap.place_search = function(all_done_callback, bounds, map_
     //service.textSearch({query: '地铁站', bounds: bounds}, place_search_callback);
 
     //Nearby Search
-    //service.nearbySearch({keyword: '地铁站', bounds: bounds}, place_search_callback);
+    service.nearbySearch({keyword: '地铁站', bounds: bounds}, place_search_callback);
 
     //Radar Search
-    service.radarSearch({keyword: '地铁站', bounds: bounds}, place_search_callback);
+    //service.radarSearch({keyword: '地铁站', bounds: bounds}, place_search_callback);
 
 }
 
