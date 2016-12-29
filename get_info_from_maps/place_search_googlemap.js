@@ -38,25 +38,28 @@ place_search_global_gmap.execute_nearby_search = function (all_done_callback, ci
     });
 
     var service = new google.maps.places.PlacesService(map);
-    service.textSearch({
-            //keyword: '公交',
-            query: '地铁站',
-            location: pyrmont,
-            radius: '50000',
-            //type: 'bus_station'
-        },
-        function (results, status){
-              console.log(status);
-              if (status == google.maps.places.PlacesServiceStatus.OK){
-                  for (var i = 0; i < results.length; ++i) {
-                      console.log("index: " + i + ", name: " + results[i].name + ", place_id: " + results[i].place_id + ", vicinity: " +  results[i].vicinity + "\n");
-                      //TODO: for GoogleMap
 
-                      place_search_global_gmap.execute_get_details(service, results[i].place_id);
-                  }
-              }
+    function place_search_callback(results, status) {
+        console.log(status);
+        if (status == google.maps.places.PlacesServiceStatus.OK){
+            for (var i = 0; i < results.length; ++i) {
+                console.log("index: " + i + ", name: " + results[i].name + ", place_id: " + results[i].place_id + ", vicinity: " +  results[i].vicinity + "\n");
+                //TODO: for GoogleMap
+
+                place_search_global_gmap.execute_get_details(service, results[i].place_id);
+            }
         }
-    );
+    }
+    //NOTE: 以下三种Search, 三选一
+    //Text Search
+    service.textSearch({query: '地铁站'}, place_search_callback);
+
+    //Nearby Search
+    //service.nearbySearch({location: pyrmont, radius: '50000'}, place_search_callback);
+
+    //Radar Search
+    //service.radarSearch({keyword: '公交车站', location: pyrmont, radius: '50000'}, place_search_callback);
+
 
 }
 
