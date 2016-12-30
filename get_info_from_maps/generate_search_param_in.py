@@ -39,7 +39,7 @@ def read_lines_stations_locations_from_file(file_path):
     city_stations = []
     city_stations_location = []
 
-    expect_city_pattern = re.compile("expect_city *=+ *(.+)", re.I) #TODO: 应加上 \'\'
+    expect_city_pattern = re.compile("expect_city *=+ *\'(.+)\'", re.I)
     city_lines_pattern = re.compile("city_lines *=+ *\[(.*)\]", re.I)
     city_stations_pattern = re.compile("city_stations *=+ *\[(.*)\]", re.I)
     city_stations_location_pattern = re.compile("city_stations_location *=+ *\[(.*)\]", re.I)
