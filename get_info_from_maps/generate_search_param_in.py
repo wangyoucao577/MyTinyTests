@@ -12,6 +12,7 @@ import sys
 import datetime
 import fileinput
 import re
+import codecs
 #sys.path.append(sys.path[0] + r'\..')   #上级目录中加入搜寻列表, 以便于导入上级目录中的py模块
 #from files_operation import *
 
@@ -44,6 +45,8 @@ def read_lines_stations_locations_from_file(file_path):
     city_stations_location_pattern = re.compile("city_stations_location *=+ *\[(.*)\]", re.I)
 
     for line in fileinput.input(file_path, mode="rb"):
+        #print line.decode('utf-8')
+        line = line.decode('utf-8')
         if "//" in line:
             comments += (line)
             continue
@@ -92,8 +95,8 @@ def main():
     #print out_file_path
 
     # 组织out_file的所有内容, 一次性写入文件
-    out_file_all_str = "Generated on " + str(datetime.datetime.now()) + "\n\n"
-    out_file_all_str += "//////////////////////////////////////////\n\n"
+    out_file_all_str = "/** Generated on " + str(datetime.datetime.now()) + " **/ \n\n"
+    out_file_all_str += "/**********************************************\n\n"
     out_file_all_str += "Generated from: \n\n"
 
     # 内容
@@ -132,22 +135,29 @@ def main():
         #print "len(out_city_stations_location): " + str(len(out_city_stations_location)) + " after file: " + f
 
     #拼接输出
-    out_file_all_str += "//////////////////////////////////////////\n\n"
+    out_file_all_str += "**********************************************/\n\n"
 
     out_file_all_str += ("// city_lines_count = " + str(len(out_city_lines)) + "\n\n")
     out_file_all_str += ("// city_stations_count = " + str(len(out_city_stations)) + "\n\n")
     out_file_all_str += ("// city_stations_location_count = " + str(len(out_city_stations_location)) + "\n\n")
 
     out_file_all_str += "var search_param_in = {};\n\n"
-    out_file_all_str += ("search_param_in.expect_city = " + out_expect_city + ";\n\n")
+    out_file_all_str += ("search_param_in.expect_city = \'" + out_expect_city + "\';\n\n")
     
-    out_file_all_str += (format_list_to_specified_str(out_city_lines, "city_lines") + "\n\n")
-    out_file_all_str += (format_list_to_specified_str(out_city_stations, "city_stations") + "\n\n")
-    out_file_all_str += (format_list_to_specified_str(out_city_stations_location, "city_stations_location") + "\n\n")
+    out_file_all_str += (format_list_to_specified_str(out_city_lines, "city_lines") + ";\n\n")
+    out_file_all_str += (format_list_to_specified_str(out_city_stations, "city_stations") + ";\n\n")
+    out_file_all_str += (format_list_to_specified_str(out_city_stations_location, "city_stations_location") + ";\n\n")
 
     #print out_file_all_str
             
-    #TODO: 写入文件
+    #写入文件
+    f = codecs.open(out_file_path,'w+','utf-8')
+    f.write(out_file_all_str)
+    f.close()
+
+    #Done!
+    print "len(city_lines): " + str(len(out_city_lines)) + ", len(city_stations): " + str(len(out_city_stations)) + ", len(city_stations_location): " + str(len(out_city_stations_location))
+    print "Generate file \"" + out_file_path + "\" succeed."
 
 if __name__ == '__main__':
     main()
