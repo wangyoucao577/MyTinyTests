@@ -74,7 +74,7 @@ search_global.write_city_lines_stations_locations_to_file = function(city, type,
     out_str += "// city_stations_location_count = " + city_stations_location.length + "\n";
     out_str += "\n";
 
-    out_str += "var expect_city = " + city;
+    out_str += "var expect_city = \'" + city + "\'";
     out_str += "\n\n";
 
     out_str += "var city_lines = ";
