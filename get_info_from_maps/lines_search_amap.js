@@ -22,19 +22,19 @@ function waitForLineSearchResult_Callback(){
     {
         //all callback comes, write succeed to file
         console.log("All lineSearch callback executed, we'll write.");
-        lines_search_global_amap.allDone_callback(lines_search_global_amap.expect_city, lines_search_global_amap.outStr, lines_search_global_amap.map_provider_name);
+        lines_search_global_amap.allDone_callback(lines_search_global_amap.expect_city, lines_search_global_amap.outStr, lines_search_global_amap.searchSucceedCallbackCount, lines_search_global_amap.map_provider_name);
         //write_to_file();
     }
     else if (0 != lines_search_global_amap.last_remember_count && (lines_search_global_amap.searchSucceedCallbackCount + lines_search_global_amap.searchFailedCallbackCount) == lines_search_global_amap.last_remember_count)
     {
         console.log("Lost lineSearch callback count: " + (lines_search_global_amap.city_lines.length - lines_search_global_amap.last_remember_count) + ", we'll write.");
-        lines_search_global_amap.allDone_callback(lines_search_global_amap.expect_city, lines_search_global_amap.outStr, lines_search_global_amap.map_provider_name);
+        lines_search_global_amap.allDone_callback(lines_search_global_amap.expect_city, lines_search_global_amap.outStr, lines_search_global_amap.searchSucceedCallbackCount, lines_search_global_amap.map_provider_name);
         //write_to_file();
     }
     else
     {
         lines_search_global_amap.last_remember_count = lines_search_global_amap.searchSucceedCallbackCount + lines_search_global_amap.searchFailedCallbackCount;
-        setTimeout(waitForLineSearchResult_Callback , 1000);
+        setTimeout(waitForLineSearchResult_Callback , 3000);
     }
 }
 
@@ -116,7 +116,7 @@ lines_search_global_amap.executeLineSearch = function (allLineSearchDone_Callbac
         }
 
         //first wait
-        setTimeout(waitForLineSearchResult_Callback , 1000);
+        setTimeout(waitForLineSearchResult_Callback , 3000);
     });
 }
 

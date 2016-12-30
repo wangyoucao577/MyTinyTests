@@ -110,16 +110,16 @@ busline_search_global_bmap.execute_buslines_search = function (allLineSearchDone
           + ", repeat&ignored busLine count: " + busline_search_global_bmap.repeatBusLineCount 
           + ", getBusLine complete count: " + busline_search_global_bmap.onGetBusLineCompleteCount
           + ", we'll write.");
-        busline_search_global_bmap.allDone_callback(city, busline_search_global_bmap.outStr, map_provider_name);
+        busline_search_global_bmap.allDone_callback(city, busline_search_global_bmap.outStr, busline_search_global_bmap.onGetBusLineCompleteCount, map_provider_name);
     }
     else
     {
         busline_search_global_bmap.last_remember_count = busline_search_global_bmap.onGetBusListCompleteCount + busline_search_global_bmap.onGetBusLineCompleteCount;
-        setTimeout(waitForAllBusLineResult_Callback , 1000);
+        setTimeout(waitForAllBusLineResult_Callback , 3000);
     }
   }
 
 
-  setTimeout(waitForAllBusLineResult_Callback , 1000);
+  setTimeout(waitForAllBusLineResult_Callback , 3000);
 }
 

@@ -206,13 +206,13 @@ search_global.placeNearbySearchDone_Callback = function (city, city_lines_result
 }
 
 //AMap, BaiduMap的通用busline搜索完成时的回调，以触发写入文件
-search_global.lineSearchDone_Callback = function (city, out_str_result, map_provider_name)
+search_global.lineSearchDone_Callback = function (city, out_str_result, out_lines_count, map_provider_name)
 {
     //console.log(out_str_result);
-    console.log(map_provider_name + " lineSearchDone_Callback out_str_result len: " + out_str_result.length);
+    console.log(map_provider_name + " lineSearchDone_Callback out_lines_count: " + out_lines_count);
 
     // 触发文件写入
-    write_to_file(city, "LinesDetails_" + map_provider_name,
+    write_to_file(city, "LinesDetails_" + out_lines_count + "_" + map_provider_name,
         out_str_result.replace(/<\/br>/g, "\n"), false);
 }
 
