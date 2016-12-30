@@ -12,30 +12,45 @@ import sys
 import datetime
 import fileinput
 import re
-sys.path.append(sys.path[0] + r'\..')   #上级目录中加入搜寻列表, 以便于导入上级目录中的py模块
-from files_operation import *
+#sys.path.append(sys.path[0] + r'\..')   #上级目录中加入搜寻列表, 以便于导入上级目录中的py模块
+#from files_operation import *
+
+def print_list(list):
+    for i in list:
+        #print i.encode('utf-8')
+        print i.decode('utf-8')
 
 def read_lines_stations_locations_from_file(file_path):
     comments = ""
     expect_city = ""
+    city_lines = []
 
     expect_city_pattern = re.compile("expect_city *=+ *(.+)", re.I) #TODO: 应加上 \'\'
+    city_lines_pattern = re.compile("city_lines *=+ *\[(.*)\]", re.I)
 
     for line in fileinput.input(file_path, mode="rb"):
         if "//" in line:
             comments += (line)
+            continue
         
         # 匹配expect_city
         match_result = re.search(expect_city_pattern, line)
         if match_result:
             expect_city = match_result.group(1)
             #print expect_city
+            continue
 
-        # TODO: 匹配 city_lines
+        # 匹配 city_lines
+        match_result = re.search(city_lines_pattern, line)
+        if match_result:
+            city_lines = match_result.group(1).replace(' ', '').replace('\'', '').split(',')
+            #print_list(city_lines)
+            continue
+        
         # TODO: 匹配 city_stations
         # TODO: 匹配 city_stations_location
 
-    return (comments, expect_city, None, None, None)
+    return (comments, expect_city, city_lines, None, None)
 
 def main():
     if (len(sys.argv) < 3):
@@ -56,16 +71,24 @@ def main():
 
     # 内容
     out_expect_city = None
+    out_city_lines = []
 
     for f in in_files_list:
         (comments, expect_city, city_lines, city_stations, city_stations_location) = read_lines_stations_locations_from_file(f)
         out_file_all_str += (comments + "\n\n")
 
+        # expect_city check
         if out_expect_city == None:
             out_expect_city = expect_city
         elif out_expect_city != expect_city:
             print "Error: new expect_city: " + expect_city + ", from " + f + ", can not match with last expect_city: " + out_expect_city
             return
+
+        # city_lines check
+        for l in city_lines:
+            if l not in out_city_lines:
+                out_city_lines.append(l)
+        print "after file: " + f + ", len(out_city_lines): " + str(len(out_city_lines))
 
     #拼接输出
     out_file_all_str += "var search_param_in = {};\n\n"
