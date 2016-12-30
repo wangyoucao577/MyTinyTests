@@ -20,13 +20,28 @@ def print_list(list):
         #print i.encode('utf-8')
         print i.decode('utf-8')
 
+def format_list_to_specified_str(list, list_name):
+    out_str = ""
+
+    out_str += "search_param_in." + list_name + " = ["
+    for l in list:
+        out_str += ("\'" + l + "\'")
+        if l != list[len(list) - 1]:
+            out_str += (", ")
+    out_str += ("]")
+    return out_str
+
 def read_lines_stations_locations_from_file(file_path):
     comments = ""
     expect_city = ""
     city_lines = []
+    city_stations = []
+    city_stations_location = []
 
     expect_city_pattern = re.compile("expect_city *=+ *(.+)", re.I) #TODO: 应加上 \'\'
     city_lines_pattern = re.compile("city_lines *=+ *\[(.*)\]", re.I)
+    city_stations_pattern = re.compile("city_stations *=+ *\[(.*)\]", re.I)
+    city_stations_location_pattern = re.compile("city_stations_location *=+ *\[(.*)\]", re.I)
 
     for line in fileinput.input(file_path, mode="rb"):
         if "//" in line:
@@ -47,10 +62,21 @@ def read_lines_stations_locations_from_file(file_path):
             #print_list(city_lines)
             continue
         
-        # TODO: 匹配 city_stations
-        # TODO: 匹配 city_stations_location
+        # 匹配 city_stations
+        match_result = re.search(city_stations_pattern, line)
+        if match_result:
+            city_stations = match_result.group(1).replace(' ', '').replace('\'', '').split(',')
+            #print_list(city_stations)
+            continue
 
-    return (comments, expect_city, city_lines, None, None)
+        # 匹配 city_stations_location
+        match_result = re.search(city_stations_location_pattern, line)
+        if match_result:
+            city_stations_location = match_result.group(1).replace(', ', '|').replace('\'', '').split('|')
+            #print_list(city_stations_location)
+            continue
+
+    return (comments, expect_city, city_lines, city_stations, city_stations_location)
 
 def main():
     if (len(sys.argv) < 3):
@@ -66,12 +92,15 @@ def main():
     #print out_file_path
 
     # 组织out_file的所有内容, 一次性写入文件
-    out_file_all_str = "Generated on " + str(datetime.datetime.now()) + ", From: \n\n"
-    out_file_all_str += "###################################\n\n"
+    out_file_all_str = "Generated on " + str(datetime.datetime.now()) + "\n\n"
+    out_file_all_str += "//////////////////////////////////////////\n\n"
+    out_file_all_str += "Generated from: \n\n"
 
     # 内容
     out_expect_city = None
     out_city_lines = []
+    out_city_stations = []
+    out_city_stations_location = []
 
     for f in in_files_list:
         (comments, expect_city, city_lines, city_stations, city_stations_location) = read_lines_stations_locations_from_file(f)
@@ -88,15 +117,35 @@ def main():
         for l in city_lines:
             if l not in out_city_lines:
                 out_city_lines.append(l)
-        print "after file: " + f + ", len(out_city_lines): " + str(len(out_city_lines))
+        #print "len(out_city_lines): " + str(len(out_city_lines)) + " after file: " + f
+
+        # city_stations check
+        for s in city_stations:
+            if s not in out_city_stations:
+                out_city_stations.append(s)
+        #print "len(out_city_stations): " + str(len(out_city_stations)) + " after file: " + f
+
+        # city_stations_location check
+        for sl in city_stations_location:
+            if sl not in out_city_stations_location:
+                out_city_stations_location.append(sl)
+        #print "len(out_city_stations_location): " + str(len(out_city_stations_location)) + " after file: " + f
 
     #拼接输出
+    out_file_all_str += "//////////////////////////////////////////\n\n"
+
+    out_file_all_str += ("// city_lines_count = " + str(len(out_city_lines)) + "\n\n")
+    out_file_all_str += ("// city_stations_count = " + str(len(out_city_stations)) + "\n\n")
+    out_file_all_str += ("// city_stations_location_count = " + str(len(out_city_stations_location)) + "\n\n")
+
     out_file_all_str += "var search_param_in = {};\n\n"
     out_file_all_str += ("search_param_in.expect_city = " + out_expect_city + ";\n\n")
-    #TODO: 拼接city_lines, city_stations, city_stations_location
+    
+    out_file_all_str += (format_list_to_specified_str(out_city_lines, "city_lines") + "\n\n")
+    out_file_all_str += (format_list_to_specified_str(out_city_stations, "city_stations") + "\n\n")
+    out_file_all_str += (format_list_to_specified_str(out_city_stations_location, "city_stations_location") + "\n\n")
 
-    out_file_all_str += "###################################\n\n"
-    print out_file_all_str
+    #print out_file_all_str
             
     #TODO: 写入文件
 
