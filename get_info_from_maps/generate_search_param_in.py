@@ -13,8 +13,8 @@ import datetime
 import fileinput
 import re
 import codecs
-#sys.path.append(sys.path[0] + r'\..')   #上级目录中加入搜寻列表, 以便于导入上级目录中的py模块
-#from files_operation import *
+sys.path.append(sys.path[0] + r'\..')   #上级目录中加入搜寻列表, 以便于导入上级目录中的py模块
+from files_operation import *
 
 def print_list(list):
     for i in list:
@@ -84,12 +84,19 @@ def read_lines_stations_locations_from_file(file_path):
 def main():
     if (len(sys.argv) < 3):
         print "Usage: "
-        print "      python generate_search_param_in.py <out_file_name> <in_file_path[,in_file_path,...]>" 
+        print "      python generate_search_param_in.py <out_file_name> <in_file_path[,in_file_path,...]>|<in_file_folder>" 
         print "Sample: "
         print "      python generate_search_param_in.py out_search_param_in.js D:\Lines_Stations_Locations_temp_AMap_20161230_163140.txt"
+        print "      python generate_search_param_in.py out_search_param_in.js D:\city_lines_stations_location_src"
         return
 
-    in_files_list = sys.argv[2].split(',')
+    in_files_list = []
+    if os.path.isdir(sys.argv[2]):
+        (file_name_list, file_path_list) = scan_folder_to_get_indicated_files(sys.argv[2], ".txt")
+        in_files_list += file_path_list
+    else:
+        in_files_list = sys.argv[2].split(',')
+
     out_file_path = sys.path[0] + "\\" + sys.argv[1]
     #print in_files_list
     #print out_file_path
@@ -106,6 +113,7 @@ def main():
     out_city_stations_location = []
 
     for f in in_files_list:
+        print "analyze file: " + f 
         (comments, expect_city, city_lines, city_stations, city_stations_location) = read_lines_stations_locations_from_file(f)
         out_file_all_str += (comments + "\n\n")
 
