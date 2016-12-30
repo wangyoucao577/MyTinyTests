@@ -9,8 +9,33 @@ Version:        2016-12-30
 """
 
 import sys
+import datetime
+import fileinput
+import re
 sys.path.append(sys.path[0] + r'\..')   #上级目录中加入搜寻列表, 以便于导入上级目录中的py模块
 from files_operation import *
+
+def read_lines_stations_locations_from_file(file_path):
+    comments = ""
+    expect_city = ""
+
+    expect_city_pattern = re.compile("expect_city *=+ *(.+)", re.I) #TODO: 应加上 \'\'
+
+    for line in fileinput.input(file_path, mode="rb"):
+        if "//" in line:
+            comments += (line)
+        
+        # 匹配expect_city
+        match_result = re.search(expect_city_pattern, line)
+        if match_result:
+            expect_city = match_result.group(1)
+            #print expect_city
+
+        # TODO: 匹配 city_lines
+        # TODO: 匹配 city_stations
+        # TODO: 匹配 city_stations_location
+
+    return (comments, expect_city, None, None, None)
 
 def main():
     if (len(sys.argv) < 3):
@@ -26,9 +51,32 @@ def main():
     #print out_file_path
 
     # 组织out_file的所有内容, 一次性写入文件
-    out_file_all_str = ""
+    out_file_all_str = "Generated on " + str(datetime.datetime.now()) + ", From: \n\n"
+    out_file_all_str += "###################################\n\n"
 
+    # 内容
+    out_expect_city = None
+
+    for f in in_files_list:
+        (comments, expect_city, city_lines, city_stations, city_stations_location) = read_lines_stations_locations_from_file(f)
+        out_file_all_str += (comments + "\n\n")
+
+        if out_expect_city == None:
+            out_expect_city = expect_city
+        elif out_expect_city != expect_city:
+            print "Error: new expect_city: " + expect_city + ", from " + f + ", can not match with last expect_city: " + out_expect_city
+            return
+
+    #拼接输出
+    out_file_all_str += "var search_param_in = {};\n\n"
+    out_file_all_str += ("search_param_in.expect_city = " + out_expect_city + ";\n\n")
+    #TODO: 拼接city_lines, city_stations, city_stations_location
+
+    out_file_all_str += "###################################\n\n"
+    print out_file_all_str
             
+    #TODO: 写入文件
+
 if __name__ == '__main__':
     main()
     
