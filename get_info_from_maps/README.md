@@ -1,7 +1,7 @@
 # [JavaScript/Python2] get_info_from_maps
 通过各地图提供商(`AMap`, `BaiduMap`, `Googlemap`, etc)提供的`JavaScript API`抓取信息并制定信息并写入文件至`Chrome file system`. 
 
-### 名词解释
+## 名词解释
 - MapProvider: 地图提供商
 - city_lines: 城市中的公交线路列表  
 - city_stations: 城市中的公交站点列表  
@@ -9,7 +9,7 @@
 - line_details: 某条公交线路的详细信息, 包含经过的所有站点的经纬度坐标和地图上描绘路线(Path)所需要的所有点的经纬度坐标  
 
 
-### 主要功能
+## 主要功能
 当前已实现的主要功能为获取指定`city`的`city_lines`和`line_details`并写入文件. 文件可供`ArcGis`导入使用.  
 
 1. 初步获取指定城市的公交线路列表  
@@ -24,7 +24,7 @@
 3. 获取指定线路列表中每条线路的详细信息  
 指定`city`, 以`city_lines`为基础数据发起`LineSearch`(`AMap`, `BaiduMap`), 将搜索结果中的`line_details`输出至文件  
 
-### 主要文件说明
+## 主要文件说明
 - search.html  
 程序入口页面, `Chrome`中打开此页面从而触发`JavaScript`代码的功能.  
 
@@ -67,13 +67,13 @@
 爬一下中文`wiki`上城市的公交线路页面, 以抓取`city_lines`. 但由于每个城市的公交线路页面格式都有所不同(试过上海, 广州和深圳, 都不同), 正则需要case by case, 有点麻烦. 且有些城市干脆没有这个页面(如北京). 总体就是不够通用. 废弃之. 
 
 
-### 使用方法
+## 使用方法
 
-### 各`MapProvider`的`JavaScript API`的异同
+## 各`MapProvider`的`JavaScript API`的异同
 
-### 杂项
+## 杂项
 
-### Links
+## Links
 
 ### Contacts
 Author's Email: wangyoucao577@gmail.com
