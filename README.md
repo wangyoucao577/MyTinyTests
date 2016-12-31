@@ -166,5 +166,11 @@
 ### [Python3] serial_power_on_off.py
   通过串口控制继电器上电/断电的小工具, 便于自动开关机测试.
 
+### [JavaScript/Python2] get_info_from_maps
+通过各地图提供商(`AMap`, `BaiduMap`, `Googlemap`, etc)提供的`JavaScript API`抓取信息并制定信息并写入文件至`Chrome file system`.   
+详见:    
+- https://github.com/wangyoucao577/MyTinyTests/blob/master/get_info_from_maps/README.md
+
+
 ### [Windows_bat] automatic_power_on_off.bat
   自动定时开关机测试的小工具, 使用`serial_power_on_off.py`控制继电器进行实际的上电/断电控制, 在`Windows_bat`中实现定时循环.
