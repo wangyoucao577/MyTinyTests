@@ -70,6 +70,28 @@
 ## 使用方法
 
 ## 各`MapProvider`的`JavaScript API`的异同
+- `Place/Local Search`  
+	- `AMap`  
+		限定城市和`type:公交车站`以进行关键字搜索, 返回结果`poi array`, 即搜索得出城市内的公交站点. 其中的`address`文本化显示了经过此位置的公交线路信息, `name`为公交站点名, `location`为公交站点的经纬度   
+	- `BaiduMap`    
+		限定城市以进行关键字(`公交车站`)搜索, 返回结果`poi array`, 即搜索得出城市内的公交站点(由于无`type`限定, 需要在结果中过滤非`type`的`poi`). 其中的`address`文本化显示了经过此位置的公交线路信息, `title`为公交站点名, `point`为公交站点的经纬度(`BaiduMap`定义的`point`对象, 若需与`AMap`混用, 需进行互相转换)   
+	- `GoogleMap`  
+		对应`Places库`中的`textSearch`接口. `GoogleMap`的`API`不支持直接的`city`限定, 故需按照其要求先将`city`转换为`bounds`进行范围的限定, 然后发起文本搜索. 另外, `GoogleMap`的`textSearch`结构仅会输出`placeId`及粗略的信息. 要获取此位置的详细信息, 还需以`placeId`在发起一次`getDetails`以获得.  `GoogleMap`搜索的结果中并没有经过此站点的公交线路信息，故无法提供所期望的功能.  
+  
+- `Nearby Search`  
+ 	- `AMap`  
+ 	限定城市和`type`, 以`location`为中心进行附近搜索. 输出结果细节同`Place/Local Search`->`AMap`中所述.  
+	- `BaiduMap`  
+	限定城市, 以`point`为中心进行附近搜索. 输出结果细节同`Place/Local Search`->`BaiduMap`中所述.  
+	- `GoogleMap`  
+	对应`Places库`中的`nearbySearch` or `radarSearch`接口. 细节同`Place/Local Search`->`GoogleMap`中所述.  
+	
+- `BusLine Search`  
+ 	- `AMap`  
+ 	限定城市, 以`公交线路名`发起`Line Search`, 返回此线路所经过的所有`stop`的位置和绘制其线路所需要的所有位置的坐标.  
+	- `BaiduMap`  
+	限定城市，以`公交线路名`发起`BusList Search`, 返回`BaiduMap`匹配的对应线路的信息`object`. 再需以此`object`发起`BusLine Search`, 返回此线路所经过的所有`stop`的位置和绘制其线路所需要的所有位置的坐标.  
+	- `GoogleMap`: 未提供此接口.  
 
 ## 杂项
 - `Chrome`的`filesystem`本地调试, 需要启动时加上`--allow-file-access-from-files`选项，才能在页面的`JavaScript`代码中调用`fileystem API`写文件    
@@ -82,7 +104,17 @@
 	- http://stackoverflow.com/questions/41011441/the-filesystemfile-temporary-has-no-response-in-chrome  
 	- http://stackoverflow.com/questions/11676584/where-does-persistent-file-system-storage-store-with-chrome  
 
+- `API`调用限制  
+	- 三家的`JavaScript API`写的都是不限制调用次数. 但实际使用中, `BaiduMap`相对限制最少, 可连续调用; `AMap`连续频繁调用后, 需要拖动验证, 一般第二次拖动验证总是过不了, 就只能停掉了; `GoogleMap`貌似是认为限制不能频繁调用, 否则很容易报`OVER_QUERY_LIMIT`, 官方解释就是需要过会再调用.   
+	- 三家的`WebService API`写的免费调用次数都不多, 大约日均免费都在1000次左右. 实际试了下`AMap`, 发现一直用都没问题, 只是`API控制台`中会提示警告. 另外两家没有尝试.  
+
 ## Links
+- http://lbs.amap.com/api/javascript-api/guide/map-data/busroutes/  
+- http://lbs.amap.com/api/javascript-api/reference/core/  
+- http://lbsyun.baidu.com/index.php?title=jspopular/guide/service  
+- http://lbsyun.baidu.com/cms/jsapi/reference/jsapi_reference.html  
+- https://developers.google.com/maps/documentation/javascript/tutorial  
+- https://developers.google.com/maps/documentation/javascript/reference#PlacesService  
 - https://developers.google.com/web/updates/2011/08/Debugging-the-Filesystem-API  
 - http://stackoverflow.com/questions/41011441/the-filesystemfile-temporary-has-no-response-in-chrome  
 - http://stackoverflow.com/questions/11676584/where-does-persistent-file-system-storage-store-with-chrome  
