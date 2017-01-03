@@ -72,8 +72,21 @@
 ## 各`MapProvider`的`JavaScript API`的异同
 
 ## 杂项
+- `Chrome`的`filesystem`本地调试, 需要启动时加上`--allow-file-access-from-files`选项，才能在页面的`JavaScript`代码中调用`fileystem API`写文件    
+
+	参考:  
+	https://developers.google.com/web/updates/2011/08/Debugging-the-Filesystem-API  
+    
+  	注: 刚刚开始做这个功能时, 可以在`chrome`中输入`filesystem:file:///temporary/`以查看写入的文件列表, 但某天突然不能用了, 也未查到资料说明为什么. 只能手动去`Windows`的缓存目录中自己去找了然后重命名, 一般缓存路径为`C:\Users\USERNAME\AppData\Local\Google\Chrome\User Data\Default\File System\`  
+  	参考:  
+	- http://stackoverflow.com/questions/41011441/the-filesystemfile-temporary-has-no-response-in-chrome  
+	- http://stackoverflow.com/questions/11676584/where-does-persistent-file-system-storage-store-with-chrome  
 
 ## Links
+- https://developers.google.com/web/updates/2011/08/Debugging-the-Filesystem-API  
+- http://stackoverflow.com/questions/41011441/the-filesystemfile-temporary-has-no-response-in-chrome  
+- http://stackoverflow.com/questions/11676584/where-does-persistent-file-system-storage-store-with-chrome  
+
 
 ### Contacts
 Author's Email: wangyoucao577@gmail.com
