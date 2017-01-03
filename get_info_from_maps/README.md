@@ -67,7 +67,27 @@
 爬一下中文`wiki`上城市的公交线路页面, 以抓取`city_lines`. 但由于每个城市的公交线路页面格式都有所不同(试过上海, 广州和深圳, 都不同), 正则需要case by case, 有点麻烦. 且有些城市干脆没有这个页面(如北京). 总体就是不够通用. 废弃之. 
 
 
-## 使用方法
+## 典型用法
+1. 选定城市, 如`上海`  
+2. 清空`search_param_in.js`中的内容, 并填入`expect_city`  
+3. 执行`AMap`的`PlaceSearch`+`NearbySearch`, 得中间文件  
+//TODO: 补充截图  
+4. 执行`BaiduMap`的`PlaceSearch`+`NearbySearch`, 得中间文件  
+//TODO: 补充截图  
+5. 执行`generate_search_param_in.py`, 合并2和3两步的输出文件, 输出新的`search_param_in.js`  
+//TODO: 补充截图  
+6. 执行`AMap`的`NearbySearch`, 得到新的中间文件  
+//TODO: 补充截图  
+7. 执行`BaiduMap`的`NearbySearch`, 得到新的中间文件  
+//TODO: 补充截图  
+8. 执行`generate_search_param_in.py`, 合并6和7两步的输出文件, 输出新的`search_param_in.js`  
+//TODO: 补充截图  
+9. 根据需要, 若还需迭代, 则跳到6/7, 若不需要再迭代, 则到10.  
+10. 执行`AMap`的`BusLineSearch`，得到`AMap`的结果  
+//TODO: 补充截图  
+11. 执行`BaiduMap`的`BusLineSearch`, 得到`BaiduMap`的结果  
+//TODO: 补充截图  
+12. Done!  
 
 ## 各`MapProvider`的`JavaScript API`的异同
 - `Place/Local Search`  
