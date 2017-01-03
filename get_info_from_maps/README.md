@@ -103,6 +103,12 @@
   	参考:  
 	- http://stackoverflow.com/questions/41011441/the-filesystemfile-temporary-has-no-response-in-chrome  
 	- http://stackoverflow.com/questions/11676584/where-does-persistent-file-system-storage-store-with-chrome  
+    
+- 关于`Chrome`中页面的写文件权限问题的一些探讨  
+    (过程中的一些信息和分析. 但并未特别深入研究, 可能有所偏差.在此仅供参考.)  
+	- `Web`页面属于仅在浏览器中运行, 所以一般情况下是不能直接操作本地的文件系统的, 最多就是可以支持`Upload`和`Download`两个动作, 这两个动作也是由浏览器提供的支持.原来`IE`中曾可以通过`ActiveX`访问本地文件系统, 但也渐渐已经废弃了.  
+	- 本项目中访问的`Chrome filesystem`为浏览器相关的沙盒文件系统, 由`Chrome`程序进行管理. 由于此项目仅需要调试使用, 所以相当于手动的破坏了下`Chrome`的沙盒来获取的输出文件, 在常规的`Web`开发中仅能用于临时的文件缓存.  
+	- `Chrome`的`web`和`apps`的`fileSystem`并非一回事. 前者仅能写入沙盒, 后者则类似于`Native`程序(以`Web`的套路开发`Native`??), 可完全访问`LocalFileSystem`的资源, 但没有页面的`DOM`供`JavaScript`代码加载. 详细可Google `Chrome Storage APIs`.  
 
 - `API`调用限制  
 	- 三家的`JavaScript API`写的都是不限制调用次数. 但实际使用中, `BaiduMap`相对限制最少, 可连续调用; `AMap`连续频繁调用后, 需要拖动验证, 一般第二次拖动验证总是过不了, 就只能停掉了; `GoogleMap`貌似是认为限制不能频繁调用, 否则很容易报`OVER_QUERY_LIMIT`, 官方解释就是需要过会再调用.   
