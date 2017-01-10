@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#include "ipv4_ipv6_interface.h"
 
 @interface ViewController ()
 
@@ -25,5 +26,8 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)touchDown:(id)sender {
+    exported_test();
+}
 
 @end

@@ -13,6 +13,7 @@
 		0D21D2C61E2522C400FCCA29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D21D2C41E2522C400FCCA29 /* Main.storyboard */; };
 		0D21D2C81E2522C400FCCA29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D21D2C71E2522C400FCCA29 /* Assets.xcassets */; };
 		0D21D2CB1E2522C400FCCA29 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D21D2C91E2522C400FCCA29 /* LaunchScreen.storyboard */; };
+		0DA6961F1E2528A900BFA6BA /* ipv4_ipv6_interface.c in Sources */ = {isa = PBXBuildFile; fileRef = 0DA6961D1E2528A900BFA6BA /* ipv4_ipv6_interface.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		0D21D2C71E2522C400FCCA29 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0D21D2CA1E2522C400FCCA29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0D21D2CC1E2522C400FCCA29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0DA6961D1E2528A900BFA6BA /* ipv4_ipv6_interface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ipv4_ipv6_interface.c; path = ipv6_to_ipv4/ipv4_ipv6_interface.c; sourceTree = "<group>"; };
+		0DA6961E1E2528A900BFA6BA /* ipv4_ipv6_interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ipv4_ipv6_interface.h; path = ipv6_to_ipv4/ipv4_ipv6_interface.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +45,7 @@
 		0D21D2AF1E2522C300FCCA29 = {
 			isa = PBXGroup;
 			children = (
+				0DA696201E2528B500BFA6BA /* ipv6_to_ipv4_core */,
 				0D21D2BA1E2522C400FCCA29 /* ipv6_to_ipv4_ios */,
 				0D21D2B91E2522C400FCCA29 /* Products */,
 			);
@@ -77,6 +81,15 @@
 				0D21D2BC1E2522C400FCCA29 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0DA696201E2528B500BFA6BA /* ipv6_to_ipv4_core */ = {
+			isa = PBXGroup;
+			children = (
+				0DA6961D1E2528A900BFA6BA /* ipv4_ipv6_interface.c */,
+				0DA6961E1E2528A900BFA6BA /* ipv4_ipv6_interface.h */,
+			);
+			name = ipv6_to_ipv4_core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,6 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D21D2C31E2522C400FCCA29 /* ViewController.m in Sources */,
+				0DA6961F1E2528A900BFA6BA /* ipv4_ipv6_interface.c in Sources */,
 				0D21D2C01E2522C400FCCA29 /* AppDelegate.m in Sources */,
 				0D21D2BD1E2522C400FCCA29 /* main.m in Sources */,
 			);
@@ -314,6 +328,7 @@
 				0D21D2D11E2522C400FCCA29 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
