@@ -78,7 +78,7 @@ Tested on iOS, Linux and Android (Unavailable on Windows).
   可原生支持此接口, 以遍历获取系统上的`addrs`信息.    
   
 - Android:   
-  底层未提供此`C`接口, 需要自己实现. 网上有一些实现(`github`上可以搜到一些`ifaddrs`的`android`实现, 以及`webrtc`中有一份`ifaddrs-android.h/cc`的`c++`实现), 需要时可参考尝试.  
+  底层未提供此`C`接口, 需要自己实现. 网上有一些实现(`github`上可以搜到一些`ifaddrs`的`android`实现, 以及`webrtc`中有一份`ifaddrs-android.h/cc`的`c++`实现), 需要时可参考尝试.(个人仅做了非常简单的尝试, 试了`github`上的几个和`webrtc`的`getifaddrs`实现, 都还有些问题, 暂未深入下去. 有机会再深入尝试下.)  
   NOTE: `Android API`中也有提供上层的`NetworkInterface`相关, 可实现此功能. 故也不一定需要使用底层`API`上来实现. 用上层`Java API`也不失为一个选择.  
    
 - Windows:  
