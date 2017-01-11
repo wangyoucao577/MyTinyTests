@@ -22,10 +22,12 @@
     
     NSString * shortVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString * buildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    NSLog(@"version: %@.%@\n", shortVersion, buildVersion);
  
-    NSString *version = @"version: ";
-    version = [version stringByAppendingFormat: @"%@.%@ \n", shortVersion, buildVersion] ;
+    NSString *version = @"V";
+    version = [version stringByAppendingFormat: @"%@.%@ \n", shortVersion, buildVersion];
+    
+    NSLog(@"version: %@\n", version);
+
     self._version_lable.text = version;
 }
 
