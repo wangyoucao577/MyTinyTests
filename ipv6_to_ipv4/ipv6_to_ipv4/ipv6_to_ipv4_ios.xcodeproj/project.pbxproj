@@ -14,6 +14,7 @@
 		0D21D2C81E2522C400FCCA29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D21D2C71E2522C400FCCA29 /* Assets.xcassets */; };
 		0D21D2CB1E2522C400FCCA29 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D21D2C91E2522C400FCCA29 /* LaunchScreen.storyboard */; };
 		0DA6961F1E2528A900BFA6BA /* ipv4_ipv6_interface.c in Sources */ = {isa = PBXBuildFile; fileRef = 0DA6961D1E2528A900BFA6BA /* ipv4_ipv6_interface.c */; };
+		0DA6962F1E260F3F00BFA6BA /* ipv6_to_ipv4_version in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6962E1E260F3F00BFA6BA /* ipv6_to_ipv4_version */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		0D21D2CC1E2522C400FCCA29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0DA6961D1E2528A900BFA6BA /* ipv4_ipv6_interface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ipv4_ipv6_interface.c; path = ipv6_to_ipv4/ipv4_ipv6_interface.c; sourceTree = "<group>"; };
 		0DA6961E1E2528A900BFA6BA /* ipv4_ipv6_interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ipv4_ipv6_interface.h; path = ipv6_to_ipv4/ipv4_ipv6_interface.h; sourceTree = "<group>"; };
+		0DA6962E1E260F3F00BFA6BA /* ipv6_to_ipv4_version */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ipv6_to_ipv4_version; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +47,7 @@
 		0D21D2AF1E2522C300FCCA29 = {
 			isa = PBXGroup;
 			children = (
+				0DA6962E1E260F3F00BFA6BA /* ipv6_to_ipv4_version */,
 				0DA696201E2528B500BFA6BA /* ipv6_to_ipv4_core */,
 				0D21D2BA1E2522C400FCCA29 /* ipv6_to_ipv4_ios */,
 				0D21D2B91E2522C400FCCA29 /* Products */,
@@ -99,6 +102,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0D21D2CF1E2522C400FCCA29 /* Build configuration list for PBXNativeTarget "ipv6_to_ipv4_ios" */;
 			buildPhases = (
+				0DA696231E260E8800BFA6BA /* ShellScript */,
 				0D21D2B41E2522C300FCCA29 /* Sources */,
 				0D21D2B51E2522C300FCCA29 /* Frameworks */,
 				0D21D2B61E2522C300FCCA29 /* Resources */,
@@ -153,11 +157,28 @@
 			files = (
 				0D21D2CB1E2522C400FCCA29 /* LaunchScreen.storyboard in Resources */,
 				0D21D2C81E2522C400FCCA29 /* Assets.xcassets in Resources */,
+				0DA6962F1E260F3F00BFA6BA /* ipv6_to_ipv4_version in Resources */,
 				0D21D2C61E2522C400FCCA29 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0DA696231E260E8800BFA6BA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "source \"${PROJECT_DIR}/ipv6_to_ipv4_version\"\n\nGIT_VERSION_COMMIT_VER=`git rev-list HEAD | wc -l | awk '{print $1}' `\necho \"GIT_VERSION_COMMIT_VER:\" ${GIT_VERSION_COMMIT_VER}\nGIT_VERSION=`git rev-list HEAD -n 1 | cut -c 1-7 `\necho \"GIT_VERSION:\" ${GIT_VERSION}\n\nbuildNumber=${GIT_VERSION_COMMIT_VER}_${GIT_VERSION}\necho ${buildNumber}\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $MAJOR_VERSION.$MINOR_VERSION.$REVISION_VERSION\" \"$INFOPLIST_FILE\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0D21D2B41E2522C300FCCA29 /* Sources */ = {
