@@ -11,7 +11,7 @@
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *_version_lable;
-@property (weak, nonatomic) IBOutlet UILabel *local_network_label;
+@property (weak, nonatomic) IBOutlet UITextView *localNetTextView;
 
 @end
 
@@ -51,8 +51,9 @@
      }*/
     NSString * formatted_local_net = [local_net_nsstr stringByReplacingOccurrencesOfString:@";" withString:@"\n"];
     NSLog(@"%@", formatted_local_net);
-    self.local_network_label.text = formatted_local_net;
+    //self.local_network_label.text = formatted_local_net;
     //self.local_network_label.text = @"lo,127.0.0.1,AF_NET(2)";
+    self.localNetTextView.text = formatted_local_net;
 
 }
 
