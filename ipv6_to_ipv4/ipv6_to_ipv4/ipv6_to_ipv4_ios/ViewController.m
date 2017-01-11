@@ -10,6 +10,7 @@
 #include "ipv4_ipv6_interface.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *_version_lable;
 
 @end
 
@@ -22,6 +23,10 @@
     NSString * shortVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString * buildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     NSLog(@"version: %@.%@\n", shortVersion, buildVersion);
+ 
+    NSString *version = @"version: ";
+    version = [version stringByAppendingFormat: @"%@.%@ \n", shortVersion, buildVersion] ;
+    self._version_lable.text = version;
 }
 
 
