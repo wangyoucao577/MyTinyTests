@@ -46,7 +46,7 @@ tested on iOS, Linux and Android (Unavailable on Windows)
 #### AF_INET6值的定义
 - iOS:     
 #define AF_INET6 30  
-- Linux:   
+- Linux, Android:   
 #define AF_INET6 10  
 - Windows:  
 #define AF_INET6 23
@@ -64,8 +64,18 @@ tested on iOS, Linux and Android (Unavailable on Windows)
 
 - iOS, Linux:   
 在Local ipv6(NAT64) 时，输入为ipv4时可自动map成ipv6的地址输出，以供connect调用.
-- Windows:
+- Windows:  
 貌似不支持AI_V4MAPPED参数. 虽然MSDN online上有写此参数, 但实验结果却未进行转换. 也可能因为测试代码依赖、宏等定义问题，从而没生效. 不明白为何如此，甚至在C#中也没找到对应的可自动map的接口. (也不排除在windows上的使用还有些问题...)
+
+#### getifaddrs支持情况不同
+`get_local_net`依赖于此`getifaddrs`系统函数实现. 
+  
+- iOS, Linux:   
+  可原生支持此接口, 以遍历获取系统上的`addrs`信息.    
+- Android:   
+  底层未提供此`C`接口, 需要自己实现. 网上有一些实现(`github`上可以搜到一些`ifaddrs`的`android`实现, 以及`webrtc`中有一份`ifaddrs-android.h/cc`的`c++`实现), 需要时可参考尝试.  
+- Windows:  
+  //TODO:   
 
 ## 补充
 - 测试UDP时发现TTL的值IPV6没有，参考 http://www.jianshu.com/p/a6bab07c4062 应适应如下  
@@ -74,6 +84,8 @@ tested on iOS, Linux and Android (Unavailable on Windows)
 
 - find_ipv6_incompatible.sh  
 搜索代码中是否存在`ipv6`不兼容的接口的一个脚本, 默认搜索当前目录的`trunk`路径下的代码.
+
+- 
 
 ## Reference Links
 - https://en.wikipedia.org/wiki/IPv6#Address_representation  
