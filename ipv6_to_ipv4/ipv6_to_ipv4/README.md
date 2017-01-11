@@ -21,8 +21,10 @@ tested on iOS, Android, Linux and Windows
 
 ## 获取本地网卡ip地址的接口
 
-tested on iOS, Linux and Android (Unavailable on Windows)
-- `get_local_net`  
+- `get_local_net`    
+`get_local_net`依赖于系统函数`getifaddrs`实现.   
+Tested on iOS, Linux and Android (Unavailable on Windows).   
+详情见如下"`getifaddrs`支持情况不同"节.   
 
 ## test project
 #### Linux
@@ -53,7 +55,8 @@ tested on iOS, Linux and Android (Unavailable on Windows)
 
 #### ipv4->ipv6 map的行为不同
 - iOS:  
-在ipv4地址前追加了` 64:ff9b::`   (RFC 6146 、RFC 6147)
+在ipv4地址前追加了` 64:ff9b::`   (RFC 6146 、RFC 6147)  
+
 - Linux, Windows:  
 都是在ipv4地址前追加了 ` ::ffff:`,  所以即使连接上mac的NAT64, 也无法通过其访问外网 (RFC 4291)
 
@@ -63,7 +66,8 @@ tested on iOS, Linux and Android (Unavailable on Windows)
 这个接口在各个平台上都有些不同的参数、行为，本身功能设计也很复杂，应仔细弄清楚其行为再使用.
 
 - iOS, Linux:   
-在Local ipv6(NAT64) 时，输入为ipv4时可自动map成ipv6的地址输出，以供connect调用.
+在Local ipv6(NAT64) 时，输入为ipv4时可自动map成ipv6的地址输出，以供connect调用.  
+
 - Windows:  
 貌似不支持AI_V4MAPPED参数. 虽然MSDN online上有写此参数, 但实验结果却未进行转换. 也可能因为测试代码依赖、宏等定义问题，从而没生效. 不明白为何如此，甚至在C#中也没找到对应的可自动map的接口. (也不排除在windows上的使用还有些问题...)
 
@@ -72,8 +76,11 @@ tested on iOS, Linux and Android (Unavailable on Windows)
   
 - iOS, Linux:   
   可原生支持此接口, 以遍历获取系统上的`addrs`信息.    
+  
 - Android:   
   底层未提供此`C`接口, 需要自己实现. 网上有一些实现(`github`上可以搜到一些`ifaddrs`的`android`实现, 以及`webrtc`中有一份`ifaddrs-android.h/cc`的`c++`实现), 需要时可参考尝试.  
+  NOTE: `Android API`中也有提供上层的`NetworkInterface`相关, 可实现此功能. 故也不一定需要使用底层`API`上来实现. 用上层`Java API`也不失为一个选择.  
+   
 - Windows:  
   //TODO:   
 
