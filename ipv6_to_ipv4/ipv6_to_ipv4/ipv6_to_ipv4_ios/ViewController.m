@@ -11,6 +11,7 @@
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *_version_lable;
+@property (weak, nonatomic) IBOutlet UILabel *local_network_label;
 
 @end
 
@@ -20,6 +21,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    // 显示版本号
     NSString * shortVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString * buildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
  
@@ -29,6 +31,9 @@
     NSLog(@"version: %@\n", version);
 
     self._version_lable.text = version;
+    
+    // 获取并显示Local Network信息
+    self.local_network_label.text = @"lo 127.0.0.1 AF_NET(2)";
 }
 
 
