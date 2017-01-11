@@ -1,9 +1,9 @@
 //
 //  main.m
-//  ipv6_to_ipv4
+//  ipv6_to_ipv4_ios
 //
-//  Created by wangyoucao577 on 8/25/16.
-//  Copyright © 2016 wangyoucao577. All rights reserved.
+//  Created by zhangjie on 1/10/17.
+//  Copyright © 2017 wangyoucao577. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:ipv6_to_ipv4.xcodeproj">
+      location = "self:ipv6_to_ipv4_ios.xcodeproj">
    </FileRef>
 </Workspace>

@@ -1,0 +1,357 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D21D2BD1E2522C400FCCA29 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D21D2BC1E2522C400FCCA29 /* main.m */; };
+		0D21D2C01E2522C400FCCA29 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D21D2BF1E2522C400FCCA29 /* AppDelegate.m */; };
+		0D21D2C31E2522C400FCCA29 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D21D2C21E2522C400FCCA29 /* ViewController.m */; };
+		0D21D2C61E2522C400FCCA29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D21D2C41E2522C400FCCA29 /* Main.storyboard */; };
+		0D21D2C81E2522C400FCCA29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D21D2C71E2522C400FCCA29 /* Assets.xcassets */; };
+		0D21D2CB1E2522C400FCCA29 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D21D2C91E2522C400FCCA29 /* LaunchScreen.storyboard */; };
+		0DA6961F1E2528A900BFA6BA /* ipv4_ipv6_interface.c in Sources */ = {isa = PBXBuildFile; fileRef = 0DA6961D1E2528A900BFA6BA /* ipv4_ipv6_interface.c */; };
+		0DA6962F1E260F3F00BFA6BA /* ipv6_to_ipv4_version in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6962E1E260F3F00BFA6BA /* ipv6_to_ipv4_version */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0D21D2B81E2522C400FCCA29 /* ipv6_to_ipv4_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ipv6_to_ipv4_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D21D2BC1E2522C400FCCA29 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0D21D2BE1E2522C400FCCA29 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		0D21D2BF1E2522C400FCCA29 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0D21D2C11E2522C400FCCA29 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		0D21D2C21E2522C400FCCA29 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		0D21D2C51E2522C400FCCA29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		0D21D2C71E2522C400FCCA29 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0D21D2CA1E2522C400FCCA29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		0D21D2CC1E2522C400FCCA29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0DA6961D1E2528A900BFA6BA /* ipv4_ipv6_interface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ipv4_ipv6_interface.c; path = ipv6_to_ipv4/ipv4_ipv6_interface.c; sourceTree = "<group>"; };
+		0DA6961E1E2528A900BFA6BA /* ipv4_ipv6_interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ipv4_ipv6_interface.h; path = ipv6_to_ipv4/ipv4_ipv6_interface.h; sourceTree = "<group>"; };
+		0DA6962E1E260F3F00BFA6BA /* ipv6_to_ipv4_version */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ipv6_to_ipv4_version; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0D21D2B51E2522C300FCCA29 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0D21D2AF1E2522C300FCCA29 = {
+			isa = PBXGroup;
+			children = (
+				0DA6962E1E260F3F00BFA6BA /* ipv6_to_ipv4_version */,
+				0DA696201E2528B500BFA6BA /* ipv6_to_ipv4_core */,
+				0D21D2BA1E2522C400FCCA29 /* ipv6_to_ipv4_ios */,
+				0D21D2B91E2522C400FCCA29 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0D21D2B91E2522C400FCCA29 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0D21D2B81E2522C400FCCA29 /* ipv6_to_ipv4_ios.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0D21D2BA1E2522C400FCCA29 /* ipv6_to_ipv4_ios */ = {
+			isa = PBXGroup;
+			children = (
+				0D21D2BE1E2522C400FCCA29 /* AppDelegate.h */,
+				0D21D2BF1E2522C400FCCA29 /* AppDelegate.m */,
+				0D21D2C11E2522C400FCCA29 /* ViewController.h */,
+				0D21D2C21E2522C400FCCA29 /* ViewController.m */,
+				0D21D2C41E2522C400FCCA29 /* Main.storyboard */,
+				0D21D2C71E2522C400FCCA29 /* Assets.xcassets */,
+				0D21D2C91E2522C400FCCA29 /* LaunchScreen.storyboard */,
+				0D21D2CC1E2522C400FCCA29 /* Info.plist */,
+				0D21D2BB1E2522C400FCCA29 /* Supporting Files */,
+			);
+			path = ipv6_to_ipv4_ios;
+			sourceTree = "<group>";
+		};
+		0D21D2BB1E2522C400FCCA29 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0D21D2BC1E2522C400FCCA29 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0DA696201E2528B500BFA6BA /* ipv6_to_ipv4_core */ = {
+			isa = PBXGroup;
+			children = (
+				0DA6961D1E2528A900BFA6BA /* ipv4_ipv6_interface.c */,
+				0DA6961E1E2528A900BFA6BA /* ipv4_ipv6_interface.h */,
+			);
+			name = ipv6_to_ipv4_core;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0D21D2B71E2522C300FCCA29 /* ipv6_to_ipv4_ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0D21D2CF1E2522C400FCCA29 /* Build configuration list for PBXNativeTarget "ipv6_to_ipv4_ios" */;
+			buildPhases = (
+				0DA696231E260E8800BFA6BA /* ShellScript */,
+				0D21D2B41E2522C300FCCA29 /* Sources */,
+				0D21D2B51E2522C300FCCA29 /* Frameworks */,
+				0D21D2B61E2522C300FCCA29 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ipv6_to_ipv4_ios;
+			productName = ipv6_to_ipv4_ios;
+			productReference = 0D21D2B81E2522C400FCCA29 /* ipv6_to_ipv4_ios.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0D21D2B01E2522C300FCCA29 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = wangyoucao577;
+				TargetAttributes = {
+					0D21D2B71E2522C300FCCA29 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = Z9H3U7SFBN;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 0D21D2B31E2522C300FCCA29 /* Build configuration list for PBXProject "ipv6_to_ipv4_ios" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0D21D2AF1E2522C300FCCA29;
+			productRefGroup = 0D21D2B91E2522C400FCCA29 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0D21D2B71E2522C300FCCA29 /* ipv6_to_ipv4_ios */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0D21D2B61E2522C300FCCA29 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0D21D2CB1E2522C400FCCA29 /* LaunchScreen.storyboard in Resources */,
+				0D21D2C81E2522C400FCCA29 /* Assets.xcassets in Resources */,
+				0DA6962F1E260F3F00BFA6BA /* ipv6_to_ipv4_version in Resources */,
+				0D21D2C61E2522C400FCCA29 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0DA696231E260E8800BFA6BA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "source \"${PROJECT_DIR}/ipv6_to_ipv4_version\"\n\nGIT_VERSION_COMMIT_VER=`git rev-list HEAD | wc -l | awk '{print $1}' `\necho \"GIT_VERSION_COMMIT_VER:\" ${GIT_VERSION_COMMIT_VER}\nGIT_VERSION=`git rev-list HEAD -n 1 | cut -c 1-7 `\necho \"GIT_VERSION:\" ${GIT_VERSION}\n\nbuildNumber=${GIT_VERSION_COMMIT_VER}\"(\"${GIT_VERSION}\")\"\necho ${buildNumber}\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $MAJOR_VERSION.$MINOR_VERSION.$REVISION_VERSION\" \"$INFOPLIST_FILE\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0D21D2B41E2522C300FCCA29 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0D21D2C31E2522C400FCCA29 /* ViewController.m in Sources */,
+				0DA6961F1E2528A900BFA6BA /* ipv4_ipv6_interface.c in Sources */,
+				0D21D2C01E2522C400FCCA29 /* AppDelegate.m in Sources */,
+				0D21D2BD1E2522C400FCCA29 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0D21D2C41E2522C400FCCA29 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0D21D2C51E2522C400FCCA29 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		0D21D2C91E2522C400FCCA29 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0D21D2CA1E2522C400FCCA29 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0D21D2CD1E2522C400FCCA29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0D21D2CE1E2522C400FCCA29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0D21D2D01E2522C400FCCA29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = Z9H3U7SFBN;
+				INFOPLIST_FILE = ipv6_to_ipv4_ios/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wangyoucao577.ipv6-to-ipv4-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0D21D2D11E2522C400FCCA29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = Z9H3U7SFBN;
+				INFOPLIST_FILE = ipv6_to_ipv4_ios/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wangyoucao577.ipv6-to-ipv4-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0D21D2B31E2522C300FCCA29 /* Build configuration list for PBXProject "ipv6_to_ipv4_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D21D2CD1E2522C400FCCA29 /* Debug */,
+				0D21D2CE1E2522C400FCCA29 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0D21D2CF1E2522C400FCCA29 /* Build configuration list for PBXNativeTarget "ipv6_to_ipv4_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D21D2D01E2522C400FCCA29 /* Debug */,
+				0D21D2D11E2522C400FCCA29 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0D21D2B01E2522C300FCCA29 /* Project object */;
+}

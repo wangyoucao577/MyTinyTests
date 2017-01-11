@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>ipv6_to_ipv4.xcscheme</key>
+		<key>ipv6_to_ipv4_ios.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0D534F1F1D6E949A00488BEA</key>
+		<key>0D21D2B71E2522C300FCCA29</key>
 		<dict>
 			<key>primary</key>
 			<true/>
