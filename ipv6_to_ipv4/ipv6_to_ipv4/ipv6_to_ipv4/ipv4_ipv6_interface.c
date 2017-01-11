@@ -64,7 +64,7 @@ int ip_str_family(char* ipstr)
 
 #ifndef WIN32
 
-char* get_local_net(const char* dev_name, int dev_name_len)
+char* get_local_valid_net(const char* dev_name, int dev_name_len, char* out_net_info, int max_out_len)
 {
     if (NULL == dev_name){
         printf("\n\nget_local_net printf all ipv4 and ipv6 here, ignore LINKLOCAL\n");
@@ -318,16 +318,16 @@ void exported_test()
 
 #ifndef WIN32
     //print all ipv4 and ipv6 interface and addressed, ignore LINKLOCAL
-    get_local_net(NULL, 0);
+    get_local_valid_net(NULL, 0, NULL, 0);
 
 
-    char* ipstr = get_local_net(WifiName, (int)strlen(WifiName));
+    char* ipstr = get_local_valid_net(WifiName, (int)strlen(WifiName), NULL, 0);
     if (NULL != ipstr) {
         test_tcp_connect(ipstr, PEER_IPV4, PEER_SERIVCE_PORT);
         free(ipstr);
     }
 
-    ipstr = get_local_net(CellularName, (int)strlen(CellularName));
+    ipstr = get_local_valid_net(CellularName, (int)strlen(CellularName), NULL, 0);
     if (NULL != ipstr) {
         test_tcp_connect(ipstr, PEER_IPV4, PEER_SERIVCE_PORT);
         free(ipstr);

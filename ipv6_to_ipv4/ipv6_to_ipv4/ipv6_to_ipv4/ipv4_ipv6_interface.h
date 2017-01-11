@@ -34,8 +34,11 @@
 #ifndef WIN32
 //return a mallocced memory pointer to the indicated device, indicated the ip address as presentation format.
 //should call free after use.
+//if can not found the indicated device, return NULL instead.
 //if dev_name pass NULL as input, it's behavior will be printf all interfaces with ipv4 or ipv6 address, ignore LINKLOCAL
-char* get_local_net(const char* dev_name, int dev_name_len);
+//if out_net_info pass not NULL as input, will output formated network infomation as the following:
+//  dev,ip,family;dev,ip,family;...
+char* get_local_valid_net(const char* dev_name, int dev_name_len, char* out_net_info, int max_out_len);
 #endif
 
 //Convert a struct sockaddr address to a string, support IPv4 and IPv6
