@@ -33,7 +33,22 @@
     self._version_lable.text = version;
     
     // 获取并显示Local Network信息
-    self.local_network_label.text = @"lo 127.0.0.1 AF_NET(2)";
+    char local_net_info[10240] = {0};
+    get_local_valid_net(NULL, 0, local_net_info, sizeof(local_net_info));
+    NSString * local_net_nsstr = [NSString stringWithFormat:@"%s", local_net_info];
+    NSLog(@"get_local_valid_net output");
+    //NSLog(@"%@", local_net_nsstr);
+    
+    /*
+    NSArray* net_lines = [local_net_nsstr componentsSeparatedByString:@";"];
+    for (int i = 0; i < [net_lines count]; ++i){
+        NSString* tmp_line = [net_lines objectAtIndex:i];
+        NSLog(@"%@\n", tmp_line);
+    }*/
+    NSString * formatted_local_net = [local_net_nsstr stringByReplacingOccurrencesOfString:@";" withString:@"\n"];
+    NSLog(@"%@", formatted_local_net);
+    self.local_network_label.text = formatted_local_net;
+    //self.local_network_label.text = @"lo,127.0.0.1,AF_NET(2)";
 }
 
 

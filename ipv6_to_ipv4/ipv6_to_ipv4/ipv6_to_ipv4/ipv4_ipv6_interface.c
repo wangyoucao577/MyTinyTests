@@ -85,6 +85,8 @@ char* get_local_valid_net(const char* dev_name, int dev_name_len, char* out_net_
             if (    (addrs->ifa_addr->sa_family == AF_INET && 0 == IN_LINKLOCAL(ntohl(((struct sockaddr_in *)addrs->ifa_addr)->sin_addr.s_addr)))
                  || (addrs->ifa_addr->sa_family == AF_INET6 && 0 == IN6_IS_ADDR_LINKLOCAL(&(((struct sockaddr_in6 *)addrs->ifa_addr)->sin6_addr)))){
                 
+                char tmp_out_line[256] = {0};
+                
                 // for ipv6 will get two ipv6 addresses, one of them is temporary ipv6 address
                 // but seems we don't have any function to get the whether it's temporary on ios. so we just choose the first one.
                 // I have tried that we can use each one of them to connect outside.
@@ -92,26 +94,31 @@ char* get_local_valid_net(const char* dev_name, int dev_name_len, char* out_net_
                 // http://stackoverflow.com/questions/17833765/detect-temporary-ipv6-address-crossplatform
 
                 int ipstr_len = addrs->ifa_addr->sa_family == AF_INET6 ? INET6_ADDRSTRLEN : INET_ADDRSTRLEN;
+                char * temp_ipstr = (char*)malloc(ipstr_len);
+                assert(NULL != temp_ipstr);
+                char* pstr = inet_ntop_ipv4_ipv6_compatible(addrs->ifa_addr, temp_ipstr, ipstr_len);
+                assert(NULL != pstr);
+                snprintf(tmp_out_line, sizeof(tmp_out_line), "%s,%s,%s(%d);", \
+                         addrs->ifa_name, temp_ipstr, addrs->ifa_addr->sa_family == AF_INET6 ? "AF_INET6" : "AF_INET", addrs->ifa_addr->sa_family);
+                if (out_net_info){
+                    strcat(out_net_info, tmp_out_line); // for pass out
+                }
+
                 if (NULL != dev_name && NULL == ipstr){
-                    ipstr = (char*)malloc(ipstr_len);
-                    assert(NULL != ipstr);
-                    char* pstr = inet_ntop_ipv4_ipv6_compatible(addrs->ifa_addr, ipstr, ipstr_len);
-                    assert(NULL != pstr);
-                
+                    
                     printf("%s dev_name:%s, first found indicated device-->ifa_name:%s, sa_family:%d(%s), addr->%s.\n", __func__, dev_name, \
                         addrs->ifa_name, addrs->ifa_addr->sa_family, \
                         addrs->ifa_addr->sa_family == AF_INET6 ? "AF_INET6" : "AF_INET", ipstr);
+                    
+                    ipstr = temp_ipstr; //pass out
                 }
                 else{
                     //others only printf
-                    char * temp_ipstr = (char*)malloc(ipstr_len);
-                    assert(NULL != temp_ipstr);
-                    char* pstr = inet_ntop_ipv4_ipv6_compatible(addrs->ifa_addr, temp_ipstr, ipstr_len);
-                    assert(NULL != pstr);
 
                     printf("%s ifa_name:%s, sa_family:%d(%s), addr->%s.\n", __func__, addrs->ifa_name, addrs->ifa_addr->sa_family, \
                         addrs->ifa_addr->sa_family == AF_INET6 ? "AF_INET6" : "AF_INET", temp_ipstr);
-                    free(temp_ipstr);
+                    
+                    free(temp_ipstr);   //don't need to pass out, free it
                 }
                 
                 //printf("%s ifa_name:%s, ifa_family:%d, ifa_flags:%u, addr->%s. \n", __func__, addrs->ifa_name, \
