@@ -176,7 +176,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source \"${PROJECT_DIR}/ipv6_to_ipv4_version\"\n\nGIT_VERSION_COMMIT_VER=`git rev-list HEAD | wc -l | awk '{print $1}' `\necho \"GIT_VERSION_COMMIT_VER:\" ${GIT_VERSION_COMMIT_VER}\nGIT_VERSION=`git rev-list HEAD -n 1 | cut -c 1-7 `\necho \"GIT_VERSION:\" ${GIT_VERSION}\n\nbuildNumber=${GIT_VERSION_COMMIT_VER}_${GIT_VERSION}\necho ${buildNumber}\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $MAJOR_VERSION.$MINOR_VERSION.$REVISION_VERSION\" \"$INFOPLIST_FILE\"";
+			shellScript = "source \"${PROJECT_DIR}/ipv6_to_ipv4_version\"\n\nGIT_VERSION_COMMIT_VER=`git rev-list HEAD | wc -l | awk '{print $1}' `\necho \"GIT_VERSION_COMMIT_VER:\" ${GIT_VERSION_COMMIT_VER}\nGIT_VERSION=`git rev-list HEAD -n 1 | cut -c 1-7 `\necho \"GIT_VERSION:\" ${GIT_VERSION}\n\nbuildNumber=${GIT_VERSION_COMMIT_VER}\"(\"${GIT_VERSION}\")\"\necho ${buildNumber}\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $MAJOR_VERSION.$MINOR_VERSION.$REVISION_VERSION\" \"$INFOPLIST_FILE\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
