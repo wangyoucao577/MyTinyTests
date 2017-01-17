@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D74080F1E2DBA4A00B989CE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D74080E1E2DBA4A00B989CE /* main.m */; };
-		0D7408121E2DBA4A00B989CE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7408111E2DBA4A00B989CE /* AppDelegate.m */; };
 		0D7408151E2DBA4A00B989CE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7408141E2DBA4A00B989CE /* ViewController.m */; };
 		0D7408181E2DBA4A00B989CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D7408161E2DBA4A00B989CE /* Main.storyboard */; };
 		0D74081A1E2DBA4A00B989CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D7408191E2DBA4A00B989CE /* Assets.xcassets */; };
@@ -20,13 +18,13 @@
 		0D7408331E2DC10100B989CE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7408321E2DC10100B989CE /* CoreTelephony.framework */; };
 		0D7408351E2DC10D00B989CE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7408341E2DC10D00B989CE /* Foundation.framework */; };
 		0D74083B1E2DC4A500B989CE /* mars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D74083A1E2DC4A500B989CE /* mars.framework */; };
+		0D74083D1E2DC6CE00B989CE /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0D74083C1E2DC6CE00B989CE /* main.mm */; };
+		0D74083F1E2DC7DB00B989CE /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0D74083E1E2DC7DB00B989CE /* AppDelegate.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0D74080A1E2DBA4A00B989CE /* xlog_test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xlog_test.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0D74080E1E2DBA4A00B989CE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0D7408101E2DBA4A00B989CE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		0D7408111E2DBA4A00B989CE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0D7408131E2DBA4A00B989CE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		0D7408141E2DBA4A00B989CE /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		0D7408171E2DBA4A00B989CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -41,6 +39,8 @@
 		0D7408321E2DC10100B989CE /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		0D7408341E2DC10D00B989CE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0D74083A1E2DC4A500B989CE /* mars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = mars.framework; path = "../lib/mars-log-iphone/mars.framework"; sourceTree = "<group>"; };
+		0D74083C1E2DC6CE00B989CE /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		0D74083E1E2DC7DB00B989CE /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				0D7408101E2DBA4A00B989CE /* AppDelegate.h */,
-				0D7408111E2DBA4A00B989CE /* AppDelegate.m */,
+				0D74083E1E2DC7DB00B989CE /* AppDelegate.mm */,
 				0D7408131E2DBA4A00B989CE /* ViewController.h */,
 				0D7408141E2DBA4A00B989CE /* ViewController.m */,
 				0D7408161E2DBA4A00B989CE /* Main.storyboard */,
@@ -97,7 +97,7 @@
 		0D74080D1E2DBA4A00B989CE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				0D74080E1E2DBA4A00B989CE /* main.m */,
+				0D74083C1E2DC6CE00B989CE /* main.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -196,9 +196,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D74083D1E2DC6CE00B989CE /* main.mm in Sources */,
 				0D7408151E2DBA4A00B989CE /* ViewController.m in Sources */,
-				0D7408121E2DBA4A00B989CE /* AppDelegate.m in Sources */,
-				0D74080F1E2DBA4A00B989CE /* main.m in Sources */,
+				0D74083F1E2DC7DB00B989CE /* AppDelegate.mm in Sources */,
 				0D7408261E2DBEF200B989CE /* log_crypt.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,6 +249,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -297,6 +298,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
