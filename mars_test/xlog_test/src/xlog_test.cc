@@ -51,11 +51,15 @@ static void test_case_loop_xlog(int xlog_count_per_sec){
         }
         
         if (curr_xlog_count >= xlog_count_per_sec){
-            usleep(10 * 1000);
+            int sleep_ms = (int)(curr_interval_start_ms + 1000 - curr_ms);
+            xinfo2(TSF"sleep ms %_ ", sleep_ms);
+            usleep(sleep_ms * 1000);
+            
             continue;
         }
             
         xverbose2(TSF"%_ %_ curr_interval_index %_ interval %_", "verbose", loop_index++, curr_xlog_count++, interval_count);
+        
     }
 }
 
