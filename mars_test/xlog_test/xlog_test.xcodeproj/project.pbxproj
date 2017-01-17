@@ -13,6 +13,13 @@
 		0D7408181E2DBA4A00B989CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D7408161E2DBA4A00B989CE /* Main.storyboard */; };
 		0D74081A1E2DBA4A00B989CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D7408191E2DBA4A00B989CE /* Assets.xcassets */; };
 		0D74081D1E2DBA4A00B989CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D74081B1E2DBA4A00B989CE /* LaunchScreen.storyboard */; };
+		0D7408261E2DBEF200B989CE /* log_crypt.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0D7408241E2DBEF200B989CE /* log_crypt.cc */; };
+		0D74082D1E2DC0D800B989CE /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D74082C1E2DC0D800B989CE /* libresolv.9.tbd */; };
+		0D74082F1E2DC0E300B989CE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D74082E1E2DC0E300B989CE /* SystemConfiguration.framework */; };
+		0D7408311E2DC0FA00B989CE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7408301E2DC0FA00B989CE /* libz.tbd */; };
+		0D7408331E2DC10100B989CE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7408321E2DC10100B989CE /* CoreTelephony.framework */; };
+		0D7408351E2DC10D00B989CE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7408341E2DC10D00B989CE /* Foundation.framework */; };
+		0D74083B1E2DC4A500B989CE /* mars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D74083A1E2DC4A500B989CE /* mars.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +33,14 @@
 		0D7408191E2DBA4A00B989CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0D74081C1E2DBA4A00B989CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0D74081E1E2DBA4A00B989CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0D7408241E2DBEF200B989CE /* log_crypt.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = log_crypt.cc; path = "../lib/mars-log-iphone/log_crypt.cc"; sourceTree = "<group>"; };
+		0D7408251E2DBEF200B989CE /* log_crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = log_crypt.h; path = "../lib/mars-log-iphone/log_crypt.h"; sourceTree = "<group>"; };
+		0D74082C1E2DC0D800B989CE /* libresolv.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.9.tbd; path = usr/lib/libresolv.9.tbd; sourceTree = SDKROOT; };
+		0D74082E1E2DC0E300B989CE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0D7408301E2DC0FA00B989CE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		0D7408321E2DC10100B989CE /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		0D7408341E2DC10D00B989CE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0D74083A1E2DC4A500B989CE /* mars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = mars.framework; path = "../lib/mars-log-iphone/mars.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +48,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D7408331E2DC10100B989CE /* CoreTelephony.framework in Frameworks */,
+				0D7408311E2DC0FA00B989CE /* libz.tbd in Frameworks */,
+				0D74082F1E2DC0E300B989CE /* SystemConfiguration.framework in Frameworks */,
+				0D74083B1E2DC4A500B989CE /* mars.framework in Frameworks */,
+				0D74082D1E2DC0D800B989CE /* libresolv.9.tbd in Frameworks */,
+				0D7408351E2DC10D00B989CE /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,8 +63,10 @@
 		0D7408011E2DBA4A00B989CE = {
 			isa = PBXGroup;
 			children = (
+				0D7408291E2DBF0800B989CE /* mars_xlog */,
 				0D74080C1E2DBA4A00B989CE /* xlog_test */,
 				0D74080B1E2DBA4A00B989CE /* Products */,
+				0D74082B1E2DC0D800B989CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,6 +100,28 @@
 				0D74080E1E2DBA4A00B989CE /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0D7408291E2DBF0800B989CE /* mars_xlog */ = {
+			isa = PBXGroup;
+			children = (
+				0D74083A1E2DC4A500B989CE /* mars.framework */,
+				0D7408241E2DBEF200B989CE /* log_crypt.cc */,
+				0D7408251E2DBEF200B989CE /* log_crypt.h */,
+			);
+			name = mars_xlog;
+			sourceTree = "<group>";
+		};
+		0D74082B1E2DC0D800B989CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0D7408341E2DC10D00B989CE /* Foundation.framework */,
+				0D7408321E2DC10100B989CE /* CoreTelephony.framework */,
+				0D7408301E2DC0FA00B989CE /* libz.tbd */,
+				0D74082E1E2DC0E300B989CE /* SystemConfiguration.framework */,
+				0D74082C1E2DC0D800B989CE /* libresolv.9.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +199,7 @@
 				0D7408151E2DBA4A00B989CE /* ViewController.m in Sources */,
 				0D7408121E2DBA4A00B989CE /* AppDelegate.m in Sources */,
 				0D74080F1E2DBA4A00B989CE /* main.m in Sources */,
+				0D7408261E2DBEF200B989CE /* log_crypt.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,7 +265,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -261,7 +307,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -274,6 +320,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = Z9H3U7SFBN;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/../lib/mars-log-iphone",
+				);
 				INFOPLIST_FILE = xlog_test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wangyoucao577.xlog-test.xlog-test";
@@ -286,6 +337,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = Z9H3U7SFBN;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/../lib/mars-log-iphone",
+				);
 				INFOPLIST_FILE = xlog_test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wangyoucao577.xlog-test.xlog-test";
