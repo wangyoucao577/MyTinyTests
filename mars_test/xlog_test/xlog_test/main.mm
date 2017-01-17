@@ -10,9 +10,7 @@
 #import "AppDelegate.h"
 #import <sys/xattr.h>
 
-#import <mars/xlog/xloggerbase.h>
-#import <mars/xlog/xlogger.h>
-#import <mars/xlog/appender.h>
+#include "xlog_test.h"
 
 
 int main(int argc, char * argv[]) {
@@ -25,16 +23,11 @@ int main(int argc, char * argv[]) {
         u_int8_t attrValue = 1;
         setxattr([logPath UTF8String], attrName, &attrValue, sizeof(attrValue), 0, 0);
         
-        // init xlog
-#if DEBUG
-        xlogger_SetLevel(kLevelDebug);
-        appender_set_console_log(true);
-#else
-        xlogger_SetLevel(kLevelInfo);
-        appender_set_console_log(false);
-#endif
-        appender_open(kAppednerAsync, [logPath UTF8String], "myxlogtest");
-
+        // init xlog test
+        init_xlog_test([logPath UTF8String]);
+        
+        // run test cases
+        run_xlog_test_cases();
         
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }

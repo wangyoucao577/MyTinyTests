@@ -20,6 +20,7 @@
 		0D74083B1E2DC4A500B989CE /* mars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D74083A1E2DC4A500B989CE /* mars.framework */; };
 		0D74083D1E2DC6CE00B989CE /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0D74083C1E2DC6CE00B989CE /* main.mm */; };
 		0D74083F1E2DC7DB00B989CE /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0D74083E1E2DC7DB00B989CE /* AppDelegate.mm */; };
+		0D7408451E2DDC4000B989CE /* xlog_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0D7408441E2DDC4000B989CE /* xlog_test.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,8 @@
 		0D74083A1E2DC4A500B989CE /* mars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = mars.framework; path = "../lib/mars-log-iphone/mars.framework"; sourceTree = "<group>"; };
 		0D74083C1E2DC6CE00B989CE /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		0D74083E1E2DC7DB00B989CE /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		0D7408401E2DDBD200B989CE /* xlog_test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = xlog_test.h; path = src/xlog_test.h; sourceTree = "<group>"; };
+		0D7408441E2DDC4000B989CE /* xlog_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = xlog_test.cc; path = src/xlog_test.cc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,7 @@
 		0D7408011E2DBA4A00B989CE = {
 			isa = PBXGroup;
 			children = (
+				0D7408411E2DDBE100B989CE /* xlog_test_src */,
 				0D7408291E2DBF0800B989CE /* mars_xlog */,
 				0D74080C1E2DBA4A00B989CE /* xlog_test */,
 				0D74080B1E2DBA4A00B989CE /* Products */,
@@ -122,6 +126,15 @@
 				0D74082C1E2DC0D800B989CE /* libresolv.9.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0D7408411E2DDBE100B989CE /* xlog_test_src */ = {
+			isa = PBXGroup;
+			children = (
+				0D7408401E2DDBD200B989CE /* xlog_test.h */,
+				0D7408441E2DDC4000B989CE /* xlog_test.cc */,
+			);
+			name = xlog_test_src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +209,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D7408451E2DDC4000B989CE /* xlog_test.cc in Sources */,
 				0D74083D1E2DC6CE00B989CE /* main.mm in Sources */,
 				0D7408151E2DBA4A00B989CE /* ViewController.m in Sources */,
 				0D74083F1E2DC7DB00B989CE /* AppDelegate.mm in Sources */,
