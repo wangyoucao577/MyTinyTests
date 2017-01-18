@@ -9,10 +9,14 @@
 #include <stdio.h>
 #include <unistd.h>
 
+
 #import <mars/xlog/xloggerbase.h>
 #import <mars/xlog/xlogger.h>
 #import <mars/xlog/appender.h>
 #import <mars/comm/time_utils.h>
+
+#define XLOGGER_TAG "MY_XLOG_TEST"
+
 
 static void test_case_each_xlog_interface(){
     xverbose2("%s %d %s", "verbose my test", 1, "1");
