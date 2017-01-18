@@ -39,6 +39,12 @@ bb793a0bed547ed6be8c57cedc7121f51880da9b [bb793a0]
 		- 支持iOS、Android、Windows、MacOSX
 		- 加TAG方便, 工程中定义XLOGGER_TAG宏即可
 		- 支持Sync/Async输出
+		- 支持方便的修改输出字符串的格式(修改formater.cc的实现)
+		- 牛逼的调用方式
+			- 类型安全检测方式：%s %d 。例如：xinfo(“%s %d”, “test”, 1)
+			- 序号匹配的方式：%0 %1 。例如：xinfo(TSF”%0 %1 %0”, “test”, 1)
+			- 智能匹配的懒人模式：%_  。例如：xinfo(TSF”%_ %_”, “test”, 1)
+
 		
 	- xlog的不足
 		- 不支持Linux
