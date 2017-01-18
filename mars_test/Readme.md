@@ -38,6 +38,7 @@ bb793a0bed547ed6be8c57cedc7121f51880da9b [bb793a0]
 		- 支持时间范围外的日志清理, 便于作为基本的运行日志
 		- 支持iOS、Android、Windows、MacOSX
 		- 加TAG方便, 工程中定义XLOGGER_TAG宏即可
+		- 支持Sync/Async输出
 		
 	- xlog的不足
 		- 不支持Linux
@@ -49,7 +50,42 @@ bb793a0bed547ed6be8c57cedc7121f51880da9b [bb793a0]
 		
 - 其他杂项
 
-## Mars源码记要
+## 读Mars源码
+### xlog 
+- 核心文件
+	- appender.h/cc  
+		初始化/析构日志需要调用的接口, 同时包含了xlog文件创建/删除/超时清理/写Console/写File等逻辑。  
+		
+		- `appender_set_console_log`  
+			是否打开Console日志的开关.
+			
+		- `appender_open`, `appender_close`  
+			xlog初始化/析构.
+		
+		- `xlogger_appender`  
+			每次调用`xverbose2/xdebug2...`接口写日志时, 将要调用的具体实现(在`xloggebase.c`文件的`__xlogger_Write_impl`中调用). 在此函数中调用写Console/File.  
+			
+		- `__async_log_thread`  
+			日志异步写文件的线程, 等待通知(出现FATAL错误or攒了50KB) or 超时(Default: 15min)写一次文件.  
+			
+	- xlogger.h  
+		该文件包含打印日志最常调用的接口。  
+		`xverbose2/xdebug2/xinfo2/xwarn2/xerror2/xfatal2...`  
+		通过一堆Macro把这堆开放的接口最终映射到`xloggerbase.h/c`文件中的`xlogger_Write`接口.   
+		NOTE: 据说用到了`meta programming`, 看的不是很明白.暂不再深入. 
+
+	- xloggerbase.h/c  
+		提供xlog设置LogLevel的接口, 及内部的`xlogger_Write`等实现(实际最终还是调用到`appender.cc`文件中的`xlogger_appender`).   
+		
+	- formater.cc
+		输出日志字符串的格式化. 若需要修改为自定义格式以适应日志分析, 可在此处修改.  
+		
+	- log_buffer.h/cc  
+		日志缓存的buffer结构, 在其`Write`接口中调用了压缩(调用`zlib`)、加密(调用`log_crypt.h/cc`中的接口)等功能
+		
+	- log_crypt.h/cc  
+		提供加密功能的代码. 使用者可覆盖此`log_crypt.cc`文件的实现以实现自己的加密方式. 目前的版本默认是无加密的.  
+
 
 ## Reference Links
 - [Mars on Github](https://github.com/Tencent/mars)  
