@@ -52,20 +52,23 @@ static void test_case_loop_xlog(int xlog_count_per_sec){
         
         if (curr_xlog_count >= xlog_count_per_sec){
             int sleep_ms = (int)(curr_interval_start_ms + 1000 - curr_ms);
-            xinfo2(TSF"sleep ms %_ ", sleep_ms);
+            //xinfo2(TSF"sleep ms %_ ", sleep_ms);
+            printf("sleep ms %d\n", sleep_ms);
             usleep(sleep_ms * 1000);
             
             continue;
         }
             
-        xverbose2(TSF"%_ %_ curr_interval_index %_ interval %_", "verbose", loop_index++, curr_xlog_count++, interval_count);
-        
+        xverbose2(TSF"%_ %_ curr_interval_index %_ interval %_", "verbose", loop_index, curr_xlog_count, interval_count);
+        loop_index++;
+        curr_xlog_count++;
     }
 }
 
 
 void init_xlog_test(const char* log_path)
 {
+    
     // init xlog
 #if DEBUG
     xlogger_SetLevel(kLevelVerbose);
