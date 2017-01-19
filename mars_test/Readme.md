@@ -1,7 +1,7 @@
 # [C++] Mars_test
 学习并尝试试用Tencent刚刚开源的Mars库.  
 Commit:
-bb793a0bed547ed6be8c57cedc7121f51880da9b [bb793a0]
+030068392da5e8eea1c1f0547596b66cbbc5f200 [0300683]
   
 
 ## xlog_test
@@ -24,7 +24,7 @@ bb793a0bed547ed6be8c57cedc7121f51880da9b [bb793a0]
 		Mars团队解决中...
 		
 	- [xlog在iOS上测试频繁调用时cpu占用过高](https://github.com/Tencent/mars/issues/104)  
-		Mars团队分析中...
+		已解决. 研究下来发现主要问题出在`NSLog`的消耗太高. 将`NSLog`改为`fprintf(stdout...)`则CPU占用率明显下降.  
 		
 	- [不支持linux](https://github.com/Tencent/mars/issues/54)  
 		Mars团队Won't Fix!!! What the fuck!  
@@ -99,6 +99,7 @@ bb793a0bed547ed6be8c57cedc7121f51880da9b [bb793a0]
 - [Mars iOS/OS X 接入指南](https://github.com/Tencent/mars/wiki/Mars-iOS%EF%BC%8FOS-X-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97)  
 - [Mars iOS/OS X 接口详细说明](https://github.com/Tencent/mars/wiki/Mars-iOS%EF%BC%8FOS-X-%E6%8E%A5%E5%8F%A3%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E)  
 - [xlog在iOS上测试频繁调用时cpu占用过高](https://github.com/Tencent/mars/issues/104)
+- [NSLog效率低下的原因及尝试lldb断点打印Log](http://blog.sunnyxx.com/2014/04/22/objc_dig_nslog)
 - [不支持linux](https://github.com/Tencent/mars/issues/54)
 - [vs2105编译不过](https://github.com/Tencent/mars/issues/47)
 - [微信终端跨平台组件 mars 系列（一） - 高性能日志模块xlog](http://mp.weixin.qq.com/s/cnhuEodJGIbdodh0IxNeXQ)  
