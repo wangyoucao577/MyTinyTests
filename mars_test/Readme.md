@@ -51,7 +51,6 @@ Commit:
 		- 全局日志, 不支持实例化
 		- 不支持filter TAG过滤后输出
 		- 不支持单条日志指定output target(如仅输出到FILE, or输出到FILE&CONSOLE)
-		- 频繁调用时貌似CPU占用过高
 		
 		
 - 其他杂项
