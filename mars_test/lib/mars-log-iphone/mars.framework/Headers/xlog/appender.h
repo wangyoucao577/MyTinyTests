@@ -40,6 +40,7 @@ bool appender_getfilepath_from_timespan(int _timespan, const char* _prefix, std:
 bool appender_get_current_log_path(char* _log_path, unsigned int _len);
 bool appender_get_current_log_cache_path(char* _logPath, unsigned int _len);
 void appender_set_console_log(bool _is_open);
-
+void appender_set_enable_mmap(bool _is_enable);
+void appender_set_enable_compress(bool _is_enable);
 
 #endif /* APPENDER_H_ */
