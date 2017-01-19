@@ -1,7 +1,7 @@
 # [C++] Mars_test
 学习并尝试试用Tencent刚刚开源的Mars库.  
 Commit:
-030068392da5e8eea1c1f0547596b66cbbc5f200 [0300683]
+1198080f4cc0809299a9494418a1dfcab0765bb9 [1198080]
   
 
 ## xlog_test
