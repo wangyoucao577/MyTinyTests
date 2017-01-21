@@ -16,6 +16,7 @@ class Getmyip:
                 myip = self.visit(url)
                 return myip
             except:
+                print "Try to inquery my public ip from :" + url + " failed!"
                 continue
         return None
     def visit(self,url):
