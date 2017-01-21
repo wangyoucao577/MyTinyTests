@@ -5,6 +5,7 @@ import re
 import fileinput
 import datetime
 import time
+import socket
 
 from inquery_my_public_ip import Getmyip
 
@@ -64,7 +65,11 @@ def refresh_new_ip(newip_file):
         time.sleep(30)
 
 if __name__ == '__main__':
-    newip_file = newip_file_path + "/" + newip_file_name
+
+    host_name = socket.gethostname()
+    print "Host: " + host_name
+
+    newip_file = newip_file_path + "/" + host_name + "_" + newip_file_name
     print "File Location: " + newip_file
     refresh_new_ip(newip_file)
 
