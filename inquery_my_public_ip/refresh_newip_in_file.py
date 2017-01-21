@@ -61,7 +61,7 @@ def refresh_new_ip(newip_file):
         
         append_newip_to_file(newip_file, new_ip_outstr)
 
-        time.sleep(1)
+        time.sleep(30)
 
 if __name__ == '__main__':
     newip_file = newip_file_path + "/" + newip_file_name
