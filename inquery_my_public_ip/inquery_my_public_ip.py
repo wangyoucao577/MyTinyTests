@@ -17,9 +17,9 @@ class Getmyip:
                 return myip
             except:
                 continue
-        return "So sorry!!!"
+        return None
     def visit(self,url):
-        print "Try to inquery my public ip from :" + url
+        #print "Try to inquery my public ip from :" + url
         opener = urllib2.urlopen(url)
         if url == opener.geturl():
             str = opener.read()
@@ -30,6 +30,11 @@ class Getmyip:
 if __name__ == '__main__':
     getmyip = Getmyip()
     publicip = getmyip.getip()
-    print "My Public IP:" + publicip
+    if publicip is not None:
+        print "My Public IP:" + publicip
+    else:
+        print "Inquery Public IP failed."
+else:
+    print "Python2 Module Loaded: inquery_my_public_ip."
 
 
