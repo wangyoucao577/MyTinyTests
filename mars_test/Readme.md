@@ -51,9 +51,12 @@ Commit:
 		- 全局日志, 不支持实例化
 		- 不支持filter TAG过滤后输出
 		- 不支持单条日志指定output target(如仅输出到FILE, or输出到FILE&CONSOLE)
-		
-		
-- 其他杂项
+	
+- 其他杂项	
+	- 日志文件(压缩/不压缩)  
+		- 手机上生成的日志文件为`XXX_日期.xlog`  
+		- 采用默认压缩初始化xlog时, 取出文件后需要用`decode_mars_log_file.py`解压, 以获得明文的`xxx.xlog.log`文件  
+		- 关闭压缩初始化xlog时, 取出文件后直接修改后缀加上`.log`打开即为明文  
 
 ## 读Mars源码
 ### xlog 
