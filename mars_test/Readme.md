@@ -83,7 +83,10 @@ Commit:
 		提供xlog设置LogLevel的接口, 及内部的`xlogger_Write`等实现(实际最终还是调用到`appender.cc`文件中的`xlogger_appender`).   
 		
 	- formater.cc
-		输出日志字符串的格式化. 若需要修改为自定义格式以适应日志分析, 可在此处修改.  
+		输出日志字符串的格式化(FILE). 若需要修改为自定义格式以适应日志分析, 可在此处修改.  
+		
+	- platform_comm.mm  
+		`ConsoleLog`的实现, 包括`ConsoleLog`的字符串格式化. 默认调用`NSLog`接口. 
 		
 	- log_buffer.h/cc  
 		日志缓存的buffer结构, 在其`Write`接口中调用了压缩(调用`zlib`)、加密(调用`log_crypt.h/cc`中的接口)等功能
