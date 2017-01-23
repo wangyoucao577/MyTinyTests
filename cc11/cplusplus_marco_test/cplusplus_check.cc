@@ -24,9 +24,22 @@ using namespace std;
 //MSVC++ 6.0  _MSC_VER == 1200
 //MSVC++ 5.0  _MSC_VER == 1100
 
+void stdc_macro_print()
+{
+    cout << "Standard Clib: " << __STDC_HOSTED__ << endl;
+    //cout << "C Standard Version: " << __STDC_VERSION__ << endl;
+#if !defined(_MSC_VER)
+    // VS2015编译器并未定义这两个宏
+    cout << "Standard C: " << __STDC__ << endl;
+    cout << "ISO/IEC " << __STDC_ISO_10646__ << endl;
+#endif
+}
+
 int main()
 {
 	cout << "__cplusplus defined value: " << __cplusplus <<endl;
+
+    stdc_macro_print();
 
 #if defined(_MSC_VER)
     cout << "MS Ver: " << _MSC_VER << endl << endl;
