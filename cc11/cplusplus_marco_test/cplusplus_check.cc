@@ -2,13 +2,13 @@
 #include <iostream>
 using namespace std;
 
-#if !defined(WIN32)
-#if __cplusplus < 201103L
-#error "should use C++11 compiler"
-#endif
-#else
+#if defined(_MSC_VER)
 #if _MSC_VER < 1900
 #error "should use at least VS2015"
+#endif
+#else
+#if __cplusplus < 201103L
+#error "should use C++11 compiler"
 #endif
 #endif
 
