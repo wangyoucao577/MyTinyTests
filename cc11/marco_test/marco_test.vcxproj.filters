@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cplusplus_check.cc">
+    <ClCompile Include="macro_check.cc">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
