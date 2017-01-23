@@ -35,18 +35,23 @@ void stdc_macro_print()
 #endif
 }
 
-void func_marco_test()
+const char* func_marco_test()
 {
     cout << "\'__func__\': " << __func__ << endl;
     cout << "\'__FUNCTION__\': " << __FUNCTION__ << endl;
+
+    return __func__;
 }
+
+#define MY_PRINTF(format, ...) printf(format, __VA_ARGS__)
 
 int main()
 {
 	cout << "__cplusplus defined value: " << __cplusplus <<endl;
 
     stdc_macro_print();
-    func_marco_test();
+    const char * func_macro_ret = func_marco_test();
+    MY_PRINTF("MY_PRINTF %s\n", func_macro_ret);
 
 #if defined(_MSC_VER)
     cout << "MS Ver: " << _MSC_VER << endl << endl;
