@@ -5,17 +5,17 @@ C++11新特性尝试的一些代码及工程集合.
 - 在`Windows`上可通过`cc_test.sln`(`VS2015`)打开所有的工程及代码, 选择某个工程进行编译及运行即可.  
 
 
-### cplusplus_marco_test  
-确认下各个编译器下`__cplusplus`的定义, 理论上支持`C++11`的编译器值至少应是`201103L`. 原`C++98/03`的此宏定义值为`199711L`.  
+### marco_test  
+确认下各个编译器下新的宏的一些定义与使用. 如`__cplusplus`, 理论上支持`C++11`的编译器值至少应是`201103L`. 原`C++98/03`的此宏定义值为`199711L`.  
 
-- cplusplus_check.cc  
-代码文件, 编译时不支持`C++11`则编译报错. 打印`__cplusplus`宏的值.  
+- macro_check.cc  
+代码文件, 编译时不支持`C++11`则编译报错. 打印`__cplusplus`宏的值, `STDC`相关的几个宏, `__VA_ARGS__`宏用法, `__func__`宏等.  
 
 - `Windows`上测试
-通过`cc_test.sln`打开后选择`cplusplus_marco_test`为启动项目, 编译运行即可. 
+通过`cc_test.sln`打开后选择`marco_test`为启动项目, 编译运行即可. 
 
 - `Linux`上测试  
-`g++ -m32 -std=c++11 cplusplus_check.cc`  
+`g++ -m32 -std=c++11 macro_check.cc`  
 `./a.out`  
 
 - 关于`__cplusplus`值在各平台编译器上的定义结论  
@@ -32,6 +32,7 @@ C++11新特性尝试的一些代码及工程集合.
 	 - //MSVC++ 5.0  _MSC_VER == 1100  
 
   - `GCC`: `201103L`, 测试版本 `gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-4)` on `CentOS7`. 
+
 
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
