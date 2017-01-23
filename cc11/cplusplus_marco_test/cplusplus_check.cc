@@ -35,11 +35,18 @@ void stdc_macro_print()
 #endif
 }
 
+void func_marco_test()
+{
+    cout << "\'__func__\': " << __func__ << endl;
+    cout << "\'__FUNCTION__\': " << __FUNCTION__ << endl;
+}
+
 int main()
 {
 	cout << "__cplusplus defined value: " << __cplusplus <<endl;
 
     stdc_macro_print();
+    func_marco_test();
 
 #if defined(_MSC_VER)
     cout << "MS Ver: " << _MSC_VER << endl << endl;
