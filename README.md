@@ -119,6 +119,10 @@
 - c_determin_sign.c  
   `C`语言判断变量/值/类型是有符号还是无符号类型的实验, 来自《Expert C Programming》. 综合书上和网上的一些提示, 给出的三种方法. 其中方法1和方法2都有其固有的缺陷, 主要是不能支持`char/unsigned char/short/unsigned short`这几种低于4字节的类型, 因为`C`的表达式默认类型提升. 方法三目前基本比较完美, 原理也简单. (实验环境:`CentOS 7 64bit, GCC-4.8.5`)
   
+### [C++11] cc11
+`C++11`新特性尝试的一些代码及工程集合.  
+- [cc11_test](cc11/Readme.md)
+
 ### [C++] Mars_test
 Wechat刚刚开源的`Mars`库, 学习与测试的一些实验代码.   
 - [Mars_Test](mars_test/Readme.md)  
