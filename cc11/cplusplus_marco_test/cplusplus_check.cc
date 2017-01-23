@@ -28,11 +28,11 @@ int main()
 {
 	cout << "__cplusplus defined value: " << __cplusplus <<endl;
 
-#if defined(WIN32)
+#if defined(_MSC_VER)
     cout << "MS Ver: " << _MSC_VER << endl << endl;
 #endif
 
-#if defined(WIN32)
+#if defined(_MSC_VER)
     //wait before return
     cout << "Please press any key to continue..." << endl;
     char a;
