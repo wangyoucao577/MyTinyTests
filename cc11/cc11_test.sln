@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "static_assert_test", "stati
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "noexcept_test", "noexcept_test\noexcept_test.vcxproj", "{652684A8-5B0E-47F8-B426-73DE47843A98}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "inclass_initialization_test", "inclass_initialization_test\inclass_initialization_test.vcxproj", "{F188640F-A605-4D60-8703-81977DFBD0A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{652684A8-5B0E-47F8-B426-73DE47843A98}.Release|x64.Build.0 = Release|x64
 		{652684A8-5B0E-47F8-B426-73DE47843A98}.Release|x86.ActiveCfg = Release|Win32
 		{652684A8-5B0E-47F8-B426-73DE47843A98}.Release|x86.Build.0 = Release|Win32
+		{F188640F-A605-4D60-8703-81977DFBD0A9}.Debug|x64.ActiveCfg = Debug|x64
+		{F188640F-A605-4D60-8703-81977DFBD0A9}.Debug|x64.Build.0 = Debug|x64
+		{F188640F-A605-4D60-8703-81977DFBD0A9}.Debug|x86.ActiveCfg = Debug|Win32
+		{F188640F-A605-4D60-8703-81977DFBD0A9}.Debug|x86.Build.0 = Debug|Win32
+		{F188640F-A605-4D60-8703-81977DFBD0A9}.Release|x64.ActiveCfg = Release|x64
+		{F188640F-A605-4D60-8703-81977DFBD0A9}.Release|x64.Build.0 = Release|x64
+		{F188640F-A605-4D60-8703-81977DFBD0A9}.Release|x86.ActiveCfg = Release|Win32
+		{F188640F-A605-4D60-8703-81977DFBD0A9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
