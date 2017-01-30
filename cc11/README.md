@@ -1,9 +1,15 @@
 # [C++11] cc11
-C++11新特性尝试的一些代码及工程集合.  
+C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于《Understanding C++11 -- Analysis and Application of New Features》.  
 
-## Codes
-- 在`Windows`上可通过`cc_test.sln`(`VS2015`)打开所有的工程及代码, 选择某个工程进行编译及运行即可.  
+## 阅读与运行
+- `Windows`: 可通过`cc_test.sln`(`VS2015`)打开所有的工程及代码, 选择某个工程进行编译及运行即可.   
+- `Linux`: `g++ [-m32] -std=c++11 xxx.cc` 编译, 然后运行即可  
 
+## 实验平台
+- `Windows`: `Win10 64bit`, `Visual Studio 2015 Update 3`  
+- `Linux`: `CentOS7 64bit`, `Kernel 3.10.0-229.el7.x86_64`, `gcc 4.8.5 20150623`  
+
+## 实验
 
 ### marco_test  
 确认下各个编译器下新的宏的一些定义与使用. 如`__cplusplus`, 理论上支持`C++11`的编译器值至少应是`201103L`. 原`C++98/03`的此宏定义值为`199711L`.  
@@ -33,6 +39,14 @@ C++11新特性尝试的一些代码及工程集合.
 
   - `GCC`: `201103L`, 测试版本 `gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-4)` on `CentOS7`. 
 
+### static_assert_test
+静态断言的使用尝试, 分别应用于了枚举值的检查及模板函数中的长度检查.  
+
+- static_assert_test.cc  
+代码文件, 断言错误则编译时报错, 并输出错误信息.  
+
+- 小技巧  
+可以调用无关的断言检查, 应独立于调用外面, 以增强代码的可读性.  
 
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
