@@ -66,6 +66,17 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 	- `delete/delete[]/析构函数`默认都是不抛出异常的, 以阻止异常扩散;  
 	- 声明为`noexcept`的函数, 若抛出了异常, 则程序直接调用`std::terminate()`以暴力结束进程.  
 
+### in-class initialization test
+`C++11`中更强大的“就地”声明/初始化.  
+
+- inclass_initialization_test.cc  
+代码文件, `=`, `{}`的简单用法.  
+
+- NOTE  
+	- `C++98`仅支持静态整型/枚举型常量成员变量的就地初始化;  
+	- `C++11`可支持非静态的成员变量的就地初始化, 同时支持`=`,`{}`两种形式;  
+	- 关于静态成员变量的默认初始化, `C++11`与`C++98`一致, 均需要在头文件以外进行初始化, 以保证实现的唯一性.  
+
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
 
