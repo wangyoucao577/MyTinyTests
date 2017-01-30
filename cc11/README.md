@@ -77,6 +77,12 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 	- `C++11`可支持非静态的成员变量的就地初始化, 同时支持`=`,`{}`两种形式;  
 	- 关于静态成员变量的默认初始化, `C++11`与`C++98`一致, 均需要在头文件以外进行初始化, 以保证实现的唯一性.  
 
+### sizeof_test  
+`C++11`中对`sizeof`操作符的扩展, 可支持直接取非静态成员变量的长度.  
+
+- sizeof_test.cc  
+代码文件, 包含`C++11`中的新用法, 及之前编译器版本的技巧性方法.  
+
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
 
