@@ -48,6 +48,11 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 - 小技巧  
 可以调用无关的断言检查, 应独立于调用外面, 以增强代码的可读性.  
 
+- `BOOST`中提供的一份可在`C++98`使用的静态断言实现  
+	主要问题:  
+	- 不能显示的提示错误位置和内容  
+	- 不能独立写在调用代码外面, 必须写在调用里面  
+
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
 
