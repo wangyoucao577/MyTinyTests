@@ -53,6 +53,19 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 	- 不能显示的提示错误位置和内容  
 	- 不能独立写在调用代码外面, 必须写在调用里面  
 
+### noexcept_test
+新增关键字`noexcept`用法的尝试.  
+
+- noexcept_test.cc  
+代码文件, 包含两个TestCase及`noexcept`作为操作符时的用法示例.  
+
+- NOTE  
+	- 断言适用于排除逻辑上不可能存在的状态, 异常则通常适用于可能发生的错误; 
+	- `noexcept`关键字作为修饰符时, 用于指定函数是否可能会抛出异常; 作为操作符时, 则用于判断表达式是否可能会抛出异常, 多用于模板中;  
+	- `C++98`中的`throw()`被`noexcept`替代, 显示指定抛出异常的类型`throw(type 1, ...)`则已在`C++11`中废弃;  
+	- `delete/delete[]/析构函数`默认都是不抛出异常的, 以阻止异常扩散;  
+	- 声明为`noexcept`的函数, 若抛出了异常, 则程序直接调用`std::terminate()`以暴力结束进程.  
+
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
 
