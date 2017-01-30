@@ -73,6 +73,11 @@ void TestCase2() {
 }
 /////////////// Test Case 2 /////////////////
 
+/////////////// noexcept 作为操作符 /////////////////
+template <class T>
+void funcT() noexcept(noexcept(T())){}
+/////////////// noexcept 作为操作符 /////////////////
+
 
 int main()
 {
