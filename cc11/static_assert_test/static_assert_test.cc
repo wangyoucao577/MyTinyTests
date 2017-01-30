@@ -1,6 +1,5 @@
 
-#include <string>
-using namespace std;
+#include <string.h>
 
 // 枚举编译器对特性的支持
 enum FeaturesSupport {
