@@ -1,5 +1,5 @@
 # [C++11] cc11
-C++11新特性尝试的一些代码及工程集合.  
+C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于《Understanding C++11 -- Analysis and Application of New Features》.  
 
 ## 阅读与运行
 - `Windows`: 可通过`cc_test.sln`(`VS2015`)打开所有的工程及代码, 选择某个工程进行编译及运行即可.   
@@ -39,6 +39,14 @@ C++11新特性尝试的一些代码及工程集合.
 
   - `GCC`: `201103L`, 测试版本 `gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-4)` on `CentOS7`. 
 
+### static_assert_test
+静态断言的使用尝试, 分别应用于了枚举值的检查及模板函数中的长度检查.  
+
+- static_assert_test.cc  
+代码文件, 断言错误则编译时报错, 并输出错误信息.  
+
+- 小技巧  
+可以调用无关的断言检查, 应独立于调用外面, 以增强代码的可读性.  
 
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
