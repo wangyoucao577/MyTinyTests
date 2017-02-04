@@ -1,5 +1,8 @@
 
 #include <iostream>
+#include <list>
+#include <vector>
+#include <deque>
 using namespace std;
 
 class Info {
@@ -20,6 +23,15 @@ private:
     int i_;
     double d_;
     char c_;
+};
+
+class TContructorD {
+private:
+    template <typename T> TContructorD(T first, T last) {}
+
+public:
+    TContructorD(vector<short>& v) : TContructorD(v.begin(), v.end()) {}
+    TContructorD(deque<int>& d) : TContructorD(d.begin(), d.end()) {}
 };
 
 int main()
