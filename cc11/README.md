@@ -94,6 +94,18 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 等同于  
 `typedef DefenderT<int> Defender`  
 
+### inherit_constructor
+`C++11`中使用`using`声明来允许派生类对象直接使用基类的函数及成员. 包括普通函数/构造函数等.  
+
+- inherit_constructor_test.cc  
+代码文件, 多个`TestCase`尝试了`using`继承的使用, 及从多个基类进行派生时冲突的解决.  
+
+- NOTE  
+	- 继承时函数重名则重载  
+	- 函数的默认参数不会被继承, 而是根据可能的调用情况, 继承所有的可能调用形式  
+	- 从多个基类进行派生时, 若冲突则应显式定义冲突的构造函数以解决, 且指定调用基类的构造函数的版本, 否则总是会调用基类的默认构造函数
+	- 从多个基类进行派生时, 总是根据继承顺序来决定调用基类构造函数的顺序, 而与`using`声明甚至显式指定调用构造函数的顺序无关    
+
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
 
