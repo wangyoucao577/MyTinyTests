@@ -28,6 +28,8 @@ public:
     InheritOne(int i, double d) : MyBase(i, d) { cout << "InheritOne(int, double)" << endl; }
 
 public:
+    using MyBase::PrintMyBase;
+
     void PrintOne() {
         PrintMyBase();
         cout << "Inherit One from My Base, b_ = " << b_ << endl;
@@ -44,7 +46,10 @@ void TestCase1()
 
     InheritOne aOne;
     aOne.PrintOne();
-    //aOne.PrintMyBase();   //默认为private继承，故派生类的对象无法直接访问基类的成员和方法, 包括基类的public方法
+    
+    // 默认为private继承，故派生类的对象无法直接访问基类的成员和方法, 包括基类的public方法
+    // 使用using关键字声明后可直接访问
+    aOne.PrintMyBase();
 
     EXIT_FUNC;
 }
