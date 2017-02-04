@@ -50,6 +50,35 @@ public:
 private:
     double c_{ 3.3f };
 };
+
+
+class MyBase2 {
+public:
+    MyBase2() { cout << "MyBase2()" << endl; }
+    MyBase2(int i) { cout << "MyBase2(int)" << endl; }
+    MyBase2(int i, double d) { cout << "MyBase2(int, double)" << endl; }
+
+public:
+    void PrintMyBase2() {
+        cout << "Call My Base2" << endl;
+    }
+
+};
+
+class InheritThree : MyBase2, MyBase {  //派生顺序影响继承构造函数调用的顺序, 先继承的则先调用
+public:
+
+    //此处的构造函数继承声明, 并不影响调用顺序
+    using MyBase2::MyBase2;
+    using MyBase::MyBase;
+    
+    //解决了继承构造函数时的冲突, 但总是会默认调用两个基类的默认构造函数, 除非显式调用制定的版本
+    InheritThree() { cout << "InheritThree()" << endl; }
+    InheritThree(int i) { cout << "InheritThree(int)" << endl; }
+    InheritThree(int i, double d) : MyBase(i, d), MyBase2(i, d) {   //这里的写的初始化顺序并不影响真正调用时的初始化顺序
+        cout << "InheritThree(int, double)" << endl; 
+    }
+};
 /////////////////////// Test Case /////////////////////////
 void TestCase1()
 {
@@ -87,6 +116,16 @@ void TestCase3()
 
     EXIT_FUNC;
 }
+
+void TestCase4()
+{
+    ENTER_FUNC;
+    InheritThree aThree = InheritThree();
+    InheritThree bThree = InheritThree(12);
+    InheritThree cThree = InheritThree(22, 3.5f);
+
+    EXIT_FUNC;
+}
 /////////////////////// Test Case /////////////////////////
 
 int main()
@@ -94,6 +133,7 @@ int main()
     TestCase1();
     TestCase2();
     TestCase3();
+    TestCase4();
 
 #if defined(_MSC_VER)
     //wait before return
