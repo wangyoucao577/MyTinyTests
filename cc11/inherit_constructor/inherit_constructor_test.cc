@@ -79,6 +79,15 @@ public:
         cout << "InheritThree(int, double)" << endl; 
     }
 };
+
+class MyBase3 {
+public:
+    MyBase3(int i) { cout << "MyBase3(int)" << endl; }
+};
+class InheritFour : MyBase3 {
+public:
+    using MyBase3::MyBase3;
+};
 /////////////////////// Test Case /////////////////////////
 void TestCase1()
 {
@@ -126,6 +135,14 @@ void TestCase4()
 
     EXIT_FUNC;
 }
+
+void TestCase5()
+{
+    ENTER_FUNC;
+    InheritFour aFour = InheritFour(23);
+    //InheritFour bFour = InheritFour();  //没有默认构造函数, 无法通过编译
+    EXIT_FUNC;
+}
 /////////////////////// Test Case /////////////////////////
 
 int main()
@@ -134,6 +151,7 @@ int main()
     TestCase2();
     TestCase3();
     TestCase4();
+    TestCase5();
 
 #if defined(_MSC_VER)
     //wait before return
