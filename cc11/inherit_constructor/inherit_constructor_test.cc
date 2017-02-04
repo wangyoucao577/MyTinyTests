@@ -39,6 +39,17 @@ private:
     char b_ {'b'};
 };
 
+class InheritTwo : MyBase {
+public:
+    using MyBase::MyBase;   //继承基类的构造函数
+
+public:
+    void PrintTwo() {
+        cout << "Inherit Two from My Base, c_ = " << c_ << endl;
+    }
+private:
+    double c_{ 3.3f };
+};
 /////////////////////// Test Case /////////////////////////
 void TestCase1()
 {
@@ -64,12 +75,25 @@ void TestCase2()
 
     EXIT_FUNC;
 }
+
+void TestCase3()
+{
+    ENTER_FUNC;
+
+    InheritTwo aTwo = InheritTwo();
+    InheritTwo bTwo = InheritTwo(11);
+    InheritTwo cTwo = InheritTwo(21, 3.4f);
+    cTwo.PrintTwo();
+
+    EXIT_FUNC;
+}
 /////////////////////// Test Case /////////////////////////
 
 int main()
 {
     TestCase1();
     TestCase2();
+    TestCase3();
 
 #if defined(_MSC_VER)
     //wait before return
