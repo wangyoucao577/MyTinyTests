@@ -2,9 +2,13 @@
 #include <iostream>
 using namespace std;
 
+#include "UnitTest.h"
+
 int main()
 {
-    //TODO: test codes
+    // test codes
+    UnitTest ut;
+    ut.Run();
 
 #if defined(_MSC_VER)
     //wait before return

@@ -18,5 +18,19 @@
     <ClCompile Include="main.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="HasPtrMem.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitTest.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HasPtrMem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitTest.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
