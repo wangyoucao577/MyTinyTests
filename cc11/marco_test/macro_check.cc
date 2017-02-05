@@ -31,7 +31,9 @@ void stdc_macro_print()
 #if !defined(_MSC_VER)
     // VS2015编译器并未定义这两个宏
     cout << "Standard C: " << __STDC__ << endl;
+#if !defined(__APPLE__)
     cout << "ISO/IEC " << __STDC_ISO_10646__ << endl;
+#endif
 #endif
 }
 
