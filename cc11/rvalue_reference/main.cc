@@ -1,7 +1,5 @@
 
-#include <iostream>
-using namespace std;
-
+#include "comm_include.h"
 #include "UnitTest.h"
 
 int main()
@@ -10,11 +8,5 @@ int main()
     UnitTest ut;
     ut.Run();
 
-#if defined(_MSC_VER)
-    //wait before return
-    cout << "Please press any key to continue..." << endl;
-    char a;
-    cin >> a;
-#endif
-
+    ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS;
 }

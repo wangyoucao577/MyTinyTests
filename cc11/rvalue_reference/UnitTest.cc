@@ -2,17 +2,7 @@
 #include "HasPtrMem.h"
 #include "Copyable.h"
 
-#include <iostream>
-#include <string>
-#include <type_traits>
-using namespace std;
-
-#define VNAME(e) (#e)
-
-#define FUNC_ROUTINE_MACRO(pos) (cout << pos << " " << __func__ << endl << endl)
-#define ENTER_FUNC FUNC_ROUTINE_MACRO("Enter")
-#define EXIT_FUNC FUNC_ROUTINE_MACRO("Exit")
-
+#include "comm_include.h"
 
 UnitTest::UnitTest()
 {
