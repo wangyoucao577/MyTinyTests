@@ -10,5 +10,6 @@ public:
 
 public:
     void TestCase1();
+    void TestCase2();
 };
 
