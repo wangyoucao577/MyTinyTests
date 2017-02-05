@@ -4,14 +4,6 @@
 #include <iostream>
 using namespace std;
 
-static HasPtrMem GetTemp()
-{
-    HasPtrMem h;
-    return h;
-}
-
-
-
 UnitTest::UnitTest()
 {
 }
@@ -37,7 +29,7 @@ void UnitTest::TestCase1()
 
 void UnitTest::TestCase2()
 {
-    HasPtrMem a = GetTemp();
+    HasPtrMem a = HasPtrMem::GetTemp();
 }
 
 

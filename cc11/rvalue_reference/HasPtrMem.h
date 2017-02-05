@@ -1,16 +1,22 @@
 #pragma once
 
+//#define HAS_MOVE_CONSTRUCTOR
+
 class UnitTest;
 
 class HasPtrMem
 {
 public:
     friend UnitTest;
+public:
+    static HasPtrMem GetTemp();
 
 public:
     HasPtrMem();
     HasPtrMem(const HasPtrMem&);
+#if defined(HAS_MOVE_CONSTRUCTOR)
     HasPtrMem(HasPtrMem&&);
+#endif
     ~HasPtrMem();
 
 private:
