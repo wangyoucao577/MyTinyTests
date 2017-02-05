@@ -23,13 +23,13 @@ HasPtrMem HasPtrMem::GetTemp()
 HasPtrMem::HasPtrMem() :
 d_(new int(1))
 {
-    cout << "Default Constructor Count " << ++default_constructor_called_count_ << endl;
+    cout << "HasPtrMem Default Constructor Count " << ++default_constructor_called_count_ << endl;
 }
 
 HasPtrMem::HasPtrMem(const HasPtrMem& org) :
 d_(new int(*org.d_))
 {
-    cout << "Copy Constructor Count " << ++copy_constructor_called_count_ << endl;
+    cout << "HasPtrMem Copy Constructor Count " << ++copy_constructor_called_count_ << endl;
 }
 
 #if defined(HAS_MOVE_CONSTRUCTOR)
@@ -38,13 +38,13 @@ d_(org.d_)
 {
     org.d_ = nullptr;
 
-    cout << "Move Constructor Count " << ++move_constructor_called_count_ << endl;
+    cout << "HasPtrMem Move Constructor Count " << ++move_constructor_called_count_ << endl;
 }
 #endif
 HasPtrMem::~HasPtrMem()
 {
     delete d_;
 
-    cout << "Destructor Count " << ++destructor_called_count_ << endl;
+    cout << "HasPtrMem Destructor Count " << ++destructor_called_count_ << endl;
 }
 

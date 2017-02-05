@@ -10,6 +10,7 @@ class HasPtrMem
 {
 public:
     friend UnitTest;
+
 public:
     static HasPtrMem GetTemp();
 
@@ -21,6 +22,8 @@ public:
 #endif
     ~HasPtrMem();
 
+public:
+    int * GetPtrAddress() { return d_; }
 private:
     int * d_;
 
