@@ -30,6 +30,9 @@
     <ClCompile Include="Moveable.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="perfect_forwarding.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HasPtrMem.h">
@@ -42,6 +45,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Moveable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="perfect_forwarding.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,6 +2,7 @@
 #include "HasPtrMem.h"
 #include "Copyable.h"
 #include "Moveable.h"
+#include "perfect_forwarding.h"
 
 #include "comm_include.h"
 
@@ -24,6 +25,7 @@ void UnitTest::Run()
     TestCase6();
     TestCase7();
     TestCase8();
+    TestCase9();
 }
 
 void UnitTest::TestCase1()
@@ -150,6 +152,16 @@ void UnitTest::TestCase8()
     cout << VNAME(is_trivially_move_constructible<Copyable>::value) << " " << is_trivially_move_constructible<Copyable>::value << endl;
 #endif
     cout << VNAME(is_nothrow_move_constructible<Copyable>::value) << " " << is_nothrow_move_constructible<Copyable>::value << endl;
+
+    EXIT_FUNC;
+
+}
+
+void UnitTest::TestCase9()
+{
+    ENTER_FUNC;
+
+    PerfectForwardingTest();
 
     EXIT_FUNC;
 
