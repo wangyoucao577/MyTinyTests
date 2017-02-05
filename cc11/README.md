@@ -3,13 +3,18 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 
 ## 阅读与运行
 - `Windows`: 可通过`cc_test.sln`(`VS2015`)打开所有的工程及代码, 选择某个工程进行编译及运行即可.   
-- `Linux`: `g++ [-m32] -std=c++11 xxx.cc` 编译, 然后运行即可  
+- `Linux`: `g++ [-m32] -std=c++11 -I../src_comm/ xxx.cc` 编译, 然后运行即可  
 
 ## 实验平台
 - `Windows`: `Win10 64bit`, `Visual Studio 2015 Update 3`  
 - `Linux`: `CentOS7 64bit`, `Kernel 3.10.0-229.el7.x86_64`, `gcc 4.8.5 20150623`  
 
 ## 实验
+### src_comm  
+提供了一些通用/公用的头文件include, macro等, 方便使用.目前未单独编译.   
+
+- comm_include.h  
+通用的头文件include, macro等.  
 
 ### marco_test  
 确认下各个编译器下新的宏的一些定义与使用. 如`__cplusplus`, 理论上支持`C++11`的编译器值至少应是`201103L`. 原`C++98/03`的此宏定义值为`199711L`.  
@@ -116,6 +121,47 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 	- 委托构造与列表初始化不能同时使用  
 	
 	
+### rvalue_reference  
+`C++11`中的右值引用与移动语义.  
+
+- main.cc, UnitTest.cc/h  
+测试代码的入口与框架.  
+
+- HasPtrMem.cc/h, Copyable.cc/h, Moveable.cc/h  
+带有指针成员的类, 实现其拷贝构造/移动构造的代码, 包含移动构造的语义传递.  
+
+- perfect_forwarding.cc/h  
+完美转发的简单实验, 主要为模板中的使用.  
+
+- 关键点  
+	- 我理解的构造语义的触发条件: 使用右值对象/右值引用构造另外一个对象  
+	- 对应的, 我理解的拷贝构造语义的触发条件: 使用左值对象/左值引用构造另外一个对象  
+	- 通常的左/右值判断方法  
+		- 左值(lvalue): 方法1, `=`左边即为左值; 方法2, 可以取地址、有名字则为左值  
+		- 右值(rvalue): 方法1, `=`右边即为右值; 方法2, 不能取地址、没有名字则为右值  
+	- `C++11`中的三种值(所有的值均属于这三者之一)  
+		- 纯右值(pure rvalue): 1) 临时变量 2) 不与对象关联的值  
+		- 将亡值(expiring rvalue): 将要被移动的对象  
+		- 左值(rvalue): 剩余的其他值均属于左值   
+	- 对右值的引用会加上其生命周期, 与引用名一致  
+	- 引用类型: 
+		- 左值引用(`T&`)、常量左值引用(`const T&`)、右值引用(`T&&`)、常量右值引用(`const T&&`)  
+		- `const T&` 左值引用为一个万能引用类型, 可以引用任意一种引用类型  
+		- 注意: 右值引用(rvalue reference) 本身是一个左值  
+	- `std::move` 强制转换一个左值为右值引用, 以触发移动语义  
+	- 拷贝构造函数、移动构造函数应分别根据是否需要拷贝语义、移动语义进行提供, 一般仅具有移动语义的成员变量通常为资源型, 由于不能复制      
+	- 拷贝构造函数通常应提供参数为 `const T&` 的版本, 更通用  
+	- `std::move/std::forward/static_cast<T&&>`基本等同, 但建议在触发移动语义时使用`move`, 完美转发时采用`forward`, 按照标准库建议的方式  
+	- `C++11`的引用折叠规则(参考 3.3.6 完美转发 perfect forwarding)  
+	
+- 其他  
+	- `VS2015`不支持关闭`Return Value Optimize`, 而此优化对本实验的影响很大, 故主要使用`GCC`进行实验  
+	- `GCC`编译命令(打开or关闭`HAS_MOVE_CONSTRUCTOR`宏进行拷贝构造/移动构造的区别实验)  
+	`g++ -std=c++11 -I../src_comm/ [-DHAS_MOVE_CONSTRUCTOR] -fno-elide-constructors HasPtrMem.cc UnitTest.cc Copyable.cc Moveable.cc perfect_forwarding.cc main.cc`  
+	- 可使用`is_reference/is_lvalue_reference/is_rvalue_reference`等几个小工具判断是何种引用类型(`UnitTest.cc->TestCase3()`)  
+	- 可使用`is_move_constructible`等几个小工具判断是否有移动语义(`UnitTest.cc->TestCase8()`)  
+
+
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
 
