@@ -131,5 +131,8 @@ void UnitTest::TestCase7()
     Moveable b(move(a));    // a是一个右值引用, 但其本身是一个左值, 所以需要转换为右值引用以触发移动构造
     cout << hex << "b HasPtrMem.d_ address " << b.hasPtrMem_.GetPtrAddress() << endl;
 
+    Moveable c(static_cast<Moveable&&>(b));    // 强转替代move的用法, 以了解move的实现形式
+    cout << hex << "c HasPtrMem.d_ address " << c.hasPtrMem_.GetPtrAddress() << endl;
+
     EXIT_FUNC;
 }
