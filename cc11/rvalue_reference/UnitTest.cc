@@ -19,6 +19,7 @@ void UnitTest::Run()
     TestCase2();
     TestCase3();
     TestCase4();
+    TestCase5();
 }
 
 void UnitTest::TestCase1()
@@ -88,6 +89,16 @@ void UnitTest::TestCase4()
 
     cout << "Pass by rvalue_reference " << endl;
     Copyable::AcceptRValueReference(Copyable::ReturnRValue());
+
+    EXIT_FUNC;
+}
+
+void UnitTest::TestCase5()
+{
+    ENTER_FUNC;
+    
+    Copyable && a = Copyable::ReturnRValue();
+    const Copyable && b = Copyable::ReturnRValue();
 
     EXIT_FUNC;
 }
