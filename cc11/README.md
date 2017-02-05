@@ -4,10 +4,12 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 ## 阅读与运行
 - `Windows`: 可通过`cc_test.sln`(`VS2015`)打开所有的工程及代码, 选择某个工程进行编译及运行即可.   
 - `Linux`: `g++ [-m32] -std=c++11 -I../src_comm/ xxx.cc` 编译, 然后运行即可  
+- `MacOSX` : `clang++ [-m32] -std=c++11 -I../src_comm/ xxx.cc` 命令行编译, 然后`./a.out`运行即可(未创建XCode工程) 
 
 ## 实验平台
 - `Windows`: `Win10 64bit`, `Visual Studio 2015 Update 3`  
 - `Linux`: `CentOS7 64bit`, `Kernel 3.10.0-229.el7.x86_64`, `gcc 4.8.5 20150623`  
+- `MacOSX`: `MacBook Air (13-inch, Early 2015)`, `OSX Version 10.11.6 (15G1217)`, `Apple LLVM version 8.0.0 (clang-800.0.42.1)`  
 
 ## 实验
 ### src_comm  
@@ -155,9 +157,9 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 	- `C++11`的引用折叠规则(参考 3.3.6 完美转发 perfect forwarding)  
 	
 - 其他  
-	- `VS2015`不支持关闭`Return Value Optimize`, 而此优化对本实验的影响很大, 故主要使用`GCC`进行实验  
-	- `GCC`编译命令(打开or关闭`HAS_MOVE_CONSTRUCTOR`宏进行拷贝构造/移动构造的区别实验)  
-	`g++ -std=c++11 -I../src_comm/ [-DHAS_MOVE_CONSTRUCTOR] -fno-elide-constructors HasPtrMem.cc UnitTest.cc Copyable.cc Moveable.cc perfect_forwarding.cc main.cc`  
+	- `VS2015`不支持关闭`Return Value Optimize`, 而此优化对本实验的影响很大, 故主要使用`GCC/clang`进行实验  
+	- `GCC/clang`编译命令(打开or关闭`HAS_MOVE_CONSTRUCTOR`宏进行拷贝构造/移动构造的区别实验)  
+	`[g++|clang++] -std=c++11 -I../src_comm/ [-DHAS_MOVE_CONSTRUCTOR] -fno-elide-constructors HasPtrMem.cc UnitTest.cc Copyable.cc Moveable.cc perfect_forwarding.cc main.cc`  
 	- 可使用`is_reference/is_lvalue_reference/is_rvalue_reference`等几个小工具判断是何种引用类型(`UnitTest.cc->TestCase3()`)  
 	- 可使用`is_move_constructible`等几个小工具判断是否有移动语义(`UnitTest.cc->TestCase8()`)  
 
