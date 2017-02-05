@@ -1,6 +1,7 @@
 #include "UnitTest.h"
 #include "HasPtrMem.h"
 #include "Copyable.h"
+#include "Moveable.h"
 
 #include "comm_include.h"
 
@@ -21,6 +22,7 @@ void UnitTest::Run()
     TestCase4();
     TestCase5();
     TestCase6();
+    TestCase7();
 }
 
 void UnitTest::TestCase1()
@@ -114,6 +116,20 @@ void UnitTest::TestCase6()
     HasPtrMem a;
     HasPtrMem b(move(a));   //触发移动构造函数
     //cout << *a.d_ << endl;    //a.d_已经被置空
+
+    EXIT_FUNC;
+}
+
+void UnitTest::TestCase7()
+{
+    ENTER_FUNC;
+    HasPtrMem::ClearSum();
+    
+    Moveable&& a = Moveable::GetTemp(); 
+    cout << hex << "a HasPtrMem.d_ address " << a.hasPtrMem_.GetPtrAddress() << endl;
+
+    Moveable b(move(a));    // a是一个右值引用, 但其本身是一个左值, 所以需要转换为右值引用以触发移动构造
+    cout << hex << "b HasPtrMem.d_ address " << b.hasPtrMem_.GetPtrAddress() << endl;
 
     EXIT_FUNC;
 }
