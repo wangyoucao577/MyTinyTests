@@ -24,6 +24,8 @@ public:
 private:
     int * d_;
 
+public:
+    static void ClearSum();
 private:
     static int default_constructor_called_count_;
     static int copy_constructor_called_count_;

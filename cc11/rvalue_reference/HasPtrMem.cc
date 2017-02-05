@@ -8,6 +8,13 @@ int HasPtrMem::copy_constructor_called_count_ = 0;
 int HasPtrMem::move_constructor_called_count_ = 0;
 int HasPtrMem::destructor_called_count_ = 0;
 
+void HasPtrMem::ClearSum()
+{
+    default_constructor_called_count_ = 0;
+    copy_constructor_called_count_ = 0;
+    move_constructor_called_count_ = 0;
+    destructor_called_count_ = 0;
+}
 HasPtrMem HasPtrMem::GetTemp()
 {
     return HasPtrMem();

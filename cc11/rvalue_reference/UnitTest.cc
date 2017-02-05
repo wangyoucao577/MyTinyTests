@@ -20,12 +20,14 @@ void UnitTest::Run()
     TestCase3();
     TestCase4();
     TestCase5();
+    TestCase6();
 }
 
 void UnitTest::TestCase1()
 {
     ENTER_FUNC;
 
+    HasPtrMem::ClearSum();
     HasPtrMem a;
     HasPtrMem b(a);
     cout << *a.d_ << endl;
@@ -38,6 +40,7 @@ void UnitTest::TestCase2()
 {
     ENTER_FUNC;
 
+    HasPtrMem::ClearSum();
     HasPtrMem a = HasPtrMem::GetTemp();
 
     EXIT_FUNC;
@@ -99,6 +102,18 @@ void UnitTest::TestCase5()
     
     Copyable && a = Copyable::ReturnRValue();
     const Copyable && b = Copyable::ReturnRValue();
+
+    EXIT_FUNC;
+}
+
+void UnitTest::TestCase6()
+{
+    ENTER_FUNC;
+
+    HasPtrMem::ClearSum();
+    HasPtrMem a;
+    HasPtrMem b(move(a));   //触发移动构造函数
+    //cout << *a.d_ << endl;    //a.d_已经被置空
 
     EXIT_FUNC;
 }
