@@ -1,5 +1,7 @@
 #pragma once
 
+// Try to define it while you call GCC
+// g++ -std=c++11 -DHAS_MOVE_CONSTRUCTOR -fno-elide-constructors HasPtrMem.cc UnitTest.cc main.cc
 //#define HAS_MOVE_CONSTRUCTOR
 
 class UnitTest;
