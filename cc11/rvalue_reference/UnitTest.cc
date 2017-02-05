@@ -23,6 +23,7 @@ void UnitTest::Run()
     TestCase5();
     TestCase6();
     TestCase7();
+    TestCase8();
 }
 
 void UnitTest::TestCase1()
@@ -135,4 +136,21 @@ void UnitTest::TestCase7()
     cout << hex << "c HasPtrMem.d_ address " << c.hasPtrMem_.GetPtrAddress() << endl;
 
     EXIT_FUNC;
+}
+
+void UnitTest::TestCase8()
+{
+    ENTER_FUNC;
+
+    cout << endl;
+
+    cout << VNAME(is_move_constructible<int>::value) << " " << is_move_constructible<int>::value << endl;
+    cout << VNAME(is_move_constructible<Copyable>::value) << " " << is_move_constructible<Copyable>::value << endl;
+#if !defined(__GNUC__)  // 实验的 gcc 4.8.5 并未提供此模板
+    cout << VNAME(is_trivially_move_constructible<Copyable>::value) << " " << is_trivially_move_constructible<Copyable>::value << endl;
+#endif
+    cout << VNAME(is_nothrow_move_constructible<Copyable>::value) << " " << is_nothrow_move_constructible<Copyable>::value << endl;
+
+    EXIT_FUNC;
+
 }
