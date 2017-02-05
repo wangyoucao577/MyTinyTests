@@ -9,7 +9,7 @@ public:
 
 public:
     HasPtrMem();
-    HasPtrMem(HasPtrMem&);
+    HasPtrMem(const HasPtrMem&);
     HasPtrMem(HasPtrMem&&);
     ~HasPtrMem();
 

@@ -15,7 +15,7 @@ d_(new int(1))
     cout << "Default Constructor Count " << ++default_constructor_called_count_ << endl;
 }
 
-HasPtrMem::HasPtrMem(HasPtrMem& org) :
+HasPtrMem::HasPtrMem(const HasPtrMem& org) :
 d_(new int(*org.d_))
 {
     cout << "Copy Constructor Count " << ++copy_constructor_called_count_ << endl;
