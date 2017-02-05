@@ -24,12 +24,18 @@
     <ClCompile Include="UnitTest.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Copyable.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HasPtrMem.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="UnitTest.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Copyable.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

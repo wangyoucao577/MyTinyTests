@@ -12,5 +12,6 @@ public:
     void TestCase1();
     void TestCase2();
     void TestCase3();
+    void TestCase4();
 };
 

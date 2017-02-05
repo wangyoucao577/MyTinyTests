@@ -142,11 +142,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Copyable.cc" />
     <ClCompile Include="HasPtrMem.cc" />
     <ClCompile Include="main.cc" />
     <ClCompile Include="UnitTest.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Copyable.h" />
     <ClInclude Include="HasPtrMem.h" />
     <ClInclude Include="UnitTest.h" />
   </ItemGroup>
