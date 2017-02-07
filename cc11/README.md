@@ -27,8 +27,8 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 - `Windows`上测试
 通过`cc_test.sln`打开后选择`marco_test`为启动项目, 编译运行即可. 
 
-- `Linux`上测试  
-`g++ -m32 -std=c++11 macro_check.cc`  
+- `Linux`/`MacOSX`上测试  
+`[g++|clang++] -m32 -std=c++11 macro_check.cc`  
 `./a.out`  
 
 - 关于`__cplusplus`值在各平台编译器上的定义结论  
@@ -44,7 +44,7 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 	 - //MSVC++ 6.0  _MSC_VER == 1200  
 	 - //MSVC++ 5.0  _MSC_VER == 1100  
 
-  - `GCC`: `201103L`, 测试版本 `gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-4)` on `CentOS7`. 
+  - `GCC`/`clang`: `201103L`, 测试版本 `gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-4)` on `CentOS7`, `clang-800.0.42.1` on `OSX 10.11.6`. 
 
 ### static_assert_test
 静态断言的使用尝试, 分别应用于了枚举值的检查及模板函数中的长度检查.  
