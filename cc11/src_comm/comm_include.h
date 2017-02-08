@@ -9,6 +9,9 @@
 #include <deque>
 #include <type_traits>
 #include <utility>
+#if defined(_MSC_VER)
+#include <conio.h>
+#endif
 using namespace std;
 
 #define FUNC_ROUTINE_MACRO(pos) (cout << pos << " " << __func__ << endl << endl)
@@ -20,8 +23,7 @@ using namespace std;
 #if defined(_MSC_VER)
 #define ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS {\
     cout << "Please press any key to continue..." << endl;\
-    char a;\
-    cin >> a;\
+    _getch();\
 }
 #else
 #define ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS (0)
