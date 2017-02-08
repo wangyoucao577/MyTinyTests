@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "delegating_constructor", "d
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rvalue_reference", "rvalue_reference\rvalue_reference.vcxproj", "{26272B04-F6AA-4EAE-BBBD-1C38DB29B55D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pod_test", "pod_test\pod_test.vcxproj", "{82DA1FDD-ED6A-4DD9-A20B-C279942DC54F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -101,6 +103,14 @@ Global
 		{26272B04-F6AA-4EAE-BBBD-1C38DB29B55D}.Release|x64.Build.0 = Release|x64
 		{26272B04-F6AA-4EAE-BBBD-1C38DB29B55D}.Release|x86.ActiveCfg = Release|Win32
 		{26272B04-F6AA-4EAE-BBBD-1C38DB29B55D}.Release|x86.Build.0 = Release|Win32
+		{82DA1FDD-ED6A-4DD9-A20B-C279942DC54F}.Debug|x64.ActiveCfg = Debug|x64
+		{82DA1FDD-ED6A-4DD9-A20B-C279942DC54F}.Debug|x64.Build.0 = Debug|x64
+		{82DA1FDD-ED6A-4DD9-A20B-C279942DC54F}.Debug|x86.ActiveCfg = Debug|Win32
+		{82DA1FDD-ED6A-4DD9-A20B-C279942DC54F}.Debug|x86.Build.0 = Debug|Win32
+		{82DA1FDD-ED6A-4DD9-A20B-C279942DC54F}.Release|x64.ActiveCfg = Release|x64
+		{82DA1FDD-ED6A-4DD9-A20B-C279942DC54F}.Release|x64.Build.0 = Release|x64
+		{82DA1FDD-ED6A-4DD9-A20B-C279942DC54F}.Release|x86.ActiveCfg = Release|Win32
+		{82DA1FDD-ED6A-4DD9-A20B-C279942DC54F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
