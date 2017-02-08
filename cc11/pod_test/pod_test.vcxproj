@@ -146,6 +146,9 @@
   <ItemGroup>
     <ClCompile Include="main.cc" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pod_test_types.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
