@@ -212,6 +212,30 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 	- `explicit`只能在类内声明时使用  
 	- `C++11`中`explicit`关键字同时扩展到了自定义的类型转换操作符上, 以支持所谓的“显式类型转换”.  
   
+### initializer_list  
+`initializer_list`的使用尝试的示例, 包括使用列表初始化普通变量、容器类等, 以及使用`initializer_list<T>`使自定义类型支持列表初始化, 列表初始化在`Narrowing`(类型收窄)时的表现等.  
+
+- main.cc  
+入口及Test Case代码, 同时包括以`intializer_list<T>`作为函数参数/返回值等.  
+
+- ILMyData.cc/h, ILPeople.cc/h  
+自定义类型基于`initializer_list<T>`来支持列表初始化, 并与操作符重载(`[]/=`)组合后的所见即所得的初始化方式.  
+
+- 关键点  
+	- `initializer_list`可用于普通变量初始化/容器类型初始化/自定义类型初始化等;  
+	- `C++11`中的几种初始化方式:  
+		- `=`加上赋值表达式, 如 `int a = 3 + 4;`  
+		- `=`加上花括号(列表初始化), 如`int a = {3 + 4};`  
+		- 圆括号, 如`int a = (3 + 4);`  
+		- 花括号(列表初始化), 如`int a {3 + 4};`  
+		其中后两种方式可用于堆内存上的初始化, 如`int * b = new int(10); double* d = new double {1.2f};`  
+	- 自定义类型/函数参数/函数返回值支持列表初始化的方式:  
+		(`C++11`内部的STL支持列表初始化也是采用的这个方法)  
+		`include <intializer_list>`, 然后定义一个 `initializer_list<T> ` 作为参数的函数/构造函数或作为返回值的函数  
+	- `initializer_list`列表初始化方法与其他初始化方式相比的重要优势: 防止类型收窄  
+		- 类型收窄(Narrowing)的含义: 简单理解即初始化变量时会丢失精度/表达不完整  
+		- 如何防止类型收窄: 原编译器通常会报warning, 而在`C++11`中采用列表初始化, 则编译器将报error, 以更好的保证安全性. (注: 实测下来, vs2015报错了，但G++并没有...)  
+
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
 
