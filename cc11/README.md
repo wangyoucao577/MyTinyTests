@@ -234,7 +234,7 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 		`include <intializer_list>`, 然后定义一个 `initializer_list<T> ` 作为参数的函数/构造函数或作为返回值的函数  
 	- `initializer_list`列表初始化方法与其他初始化方式相比的重要优势: 防止类型收窄  
 		- 类型收窄(Narrowing)的含义: 简单理解即初始化变量时会丢失精度/表达不完整  
-		- 如何防止类型收窄: 原编译器通常会报warning, 而在`C++11`中采用列表初始化, 则编译器将报error, 以更好的保证安全性. (注: 实测下来, vs2015报错了，但G++并没有...)  
+		- 如何防止类型收窄: 原编译器通常会报warning, 而在`C++11`中采用列表初始化, 则编译器将报error, 以更好的保证安全性. (注: 实测下来, `vs2015/clang`报错了，但`GCC`并没有...)  
 
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
