@@ -29,7 +29,11 @@ void Func(initializer_list<int> iv) {
 }
 
 void TestCase3() {
+    ENTER_FUNC;
+
     Func({ 1, 3, 5, 7, 9 });
+
+    EXIT_FUNC;
 }
 
 void TestCase4() {
@@ -44,6 +48,34 @@ void TestCase4() {
     EXIT_FUNC;
 }
 
+vector<int> Func1_TestCase5() { return { 1,3,5 }; }
+deque<double> Func2_TestCase5() { return{ 2.2f,4.4f,6.6f }; }
+
+void TestCase5() {
+    ENTER_FUNC;
+
+    const vector<int>& v1 = Func1_TestCase5();  // const T& 引用右值, 提升生命周期
+    for (auto i = v1.begin(); i != v1.end(); ++i)
+    {
+        cout << "const vector<int>&: " << *i << endl;
+    }
+
+    deque<double>&& d1 = Func2_TestCase5();     // T&& 引用右值, 提升生命周期
+    for (auto i = d1.begin(); i != d1.end(); ++i)
+    {
+        cout << "deque<double>&&: " << *i << endl;
+    }
+
+    deque<double> d2 = Func2_TestCase5();   //拷贝构造
+    for (auto i = d1.begin(); i != d1.end(); ++i)
+    {
+        cout << "deque<double>: " << *i << endl;
+    }
+
+
+    EXIT_FUNC;
+}
+
 int main()
 {
     // test codes
@@ -51,6 +83,7 @@ int main()
     TestCase2();
     TestCase3();
     TestCase4();
+    TestCase5();
 
     ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS;
 }
