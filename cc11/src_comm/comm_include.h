@@ -7,6 +7,7 @@
 #include <list>
 #include <vector>
 #include <deque>
+#include <map>
 #include <type_traits>
 #include <utility>
 #if defined(_MSC_VER)
