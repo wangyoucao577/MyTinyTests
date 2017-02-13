@@ -7,7 +7,7 @@ void TestCase1() {
     int a[] = { 1, 3, 5 };
     int b[] { 2, 4, 6 };
 
-    //Í¨¹ı initialier_list<T> ÊµÏÖ
+    //é€šè¿‡ initialier_list<T> å®ç°
     vector<int> c{ 1, 3, 5 };
     map<int, double> d = { {1, 1.0f}, {2, 2.1f}, {3, 3.2f} };
 
@@ -54,19 +54,19 @@ deque<double> Func2_TestCase5() { return{ 2.2f,4.4f,6.6f }; }
 void TestCase5() {
     ENTER_FUNC;
 
-    const vector<int>& v1 = Func1_TestCase5();  // const T& ÒıÓÃÓÒÖµ, ÌáÉıÉúÃüÖÜÆÚ
+    const vector<int>& v1 = Func1_TestCase5();  // const T& å¼•ç”¨å³å€¼, æå‡ç”Ÿå‘½å‘¨æœŸ
     for (auto i = v1.begin(); i != v1.end(); ++i)
     {
         cout << "const vector<int>&: " << *i << endl;
     }
 
-    deque<double>&& d1 = Func2_TestCase5();     // T&& ÒıÓÃÓÒÖµ, ÌáÉıÉúÃüÖÜÆÚ
+    deque<double>&& d1 = Func2_TestCase5();     // T&& å¼•ç”¨å³å€¼, æå‡ç”Ÿå‘½å‘¨æœŸ
     for (auto i = d1.begin(); i != d1.end(); ++i)
     {
         cout << "deque<double>&&: " << *i << endl;
     }
 
-    deque<double> d2 = Func2_TestCase5();   //¿½±´¹¹Ôì
+    deque<double> d2 = Func2_TestCase5();   //æ‹·è´æ„é€ 
     for (auto i = d1.begin(); i != d1.end(); ++i)
     {
         cout << "deque<double>: " << *i << endl;
@@ -74,6 +74,32 @@ void TestCase5() {
 
 
     EXIT_FUNC;
+}
+
+//#define NARROWING_TEST
+void TestCase6() {
+    const int x = 1024;
+    const int y = 10;
+
+    
+    char a = x;         //ç±»å‹æ”¶çª„, ä½†ä»…warning
+    char * b = new char(x); //ç±»å‹æ”¶çª„, ä½†ä»…warning
+
+#if defined(NARROWING_TEST)
+    char c = { x }; //ç±»å‹æ”¶çª„, ç¼–è¯‘å¤±è´¥
+    char d{ x };    //ç±»å‹æ”¶çª„, ç¼–è¯‘å¤±è´¥
+
+    unsigned char e{ -1 };//ç±»å‹æ”¶çª„, ç¼–è¯‘å¤±è´¥
+#endif
+
+    float f{ y };
+
+#if defined(NARROWING_TEST)
+    int g{ 2.0f };    //ç±»å‹æ”¶çª„, ç¼–è¯‘å¤±è´¥
+    float * h = new float{ 1e48 };    //ç±»å‹æ”¶çª„, ç¼–è¯‘å¤±è´¥
+#endif
+
+    float i = 1.2L;
 }
 
 int main()
