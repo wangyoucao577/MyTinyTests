@@ -1,6 +1,7 @@
 
 #include "comm_include.h"
 #include "ILPeople.h"
+#include "ILMyData.h"
 
 void TestCase1() {
     int a[] = { 1, 3, 5 };
@@ -31,12 +32,25 @@ void TestCase3() {
     Func({ 1, 3, 5, 7, 9 });
 }
 
+void TestCase4() {
+
+    ENTER_FUNC;
+
+    ILMyData d;
+    d[{0, 2, 4}] = 1;
+    d[{1, 3, 5}] = 2;
+    d.Print();
+
+    EXIT_FUNC;
+}
+
 int main()
 {
     // test codes
     TestCase1();
     TestCase2();
     TestCase3();
+    TestCase4();
 
     ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS;
 }

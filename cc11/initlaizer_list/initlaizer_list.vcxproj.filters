@@ -21,9 +21,15 @@
     <ClCompile Include="ILPeople.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ILMyData.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ILPeople.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ILMyData.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
