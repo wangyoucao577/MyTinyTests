@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pod_test", "pod_test\pod_te
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "explicit_test", "explicit_test\explicit_test.vcxproj", "{468BC3F0-613F-415F-B1CA-67992B8302EF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "initlaizer_list", "initlaizer_list\initlaizer_list.vcxproj", "{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -121,6 +123,14 @@ Global
 		{468BC3F0-613F-415F-B1CA-67992B8302EF}.Release|x64.Build.0 = Release|x64
 		{468BC3F0-613F-415F-B1CA-67992B8302EF}.Release|x86.ActiveCfg = Release|Win32
 		{468BC3F0-613F-415F-B1CA-67992B8302EF}.Release|x86.Build.0 = Release|Win32
+		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Debug|x64.ActiveCfg = Debug|x64
+		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Debug|x64.Build.0 = Debug|x64
+		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Debug|x86.ActiveCfg = Debug|Win32
+		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Debug|x86.Build.0 = Debug|Win32
+		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Release|x64.ActiveCfg = Release|x64
+		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Release|x64.Build.0 = Release|x64
+		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Release|x86.ActiveCfg = Release|Win32
+		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
