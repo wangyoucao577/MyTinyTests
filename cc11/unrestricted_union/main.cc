@@ -12,7 +12,7 @@ union StaticMemberUnion {
     int a;
     double b;
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__APPLE__)
 
     //vs2015可以支持静态成员变量, 但GCC编译会失败
     const static int c{1};  //并不占用字节
@@ -40,7 +40,7 @@ void TestCase1() {
     StaticMemberUnion s2{ 0 };
     cout << "s2 StaticMemberUnion.a " << s2.a << endl;
     cout << "s2 StaticMemberUnion.b " << s2.b << endl;
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__APPLE__)
     cout << "s2 StaticMemberUnion.c " << s2.c << endl;
     cout << "s2 StaticMemberUnion::c " << StaticMemberUnion::c << endl;
 #endif
@@ -48,15 +48,19 @@ void TestCase1() {
     StaticMemberUnion s3{ 1 };  
     cout << "s3 StaticMemberUnion.a " << s3.a << endl;
     cout << "s3 StaticMemberUnion.b " << s3.b << endl;
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__APPLE__)
     cout << "s3 StaticMemberUnion.c " << s3.c << endl;
     cout << "s3 StaticMemberUnion::c " << StaticMemberUnion::c << endl;
 #endif
 
+#if defined(__APPLE__)
+    StaticMemberUnion s4{static_cast<int>(2.2f)};
+#else
     StaticMemberUnion s4{ 2.2f };   
+#endif
     cout << "s4 StaticMemberUnion.a " << s4.a << endl;
     cout << "s4 StaticMemberUnion.b " << s4.b << endl;
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__APPLE__)
     cout << "s4 StaticMemberUnion.c " << s4.c << endl;
     cout << "s4 StaticMemberUnion::c " << StaticMemberUnion::c << endl;
 #endif
