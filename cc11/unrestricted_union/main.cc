@@ -4,7 +4,7 @@
 union StaticMemberFunctionUnion {
     double d;
 
-    static double GetG(){ return 9.8f; }    //²¢²»Õ¼ÓÃ×Ö½Ú
+    static double GetG(){ return 9.8f; }    //å¹¶ä¸å ç”¨å­—èŠ‚
 };
 
 union StaticMemberUnion {
@@ -14,8 +14,8 @@ union StaticMemberUnion {
 
 #if defined(_MSC_VER)
 
-    //vs2015¿ÉÒÔÖ§³Ö¾²Ì¬³ÉÔ±±äÁ¿, µ«GCC±àÒë»áÊ§°Ü
-    const static int c{1};  //²¢²»Õ¼ÓÃ×Ö½Ú
+    //vs2015å¯ä»¥æ”¯æŒé™æ€æˆå‘˜å˜é‡, ä½†GCCç¼–è¯‘ä¼šå¤±è´¥
+    const static int c{1};  //å¹¶ä¸å ç”¨å­—èŠ‚
 #endif
 };
 
@@ -31,11 +31,11 @@ void TestCase1() {
 
     cout << "sizeof(StaticMemberUnion) " << sizeof(StaticMemberUnion) << endl;
 
-    //NOTE: ¹ØÓÚUnionµÄ³õÊ¼»¯
-    //´ÓÊµÑé½á¹û¿´, Ã»ÓĞ¹¹Ôìº¯ÊıµÄunion³õÊ¼»¯ĞĞÎªÊÇÓĞÎÊÌâµÄ
-    //Èô{0}³õÊ¼»¯£¬Ä¿²âĞ§¹ûÊÇÀàËÆÓÚmemset 0
-    //Èô{·Ç0}³õÊ¼»¯, Ä¿²âĞ§¹ûÊÇ½öÉèÖÃ¸øµÚÒ»¸ö³ÉÔ±, ¶øºóĞøµÄ³ÉÔ±Ïàµ±ÓÚÃ»ÓĞ³õÊ¼»¯
-    //±È½ÏºÃµÄ×ö·¨»¹ÊÇÏÔÊ½ÉùÃ÷¹¹Ôìº¯Êı, Ò²»òÕß°ÑµÚÒ»¸ö³ÉÔ±¶¨ÒåÎªÕ¼ÓÃ×Ö½ÚÊı×î¶àµÄ
+    //NOTE: å…³äºUnionçš„åˆå§‹åŒ–
+    //ä»å®éªŒç»“æœçœ‹, æ²¡æœ‰æ„é€ å‡½æ•°çš„unionåˆå§‹åŒ–è¡Œä¸ºæ˜¯æœ‰é—®é¢˜çš„
+    //è‹¥{0}åˆå§‹åŒ–ï¼Œç›®æµ‹æ•ˆæœæ˜¯ç±»ä¼¼äºmemset 0
+    //è‹¥{é0}åˆå§‹åŒ–, ç›®æµ‹æ•ˆæœæ˜¯ä»…è®¾ç½®ç»™ç¬¬ä¸€ä¸ªæˆå‘˜, è€Œåç»­çš„æˆå‘˜ç›¸å½“äºæ²¡æœ‰åˆå§‹åŒ–
+    //æ¯”è¾ƒå¥½çš„åšæ³•è¿˜æ˜¯æ˜¾å¼å£°æ˜æ„é€ å‡½æ•°, ä¹Ÿæˆ–è€…æŠŠç¬¬ä¸€ä¸ªæˆå‘˜å®šä¹‰ä¸ºå ç”¨å­—èŠ‚æ•°æœ€å¤šçš„
 
     StaticMemberUnion s2{ 0 };
     cout << "s2 StaticMemberUnion.a " << s2.a << endl;
@@ -68,7 +68,7 @@ union NonPodUnion {
     string s;
     int n;
 
-    NonPodUnion() { new (&s) string(); }    //º¬ÓĞ·ÇPOD³ÉÔ±Ê±, ĞèÒªÍ¨¹ıplacement newÀ´³õÊ¼»¯
+    NonPodUnion() { new (&s) string(); }    //å«æœ‰éPODæˆå‘˜æ—¶, éœ€è¦é€šè¿‡placement newæ¥åˆå§‹åŒ–
     ~NonPodUnion() { s.~string(); }
 };
 

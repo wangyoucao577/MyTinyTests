@@ -11,7 +11,7 @@ namespace MyUserDefinedLiteral {
         MyRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0) : r_(r), g_(g), b_(b), a_(a) {}
     };
 
-    //NOTE: GCCÒªÇó´Ë´¦µÄ"" ºÍ _C ÖĞ¼äÒªÓĞ¿Õ¸ñ, vs2015ÔòÎŞËùÎ½
+    //NOTE: GCCè¦æ±‚æ­¤å¤„çš„"" å’Œ _C ä¸­é—´è¦æœ‰ç©ºæ ¼, vs2015åˆ™æ— æ‰€è°“
     MyRGBA operator "" _C(const char* col, size_t n) {
 
         const char * p = col;
@@ -46,7 +46,7 @@ namespace MyUserDefinedLiteral {
         }
     }
 
-    MyRGBA operator "" _C(unsigned long long a) {   //ĞÎ²Î²»Í¬¿ÉÒÔÖØÔØ
+    MyRGBA operator "" _C(unsigned long long a) {   //å½¢å‚ä¸åŒå¯ä»¥é‡è½½
         return MyRGBA(0, 0, 0, static_cast<uint8_t>(a));
     }
 
@@ -79,8 +79,8 @@ int main() {
     //test codes
 
     blend("r255 g255 b255"_C, "r10 g10 b10 a10"_C);
-    cout << 10_C << endl;   //¶ÔÓ¦µ÷ÓÃĞÎ²Î unsigned long long µÄº¯Êı
-    cout << "centi degree sample " << 100.2_C << endl;  //¶ÔÓ¦µ÷ÓÃĞÎ²Î long double µÄº¯Êı
+    cout << 10_C << endl;   //å¯¹åº”è°ƒç”¨å½¢å‚ unsigned long long çš„å‡½æ•°
+    cout << "centi degree sample " << 100.2_C << endl;  //å¯¹åº”è°ƒç”¨å½¢å‚ long double çš„å‡½æ•°
     cout << "Watt sample " << 200_Watt << endl;
     'F'_CHAR;
 
