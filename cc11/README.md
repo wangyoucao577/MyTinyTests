@@ -236,6 +236,21 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 		- 类型收窄(Narrowing)的含义: 简单理解即初始化变量时会丢失精度/表达不完整  
 		- 如何防止类型收窄: 原编译器通常会报warning, 而在`C++11`中采用列表初始化, 则编译器将报error, 以更好的保证安全性. (注: 实测下来, `vs2015/clang`报错了，但`GCC`并没有...)  
 
+### Unresricted_Union
+`C++11`中对于`Union`使用的扩展, 包括可支持非POD类型成员, 可支持静态成员函数(仅非匿名Union)等.  
+
+- main.cc  
+入口及测试代码, 尝试了`Unrestricted_Union`的用法, 及验证了初始化时的一些行为.  
+
+- 关键点  
+	- `Unrestricted_Union`可支持非POD类型成员, 在非匿名时同时可支持静态成员函数;  
+	- `Unrestricted_Union`的初始化行为, 如`T t = {0}`时, 默认类似于`memset(&t, 0, sizeof(t))`, 但若`T t = {1}`时, 默认行为为初始化`t`第一个成员, 其他成员相当于未初始化. 使用时需要注意;  
+	- `Unrestricted_Union`含有非POD类型成员时, 默认构造函数会被移除, 需通过`placement new`的方式显式定义构造函数;   
+
+- 其他  
+	- 在静态成员的支持上, vs2015与GCC又有所不同. GCC与标准一致, 不能有静态成员变量, 仅支持静态成员函数, 但vs2015可以支持`const static`的静态成员变量..  
+
+
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
 
