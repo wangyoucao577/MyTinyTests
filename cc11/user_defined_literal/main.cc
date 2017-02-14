@@ -58,6 +58,10 @@ namespace MyUserDefinedLiteral {
         return static_cast<int>(w);
     }
 
+    void operator "" _CHAR(char a) {
+        cout << hex << a << endl;
+    }
+
     std::ostream & operator << (std::ostream & out, MyRGBA & col) {
         return out << "r: " << (int)col.r_
             << ", g: " << (int)col.g_
@@ -78,6 +82,7 @@ int main() {
     cout << 10_C << endl;   //对应调用形参 unsigned long long 的函数
     cout << "centi degree sample " << 100.2_C << endl;  //对应调用形参 long double 的函数
     cout << "Watt sample " << 200_Watt << endl;
+    'F'_CHAR;
 
     ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS;
 }
