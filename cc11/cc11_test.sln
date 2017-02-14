@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "explicit_test", "explicit_t
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "initlaizer_list", "initlaizer_list\initlaizer_list.vcxproj", "{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unrestricted_union", "unrestricted_union\unrestricted_union.vcxproj", "{FD50D5EE-5BBF-4840-BA69-6C361D2E3904}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -131,6 +133,14 @@ Global
 		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Release|x64.Build.0 = Release|x64
 		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Release|x86.ActiveCfg = Release|Win32
 		{307D5483-7FAD-48E4-BC85-8C3286A0C4B1}.Release|x86.Build.0 = Release|Win32
+		{FD50D5EE-5BBF-4840-BA69-6C361D2E3904}.Debug|x64.ActiveCfg = Debug|x64
+		{FD50D5EE-5BBF-4840-BA69-6C361D2E3904}.Debug|x64.Build.0 = Debug|x64
+		{FD50D5EE-5BBF-4840-BA69-6C361D2E3904}.Debug|x86.ActiveCfg = Debug|Win32
+		{FD50D5EE-5BBF-4840-BA69-6C361D2E3904}.Debug|x86.Build.0 = Debug|Win32
+		{FD50D5EE-5BBF-4840-BA69-6C361D2E3904}.Release|x64.ActiveCfg = Release|x64
+		{FD50D5EE-5BBF-4840-BA69-6C361D2E3904}.Release|x64.Build.0 = Release|x64
+		{FD50D5EE-5BBF-4840-BA69-6C361D2E3904}.Release|x86.ActiveCfg = Release|Win32
+		{FD50D5EE-5BBF-4840-BA69-6C361D2E3904}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
