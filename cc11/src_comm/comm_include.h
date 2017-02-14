@@ -13,6 +13,9 @@
 #if defined(_MSC_VER)
 #include <conio.h>
 #endif
+#include <stdint.h>
+#include <stdlib.h>
+
 using namespace std;
 
 #define FUNC_ROUTINE_MACRO(pos) (cout << pos << " " << __func__ << endl << endl)
