@@ -1,5 +1,6 @@
 # [C++11] cc11
-C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于《Understanding C++11 -- Analysis and Application of New Features》.  
+C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于《Understanding C++11 -- Analysis and Application of New Features》.   
+其实蛮多很细节的新特性, 如`User Defined Literal`, `Unrestricted Union`等, 看起来就会很少使用, 未必需要全部掌握, 但至少应熟悉下, 不至于看到类似代码都完全摸不着头脑.  
 
 ## 阅读与运行
 - `Windows`: 可通过`cc_test.sln`(`VS2015`)打开所有的工程及代码, 选择某个工程进行编译及运行即可.   
