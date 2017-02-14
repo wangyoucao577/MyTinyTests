@@ -250,6 +250,20 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 - 其他  
 	- 在静态成员的支持上, vs2015与GCC又有所不同. GCC与标准一致, 不能有静态成员变量, 仅支持静态成员函数, 但vs2015可以支持`const static`的静态成员变量..  
 
+### user_defined_literal  
+`C++11`中允许用户自定义字面量的方便用法尝试.  
+
+- main.cc  
+入口及测试代码.  
+
+- 关键点  
+	- `C++11`中支持用户自定义Literal的方式, 是定义其Literal函数;  
+	- Literal函数的形参可支持整型(仅`unsigned long long`), 浮点数(仅`long double`), `const char*`, `char`四种;  
+		- 整型和浮点型若实参超过了`unsigned long long/long double`的表示范围, 则会自动调用`const char*`版本;  
+		- 形参为`const char*`的函数, 参数表还会自带一个`size`, 由编译器自动解析填入;  
+	- 杂项  
+		- Literal函数声明时`""`与`_C`之间需要有空格(实验下来vs2015无所谓, 但GCC要求有);  
+		- 一般建议以下划线开始为后缀, 以免与内置的如L/LL/f等后缀冲突;  
 
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
