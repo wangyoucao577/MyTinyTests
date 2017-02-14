@@ -62,7 +62,7 @@ namespace MyUserDefinedLiteral {
         cout << hex << a << endl;
     }
 
-    std::ostream & operator << (std::ostream & out, MyRGBA & col) {
+    std::ostream & operator << (std::ostream & out, const MyRGBA & col) {
         return out << "r: " << (int)col.r_
             << ", g: " << (int)col.g_
             << ", b: " << (int)col.b_
