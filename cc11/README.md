@@ -288,6 +288,15 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 	- `using`和`typedef`起别名没有本质区别, 但`using`可支持模板别名而`typedef`不支持, 也即`using`更加灵活些  
 	- 可以使用`is_same<T1, T2>`模板判断两个类型是否相同  
 	
+### SFIENA  
+`C++11`中对SFIENA(Subsitution failure is not an error)规则进行了进一步的描述, 尝试试用.  
+
+- main.cc  
+入口及示例代码.  
+
+- 杂项  
+	- 某种意义上来讲, SFIENA有点类似于模板函数的重载;  
+	- 具体的SFIENA规则在`C++11`中细化了什么, 其实没太理解...遗留下, 有些经验后再回顾..
 
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
