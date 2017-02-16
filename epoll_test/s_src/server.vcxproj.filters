@@ -18,5 +18,19 @@
     <ClCompile Include="main.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="EpollServer.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpLister.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EpollServer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpLister.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

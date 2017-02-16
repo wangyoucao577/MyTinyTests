@@ -18,5 +18,8 @@
     <ClInclude Include="comm_include.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="comm_sock_include.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

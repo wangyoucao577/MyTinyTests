@@ -7,6 +7,7 @@
 #include <list>
 #include <vector>
 #include <deque>
+#include <set>
 #include <map>
 #include <type_traits>
 #include <utility>
@@ -15,6 +16,7 @@
 #endif
 #include <stdint.h>
 #include <stdlib.h>
+#include <assert.h>
 
 using namespace std;
 
