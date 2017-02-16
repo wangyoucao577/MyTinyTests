@@ -40,12 +40,9 @@ int EpollServer::Wait(int timeout_msec, struct epoll_event* events, int max_even
 
 void EpollServer::AddTcpLister(socket_fd_t sock)
 {
-    tcp_lister_set_.insert(sock);
+    tcp_listener_set_.insert(sock);
     
-    uint32_t events = 0;
-#if defined(__linux__)
-    events = EPOLLIN | EPOLLERR | EPOLLET;
-#endif
+    uint32_t events = kEpollEventRead | kEpollEventError | kEpollEventET;
 
     return AddSocket(sock, events);
 }
@@ -77,4 +74,12 @@ void EpollServer::DelSocket(socket_fd_t sock) {
     }
 #endif
 
+}
+
+bool EpollServer::IsListener(socket_fd_t sock) {
+    auto it = tcp_listener_set_.find(sock);
+    if (it != tcp_listener_set_.end()) {
+        return true;
+    }
+    return false;
 }

@@ -22,6 +22,16 @@ using last_err_t = int;
 
 #define close_socket(s) close(s)
 
+enum EpollEvents {
+    kEpollEventRead = EPOLLIN,
+    kEpollEventWrite = EPOLLOUT,
+    kEpollEventError = EPOLLERR,
+
+    kEpollEventET = EPOLLET,
+
+    //...
+};
+
 #elif defined(_MSC_VER)
 #include <WinSock2.h>
 #include <WS2tcpip.h>
@@ -45,6 +55,16 @@ typedef union epoll_data {
 struct epoll_event {
     uint32_t     events;    /* Epoll events */
     epoll_data_t data;      /* User data variable */
+};
+
+enum EpollEvents {
+    kEpollEventRead = 0,
+    kEpollEventWrite,
+    kEpollEventError,
+
+    kEpollEventET,
+
+    //...
 };
 
 

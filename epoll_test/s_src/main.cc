@@ -34,7 +34,17 @@ int main(){
                 cout << "epoll_wait waked up, event " << eevents[i].events
                     << ", socket_fd " << eevents[i].data.fd << endl;
 
-                //TODO: 处理代码
+                // 处理events
+                if (test_epoll.IsListener(eevents[i].data.fd)) {
+                    
+                    cout << "socket_fd " << eevents[i].data.fd << " try accept." << endl;
+                    //TODO: try accept
+
+                    continue;
+                }
+                
+                //TODO: may need try read or write
+                
             }
         }
         
