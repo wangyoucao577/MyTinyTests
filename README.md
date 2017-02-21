@@ -171,8 +171,8 @@ Wechat刚刚开源的`Mars`库, 学习与测试的一些实验代码.
 ### [Python3] lambda_map_sample.py
   `lambda`表达式和函数式编程的`map`学习小例子.
 
-### [Python3] serial_power_on_off.py
-  通过串口控制继电器上电/断电的小工具, 便于自动开关机测试.
+### [Python2/Python3] serial_power_on_off.py
+  通过串口控制继电器上电/断电的小工具, 便于自动开关机测试. 此脚本本身功能比较简单, 做了兼容可同时支持`python2`和`python3`解释执行, 以方便使用. 
 
 ### [JavaScript/Python2] get_info_from_maps
 通过各地图提供商(`AMap`, `BaiduMap`, `Googlemap`, etc)提供的`JavaScript API`抓取信息并制定信息并写入文件至`Chrome file system`.   
