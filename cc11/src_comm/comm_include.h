@@ -9,6 +9,7 @@
 #include <deque>
 #include <map>
 #include <type_traits>
+#include <typeinfo>
 #include <utility>
 #if defined(_MSC_VER)
 #include <conio.h>
