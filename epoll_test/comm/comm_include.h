@@ -17,12 +17,14 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 using namespace std;
 
 #define FUNC_ROUTINE_MACRO(pos) (cout << pos << " " << __func__ << endl << endl)
 #define ENTER_FUNC FUNC_ROUTINE_MACRO("Enter")
 #define EXIT_FUNC FUNC_ROUTINE_MACRO("Exit")
+#define ENTER_LINE (cout << __func__ << ":" << __LINE__ << endl)
 
 #define VNAME(e) (#e)
 

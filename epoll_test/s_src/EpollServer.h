@@ -2,7 +2,7 @@
 
 #include "comm_sock_include.h"
 #include "comm_include.h"
-
+#include "TcpLister.h"
 
 class EpollServer
 {
@@ -11,9 +11,12 @@ public:
     ~EpollServer();
 
 public:
-    void AddTcpLister(socket_fd_t sock);
+    void AddTcpLister(TcpLister tcp_listener);
     void AddSocket(socket_fd_t sock, uint32_t events);
     void DelSocket(socket_fd_t sock);
+
+public:
+    socket_fd_t Accept(socket_fd_t sock);
 
 public:
     int Wait(int timeout_msec, struct epoll_event* events, int max_events);
@@ -24,7 +27,7 @@ public:
 private:
 
     socket_fd_t epoll_fd_;
-    set<socket_fd_t> tcp_listener_set_;
+    map<socket_fd_t, TcpLister> tcp_listeners_map_;
     
 };
 

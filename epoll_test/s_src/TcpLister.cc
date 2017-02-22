@@ -1,5 +1,5 @@
 #include "TcpLister.h"
-
+#include "INetNtoP.h"
 
 
 TcpLister::TcpLister(unsigned short port, string name) :
@@ -23,12 +23,6 @@ TcpLister::TcpLister(unsigned short port, string name) :
     {
         assert(0);
     }
-
-    if (-1 == listen(tcp_lister_sock_, 100))
-    {
-        assert(0);
-    }
-
 }
 
 TcpLister::TcpLister(TcpLister&& org):
@@ -37,6 +31,7 @@ name_(org.name_),
 port_(org.port_)
 {
     org.tcp_lister_sock_ = -1;  //clear
+    cout << "tcp_listener fd: " << tcp_lister_sock_ << ", name: " << name_ << " moved." << endl;
 }
 
 TcpLister::~TcpLister()
@@ -45,3 +40,30 @@ TcpLister::~TcpLister()
         close_socket(tcp_lister_sock_);
     }
 }
+
+void TcpLister::Start()
+{
+    if (-1 == listen(tcp_lister_sock_, 100))
+    {
+        assert(0);
+    }
+}
+
+socket_fd_t TcpLister::Accept(struct sockaddr_storage& client_sockaddr)
+{
+    int len = sizeof(client_sockaddr);
+    socket_fd_t sock = accept(tcp_lister_sock_, (sockaddr *)&client_sockaddr, (socklen_t*)&len);
+    assert(sock > 0);
+
+    INetNtoP client((const struct sockaddr*)(&client_sockaddr));
+    cout << "TCP listener <" << name_ << "> " << tcp_lister_sock_ << ", accept new client " << sock << " from "
+        << client.IPCStr() << ":" << client.Port() << endl;
+    return sock;
+}
+
+socket_fd_t TcpLister::Accept()
+{
+    struct sockaddr_storage client_sockaddr {0};
+    return Accept(client_sockaddr);
+}
+

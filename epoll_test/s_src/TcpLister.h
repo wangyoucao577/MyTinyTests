@@ -6,8 +6,14 @@ class TcpLister
 {
 public:
     explicit TcpLister(unsigned short port, string name = "anonymous");
+    //仅定义move构造, 而不定义拷贝构造, 确保不会发生拷贝
     TcpLister(TcpLister&&);
     ~TcpLister();
+
+    void Start();
+
+    socket_fd_t Accept();
+    socket_fd_t Accept(struct sockaddr_storage&);
 
     string Name() { return name_; }
     unsigned short Port() { return static_cast<unsigned short>(port_); }

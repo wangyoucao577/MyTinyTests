@@ -144,6 +144,10 @@
   <ItemGroup>
     <ClInclude Include="comm_include.h" />
     <ClInclude Include="comm_sock_include.h" />
+    <ClInclude Include="INetNtoP.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="INetNtoP.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

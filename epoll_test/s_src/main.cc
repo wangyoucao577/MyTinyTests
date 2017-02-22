@@ -17,8 +17,9 @@ int main(){
     
     try {
         EpollServer test_epoll;
-        TcpLister tcpLister(13502);
-        test_epoll.AddTcpLister(tcpLister.Socket());
+        TcpLister tcpLister(13502, "13502");
+        tcpLister.Start();
+        test_epoll.AddTcpLister(move(tcpLister));
         
         while (1) {
             struct epoll_event eevents[kMaxEvents]{ 0 };
@@ -38,7 +39,16 @@ int main(){
                 if (test_epoll.IsListener(eevents[i].data.fd)) {
                     
                     cout << "socket_fd " << eevents[i].data.fd << " try accept." << endl;
-                    //TODO: try accept
+                    
+                    // try accept
+                    socket_fd_t cli_sock = test_epoll.Accept(eevents[i].data.fd);
+
+                    //TODO: add to epoll
+#if 0
+                    int sent_len = send(cli_sock, "12345\n", 6, 0);
+                    cout << "fd: " << cli_sock << " sent_len: " << sent_len << endl;
+                    close_socket(cli_sock);
+#endif
 
                     continue;
                 }
