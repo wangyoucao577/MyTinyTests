@@ -38,7 +38,7 @@ const static char* kOrderTypeNameArray[kOrderTypeCount] = {"GFD", "IOC"};
 
 enum ActionResult{
 	kActionResultNodeSaved = 0,
-	kActionResultNodeShouldFree,
+	kActionResultNodeShouldBeFree,
 };
 
 struct OrderNode{
@@ -128,6 +128,7 @@ static struct OrderNode* PopNodeViaCondition(struct OrderNode* head, void* param
 	return NULL;
 }
 
+static enum ActionResult (*kActionArray[])(void*, struct OrderNode*);		//declare first, will be used in ActionModify
 
 static enum ActionResult ActionBuy(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
@@ -153,22 +154,45 @@ static enum ActionResult ActionCancel(void* base_mc, struct OrderNode* node){
 	struct OrderNode* org_node = PopNodeViaCondition(mc->buy_head, node->order_id, CompareOrderId);
 	if (NULL != org_node){
 		free(org_node);
-		return kActionResultNodeShouldFree;
+		return kActionResultNodeShouldBeFree;
 	}
 
 	org_node = PopNodeViaCondition(mc->sell_head, node->order_id, CompareOrderId);
 	if (NULL != org_node){
 		free(org_node);
-		return kActionResultNodeShouldFree;
+		return kActionResultNodeShouldBeFree;
 	}
 
 	//not found, just ignore it
-	return kActionResultNodeShouldFree;
+	return kActionResultNodeShouldBeFree;
 }
 static enum ActionResult ActionModify(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
+
+	//pop first
+	struct OrderNode* org_node = PopNodeViaCondition(mc->buy_head, node->order_id, CompareOrderId);
+	if (NULL == org_node){
+		org_node = PopNodeViaCondition(mc->sell_head, node->order_id, CompareOrderId);
+	}
+	if (NULL == org_node){
+		//not find this order, ignore it
+		return kActionResultNodeShouldBeFree;
+	}
+
+	//re-assembly org_node
+	org_node->price = node->price;
+	org_node->qty = node->qty;
+	org_node->operation_type = node->new_operation_type;
+	org_node->Action = kActionArray[(int)org_node->operation_type];
+	enum ActionResult ar = org_node->Action(base_mc, org_node);
+	if (ar == kActionResultNodeShouldBeFree){
+		free(org_node);
+		org_node = NULL;
+	}
+
+	return kActionResultNodeShouldBeFree;		//tell caller to free node
 }
 static enum ActionResult ActionPrint(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
@@ -189,10 +213,10 @@ static enum ActionResult ActionPrint(void* base_mc, struct OrderNode* node){
 		p = p->next;
 	}
 
-	return kActionResultNodeShouldFree;
+	return kActionResultNodeShouldBeFree;
 }
 
-static enum ActionResult (*kActionArray[])(void*, struct OrderNode*) = {
+static enum ActionResult (*kActionArray[])(void*, struct OrderNode*) = {		//definition here
 	ActionBuy,
 	ActionSell,
 	ActionCancel,
@@ -313,7 +337,7 @@ int main() {
 
     		// call different action func
     		enum ActionResult ar = node->Action((void*)&mc, node);
-    		if (ar == kActionResultNodeShouldFree){
+    		if (ar == kActionResultNodeShouldBeFree){
     			free(node);
     			node = NULL;
     		}
