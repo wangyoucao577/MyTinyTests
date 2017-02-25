@@ -207,9 +207,9 @@ typedef bool (*CompareFunc)(void*, void*);      //compare function type for call
 static bool CompareOrderId(void* base_node, void* order_id_2){
     assert(NULL != base_node && NULL != order_id_2);
     struct OrderNode* node = (struct OrderNode*)base_node;
-    assert(strlen(node->order_id) > 0 && strlen(order_id_2) > 0);
+    assert(strlen(node->order_id) > 0 && strlen((char*)order_id_2) > 0);
 
-    if (0 == strcmp(node->order_id, order_id_2)){
+    if (0 == strcmp(node->order_id, (char*)order_id_2)){
         return true;
     }
     return false;
@@ -396,18 +396,14 @@ static enum ActionResult ActionCancel(void* base_mc, struct OrderNode* node){
     struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
     struct OrderNode* org_node = PopNodeViaCondition(&mc->buy_head, node->order_id, CompareOrderId);
+    if (NULL == org_node){
+        org_node = PopNodeViaCondition(&mc->sell_head, node->order_id, CompareOrderId);
+    }
     if (NULL != org_node){
-        free(org_node);
-        return kActionResultNodeShouldBeFree;
+    	free(org_node);
+    	org_node = NULL;
     }
 
-    org_node = PopNodeViaCondition(&mc->sell_head, node->order_id, CompareOrderId);
-    if (NULL != org_node){
-        free(org_node);
-        return kActionResultNodeShouldBeFree;
-    }
-
-    //not found, just ignore it
     return kActionResultNodeShouldBeFree;
 }
 static enum ActionResult ActionModify(void* base_mc, struct OrderNode* node){
