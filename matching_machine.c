@@ -47,7 +47,7 @@ struct OrderNode{
 
 	struct OrderNode * next;
 
-	void (*action)(void*, struct OrderNode*);
+	void (*Action)(void*, struct OrderNode*);
 };
 
 struct MatchingCache{
@@ -83,32 +83,63 @@ static void DumpOrderNode(const struct OrderNode* node){
 		node->next);
 }
 
-static int try_trade(void* base_mc, struct OrderNode* node){
+static int TryTrade(void* base_mc, struct OrderNode* node){
+	assert(NULL != base_mc && NULL != node);
+	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
+
 	return 0;
 }
-static void action_buy(void* base_mc, struct OrderNode* node){
+static void ActionBuy(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
+	assert(NULL != base_mc && NULL != node);
+	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
+
+	TryTrade(base_mc, node);
 }
-static void action_sell(void* base_mc, struct OrderNode* node){
+static void ActionSell(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
+	assert(NULL != base_mc && NULL != node);
+	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
+
+	TryTrade(base_mc, node);
 
 }
-static void action_cancel(void* base_mc, struct OrderNode* node){
+static void ActionCancel(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
+	assert(NULL != base_mc && NULL != node);
+	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 }
-static void action_modify(void* base_mc, struct OrderNode* node){
+static void ActionModify(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
+	assert(NULL != base_mc && NULL != node);
+	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 }
-static void action_print(void* base_mc, struct OrderNode* node){
+static void ActionPrint(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
+	assert(NULL != base_mc && NULL != node);
+	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
+	
+	printf("SELL:\n");
+	struct OrderNode * p = mc->sell_head;
+	while (p){
+		printf("%lld %lld\n", p->price, p->qty);
+		p = p->next;
+	}
+
+	printf("BUY:\n");
+	p = mc->buy_head;
+	while (p){
+		printf("%lld %lld\n", p->price, p->qty);
+		p = p->next;
+	}
 }
 
 static void (*kActionArray[])(void*, struct OrderNode*) = {
-	action_buy,
-	action_sell,
-	action_cancel,
-	action_modify,
-	action_print
+	ActionBuy,
+	ActionSell,
+	ActionCancel,
+	ActionModify,
+	ActionPrint
 };
 
 
@@ -197,7 +228,7 @@ static struct OrderNode* ParseCommand(const char* cmd){
 		assert(0);
 	}
 
-	order_node->action = kActionArray[(int)order_node->operation_type];	//initialize action
+	order_node->Action = kActionArray[(int)order_node->operation_type];	//initialize action
 	return order_node;	//succeed return
 
 Failed:
@@ -223,7 +254,7 @@ int main() {
     		DumpOrderNode(node);
 
     		//TODO: jump to different func
-    		node->action((void*)&mc, node);
+    		node->Action((void*)&mc, node);
 
     	}
 
