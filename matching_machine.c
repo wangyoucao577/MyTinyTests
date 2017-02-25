@@ -29,6 +29,7 @@ enum OperationType{
     kOperationTypeCount //describe total count of the operations
 };
 const static char* kOperationTypeNameArray[kOperationTypeCount] = {"BUY", "SELL", "CANCEL", "MODIFY", "PRINT"};
+const static int kOperationAppendParamCountArray[kOperationTypeCount] = {4, 4, 1, 4, 0};
 
 const static char* kPrintStringSell = "SELL";
 const static char* kPrintStringBuy = "BUY";
@@ -526,7 +527,7 @@ static struct OrderNode* ParseCommand(const char* cmd){
         char order_type_name[kMaxOperationOrderTypeNameLength] = {0};
         int sscanf_ret = sscanf(cmd_after_operation_type, "%s %lld %lld %s", \
             order_type_name, &order_node->price, &order_node->qty, order_node->order_id);
-        if (sscanf_ret == EOF){
+        if (sscanf_ret != kOperationAppendParamCountArray[operation_type_i]){
             goto Failed;
         }
         int order_type_i = ParseOrderType(order_type_name);
@@ -541,14 +542,14 @@ static struct OrderNode* ParseCommand(const char* cmd){
 
     }else if (order_node->operation_type == kOperationTypeCancel){
         int sscanf_ret = sscanf(cmd_after_operation_type, "%s", order_node->order_id);
-        if (sscanf_ret == EOF){
+        if (sscanf_ret != kOperationAppendParamCountArray[operation_type_i]){
             goto Failed;
         }
     }else if (order_node->operation_type == kOperationTypeModify){
         char new_operation_type_name[kMaxOperationOrderTypeNameLength] = {0};
         int sscanf_ret = sscanf(cmd_after_operation_type, "%s %s %lld %lld", \
             order_node->order_id, new_operation_type_name, &order_node->price, &order_node->qty);
-        if (sscanf_ret == EOF){
+        if (sscanf_ret != kOperationAppendParamCountArray[operation_type_i]){
             goto Failed;
         }
         int oti = ParseOperationType(new_operation_type_name, false);
