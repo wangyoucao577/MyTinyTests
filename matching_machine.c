@@ -7,11 +7,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-const static char* kPassiveOperationNameTrade = "TRADE";
 
 #define kMaxOperationOrderTypeNameLength 16	// for temporary var 
 #define kMaxOrderIdLength 256
 #define kMaxPrintBytesPerLine 128
+#define kMaxReadBytesPerLine 512
+
+const static char* kPassiveOperationNameTrade = "TRADE";
 
 enum OperationType{
 	kOperationTypeBuy = 0,
@@ -44,17 +46,68 @@ struct OrderNode{
 	enum OperationType new_operation_type;	//only if MODIFY
 
 	struct OrderNode * next;
+
+	void (*action)(void*, struct OrderNode*);
 };
 
 struct MatchingCache{
 
-	struct OrderNode* head;
+	struct OrderNode* buy_head;
+	struct OrderNode* sell_head;
 };
 
+static void ClearMatchingCache(struct MatchingCache* mc){
+    while (mc->buy_head){
+    	struct OrderNode* node = mc->buy_head;
+    	mc->buy_head = mc->buy_head->next;
+    	free(node);
+    }
+	while (mc->sell_head){
+    	struct OrderNode* node = mc->sell_head;
+    	mc->sell_head = mc->sell_head->next;
+    	free(node);
+    }
+
+}
+
+//only for debug
 static void DumpOrderNode(const struct OrderNode* node){
+	if (!node){
+		return;
+	}
+
 	printf("%d %d %lld %lld %s %d %p\n", \
 		(int)node->operation_type, (int)node->order_type, node->price, node->qty, node->order_id, node->new_operation_type, node->next);
 }
+
+static int try_trade(void* base_mc, struct OrderNode* node){
+	return 0;
+}
+static void action_buy(void* base_mc, struct OrderNode* node){
+	printf("%s %p %p\n", __func__, base_mc, node);
+}
+static void action_sell(void* base_mc, struct OrderNode* node){
+	printf("%s %p %p\n", __func__, base_mc, node);
+
+}
+static void action_cancel(void* base_mc, struct OrderNode* node){
+	printf("%s %p %p\n", __func__, base_mc, node);
+}
+static void action_modify(void* base_mc, struct OrderNode* node){
+	printf("%s %p %p\n", __func__, base_mc, node);
+}
+static void action_print(void* base_mc, struct OrderNode* node){
+	printf("%s %p %p\n", __func__, base_mc, node);
+}
+
+static void (*action_array[])(void*, struct OrderNode*) = {
+	action_buy,
+	action_sell,
+	action_cancel,
+	action_modify,
+	action_print
+};
+
 
 //return -1 if failed, otherwise find valid operation type
 static int ParseOperationType(const char* str, bool at_head){
@@ -141,6 +194,7 @@ static struct OrderNode* ParseCommand(const char* cmd){
 		assert(0);
 	}
 
+	order_node->action = action_array[(int)order_node->operation_type];	//initialize action
 	return order_node;	//succeed return
 
 Failed:
@@ -151,21 +205,31 @@ Failed:
 	return NULL;
 }
 
+
 int main() {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
 
-    char buff[1024] = {0};
+    struct MatchingCache mc;
+    memset(&mc, 0, sizeof(struct MatchingCache));
+
+    char buff[kMaxReadBytesPerLine] = {0};
     while (NULL != fgets(buff, sizeof(buff), stdin)){
 
     	struct OrderNode* node = ParseCommand(buff);
     	if (node){
     		DumpOrderNode(node);
+
+    		//TODO: jump to different func
+    		node->action((void*)&mc, node);
+
     	}
-    	//TODO: jump to different func
 
     	//printf("%s", buff);
     	memset(buff, 0, sizeof(buff));
     }
+
+    //clear before exit
+    ClearMatchingCache(&mc);
     return 0;
 }
 
