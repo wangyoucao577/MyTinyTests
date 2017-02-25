@@ -13,7 +13,11 @@
 #define kMaxPrintBytesPerLine 128
 #define kMaxReadBytesPerLine 512
 
-
+#if defined(NDEBUG)
+#define DEBUG_PRINTF(fmt, args...) printf("\n[DEBUG] " fmt, ##args)
+#else
+#define DEBUG_PRINTF(fmt, args...) (0)
+#endif
 enum OperationType{
 	kOperationTypeBuy = 0,
 	kOperationTypeSell,
@@ -91,11 +95,36 @@ static void DumpOrderNode(const struct OrderNode* node){
 		return;
 	}
 
-	printf("%s %s price:%lld qty:%lld order_id:%s new_operation_if_modify:%s next:%p\n", \
+	DEBUG_PRINTF("node_addr:%p %s %s price:%lld qty:%lld order_id:%s new_operation_if_modify:%s next:%p\n", \
+		node, \
 		kOperationTypeNameArray[(int)node->operation_type], kOrderTypeNameArray[(int)node->order_type], \
 		node->price, node->qty, node->order_id, \
 		node->operation_type == kOperationTypeModify ? kOperationTypeNameArray[(int)node->new_operation_type] : "none", \
 		node->next);
+}
+
+//only for debug
+static void DumpMatchingCache(const struct MatchingCache* mc, bool dump_node_details){
+	assert(NULL != mc);
+
+	int sell_count = 0, buy_count = 0;
+	struct OrderNode* p = mc->sell_head;
+	while (p){
+		++sell_count;
+		if (dump_node_details){
+			DumpOrderNode(p);
+		}
+		p = p->next;
+	}
+	p = mc->buy_head;
+	while (p){
+		++buy_count;
+		if (dump_node_details){
+			DumpOrderNode(p);
+		}
+		p = p->next;
+	}
+	DEBUG_PRINTF("%s sell_count:%d buy_count:%d\n", __func__, sell_count, buy_count);
 }
 
 typedef bool (*CompareFunc)(void*, void*);		//compare function type for callback
@@ -135,18 +164,29 @@ static bool ComparePriceBelow(void* base_node, void* new_node){
 	return false;
 }
 
+//only for debug
+static void DumpCompareCallbackFunctions(){
+	DEBUG_PRINTF("%s CompareOrderId %p\n", __func__, CompareOrderId);
+	DEBUG_PRINTF("%s ComparePriceAbove %p\n", __func__, ComparePriceAbove);
+	DEBUG_PRINTF("%s ComparePriceBelow %p\n", __func__, ComparePriceBelow);
+
+}
+
 #define REMOVE_NODE_FROM_LIST(head, p, prev) ({\
 	if (prev){\
 		prev->next = p->next; \
 	}else{ \
-		head = head->next; \
+		(head) = (head)->next; \
 	} \
 	p->next = NULL; \
 })
 
-static void AppendToList(struct OrderNode* head, struct OrderNode* node){
+static void AppendToList(struct OrderNode** head_addr, struct OrderNode* node){
+	assert(NULL != head_addr);
+	struct OrderNode* head = *head_addr;
 	if (!head){
-		head = node;
+		*head_addr = node;
+		return;
 	}
 
 	struct OrderNode* p = head;
@@ -156,17 +196,17 @@ static void AppendToList(struct OrderNode* head, struct OrderNode* node){
 	p->next = node;
 }
 
-static struct OrderNode* PopNodeViaCondition(struct OrderNode* head, void* param, CompareFunc comp_func){
-	assert(NULL != comp_func && NULL != param);
-	if (!head){
+static struct OrderNode* PopNodeViaCondition(struct OrderNode** head_addr, void* param, CompareFunc comp_func){
+	assert(NULL != head_addr && NULL != comp_func && NULL != param);
+	if (!(*head_addr)){
 		return NULL;
 	}
 
-	struct OrderNode* p = head;
+	struct OrderNode* p = *head_addr;
 	struct OrderNode* prev = NULL;
 	while (p){
 		if (comp_func(p, param)){		//found
-			REMOVE_NODE_FROM_LIST(head, p, prev);
+			REMOVE_NODE_FROM_LIST(*head_addr, p, prev);
 			return p;
 		}
 
@@ -176,22 +216,24 @@ static struct OrderNode* PopNodeViaCondition(struct OrderNode* head, void* param
 	return NULL;
 }
 
-static enum TradeResult TryTrade(struct OrderNode* head, struct OrderNode* new_node, CompareFunc comp_func){
-	assert(NULL != comp_func && NULL != new_node);
-	if (!head){
+static enum TradeResult TryTrade(struct OrderNode** head_addr, struct OrderNode* new_node, CompareFunc comp_func){
+	assert(NULL != head_addr && NULL != comp_func && NULL != new_node);
+	if (!(*head_addr)){
 		return kTradeResultNoTrade;
 	}
+	DEBUG_PRINTF("%s %p %p %p\n", __func__, *head_addr, new_node, comp_func);
 
-	struct OrderNode* p = head;
+	struct OrderNode* p = *head_addr;
 	struct OrderNode* prev = NULL;
 	while (p){
 		if (comp_func(p, new_node)){		//tradeable
+			int traded_qty = p->qty >= new_node->qty ? new_node->qty : p->qty;
 			printf("%s %s %lld %lld %s %lld %lld\n", kPrintStringTrade, \
-				p->order_id, p->price, p->qty, new_node->order_id, new_node->price, new_node->qty);
+				p->order_id, p->price, traded_qty, new_node->order_id, new_node->price, traded_qty);
 
 			if (p->qty == new_node->qty){
 				//all Traded
-				REMOVE_NODE_FROM_LIST(head, p, prev);
+				REMOVE_NODE_FROM_LIST(*head_addr, p, prev);
 				free(p);
 				return kTradeResultAllTraded;
 			}else if (p->qty > new_node->qty){
@@ -201,7 +243,8 @@ static enum TradeResult TryTrade(struct OrderNode* head, struct OrderNode* new_n
 				return kTradeResultNewPartTraded;
 			}else {
 				//old part traded
-				REMOVE_NODE_FROM_LIST(head, p, prev);
+				new_node->qty -= p->qty;
+				REMOVE_NODE_FROM_LIST(*head_addr, p, prev);
 				free(p);
 				return kTradeResultOrgPartTraded;
 			}
@@ -217,15 +260,15 @@ static enum TradeResult TryTrade(struct OrderNode* head, struct OrderNode* new_n
 static enum ActionResult (*kActionArray[])(void*, struct OrderNode*);		//declare first, will be used in ActionModify
 
 static enum ActionResult ActionBuy(void* base_mc, struct OrderNode* node){
-	//printf("%s %p %p\n", __func__, base_mc, node);
+	DEBUG_PRINTF("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
 	while (true){
-		enum TradeResult tr = TryTrade(mc->sell_head, node, ComparePriceBelow);
+		enum TradeResult tr = TryTrade(&mc->sell_head, node, ComparePriceBelow);
 		switch(tr){
 			case kTradeResultNoTrade:
-				AppendToList(mc->buy_head, node);
+				AppendToList(&mc->buy_head, node);
 				return kActionResultNodeSaved; 
 			case kTradeResultOrgPartTraded:
 				//should try trade again
@@ -240,16 +283,16 @@ static enum ActionResult ActionBuy(void* base_mc, struct OrderNode* node){
 	}
 }
 static enum ActionResult ActionSell(void* base_mc, struct OrderNode* node){
-	//printf("%s %p %p\n", __func__, base_mc, node);
+	DEBUG_PRINTF("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
 	while (true){
-		enum TradeResult tr = TryTrade(mc->buy_head, node, ComparePriceAbove);
+		enum TradeResult tr = TryTrade(&mc->buy_head, node, ComparePriceAbove);
 		switch(tr){
 			case kTradeResultNoTrade:
 				if (node->order_type == kOrderTypeGFD){
-					AppendToList(mc->sell_head, node);
+					AppendToList(&mc->sell_head, node);
 					return kActionResultNodeSaved; 
 				}else{
 					//IOC
@@ -268,17 +311,17 @@ static enum ActionResult ActionSell(void* base_mc, struct OrderNode* node){
 	}
 }
 static enum ActionResult ActionCancel(void* base_mc, struct OrderNode* node){
-	//printf("%s %p %p\n", __func__, base_mc, node);
+	DEBUG_PRINTF("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
-	struct OrderNode* org_node = PopNodeViaCondition(mc->buy_head, node->order_id, CompareOrderId);
+	struct OrderNode* org_node = PopNodeViaCondition(&mc->buy_head, node->order_id, CompareOrderId);
 	if (NULL != org_node){
 		free(org_node);
 		return kActionResultNodeShouldBeFree;
 	}
 
-	org_node = PopNodeViaCondition(mc->sell_head, node->order_id, CompareOrderId);
+	org_node = PopNodeViaCondition(&mc->sell_head, node->order_id, CompareOrderId);
 	if (NULL != org_node){
 		free(org_node);
 		return kActionResultNodeShouldBeFree;
@@ -288,14 +331,14 @@ static enum ActionResult ActionCancel(void* base_mc, struct OrderNode* node){
 	return kActionResultNodeShouldBeFree;
 }
 static enum ActionResult ActionModify(void* base_mc, struct OrderNode* node){
-	//printf("%s %p %p\n", __func__, base_mc, node);
+	DEBUG_PRINTF("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
 	//pop first
-	struct OrderNode* org_node = PopNodeViaCondition(mc->buy_head, node->order_id, CompareOrderId);
+	struct OrderNode* org_node = PopNodeViaCondition(&mc->buy_head, node->order_id, CompareOrderId);
 	if (NULL == org_node){
-		org_node = PopNodeViaCondition(mc->sell_head, node->order_id, CompareOrderId);
+		org_node = PopNodeViaCondition(&mc->sell_head, node->order_id, CompareOrderId);
 	}
 	if (NULL == org_node){
 		//not find this order, ignore it
@@ -316,20 +359,20 @@ static enum ActionResult ActionModify(void* base_mc, struct OrderNode* node){
 	return kActionResultNodeShouldBeFree;		//tell caller to free node
 }
 static enum ActionResult ActionPrint(void* base_mc, struct OrderNode* node){
-	//printf("%s %p %p\n", __func__, base_mc, node);
+	DEBUG_PRINTF("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
 	//TODO: The price for SELL section must be decreasing and corresponding the price for BUY section must be decreasing.
 	
-	printf("SELL:\n");
+	printf("%s:\n", kPrintStringSell);
 	struct OrderNode * p = mc->sell_head;
 	while (p){
 		printf("%lld %lld\n", p->price, p->qty);
 		p = p->next;
 	}
 
-	printf("BUY:\n");
+	printf("%s:\n", kPrintStringBuy);
 	p = mc->buy_head;
 	while (p){
 		printf("%lld %lld\n", p->price, p->qty);
@@ -463,6 +506,8 @@ Failed:
 int main() {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
 
+	DumpCompareCallbackFunctions();
+
     struct MatchingCache mc;
     memset(&mc, 0, sizeof(struct MatchingCache));
 
@@ -479,6 +524,7 @@ int main() {
     			free(node);
     			node = NULL;
     		}
+    		DumpMatchingCache(&mc, false);
     	}
 
     	//printf("%s", buff);
