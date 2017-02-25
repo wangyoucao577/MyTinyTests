@@ -147,7 +147,7 @@ static void SimpleMapInsert(struct SimpleMapNode** head_addr, int64_t key, int64
     new_node->key = key;
     new_node->value = value;
 
-    if (!(*head_addr)){ //empty map, create the first node
+    if (NULL == *head_addr){ //empty map, create the first node
         
         *head_addr = new_node;
         return;
@@ -165,17 +165,18 @@ static void SimpleMapInsert(struct SimpleMapNode** head_addr, int64_t key, int64
                 new_node->next = p;
                 *head_addr = new_node;
                 return;
-            }else{  //move p 
-                prev = p;
-                p = p->next;
+            }else{  //insert between prev and p 
+                new_node->next = p;
+                prev->next = new_node;
+                return;
             }
         }else{  //key < p->key
             if (p->next == NULL){   //append at the end
                 p->next = new_node;
                 return;
-            }else{	//insert between prev and p
-                new_node->next = p;
-                prev->next = new_node;
+            }else{	//move p
+                prev = p;
+                p = p->next;
             }
         }
     }
