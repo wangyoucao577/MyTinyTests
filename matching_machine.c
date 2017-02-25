@@ -76,31 +76,34 @@ static void DumpOrderNode(const struct OrderNode* node){
 		return;
 	}
 
-	printf("%d %d %lld %lld %s %d %p\n", \
-		(int)node->operation_type, (int)node->order_type, node->price, node->qty, node->order_id, node->new_operation_type, node->next);
+	printf("%s %s price:%lld qty:%lld order_id:%s new_operation_if_modify:%s next:%p\n", \
+		kOperationTypeNameArray[(int)node->operation_type], kOrderTypeNameArray[(int)node->order_type], \
+		node->price, node->qty, node->order_id, \
+		node->operation_type == kOperationTypeModify ? kOperationTypeNameArray[(int)node->new_operation_type] : "none", \
+		node->next);
 }
 
 static int try_trade(void* base_mc, struct OrderNode* node){
 	return 0;
 }
 static void action_buy(void* base_mc, struct OrderNode* node){
-	printf("%s %p %p\n", __func__, base_mc, node);
+	//printf("%s %p %p\n", __func__, base_mc, node);
 }
 static void action_sell(void* base_mc, struct OrderNode* node){
-	printf("%s %p %p\n", __func__, base_mc, node);
+	//printf("%s %p %p\n", __func__, base_mc, node);
 
 }
 static void action_cancel(void* base_mc, struct OrderNode* node){
-	printf("%s %p %p\n", __func__, base_mc, node);
+	//printf("%s %p %p\n", __func__, base_mc, node);
 }
 static void action_modify(void* base_mc, struct OrderNode* node){
-	printf("%s %p %p\n", __func__, base_mc, node);
+	//printf("%s %p %p\n", __func__, base_mc, node);
 }
 static void action_print(void* base_mc, struct OrderNode* node){
-	printf("%s %p %p\n", __func__, base_mc, node);
+	//printf("%s %p %p\n", __func__, base_mc, node);
 }
 
-static void (*action_array[])(void*, struct OrderNode*) = {
+static void (*kActionArray[])(void*, struct OrderNode*) = {
 	action_buy,
 	action_sell,
 	action_cancel,
@@ -194,7 +197,7 @@ static struct OrderNode* ParseCommand(const char* cmd){
 		assert(0);
 	}
 
-	order_node->action = action_array[(int)order_node->operation_type];	//initialize action
+	order_node->action = kActionArray[(int)order_node->operation_type];	//initialize action
 	return order_node;	//succeed return
 
 Failed:
