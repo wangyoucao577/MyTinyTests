@@ -127,6 +127,80 @@ static void DumpMatchingCache(const struct MatchingCache* mc, bool dump_node_det
     DEBUG_PRINTF("%s sell_count:%d buy_count:%d\n", __func__, sell_count, buy_count);
 }
 
+//implement my simple map for sort and print via list
+struct SimpleMapNode
+{
+    int64_t key;
+    int64_t value;
+
+    struct SimpleMapNode* next;
+};
+
+//if key not exist, insert it;
+//if key exist, modify the value.
+//sort as decreasing
+static void SimpleMapInsert(struct SimpleMapNode** head_addr, int64_t key, int64_t value){
+    assert(NULL != head_addr && key > 0 && value > 0);
+
+    struct SimpleMapNode* new_node = (struct SimpleMapNode*)malloc(sizeof(struct SimpleMapNode));
+    memset(new_node, 0, sizeof(struct SimpleMapNode));
+    new_node->key = key;
+    new_node->value = value;
+
+    if (!(*head_addr)){ //empty map, create the first node
+        
+        *head_addr = new_node;
+        return;
+    }
+
+    struct SimpleMapNode* p = *head_addr;
+    struct SimpleMapNode* prev = NULL;
+    while (p){
+        if (key == p->key){
+            p->value += value;
+            free(new_node);
+            return;
+        }else if (key > p->key){
+            if (prev == NULL){  //insert as the head
+                new_node->next = p;
+                *head_addr = new_node;
+                return;
+            }else{  //move p 
+                prev = p;
+                p = p->next;
+            }
+        }else{  //key < p->key
+            if (p->next == NULL){   //append at the end
+                p->next = new_node;
+                return;
+            }else{	//insert between prev and p
+                new_node->next = p;
+                prev->next = new_node;
+            }
+        }
+    }
+    assert(0);	//won't be here
+    return;
+}
+static void PrintSimpleMap(const struct SimpleMapNode* head){
+    const struct SimpleMapNode* p = head;
+    while (p){
+        printf("%lld %lld\n", p->key, p->value);
+        p = p->next;
+    }
+}
+static void ClearSimpleMap(struct SimpleMapNode** head_addr){
+    assert(NULL != head_addr);
+
+    struct SimpleMapNode* p = *head_addr;
+    while (p){
+        struct SimpleMapNode* prev = p;
+        p = p->next;
+        free(prev);
+    }
+    *head_addr = NULL;
+}
+
 typedef bool (*CompareFunc)(void*, void*);      //compare function type for callback
 
 static bool CompareOrderId(void* base_node, void* order_id_2){
@@ -363,22 +437,30 @@ static enum ActionResult ActionPrint(void* base_mc, struct OrderNode* node){
     assert(NULL != base_mc && NULL != node);
     struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
-    //TODO: The price for SELL section must be decreasing and corresponding the price for BUY section must be decreasing.
+    // The price for SELL section must be decreasing and corresponding the price for BUY section must be decreasing.
     
-    printf("%s:\n", kPrintStringSell);
+    struct SimpleMapNode* sell_map_head = NULL;
+
     struct OrderNode * p = mc->sell_head;
     while (p){
-        printf("%lld %lld\n", p->price, p->qty);
+        SimpleMapInsert(&sell_map_head, p->price, p->qty);
         p = p->next;
     }
 
-    printf("%s:\n", kPrintStringBuy);
+    printf("%s:\n", kPrintStringSell);
+    PrintSimpleMap(sell_map_head);
+    ClearSimpleMap(&sell_map_head);
+
+    struct SimpleMapNode* buy_map_head = NULL;
     p = mc->buy_head;
     while (p){
-        printf("%lld %lld\n", p->price, p->qty);
+        SimpleMapInsert(&buy_map_head, p->price, p->qty);
         p = p->next;
     }
-
+    printf("%s:\n", kPrintStringBuy);
+    PrintSimpleMap(buy_map_head);
+    ClearSimpleMap(&buy_map_head);
+    
     return kActionResultNodeShouldBeFree;
 }
 
