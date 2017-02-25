@@ -248,8 +248,13 @@ static enum ActionResult ActionSell(void* base_mc, struct OrderNode* node){
 		enum TradeResult tr = TryTrade(mc->buy_head, node, ComparePriceAbove);
 		switch(tr){
 			case kTradeResultNoTrade:
-				AppendToList(mc->sell_head, node);
-				return kActionResultNodeSaved; 
+				if (node->order_type == kOrderTypeGFD){
+					AppendToList(mc->sell_head, node);
+					return kActionResultNodeSaved; 
+				}else{
+					//IOC
+					return kActionResultNodeShouldBeFree;
+				}
 			case kTradeResultOrgPartTraded:
 				//should try trade again
 				break;
@@ -466,7 +471,7 @@ int main() {
 
     	struct OrderNode* node = ParseCommand(buff);
     	if (node){
-    		DumpOrderNode(node);
+    		//DumpOrderNode(node);
 
     		// call different action func
     		enum ActionResult ar = node->Action((void*)&mc, node);
