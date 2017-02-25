@@ -6,6 +6,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <ctype.h>
 
 
 #define kMaxOperationOrderTypeNameLength 16 // for temporary var 
@@ -403,6 +404,9 @@ static enum ActionResult ActionCancel(void* base_mc, struct OrderNode* node){
     if (NULL != org_node){
     	free(org_node);
     	org_node = NULL;
+    }else{
+    	DEBUG_PRINTF("CANCEL command ignored casued by order_id:%s not found.\n", \
+        	node->order_id);
     }
 
     return kActionResultNodeShouldBeFree;
@@ -419,6 +423,8 @@ static enum ActionResult ActionModify(void* base_mc, struct OrderNode* node){
     }
     if (NULL == org_node){
         //not find this order, ignore it
+        DEBUG_PRINTF("MODIFY command ignored casued by order_id:%s not found.\n", \
+        	node->order_id);
         return kActionResultNodeShouldBeFree;
     }
 
@@ -477,16 +483,19 @@ static enum ActionResult (*kActionArray[])(void*, struct OrderNode*) = {        
 
 
 //return -1 if failed, otherwise find valid operation type
-static int ParseOperationType(const char* str, bool at_head){
+static int ParseOperationType(const char* str){
+
+	char operation_name[kMaxOperationOrderTypeNameLength] = {0};
+	int s_ret = sscanf(str, "%s", operation_name);
+	if (1 != s_ret){
+		return -1;
+	}
 
     int operation_type = -1;
     for (int i = 0; i < kOperationTypeCount; ++i){
-        char * p = strstr(str, kOperationTypeNameArray[i]);
-        if (NULL != p){ 
-            if (!at_head || (at_head && str == p)){ //check whether at the head of the str
-                operation_type = i; //set operation type
-                break;
-            }
+    	if (0 == strcmp(operation_name, kOperationTypeNameArray[i])){
+            operation_type = i; //set operation type
+            break;
         }
     }
     return operation_type;
@@ -494,10 +503,10 @@ static int ParseOperationType(const char* str, bool at_head){
 
 //return -1 if failed, otherwise find valid order type
 static int ParseOrderType(const char* str){
-    
+
     int order_type = -1;
     for (int i = 0; i < kOrderTypeCount; ++i){
-        if (NULL != strstr(str, kOrderTypeNameArray[i])){
+        if (0 == strcmp(str, kOrderTypeNameArray[i])){
             order_type = i; //set order type
             break;
         }
@@ -511,13 +520,15 @@ static struct OrderNode* ParseCommand(const char* cmd){
         return NULL;
     }
 
+    struct OrderNode* order_node = NULL;
+
     //find operation 
-    int operation_type_i = ParseOperationType(cmd, true);
+    int operation_type_i = ParseOperationType(cmd);
     if (-1 == operation_type_i){
-        return NULL;
+        goto Failed;
     }
 
-    struct OrderNode* order_node = (struct OrderNode*)malloc(sizeof(struct OrderNode));
+    order_node = (struct OrderNode*)malloc(sizeof(struct OrderNode));
     memset(order_node, 0, sizeof(struct OrderNode));
     order_node->operation_type = (enum OperationType)operation_type_i;
 
@@ -552,7 +563,7 @@ static struct OrderNode* ParseCommand(const char* cmd){
         if (sscanf_ret != kOperationAppendParamCountArray[operation_type_i]){
             goto Failed;
         }
-        int oti = ParseOperationType(new_operation_type_name, false);
+        int oti = ParseOperationType(new_operation_type_name);
         if (-1 != oti && ((enum OperationType)oti == kOperationTypeSell || (enum OperationType)oti == kOperationTypeBuy)){
             order_node->new_operation_type = (enum OperationType)oti;
         }else{
@@ -570,7 +581,7 @@ static struct OrderNode* ParseCommand(const char* cmd){
     }
 
     if (order_node->operation_type != kOperationTypePrint){
-        if (strlen(order_node->order_id) <= 0){     //make sure order_id valid
+        if (strlen(order_node->order_id) <= 0 || !isprint(order_node->order_id[0])){     //make sure order_id valid
             goto Failed;
         }
     }
@@ -580,6 +591,7 @@ static struct OrderNode* ParseCommand(const char* cmd){
     return order_node;  //succeed return
 
 Failed:
+	DEBUG_PRINTF("%s this command ignored.\n", __func__);
     if (order_node){
         free(order_node);
         order_node = NULL;
@@ -591,13 +603,15 @@ Failed:
 int main() {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
 
-    DumpCompareCallbackFunctions();
+    //DumpCompareCallbackFunctions();
 
     struct MatchingCache mc;
     memset(&mc, 0, sizeof(struct MatchingCache));
 
     char buff[kMaxReadBytesPerLine] = {0};
     while (NULL != fgets(buff, sizeof(buff), stdin)){
+
+    	DEBUG_PRINTF("org-->%s, len:%d", buff, (int)strlen(buff));
 
         struct OrderNode* node = ParseCommand(buff);
         if (node){
