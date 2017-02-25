@@ -13,7 +13,6 @@
 #define kMaxPrintBytesPerLine 128
 #define kMaxReadBytesPerLine 512
 
-const static char* kPassiveOperationNameTrade = "TRADE";
 
 enum OperationType{
 	kOperationTypeBuy = 0,
@@ -27,6 +26,10 @@ enum OperationType{
 };
 const static char* kOperationTypeNameArray[kOperationTypeCount] = {"BUY", "SELL", "CANCEL", "MODIFY", "PRINT"};
 
+const static char* kPrintStringSell = "SELL";
+const static char* kPrintStringBuy = "BUY";
+const static char* kPrintStringTrade = "TRADE";
+
 enum OrderType{
 	kOrderTypeGFD = 0,
 	kOrderTypeIOC,
@@ -39,6 +42,13 @@ const static char* kOrderTypeNameArray[kOrderTypeCount] = {"GFD", "IOC"};
 enum ActionResult{
 	kActionResultNodeSaved = 0,
 	kActionResultNodeShouldBeFree,
+};
+
+enum TradeResult{
+	kTradeResultNoTrade = 0,
+	kTradeResultOrgPartTraded,		//caching node part traded, new node all traded
+	kTradeResultNewPartTraded,		//caching node all traded, new node part traded. if so, the caching node will be freed directly
+	kTradeResultAllTraded,			// if so, the caching node will be freed directly
 };
 
 struct OrderNode{
@@ -101,6 +111,51 @@ static bool CompareOrderId(void* base_node, void* order_id_2){
 	return false;
 }
 
+//return true if base_node->price >= new_price
+static bool ComparePriceAbove(void* base_node, void* new_node){
+	assert(NULL != base_node && NULL != new_node);
+	struct OrderNode* node = (struct OrderNode*)base_node;
+	struct OrderNode* node2 = (struct OrderNode*)new_node;
+	
+
+	if (node->price >= node2->price){
+		return true;
+	}
+	return false;
+}
+//return true if base_node->price <= new_price
+static bool ComparePriceBelow(void* base_node, void* new_node){
+	assert(NULL != base_node && NULL != new_node);
+	struct OrderNode* node = (struct OrderNode*)base_node;
+	struct OrderNode* node2 = (struct OrderNode*)new_node;
+
+	if (node->price <= node2->price){
+		return true;
+	}
+	return false;
+}
+
+#define REMOVE_NODE_FROM_LIST(head, p, prev) ({\
+	if (prev){\
+		prev->next = p->next; \
+	}else{ \
+		head = head->next; \
+	} \
+	p->next = NULL; \
+})
+
+static void AppendToList(struct OrderNode* head, struct OrderNode* node){
+	if (!head){
+		head = node;
+	}
+
+	struct OrderNode* p = head;
+	while (p->next){
+		p = p->next;
+	}
+	p->next = node;
+}
+
 static struct OrderNode* PopNodeViaCondition(struct OrderNode* head, void* param, CompareFunc comp_func){
 	assert(NULL != comp_func && NULL != param);
 	if (!head){
@@ -111,21 +166,52 @@ static struct OrderNode* PopNodeViaCondition(struct OrderNode* head, void* param
 	struct OrderNode* prev = NULL;
 	while (p){
 		if (comp_func(p, param)){		//found
-			if (prev == NULL){		//means p == head
-				head = head->next;
-				p->next = NULL;
-				return p;
-			}else{
-				prev->next = p->next;
-				p->next = NULL;
-				return p;
-			}
+			REMOVE_NODE_FROM_LIST(head, p, prev);
+			return p;
 		}
 
 		prev = p;
-		++p;
+		p = p->next;
 	}
 	return NULL;
+}
+
+static enum TradeResult TryTrade(struct OrderNode* head, struct OrderNode* new_node, CompareFunc comp_func){
+	assert(NULL != comp_func && NULL != new_node);
+	if (!head){
+		return kTradeResultNoTrade;
+	}
+
+	struct OrderNode* p = head;
+	struct OrderNode* prev = NULL;
+	while (p){
+		if (comp_func(p, new_node)){		//tradeable
+			printf("%s %s %lld %lld %s %lld %lld\n", kPrintStringTrade, \
+				p->order_id, p->price, p->qty, new_node->order_id, new_node->price, new_node->qty);
+
+			if (p->qty == new_node->qty){
+				//all Traded
+				REMOVE_NODE_FROM_LIST(head, p, prev);
+				free(p);
+				return kTradeResultAllTraded;
+			}else if (p->qty > new_node->qty){
+				//new part traded
+				p->qty -= new_node->qty;
+
+				return kTradeResultNewPartTraded;
+			}else {
+				//old part traded
+				REMOVE_NODE_FROM_LIST(head, p, prev);
+				free(p);
+				return kTradeResultOrgPartTraded;
+			}
+
+		}
+
+		prev = p;
+		p = p->next;
+	}
+	return kTradeResultNoTrade;
 }
 
 static enum ActionResult (*kActionArray[])(void*, struct OrderNode*);		//declare first, will be used in ActionModify
@@ -135,16 +221,46 @@ static enum ActionResult ActionBuy(void* base_mc, struct OrderNode* node){
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
-	struct OrderNode* p_sell = mc->sell_head;
-	//TODO:
+	while (true){
+		enum TradeResult tr = TryTrade(mc->sell_head, node, ComparePriceBelow);
+		switch(tr){
+			case kTradeResultNoTrade:
+				AppendToList(mc->buy_head, node);
+				return kActionResultNodeSaved; 
+			case kTradeResultOrgPartTraded:
+				//should try trade again
+				break;
+			case kTradeResultAllTraded:
+			case kTradeResultNewPartTraded:
+				return kActionResultNodeShouldBeFree;
+			default:
+				assert(0);
+				break;
+		}
+	}
 }
 static enum ActionResult ActionSell(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
-	struct OrderNode* p_buy = mc->buy_head;
-	//TODO:
+	while (true){
+		enum TradeResult tr = TryTrade(mc->buy_head, node, ComparePriceAbove);
+		switch(tr){
+			case kTradeResultNoTrade:
+				AppendToList(mc->sell_head, node);
+				return kActionResultNodeSaved; 
+			case kTradeResultOrgPartTraded:
+				//should try trade again
+				break;
+			case kTradeResultAllTraded:
+			case kTradeResultNewPartTraded:
+				return kActionResultNodeShouldBeFree;
+			default:
+				assert(0);
+				break;
+		}
+	}
 }
 static enum ActionResult ActionCancel(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
@@ -198,6 +314,8 @@ static enum ActionResult ActionPrint(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
+
+	//TODO: The price for SELL section must be decreasing and corresponding the price for BUY section must be decreasing.
 	
 	printf("SELL:\n");
 	struct OrderNode * p = mc->sell_head;
@@ -285,6 +403,10 @@ static struct OrderNode* ParseCommand(const char* cmd){
 		}
 		order_node->order_type = (enum OrderType)order_type_i;
 
+		if (order_node->price <= 0 || order_node->qty <= 0){		//make sure price and quantity valid
+			goto Failed;
+		}
+
 	}else if (order_node->operation_type == kOperationTypeCancel){
 		int sscanf_ret = sscanf(cmd_after_operation_type, "%s", order_node->order_id);
 		if (sscanf_ret == EOF){
@@ -304,11 +426,22 @@ static struct OrderNode* ParseCommand(const char* cmd){
 			goto Failed;
 		}
 
+		if (order_node->price <= 0 || order_node->qty <= 0){		//make sure price and quantity valid
+			goto Failed;
+		}
+
 	}else if (order_node->operation_type == kOperationTypePrint){
 		//nothing to do
 	}else{
 		assert(0);
 	}
+
+	if (order_node->operation_type != kOperationTypePrint){
+		if (strlen(order_node->order_id) <= 0){		//make sure order_id valid
+			goto Failed;
+		}
+	}
+
 
 	order_node->Action = kActionArray[(int)order_node->operation_type];	//initialize action
 	return order_node;	//succeed return
