@@ -343,8 +343,13 @@ static enum ActionResult ActionBuy(void* base_mc, struct OrderNode* node){
         enum TradeResult tr = TryTrade(&mc->sell_head, node, ComparePriceBelow);
         switch(tr){
             case kTradeResultNoTrade:
-                AppendToList(&mc->buy_head, node);
-                return kActionResultNodeSaved; 
+                if (node->order_type == kOrderTypeGFD){
+                    AppendToList(&mc->buy_head, node);
+                    return kActionResultNodeSaved; 
+                }else{
+                    //IOC
+                    return kActionResultNodeShouldBeFree;
+                }
             case kTradeResultOrgPartTraded:
                 //should try trade again
                 break;
