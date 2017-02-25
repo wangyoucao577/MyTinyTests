@@ -36,6 +36,11 @@ enum OrderType{
 };
 const static char* kOrderTypeNameArray[kOrderTypeCount] = {"GFD", "IOC"};
 
+enum ActionResult{
+	kActionResultNodeSaved = 0,
+	kActionResultNodeShouldFree,
+};
+
 struct OrderNode{
 	enum OperationType operation_type;
 	enum OrderType order_type;
@@ -47,7 +52,7 @@ struct OrderNode{
 
 	struct OrderNode * next;
 
-	void (*Action)(void*, struct OrderNode*);
+	enum ActionResult (*Action)(void*, struct OrderNode*);
 };
 
 struct MatchingCache{
@@ -83,38 +88,89 @@ static void DumpOrderNode(const struct OrderNode* node){
 		node->next);
 }
 
-static int TryTrade(void* base_mc, struct OrderNode* node){
-	assert(NULL != base_mc && NULL != node);
-	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
+typedef bool (*CompareFunc)(void*, void*);		//compare function type for callback
 
-	return 0;
+static bool CompareOrderId(void* base_node, void* order_id_2){
+	assert(NULL != base_node && NULL != order_id_2);
+	struct OrderNode* node = (struct OrderNode*)base_node;
+	assert(strlen(node->order_id) > 0 && strlen(order_id_2) > 0);
+
+	if (0 == strcmp(node->order_id, order_id_2)){
+		return true;
+	}
+	return false;
 }
-static void ActionBuy(void* base_mc, struct OrderNode* node){
+
+static struct OrderNode* PopNodeViaCondition(struct OrderNode* head, void* param, CompareFunc comp_func){
+	assert(NULL != comp_func && NULL != param);
+	if (!head){
+		return NULL;
+	}
+
+	struct OrderNode* p = head;
+	struct OrderNode* prev = NULL;
+	while (p){
+		if (comp_func(p, param)){		//found
+			if (prev == NULL){		//means p == head
+				head = head->next;
+				p->next = NULL;
+				return p;
+			}else{
+				prev->next = p->next;
+				p->next = NULL;
+				return p;
+			}
+		}
+
+		prev = p;
+		++p;
+	}
+	return NULL;
+}
+
+
+static enum ActionResult ActionBuy(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
-	TryTrade(base_mc, node);
+	struct OrderNode* p_sell = mc->sell_head;
+	//TODO:
 }
-static void ActionSell(void* base_mc, struct OrderNode* node){
+static enum ActionResult ActionSell(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
-	TryTrade(base_mc, node);
+	struct OrderNode* p_buy = mc->buy_head;
+	//TODO:
+}
+static enum ActionResult ActionCancel(void* base_mc, struct OrderNode* node){
+	//printf("%s %p %p\n", __func__, base_mc, node);
+	assert(NULL != base_mc && NULL != node);
+	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 
+	struct OrderNode* org_node = PopNodeViaCondition(mc->buy_head, node->order_id, CompareOrderId);
+	if (NULL != org_node){
+		free(org_node);
+		return kActionResultNodeShouldFree;
+	}
+
+	org_node = PopNodeViaCondition(mc->sell_head, node->order_id, CompareOrderId);
+	if (NULL != org_node){
+		free(org_node);
+		return kActionResultNodeShouldFree;
+	}
+
+	//not found, just ignore it
+	return kActionResultNodeShouldFree;
 }
-static void ActionCancel(void* base_mc, struct OrderNode* node){
+static enum ActionResult ActionModify(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
 }
-static void ActionModify(void* base_mc, struct OrderNode* node){
-	//printf("%s %p %p\n", __func__, base_mc, node);
-	assert(NULL != base_mc && NULL != node);
-	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
-}
-static void ActionPrint(void* base_mc, struct OrderNode* node){
+static enum ActionResult ActionPrint(void* base_mc, struct OrderNode* node){
 	//printf("%s %p %p\n", __func__, base_mc, node);
 	assert(NULL != base_mc && NULL != node);
 	struct MatchingCache* mc = (struct MatchingCache*)base_mc;
@@ -132,9 +188,11 @@ static void ActionPrint(void* base_mc, struct OrderNode* node){
 		printf("%lld %lld\n", p->price, p->qty);
 		p = p->next;
 	}
+
+	return kActionResultNodeShouldFree;
 }
 
-static void (*kActionArray[])(void*, struct OrderNode*) = {
+static enum ActionResult (*kActionArray[])(void*, struct OrderNode*) = {
 	ActionBuy,
 	ActionSell,
 	ActionCancel,
@@ -253,9 +311,12 @@ int main() {
     	if (node){
     		DumpOrderNode(node);
 
-    		//TODO: jump to different func
-    		node->Action((void*)&mc, node);
-
+    		// call different action func
+    		enum ActionResult ar = node->Action((void*)&mc, node);
+    		if (ar == kActionResultNodeShouldFree){
+    			free(node);
+    			node = NULL;
+    		}
     	}
 
     	//printf("%s", buff);
