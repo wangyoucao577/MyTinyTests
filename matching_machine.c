@@ -58,8 +58,8 @@ enum TradeResult{
 struct OrderNode{
     enum OperationType operation_type;
     enum OrderType order_type;
-    int64_t price;
-    int64_t qty;
+    long long int price;
+    long long int qty;
     char order_id[kMaxOrderIdLength];
 
     enum OperationType new_operation_type;  //only if MODIFY
@@ -130,8 +130,8 @@ static void DumpMatchingCache(const struct MatchingCache* mc, bool dump_node_det
 //implement my simple map for sort and print via list
 struct SimpleMapNode
 {
-    int64_t key;
-    int64_t value;
+    long long int key;
+    long long int value;
 
     struct SimpleMapNode* next;
 };
@@ -301,7 +301,7 @@ static enum TradeResult TryTrade(struct OrderNode** head_addr, struct OrderNode*
     struct OrderNode* prev = NULL;
     while (p){
         if (comp_func(p, new_node)){        //tradeable
-            int traded_qty = p->qty >= new_node->qty ? new_node->qty : p->qty;
+            long long int traded_qty = p->qty >= new_node->qty ? new_node->qty : p->qty;
             printf("%s %s %lld %lld %s %lld %lld\n", kPrintStringTrade, \
                 p->order_id, p->price, traded_qty, new_node->order_id, new_node->price, traded_qty);
 
