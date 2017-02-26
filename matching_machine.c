@@ -625,7 +625,10 @@ int main() {
                 free(node);
                 node = NULL;
             }
+
+#if defined(MY_DEBUG)
             DumpMatchingCache(&mc, false);
+#endif
         }
 
         //printf("%s", buff);
