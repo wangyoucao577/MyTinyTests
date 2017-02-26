@@ -14,11 +14,12 @@
 #define kMaxPrintBytesPerLine 128
 #define kMaxReadBytesPerLine 512
 
-#if defined(NDEBUG)
+#if defined(MY_DEBUG)
 #define DEBUG_PRINTF(fmt, args...) printf("\n[DEBUG] " fmt, ##args)
 #else
 #define DEBUG_PRINTF(fmt, args...) (0)
 #endif
+
 enum OperationType{
     kOperationTypeBuy = 0,
     kOperationTypeSell,
@@ -402,6 +403,7 @@ static enum ActionResult ActionCancel(void* base_mc, struct OrderNode* node){
         org_node = PopNodeViaCondition(&mc->sell_head, node->order_id, CompareOrderId);
     }
     if (NULL != org_node){
+    	assert(NULL == org_node->next);
     	free(org_node);
     	org_node = NULL;
     }else{
@@ -429,6 +431,7 @@ static enum ActionResult ActionModify(void* base_mc, struct OrderNode* node){
     }
 
     //re-assembly org_node
+    assert(NULL == org_node->next);
     org_node->price = node->price;
     org_node->qty = node->qty;
     org_node->operation_type = node->new_operation_type;
