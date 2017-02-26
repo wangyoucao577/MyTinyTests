@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <limits.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <ctype.h>
 
 
@@ -141,7 +140,7 @@ struct SimpleMapNode
 //if key not exist, insert it;
 //if key exist, modify the value.
 //sort as decreasing
-static void SimpleMapInsert(struct SimpleMapNode** head_addr, int64_t key, int64_t value){
+static void SimpleMapInsert(struct SimpleMapNode** head_addr, long long int key, long long int value){
     assert(NULL != head_addr && key > 0 && value > 0);
 
     struct SimpleMapNode* new_node = (struct SimpleMapNode*)malloc(sizeof(struct SimpleMapNode));
