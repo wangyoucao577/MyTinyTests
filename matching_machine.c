@@ -11,7 +11,6 @@
 
 #define kMaxOperationOrderTypeNameLength 16 // for temporary var 
 #define kMaxOrderIdLength 256
-#define kMaxPrintBytesPerLine 128
 #define kMaxReadBytesPerLine 512
 
 #if defined(MY_DEBUG)
