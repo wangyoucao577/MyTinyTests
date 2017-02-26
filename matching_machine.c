@@ -176,13 +176,13 @@ static void SimpleMapInsert(struct SimpleMapNode** head_addr, int64_t key, int64
             if (p->next == NULL){   //append at the end
                 p->next = new_node;
                 return;
-            }else{	//move p
+            }else{  //move p
                 prev = p;
                 p = p->next;
             }
         }
     }
-    assert(0);	//won't be here
+    assert(0);  //won't be here
     return;
 }
 static void PrintSimpleMap(const struct SimpleMapNode* head){
@@ -402,12 +402,12 @@ static enum ActionResult ActionCancel(void* base_mc, struct OrderNode* node){
         org_node = PopNodeViaCondition(&mc->sell_head, node->order_id, CompareOrderId);
     }
     if (NULL != org_node){
-    	assert(NULL == org_node->next);
-    	free(org_node);
-    	org_node = NULL;
+        assert(NULL == org_node->next);
+        free(org_node);
+        org_node = NULL;
     }else{
-    	DEBUG_PRINTF("CANCEL command ignored casued by order_id:%s not found.\n", \
-        	node->order_id);
+        DEBUG_PRINTF("CANCEL command ignored casued by order_id:%s not found.\n", \
+            node->order_id);
     }
 
     return kActionResultNodeShouldBeFree;
@@ -425,7 +425,7 @@ static enum ActionResult ActionModify(void* base_mc, struct OrderNode* node){
     if (NULL == org_node){
         //not find this order, ignore it
         DEBUG_PRINTF("MODIFY command ignored casued by order_id:%s not found.\n", \
-        	node->order_id);
+            node->order_id);
         return kActionResultNodeShouldBeFree;
     }
 
@@ -487,15 +487,15 @@ static enum ActionResult (*kActionArray[])(void*, struct OrderNode*) = {        
 //return -1 if failed, otherwise find valid operation type
 static int ParseOperationType(const char* str){
 
-	char operation_name[kMaxOperationOrderTypeNameLength] = {0};
-	int s_ret = sscanf(str, "%s", operation_name);
-	if (1 != s_ret){
-		return -1;
-	}
+    char operation_name[kMaxOperationOrderTypeNameLength] = {0};
+    int s_ret = sscanf(str, "%s", operation_name);
+    if (1 != s_ret){
+        return -1;
+    }
 
     int operation_type = -1;
     for (int i = 0; i < kOperationTypeCount; ++i){
-    	if (0 == strcmp(operation_name, kOperationTypeNameArray[i])){
+        if (0 == strcmp(operation_name, kOperationTypeNameArray[i])){
             operation_type = i; //set operation type
             break;
         }
@@ -593,7 +593,7 @@ static struct OrderNode* ParseCommand(const char* cmd){
     return order_node;  //succeed return
 
 Failed:
-	DEBUG_PRINTF("%s this command ignored.\n", __func__);
+    DEBUG_PRINTF("%s this command ignored.\n", __func__);
     if (order_node){
         free(order_node);
         order_node = NULL;
@@ -613,7 +613,7 @@ int main() {
     char buff[kMaxReadBytesPerLine] = {0};
     while (NULL != fgets(buff, sizeof(buff), stdin)){
 
-    	DEBUG_PRINTF("org-->%s, len:%d", buff, (int)strlen(buff));
+        DEBUG_PRINTF("org-->%s, len:%d", buff, (int)strlen(buff));
 
         struct OrderNode* node = ParseCommand(buff);
         if (node){
