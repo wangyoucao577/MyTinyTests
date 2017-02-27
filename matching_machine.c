@@ -322,9 +322,12 @@ static enum TradeResult TryTrade(struct OrderNode** head_addr, struct OrderNode*
                 new_node->qty -= p->qty;
                 REMOVE_NODE_FROM_LIST(*head_addr, p, prev);
                 free(p);
-                return kTradeResultOrgPartTraded;
-            }
 
+                //continue the loop until nothing can be traded.
+                p = NULL == prev ? *head_addr : prev->next;
+                continue;
+                //return kTradeResultOrgPartTraded;
+            }
         }
 
         prev = p;
@@ -351,9 +354,9 @@ static enum ActionResult ActionBuy(void* base_mc, struct OrderNode* node){
                     //IOC
                     return kActionResultNodeShouldBeFree;
                 }
-            case kTradeResultOrgPartTraded:
-                //should try trade again
-                break;
+            // case kTradeResultOrgPartTraded:
+            //     //should try trade again
+            //     break;
             case kTradeResultAllTraded:
             case kTradeResultNewPartTraded:
                 return kActionResultNodeShouldBeFree;
@@ -379,9 +382,9 @@ static enum ActionResult ActionSell(void* base_mc, struct OrderNode* node){
                     //IOC
                     return kActionResultNodeShouldBeFree;
                 }
-            case kTradeResultOrgPartTraded:
-                //should try trade again
-                break;
+            // case kTradeResultOrgPartTraded:
+            //     //should try trade again
+            //     break;
             case kTradeResultAllTraded:
             case kTradeResultNewPartTraded:
                 return kActionResultNodeShouldBeFree;
