@@ -4,7 +4,16 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <sys/time.h>
 #include <librtmp/rtmp.h>
+
+int64_t get_current_time_us(){
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    int64_t us = (int64_t)tv.tv_sec * 1000000 + tv.tv_usec;
+    return us;
+}
 
 int main(int argc, char* argv[]){
     if (argc < 2){
@@ -49,15 +58,25 @@ int main(int argc, char* argv[]){
     char* buff = (char*)malloc(buff_size);
     memset(buff, 0, buff_size);
 
+    
+    unsigned long long thisRecvedBytes = 0;
 
+    int64_t start_time_us = get_current_time_us();
     int nRead = 0;
-    unsigned long long totalBytes = 0;
     while (nRead = RTMP_Read(rtmp, buff, buff_size)){
         int nWrite = fwrite(buff, 1, nRead, fp);
         assert(nWrite == nRead);
 
-        totalBytes += nRead;
-        printf("This Recv Bytes: %d, total: %llu\n", nRead, totalBytes);
+        thisRecvedBytes += nRead;
+
+        int64_t curr_time_us = get_current_time_us();
+        int64_t delta_us = curr_time_us - start_time_us;
+        if (delta_us >= 1000000){
+            printf("[rtmp recv kbps:%llu]\n", thisRecvedBytes * 8 * 1000 / delta_us);
+            start_time_us = curr_time_us;
+            thisRecvedBytes = 0;
+        }
+        
     }
 
     if (fp){
