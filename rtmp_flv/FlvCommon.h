@@ -29,6 +29,10 @@ private:
 };
 std::ostream & operator << (std::ostream& out, FlvException& e);
 
+class FlvCommonUtils {
+public:
+    static int64_t GetCurrentTimeMillseconds();
+};
 
 
 #endif
