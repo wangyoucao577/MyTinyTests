@@ -14,13 +14,42 @@ FlvTag::FlvTag(char* buff, int len){
     assert(NULL != buff && len >= kMinTagLength);
 
     filter_ = buff[0] & 0x20;
+
+    //TODO: 暂未支持Encryption和FilterParams
+    assert(0 == filter_);
+
     tag_type_ = buff[0] & 0x1F;
+    assert(kFlyTagTypeAudio == (FlvTagType)tag_type_
+        || kFlyTagTypeVideo == (FlvTagType)tag_type_
+        || kFlyTagTypeScriptData == (FlvTagType)tag_type_);
+
     data_size_ = ((buff[1] & 0xFF) << 16) | ((buff[2] & 0xFF) << 8) | (buff[3] & 0xFF);
     
     memcpy(&timestamp_, buff + 4, sizeof(timestamp_));
     timestamp_ = ntohl(timestamp_);
 
     stream_id_ = ((buff[8] & 0xFF) << 16) | ((buff[9] & 0xFF) << 8) | (buff[10] & 0xFF);   //always 0
+
+    //TODO: construct audio/video/script_data
+    if ((FlvTagType)tag_type_ == kFlyTagTypeAudio){
+
+    }else if ((FlvTagType)tag_type_ == kFlyTagTypeVideo){
+
+    }else{  //script data
+
+    }
+}
+
+FlvTag::~FlvTag(){
+
+    if (tag_header_){
+        delete tag_header_;
+        tag_header_ = nullptr;
+    }
+    if (tag_data_){
+        delete tag_data_;
+        tag_data_ = nullptr;
+    }
 }
 
 void FlvTag::Dump()

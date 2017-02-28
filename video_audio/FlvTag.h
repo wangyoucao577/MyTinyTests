@@ -5,10 +5,18 @@
 #include <stdint.h>
 
 class FlvTagHeader{};
+class FlvTagData{};
+
+enum FlvTagType{
+    kFlyTagTypeAudio = 8,
+    kFlyTagTypeVideo = 9,
+    kFlyTagTypeScriptData = 18,
+};
 
 class FlvTag{
 public:
     explicit FlvTag(char* buff, int len);
+    ~FlvTag();
 
 public:
     void Dump();
@@ -26,6 +34,7 @@ private:
     uint32_t timestamp_;
     uint32_t stream_id_;
     FlvTagHeader * tag_header_ {nullptr};
+    FlvTagData * tag_data_ {nullptr};
 };
 
 #endif
