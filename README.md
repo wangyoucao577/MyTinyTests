@@ -145,6 +145,9 @@ Wechat刚刚开源的`Mars`库, 学习与测试的一些实验代码.
 		- 构造时, 总是先调用到基类的构造函数, 再调用到派生类的构造函数  
 		- 析构时, 总是先调用到派生类的析构函数, 再调用到基类的析构函数  
 
+- cc_const_reference_member.cc  
+	`C++`类中有`const`或`reference`成员, 且并没有显式定义拷贝构造函数和拷贝赋值运算符, 是否可以正常使用它的拷贝构造函数和拷贝赋值运算符呢? 答案居然是都可以..  
+
 ### [Python2] cdeclare.py
   参考《Expert C Programming》书中的规则实现的`cdecl`程序, 未按照书中用`C`实现, 而是用更方便的`python`实现了下. 支持较为复杂的函数声明的分析, 未支持包括`struct`, `enum`,`union`等类型. 比上文中《The C Programming Language》中的`cdcl`实现支持更为全面些. 不过对`C`声明的一些细节规则还是不太理解的，再要深入可能需要看标准了.
 
