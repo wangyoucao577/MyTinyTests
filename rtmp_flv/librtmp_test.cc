@@ -89,7 +89,8 @@ int main(int argc, char* argv[]){
                 ft.Dump();
             }
             catch (FlvException& e) {
-                cout << "FlvException catched, err:" << e.ErrorCode() << ", msg:" << e.msg() << endl;
+                //cout << "FlvException catched, err:" << e.ErrorCode() << ", msg:" << e.msg() << endl;
+                cout << e << endl;
             }
 
             

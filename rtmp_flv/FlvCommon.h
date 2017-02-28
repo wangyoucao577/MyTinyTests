@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <iostream>
 
 enum FlvErrorCode {
     kFlvErrorOK = 0,
@@ -17,14 +18,17 @@ enum FlvErrorCode {
 class FlvException{
 public:
     explicit FlvException(FlvErrorCode err, std::string msg):error_code_(err), msg_(msg){}
-
+    
 public:
-    std::string msg(){return msg_;}
-    FlvErrorCode ErrorCode(){return error_code_;}
+    const std::string& msg(){return msg_;}
+    const FlvErrorCode& error_code(){return error_code_;}
 
 private:
     FlvErrorCode error_code_;
     std::string msg_;
 };
+std::ostream & operator << (std::ostream& out, FlvException& e);
+
+
 
 #endif
