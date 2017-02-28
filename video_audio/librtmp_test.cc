@@ -9,6 +9,7 @@
 #include <librtmp/rtmp.h>
 
 #include "FlvHeader.h"
+#include "FlvTag.h"
 
 int64_t get_current_time_us(){
     struct timeval tv;
@@ -74,6 +75,12 @@ int main(int argc, char* argv[]){
             FlvHeader fh(buff, nRead);
             assert(fh.Verify());
             fh.Dump();
+
+            printf("first previous tag size: %u\n", FlvTag::FetchPreviousTagSize(buff + fh.kFlvHeaderLength, nRead - fh.kFlvHeaderLength));
+            
+            FlvTag ft(buff + FlvHeader::kFlvHeaderLength + FlvTag::kPreviousTagSizeTypeLength, 
+                nRead - FlvHeader::kFlvHeaderLength - FlvTag::kPreviousTagSizeTypeLength);
+            ft.Dump();
         }
         first_read = false;
 
