@@ -8,6 +8,8 @@
 #include <sys/time.h>
 #include <librtmp/rtmp.h>
 
+#include "FlvHeader.h"
+
 int64_t get_current_time_us(){
     struct timeval tv;
     gettimeofday(&tv, NULL);
@@ -63,9 +65,17 @@ int main(int argc, char* argv[]){
 
     int64_t start_time_us = get_current_time_us();
     int nRead = 0;
+    bool first_read = true;
     while (nRead = RTMP_Read(rtmp, buff, buff_size)){
         int nWrite = fwrite(buff, 1, nRead, fp);
         assert(nWrite == nRead);
+
+        if (first_read){
+            FlvHeader fh(buff, nRead);
+            assert(fh.Verify());
+            fh.Dump();
+        }
+        first_read = false;
 
         thisRecvedBytes += nRead;
 
