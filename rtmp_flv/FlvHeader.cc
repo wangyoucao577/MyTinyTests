@@ -7,11 +7,15 @@
 #include <typeinfo>
 
 #include "FlvHeader.h"
+#include "FlvCommon.h"
 
 #define FLV_VNAME(name) (#name)
 
 FlvHeader::FlvHeader(char* buff, int len){
-    assert(NULL != buff && len >= kFlvHeaderLength);
+    if (NULL == buff || len < kFlvHeaderLength) {
+        throw FlvException(kFlvErrorBufferEmptyOrTooLessData, "Don't have enough data to construct FlvHeader.");
+    }
+
     signature_f_ = buff[0];
     signature_l_ = buff[1];
     signature_v_ = buff[2];

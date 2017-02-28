@@ -8,8 +8,12 @@
 #include <sys/time.h>
 #include <librtmp/rtmp.h>
 
+#include <iostream>
+using namespace std;
+
 #include "FlvHeader.h"
 #include "FlvTag.h"
+#include "FlvCommon.h"
 
 int64_t get_current_time_us(){
     struct timeval tv;
@@ -72,15 +76,23 @@ int main(int argc, char* argv[]){
         assert(nWrite == nRead);
 
         if (first_read){
-            FlvHeader fh(buff, nRead);
-            assert(fh.Verify());
-            fh.Dump();
 
-            printf("first previous tag size: %u\n", FlvTag::FetchPreviousTagSize(buff + fh.kFlvHeaderLength, nRead - fh.kFlvHeaderLength));
+            try {
+                FlvHeader fh(buff, nRead);
+                assert(fh.Verify());
+                fh.Dump();
+
+                printf("first previous tag size: %u\n", FlvTag::FetchPreviousTagSize(buff + fh.kFlvHeaderLength, nRead - fh.kFlvHeaderLength));
+
+                FlvTag ft(buff + FlvHeader::kFlvHeaderLength + FlvTag::kPreviousTagSizeTypeLength,
+                    nRead - FlvHeader::kFlvHeaderLength - FlvTag::kPreviousTagSizeTypeLength);
+                ft.Dump();
+            }
+            catch (FlvException& e) {
+                cout << "FlvException catched, err:" << e.ErrorCode() << ", msg:" << e.msg() << endl;
+            }
+
             
-            FlvTag ft(buff + FlvHeader::kFlvHeaderLength + FlvTag::kPreviousTagSizeTypeLength, 
-                nRead - FlvHeader::kFlvHeaderLength - FlvTag::kPreviousTagSizeTypeLength);
-            ft.Dump();
         }
         first_read = false;
 

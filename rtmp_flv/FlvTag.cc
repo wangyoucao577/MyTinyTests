@@ -7,21 +7,28 @@
 #include <typeinfo>
 
 #include "FlvTag.h"
+#include "FlvCommon.h"
 
 #define FLV_VNAME(name) (#name)
 
 FlvTag::FlvTag(char* buff, int len){
-    assert(NULL != buff && len >= kMinTagLength);
+    if (NULL == buff || len < kMinTagLength) {
+        throw FlvException(kFlvErrorBufferEmptyOrTooLessData, "Don't have enough data to construct FlvTag.");
+    }
 
     filter_ = buff[0] & 0x20;
 
     //TODO: 暂未支持Encryption和FilterParams
-    assert(0 == filter_);
+    if (0 != filter_) {
+        throw FlvException(kFlvErrorNotImplemented, "EncryptionHeader and FilterParam are not implemented.");
+    }
 
     tag_type_ = buff[0] & 0x1F;
-    assert(kFlyTagTypeAudio == (FlvTagType)tag_type_
-        || kFlyTagTypeVideo == (FlvTagType)tag_type_
-        || kFlyTagTypeScriptData == (FlvTagType)tag_type_);
+    if (kFlyTagTypeAudio != (FlvTagType)tag_type_
+        && kFlyTagTypeVideo != (FlvTagType)tag_type_
+        && kFlyTagTypeScriptData != (FlvTagType)tag_type_) {
+        throw FlvException(kFlvErrorTagTypeInvalid, "Unknown TagType Value: " + std::to_string(tag_type_));
+    }
 
     data_size_ = ((buff[1] & 0xFF) << 16) | ((buff[2] & 0xFF) << 8) | (buff[3] & 0xFF);
     
@@ -62,7 +69,9 @@ void FlvTag::Dump()
 }
 
 uint32_t FlvTag::FetchPreviousTagSize(char * buff, int len){
-    assert(NULL != buff && len >= kPreviousTagSizeTypeLength);
+    if (NULL == buff || len < kPreviousTagSizeTypeLength) {
+        throw FlvException(kFlvErrorBufferEmptyOrTooLessData, "Don't have enough data to FetchPreviousTagSize.");
+    }
 
     uint32_t size;
     memcpy(&size, buff, sizeof(size));

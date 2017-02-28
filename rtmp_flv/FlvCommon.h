@@ -5,26 +5,26 @@
 #include <stdint.h>
 #include <string>
 
-enum FlvErrorCode{
+enum FlvErrorCode {
     kFlvErrorOK = 0,
 
     kFlvErrorNotImplemented,
     kFlvErrorBufferEmptyOrTooLessData,
     kFlvErrorTagTypeInvalid,
 
-}
+};
 
 class FlvException{
 public:
-    std::string explicit FlvException(FlvErrorCode err, std::string msg);
+    explicit FlvException(FlvErrorCode err, std::string msg):error_code_(err), msg_(msg){}
 
 public:
-    string msg(){return msg_;}
+    std::string msg(){return msg_;}
     FlvErrorCode ErrorCode(){return error_code_;}
 
 private:
     FlvErrorCode error_code_;
-    string msg_;
-}
+    std::string msg_;
+};
 
 #endif
