@@ -6,6 +6,8 @@
 #include <string>
 #include <iostream>
 
+#define FLV_VNAME(name) (#name)
+
 enum FlvErrorCode {
     kFlvErrorOK = 0,
 

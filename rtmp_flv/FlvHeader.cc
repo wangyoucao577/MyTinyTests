@@ -9,8 +9,6 @@
 #include "FlvHeader.h"
 #include "FlvCommon.h"
 
-#define FLV_VNAME(name) (#name)
-
 FlvHeader::FlvHeader(char* buff, int len){
     if (NULL == buff || len < kFlvHeaderLength) {
         throw FlvException(kFlvErrorBufferEmptyOrTooLessData, "Don't have enough data to construct FlvHeader.");

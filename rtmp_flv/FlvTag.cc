@@ -9,8 +9,6 @@
 #include "FlvTag.h"
 #include "FlvCommon.h"
 
-#define FLV_VNAME(name) (#name)
-
 FlvTag::FlvTag(char* buff, int len){
     if (NULL == buff || len < kMinTagLength) {
         throw FlvException(kFlvErrorBufferEmptyOrTooLessData, "Don't have enough data to construct FlvTag.");
