@@ -3,8 +3,8 @@
 #define FLV_TAG_H_
 
 #include "FlvCommon.h"
+#include "FlvTagHeader.h"
 
-class FlvTagHeader{};
 class FlvTagData{};
 
 enum FlvTagType{

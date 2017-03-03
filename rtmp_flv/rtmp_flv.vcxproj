@@ -145,12 +145,17 @@
     <ClCompile Include="FlvCommon.cc" />
     <ClCompile Include="FlvHeader.cc" />
     <ClCompile Include="FlvTag.cc" />
+    <ClCompile Include="FlvTagHeader.cc" />
     <ClCompile Include="librtmp_test.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FlvCommon.h" />
     <ClInclude Include="FlvHeader.h" />
     <ClInclude Include="FlvTag.h" />
+    <ClInclude Include="FlvTagHeader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

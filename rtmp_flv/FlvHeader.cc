@@ -25,7 +25,7 @@ FlvHeader::FlvHeader(char* buff, int len){
     memcpy(&data_offset_, buff + 5, sizeof(data_offset_));
     data_offset_ = ntohl(data_offset_);
 
-    cose_bytes_ = kFlvHeaderLength;
+    cost_bytes_ = kFlvHeaderLength;
 }
 
 bool FlvHeader::Verify(){

@@ -35,10 +35,10 @@ class FlvBase {
 public:
     virtual ~FlvBase(){}
 public:
-    uint32_t cose_bytes() { return cose_bytes_; }
+    uint32_t cost_bytes() { return cost_bytes_; }
 
 protected:
-    uint32_t cose_bytes_{0};
+    uint32_t cost_bytes_{0};
 };
 
 class FlvCommonUtils {

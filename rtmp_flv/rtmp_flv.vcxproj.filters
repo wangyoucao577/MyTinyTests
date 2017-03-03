@@ -27,6 +27,9 @@
     <ClCompile Include="librtmp_test.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FlvTagHeader.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FlvCommon.h">
@@ -38,5 +41,11 @@
     <ClInclude Include="FlvTag.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FlvTagHeader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

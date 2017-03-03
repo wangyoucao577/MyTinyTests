@@ -73,7 +73,7 @@ int main(int argc, char* argv[]){
                 FlvHeader fh(buff, nRead);
                 assert(fh.Verify());
                 fh.Dump();
-                offset += fh.cose_bytes();
+                offset += fh.cost_bytes();
 
                 printf("first previous tag size: %u\n", FlvTag::FetchPreviousTagSize(buff + offset, nRead - offset));
                 offset += FlvTag::kPreviousTagSizeTypeLength;

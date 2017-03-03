@@ -35,13 +35,15 @@ FlvTag::FlvTag(char* buff, int len){
 
     stream_id_ = ((buff[8] & 0xFF) << 16) | ((buff[9] & 0xFF) << 8) | (buff[10] & 0xFF);   //always 0
 
-    cose_bytes_ += kMinTagLength;
+    cost_bytes_ += kMinTagLength;
 
     //TODO: construct audio/video/script_data
     if ((FlvTagType)tag_type_ == kFlyTagTypeAudio){
-
+        tag_header_ = new FlvAudioTagHeader(buff + cost_bytes_, len - cost_bytes_);
+        cost_bytes_ += tag_header_->cost_bytes();
     }else if ((FlvTagType)tag_type_ == kFlyTagTypeVideo){
-
+        tag_header_ = new FlvVideoTagHeader(buff + cost_bytes_, len - cost_bytes_);
+        cost_bytes_ += tag_header_->cost_bytes();
     }else{  //script data
 
     }
