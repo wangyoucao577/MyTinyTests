@@ -1,6 +1,5 @@
 
 
-#include <stdio.h>
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
@@ -18,22 +17,22 @@ using namespace std;
 
 int main(int argc, char* argv[]){
     if (argc < 2){
-        printf("Usage:\n");
-        printf("librtmp_test <rtmp_url>\n");
+        cout << "Usage:" << endl;
+        cout << "librtmp_test <rtmp_url>" << endl;
         return 0;
     }
 
 #ifdef DUMP_FLV_FILE
     FILE *fp = fopen("rtmp.flv", "wb");
     if (!fp){
-        printf("Open file rtmp.flv failed\n");
+        cout << "Open file rtmp.flv failed" << endl;
         return -1;
     }
 #endif
 #ifdef DUMP_ES_FILE
     FILE *fp_es = fopen("video_audio.es", "wb");
     if (!fp_es) {
-        printf("Open file video_audio_es failed\n");
+        cout << "Open file video_audio_es failed" << endl;
         return -1;
     }
 #endif
@@ -44,7 +43,7 @@ int main(int argc, char* argv[]){
     rtmp->Link.timeout = 10;
 
     if (!RTMP_SetupURL(rtmp, argv[1])){
-        printf("SetupURL error\n");
+        cout << "SetupURL error" << endl;
         RTMP_Free(rtmp);
         return -1;
     }
@@ -52,24 +51,23 @@ int main(int argc, char* argv[]){
     RTMP_SetBufferMS(rtmp, 3600*1000);  //1hour
 
     if (!RTMP_Connect(rtmp, NULL)){
-        printf("RTMP_Connect error\n");
+        cout << "RTMP_Connect error" << endl;;
         RTMP_Free(rtmp);
         return -1;
     }
 
     if (!RTMP_ConnectStream(rtmp, 0)){
-        printf("RTMP_ConnectStream error\n");
+        cout << "RTMP_ConnectStream error" << endl;
         RTMP_Close(rtmp);
         RTMP_Free(rtmp);
         return -1;
     }
 
-    int buff_size = 5*1000*1000;//5MB
-    char* buff = (char*)malloc(buff_size);
-    memset(buff, 0, buff_size);
-
-    
     unsigned long long thisRecvedBytes = 0;
+    int buff_size = 5*1000*1000;//5MB
+    char* buff = new char[buff_size];
+    memset(buff, 0, buff_size);
+    
 
     int64_t start_time_us = FlvCommonUtils::GetCurrentTimeMillseconds();
     int nRead = 0;
@@ -77,14 +75,13 @@ int main(int argc, char* argv[]){
     int offset = 0;
     bool next_previous_tag_size = true;
     while (nRead = RTMP_Read(rtmp, buff + offset, buff_size - offset)){
-        printf("this recv bytes: %d\n", nRead);
+        cout << "this recv bytes: " << nRead <<  endl;
 
 #ifdef DUMP_FLV_FILE
         //FLVÐ´ÎÄ¼þ
         int nWrite = fwrite(buff + offset, 1, nRead, fp);
         assert(nWrite == nRead);
 #endif
-        
 
         //FLV½âÎö
         int useful_bytes = nRead + offset;
@@ -100,7 +97,7 @@ int main(int argc, char* argv[]){
                 first_read = false;
 
                 if (next_previous_tag_size) {
-                    printf("previous tag size: %u\n", FlvTag::FetchPreviousTagSize(buff + offset, useful_bytes - offset));
+                    cout << "previous tag size: " << FlvTag::FetchPreviousTagSize(buff + offset, useful_bytes - offset) << endl;
                     offset += FlvTag::kPreviousTagSizeTypeLength;
                 }
                 else {
@@ -137,7 +134,7 @@ int main(int argc, char* argv[]){
         int64_t curr_time_us = FlvCommonUtils::GetCurrentTimeMillseconds();
         int64_t delta_us = curr_time_us - start_time_us;
         if (delta_us >= 1000000){
-            printf("[rtmp recv kbps:%llu]\n", thisRecvedBytes * 8 * 1000 / delta_us);
+            cout << "[rtmp recv kbps:" << thisRecvedBytes * 8 * 1000 / delta_us << "]" << endl;
             start_time_us = curr_time_us;
             thisRecvedBytes = 0;
         }
@@ -156,7 +153,8 @@ int main(int argc, char* argv[]){
 #endif
 
     if (buff){
-        free(buff);
+        delete[] buff;
+        buff = nullptr;
     }
 
     if (rtmp){
