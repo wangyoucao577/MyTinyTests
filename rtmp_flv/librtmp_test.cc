@@ -26,6 +26,11 @@ int main(int argc, char* argv[]){
         printf("Open file rtmp.flv failed\n");
         return -1;
     }
+    FILE *fp_es = fopen("video_audio.es", "wb");
+    if (!fp_es) {
+        printf("Open file video_audio_es failed\n");
+        return -1;
+    }
 
 
     RTMP* rtmp = RTMP_Alloc();
@@ -92,7 +97,14 @@ int main(int argc, char* argv[]){
                 else {
                     FlvTag ft(buff + offset, useful_bytes - offset);
                     ft.Dump();
-                    offset += ft.cost_bytes();
+
+                    if (ft.GetTagType() == kFlyTagTypeAudio) {
+                        //write ES
+                        int es_write = fwrite(ft.GetDataPointer(), 1, ft.GetTagDataLength(), fp_es);
+                        assert(es_write == ft.GetTagDataLength());
+                    }
+
+                    offset += ft.cost_bytes();  //for header
                 }
                 next_previous_tag_size = !next_previous_tag_size;
             }
@@ -121,6 +133,9 @@ int main(int argc, char* argv[]){
 
     if (fp){
         fclose(fp);
+    }
+    if (fp_es) {
+        fclose(fp_es);
     }
 
     if (buff){

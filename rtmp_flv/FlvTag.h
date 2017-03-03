@@ -26,6 +26,10 @@ public:
     static uint32_t FetchPreviousTagSize(char * buff, int len);
     const static int kPreviousTagSizeTypeLength {4};
 
+    FlvTagType GetTagType();
+    char * GetDataPointer();
+    int GetTagDataLength();
+
 private:
     uint8_t reserved_ : 2;
     uint8_t filter_ : 1;
@@ -35,6 +39,9 @@ private:
     uint32_t stream_id_;
     FlvTagHeader * tag_header_ {nullptr};
     FlvTagData * tag_data_ {nullptr};
+
+    char * data_pointer_{ nullptr };
+    int data_length_{ 0 };
 };
 
 #endif

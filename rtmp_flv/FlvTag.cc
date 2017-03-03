@@ -36,16 +36,21 @@ FlvTag::FlvTag(char* buff, int len){
     stream_id_ = ((buff[8] & 0xFF) << 16) | ((buff[9] & 0xFF) << 8) | (buff[10] & 0xFF);   //always 0
 
     cost_bytes_ += kMinTagLength;
+    data_pointer_ = buff + kMinTagLength;
 
     //TODO: construct audio/video/script_data
     if ((FlvTagType)tag_type_ == kFlyTagTypeAudio){
         tag_header_ = new FlvAudioTagHeader(buff + cost_bytes_, len - cost_bytes_);
         //cost_bytes_ += tag_header_->cost_bytes();
+        data_length_ = data_size_ - tag_header_->cost_bytes();
+        data_pointer_ += tag_header_->cost_bytes();
     }else if ((FlvTagType)tag_type_ == kFlyTagTypeVideo){
         tag_header_ = new FlvVideoTagHeader(buff + cost_bytes_, len - cost_bytes_);
         //cost_bytes_ += tag_header_->cost_bytes();
+        data_length_ = data_size_ - tag_header_->cost_bytes();
+        data_pointer_ += tag_header_->cost_bytes();
     }else{  //script data
-
+        data_length_ = data_size_;
     }
 
     cost_bytes_ += data_size_;
@@ -85,4 +90,15 @@ uint32_t FlvTag::FetchPreviousTagSize(char * buff, int len){
     memcpy(&size, buff, sizeof(size));
     size = ntohl(size);
     return size;
+}
+
+FlvTagType FlvTag::GetTagType() {
+    return static_cast<FlvTagType>(tag_type_);
+}
+
+char * FlvTag::GetDataPointer() {
+    return data_pointer_;
+}
+int FlvTag::GetTagDataLength() {
+    return data_length_;
 }
