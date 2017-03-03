@@ -12,6 +12,8 @@ using namespace std;
 #include "FlvTag.h"
 #include "FlvCommon.h"
 
+#define DUMP_FLV_FILE
+#define DUMP_ES_FILE
 
 
 int main(int argc, char* argv[]){
@@ -21,16 +23,20 @@ int main(int argc, char* argv[]){
         return 0;
     }
 
+#ifdef DUMP_FLV_FILE
     FILE *fp = fopen("rtmp.flv", "wb");
     if (!fp){
         printf("Open file rtmp.flv failed\n");
         return -1;
     }
+#endif
+#ifdef DUMP_ES_FILE
     FILE *fp_es = fopen("video_audio.es", "wb");
     if (!fp_es) {
         printf("Open file video_audio_es failed\n");
         return -1;
     }
+#endif
 
 
     RTMP* rtmp = RTMP_Alloc();
@@ -71,11 +77,14 @@ int main(int argc, char* argv[]){
     int offset = 0;
     bool next_previous_tag_size = true;
     while (nRead = RTMP_Read(rtmp, buff + offset, buff_size - offset)){
+        printf("this recv bytes: %d\n", nRead);
 
+#ifdef DUMP_FLV_FILE
         //FLVÐ´ÎÄ¼þ
         int nWrite = fwrite(buff + offset, 1, nRead, fp);
         assert(nWrite == nRead);
-        printf("this recv bytes: %d\n", nRead);
+#endif
+        
 
         //FLV½âÎö
         int useful_bytes = nRead + offset;
@@ -99,9 +108,13 @@ int main(int argc, char* argv[]){
                     ft.Dump();
 
                     if (ft.GetTagType() == kFlyTagTypeAudio) {
+
+#ifdef DUMP_ES_FILE
                         //write ES
                         int es_write = fwrite(ft.GetDataPointer(), 1, ft.GetTagDataLength(), fp_es);
                         assert(es_write == ft.GetTagDataLength());
+#endif
+
                     }
 
                     offset += ft.cost_bytes();  //for header
@@ -131,12 +144,16 @@ int main(int argc, char* argv[]){
         
     }
 
+#ifdef DUMP_FLV_FILE
     if (fp){
         fclose(fp);
     }
+#endif
+#ifdef DUMP_ES_FILE
     if (fp_es) {
         fclose(fp_es);
     }
+#endif
 
     if (buff){
         free(buff);
