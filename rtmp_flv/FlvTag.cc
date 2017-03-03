@@ -40,13 +40,15 @@ FlvTag::FlvTag(char* buff, int len){
     //TODO: construct audio/video/script_data
     if ((FlvTagType)tag_type_ == kFlyTagTypeAudio){
         tag_header_ = new FlvAudioTagHeader(buff + cost_bytes_, len - cost_bytes_);
-        cost_bytes_ += tag_header_->cost_bytes();
+        //cost_bytes_ += tag_header_->cost_bytes();
     }else if ((FlvTagType)tag_type_ == kFlyTagTypeVideo){
         tag_header_ = new FlvVideoTagHeader(buff + cost_bytes_, len - cost_bytes_);
-        cost_bytes_ += tag_header_->cost_bytes();
+        //cost_bytes_ += tag_header_->cost_bytes();
     }else{  //script data
 
     }
+
+    cost_bytes_ += data_size_;
 }
 
 FlvTag::~FlvTag(){
@@ -68,6 +70,10 @@ void FlvTag::Dump()
     std::cout << "<" << typeid(*this).name() << "::" << __func__ << "> " << FLV_VNAME(data_size_) << ": " << data_size_ << std::endl;
     std::cout << "<" << typeid(*this).name() << "::" << __func__ << "> " << FLV_VNAME(timestamp_) << ": " << timestamp_ << std::endl;
     std::cout << "<" << typeid(*this).name() << "::" << __func__ << "> " << FLV_VNAME(stream_id_) << ": " << stream_id_ << std::endl;
+    std::cout << "<" << typeid(*this).name() << "::" << __func__ << "> " << FLV_VNAME(cost_bytes_) << ": " << cost_bytes_ << std::endl;
+    if (tag_header_) {
+        tag_header_->Dump();
+    }
 }
 
 uint32_t FlvTag::FetchPreviousTagSize(char * buff, int len){

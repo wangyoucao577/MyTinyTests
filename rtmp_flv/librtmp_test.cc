@@ -63,35 +63,52 @@ int main(int argc, char* argv[]){
     int64_t start_time_us = FlvCommonUtils::GetCurrentTimeMillseconds();
     int nRead = 0;
     bool first_read = true;
-    while (nRead = RTMP_Read(rtmp, buff, buff_size)){
-        int nWrite = fwrite(buff, 1, nRead, fp);
+    int offset = 0;
+    bool next_previous_tag_size = true;
+    while (nRead = RTMP_Read(rtmp, buff + offset, buff_size - offset)){
+
+        //FLV写文件
+        int nWrite = fwrite(buff + offset, 1, nRead, fp);
         assert(nWrite == nRead);
+        printf("this recv bytes: %d\n", nRead);
 
-        if (first_read){
-            int offset = 0;
+        //FLV解析
+        int useful_bytes = nRead + offset;
+        offset = 0;
+        while (offset < useful_bytes) {
             try {
-                FlvHeader fh(buff, nRead);
-                assert(fh.Verify());
-                fh.Dump();
-                offset += fh.cost_bytes();
+                if (first_read) {
+                    FlvHeader fh(buff + offset, useful_bytes - offset);
+                    assert(fh.Verify());
+                    fh.Dump();
+                    offset += fh.cost_bytes();
+                }
+                first_read = false;
 
-                printf("first previous tag size: %u\n", FlvTag::FetchPreviousTagSize(buff + offset, nRead - offset));
-                offset += FlvTag::kPreviousTagSizeTypeLength;
-
-                FlvTag ft(buff + offset, nRead - offset);
-                ft.Dump();
+                if (next_previous_tag_size) {
+                    printf("previous tag size: %u\n", FlvTag::FetchPreviousTagSize(buff + offset, useful_bytes - offset));
+                    offset += FlvTag::kPreviousTagSizeTypeLength;
+                }
+                else {
+                    FlvTag ft(buff + offset, useful_bytes - offset);
+                    ft.Dump();
+                    offset += ft.cost_bytes();
+                }
+                next_previous_tag_size = !next_previous_tag_size;
             }
             catch (FlvException& e) {
                 //cout << "FlvException catched, err:" << e.ErrorCode() << ", msg:" << e.msg() << endl;
                 cout << e << endl;
+                cout << "useful bytes: " << useful_bytes << ", offset: " << offset << endl;
+                break;
             }
-
-            
         }
-        first_read = false;
+        if (offset >= useful_bytes) {
+            offset = 0;
+        }
 
+        //码率统计
         thisRecvedBytes += nRead;
-
         int64_t curr_time_us = FlvCommonUtils::GetCurrentTimeMillseconds();
         int64_t delta_us = curr_time_us - start_time_us;
         if (delta_us >= 1000000){

@@ -18,7 +18,7 @@ FlvHeader::FlvHeader(char* buff, int len){
     signature_v_ = buff[2];
     version_ = buff[3];
     type_flags_reserved_5_ = 0;
-    type_flags_audio_ = buff[4] & 0x4;   //reference the standard
+    type_flags_audio_ = (buff[4] & 0x4) >> 2;   //reference the standard
     type_flags_reserved_1_ = 0;
     type_flags_video_ = buff[4] & 0x1;   //reference the standard
 
@@ -49,6 +49,8 @@ void FlvHeader::Dump(){
     std::cout << "<" << typeid(*this).name() << "::" << __func__ << "> " << FLV_VNAME(type_flags_reserved_1_) << ": " << static_cast<int>(type_flags_reserved_1_) << std::endl;
     std::cout << "<" << typeid(*this).name() << "::" << __func__ << "> " << FLV_VNAME(type_flags_video_) << ": " << static_cast<int>(type_flags_video_) << std::endl;
     std::cout << "<" << typeid(*this).name() << "::" << __func__ << "> " << FLV_VNAME(data_offset_) << ": " << static_cast<int>(data_offset_) << std::endl;
+    std::cout << "<" << typeid(*this).name() << "::" << __func__ << "> " << FLV_VNAME(cost_bytes_) << ": " << cost_bytes_ << std::endl;
+
 }
 
 bool FlvHeader::VideoExist(){
