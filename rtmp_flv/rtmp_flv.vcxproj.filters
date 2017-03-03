@@ -24,10 +24,13 @@
     <ClCompile Include="FlvTag.cc">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="librtmp_test.cc">
+    <ClCompile Include="FlvTagHeader.cc">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FlvTagHeader.cc">
+    <ClCompile Include="RTMPSession.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cc">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -42,6 +45,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FlvTagHeader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RTMPSession.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

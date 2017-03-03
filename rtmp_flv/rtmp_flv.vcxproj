@@ -146,13 +146,15 @@
     <ClCompile Include="FlvHeader.cc" />
     <ClCompile Include="FlvTag.cc" />
     <ClCompile Include="FlvTagHeader.cc" />
-    <ClCompile Include="librtmp_test.cc" />
+    <ClCompile Include="main.cc" />
+    <ClCompile Include="RTMPSession.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FlvCommon.h" />
     <ClInclude Include="FlvHeader.h" />
     <ClInclude Include="FlvTag.h" />
     <ClInclude Include="FlvTagHeader.h" />
+    <ClInclude Include="RTMPSession.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
