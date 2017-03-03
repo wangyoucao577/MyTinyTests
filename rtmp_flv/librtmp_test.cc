@@ -3,13 +3,13 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
-#include <librtmp/rtmp.h>
 
 using namespace std;
 
 #include "FlvHeader.h"
 #include "FlvTag.h"
 #include "FlvCommon.h"
+#include "RTMPSession.h"
 
 #define DUMP_FLV_FILE
 #define DUMP_ES_FILE
@@ -38,28 +38,16 @@ int main(int argc, char* argv[]){
 #endif
 
 
-    RTMP* rtmp = RTMP_Alloc();
-    RTMP_Init(rtmp);
-    rtmp->Link.timeout = 10;
-
-    if (!RTMP_SetupURL(rtmp, argv[1])){
-        cout << "SetupURL error" << endl;
-        RTMP_Free(rtmp);
-        return -1;
+    RTMPSession * rtmp_session = nullptr;
+    try {
+        rtmp_session = new RTMPSession(argv[1]);
+        rtmp_session->Connect();
     }
-    rtmp->Link.lFlags |= RTMP_LF_LIVE;
-    RTMP_SetBufferMS(rtmp, 3600*1000);  //1hour
-
-    if (!RTMP_Connect(rtmp, NULL)){
-        cout << "RTMP_Connect error" << endl;;
-        RTMP_Free(rtmp);
-        return -1;
-    }
-
-    if (!RTMP_ConnectStream(rtmp, 0)){
-        cout << "RTMP_ConnectStream error" << endl;
-        RTMP_Close(rtmp);
-        RTMP_Free(rtmp);
+    catch (RTMPSessionErrorCode e) {
+        cout << "Init RTMP session failed, errno " << static_cast<int>(e) << endl;
+        if (rtmp_session) {
+            delete rtmp_session;
+        }
         return -1;
     }
 
@@ -74,7 +62,7 @@ int main(int argc, char* argv[]){
     bool first_read = true;
     int offset = 0;
     bool next_previous_tag_size = true;
-    while (nRead = RTMP_Read(rtmp, buff + offset, buff_size - offset)){
+    while (nRead = rtmp_session->Read(buff + offset, buff_size - offset)){
         cout << "this recv bytes: " << nRead <<  endl;
 
 #ifdef DUMP_FLV_FILE
@@ -158,9 +146,10 @@ int main(int argc, char* argv[]){
         buff = nullptr;
     }
 
-    if (rtmp){
-        RTMP_Close(rtmp);
-        RTMP_Free(rtmp);
+    if (rtmp_session) {
+        rtmp_session->Close();
+        delete rtmp_session;
+        rtmp_session = nullptr;
     }
 
     return 0;
