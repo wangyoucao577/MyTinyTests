@@ -31,6 +31,16 @@ private:
 };
 std::ostream & operator << (std::ostream& out, FlvException& e);
 
+class FlvInterfaces {
+public:
+    virtual ~FlvInterfaces(){}
+public:
+    virtual uint32_t cose_bytes() = 0;
+
+protected:
+    uint32_t cose_bytes_{0};
+};
+
 class FlvCommonUtils {
 public:
     static int64_t GetCurrentTimeMillseconds();

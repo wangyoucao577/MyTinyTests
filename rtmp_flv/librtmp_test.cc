@@ -68,16 +68,17 @@ int main(int argc, char* argv[]){
         assert(nWrite == nRead);
 
         if (first_read){
-
+            int offset = 0;
             try {
                 FlvHeader fh(buff, nRead);
                 assert(fh.Verify());
                 fh.Dump();
+                offset += fh.cose_bytes();
 
-                printf("first previous tag size: %u\n", FlvTag::FetchPreviousTagSize(buff + fh.kFlvHeaderLength, nRead - fh.kFlvHeaderLength));
+                printf("first previous tag size: %u\n", FlvTag::FetchPreviousTagSize(buff + offset, nRead - offset));
+                offset += FlvTag::kPreviousTagSizeTypeLength;
 
-                FlvTag ft(buff + FlvHeader::kFlvHeaderLength + FlvTag::kPreviousTagSizeTypeLength,
-                    nRead - FlvHeader::kFlvHeaderLength - FlvTag::kPreviousTagSizeTypeLength);
+                FlvTag ft(buff + offset, nRead - offset);
                 ft.Dump();
             }
             catch (FlvException& e) {

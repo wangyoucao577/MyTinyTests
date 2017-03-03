@@ -35,6 +35,8 @@ FlvTag::FlvTag(char* buff, int len){
 
     stream_id_ = ((buff[8] & 0xFF) << 16) | ((buff[9] & 0xFF) << 8) | (buff[10] & 0xFF);   //always 0
 
+    cose_bytes_ += kMinTagLength;
+
     //TODO: construct audio/video/script_data
     if ((FlvTagType)tag_type_ == kFlyTagTypeAudio){
 
@@ -75,4 +77,8 @@ uint32_t FlvTag::FetchPreviousTagSize(char * buff, int len){
     memcpy(&size, buff, sizeof(size));
     size = ntohl(size);
     return size;
+}
+
+uint32_t FlvTag::cose_bytes() {
+    return cose_bytes_;
 }

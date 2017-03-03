@@ -2,9 +2,9 @@
 #ifndef FLV_HEADER_H_
 #define FLV_HEADER_H_
 
-#include <stdint.h>
+#include "FlvCommon.h"
 
-class FlvHeader{
+class FlvHeader : public FlvInterfaces {
 public:
     explicit FlvHeader(char* buff, int len);
 
@@ -15,6 +15,9 @@ public:
 public:
     bool VideoExist();
     bool AudioExist();
+
+public:
+    virtual uint32_t cose_bytes() override;
 
 public:
     const static int kFlvHeaderLength {9};

@@ -2,7 +2,7 @@
 #ifndef FLV_TAG_H_
 #define FLV_TAG_H_
 
-#include <stdint.h>
+#include "FlvCommon.h"
 
 class FlvTagHeader{};
 class FlvTagData{};
@@ -13,10 +13,12 @@ enum FlvTagType{
     kFlyTagTypeScriptData = 18,
 };
 
-class FlvTag{
+class FlvTag : public FlvInterfaces{
 public:
     explicit FlvTag(char* buff, int len);
     ~FlvTag();
+
+    virtual uint32_t cose_bytes() override;
 
 public:
     void Dump();

@@ -7,7 +7,6 @@
 #include <typeinfo>
 
 #include "FlvHeader.h"
-#include "FlvCommon.h"
 
 FlvHeader::FlvHeader(char* buff, int len){
     if (NULL == buff || len < kFlvHeaderLength) {
@@ -25,6 +24,8 @@ FlvHeader::FlvHeader(char* buff, int len){
 
     memcpy(&data_offset_, buff + 5, sizeof(data_offset_));
     data_offset_ = ntohl(data_offset_);
+
+    cose_bytes_ = kFlvHeaderLength;
 }
 
 bool FlvHeader::Verify(){
@@ -61,4 +62,8 @@ bool FlvHeader::AudioExist(){
         return true;
     }
     return false;
+}
+
+uint32_t FlvHeader::cose_bytes() {
+    return cose_bytes_;
 }
