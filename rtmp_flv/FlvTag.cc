@@ -38,7 +38,6 @@ FlvTag::FlvTag(char* buff, int len){
     cost_bytes_ += kMinTagLength;
     data_pointer_ = buff + kMinTagLength;
 
-    //TODO: construct audio/video/script_data
     if ((FlvTagType)tag_type_ == kFlyTagTypeAudio){
         tag_header_ = new FlvAudioTagHeader(buff + cost_bytes_, len - cost_bytes_);
         //cost_bytes_ += tag_header_->cost_bytes();
@@ -51,6 +50,8 @@ FlvTag::FlvTag(char* buff, int len){
         data_pointer_ += tag_header_->cost_bytes();
     }else{  //script data
         data_length_ = data_size_;
+
+        //TODO: analyze script data
     }
 
     cost_bytes_ += data_size_;

@@ -108,6 +108,7 @@ int main(int argc, char* argv[]){
 
 #ifdef DUMP_ES_FILE
                         //write ES
+                        //TODO: write的ES文件是否正确?? 待验证
                         int es_write = fwrite(ft.GetDataPointer(), 1, ft.GetTagDataLength(), fp_es);
                         assert(es_write == ft.GetTagDataLength());
 #endif
