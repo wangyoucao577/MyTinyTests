@@ -14,4 +14,29 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FlvCommon.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FlvHeader.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FlvTag.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="librtmp_test.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FlvCommon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FlvHeader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FlvTag.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
