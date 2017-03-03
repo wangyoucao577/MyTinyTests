@@ -63,7 +63,3 @@ bool FlvHeader::AudioExist(){
     }
     return false;
 }
-
-uint32_t FlvHeader::cose_bytes() {
-    return cose_bytes_;
-}

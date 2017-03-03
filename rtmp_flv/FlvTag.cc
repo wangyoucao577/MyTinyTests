@@ -78,7 +78,3 @@ uint32_t FlvTag::FetchPreviousTagSize(char * buff, int len){
     size = ntohl(size);
     return size;
 }
-
-uint32_t FlvTag::cose_bytes() {
-    return cose_bytes_;
-}

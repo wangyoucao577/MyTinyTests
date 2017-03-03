@@ -31,11 +31,11 @@ private:
 };
 std::ostream & operator << (std::ostream& out, FlvException& e);
 
-class FlvInterfaces {
+class FlvBase {
 public:
-    virtual ~FlvInterfaces(){}
+    virtual ~FlvBase(){}
 public:
-    virtual uint32_t cose_bytes() = 0;
+    uint32_t cose_bytes() { return cose_bytes_; }
 
 protected:
     uint32_t cose_bytes_{0};

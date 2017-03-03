@@ -13,12 +13,10 @@ enum FlvTagType{
     kFlyTagTypeScriptData = 18,
 };
 
-class FlvTag : public FlvInterfaces{
+class FlvTag : public FlvBase{
 public:
     explicit FlvTag(char* buff, int len);
     ~FlvTag();
-
-    virtual uint32_t cose_bytes() override;
 
 public:
     void Dump();

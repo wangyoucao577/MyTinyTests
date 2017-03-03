@@ -4,7 +4,7 @@
 
 #include "FlvCommon.h"
 
-class FlvHeader : public FlvInterfaces {
+class FlvHeader : public FlvBase {
 public:
     explicit FlvHeader(char* buff, int len);
 
@@ -15,9 +15,6 @@ public:
 public:
     bool VideoExist();
     bool AudioExist();
-
-public:
-    virtual uint32_t cose_bytes() override;
 
 public:
     const static int kFlvHeaderLength {9};
