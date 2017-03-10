@@ -64,7 +64,7 @@ void TestCase3() {
     EXIT_FUNC;
 }
 
-//C++11ÖĞ¿ÉÒÔ¸üÁé»î¸ü°²È«µÄMAX/MIN
+//C++11ä¸­å¯ä»¥æ›´çµæ´»æ›´å®‰å…¨çš„MAX/MIN
 #define CC11_MAX(a, b) ({   \
 auto _a = (a); \
 auto _b = (b); \
@@ -75,8 +75,8 @@ void TestCase4() {
     ENTER_FUNC;
 
 #if !defined(_MSC_VER)
-    //vs2015ÉÏËäÈ»¿ÉÒÔ±àÒëÍ¨¹ıÕâ¸öºê CC11_MAX, µ«È´²»ÄÜµ÷ÓÃ, Ã»¸ãÃ÷°×Ê²Ã´ÒâË¼..
-    //ÒÅÁôÎÊÌâ:
+    //vs2015ä¸Šè™½ç„¶å¯ä»¥ç¼–è¯‘é€šè¿‡è¿™ä¸ªå® CC11_MAX, ä½†å´ä¸èƒ½è°ƒç”¨, æ²¡ææ˜ç™½ä»€ä¹ˆæ„æ€..
+    //é—ç•™é—®é¢˜:
     auto max1 = CC11_MAX(3, 4);
     auto max2 = CC11_MAX(3, 4.0f);
 
@@ -97,7 +97,7 @@ void TestCase5() {
     int x = 10;
     int *y = &x;
 
-    //Ö¸ÕëÀàĞÍ
+    //æŒ‡é’ˆç±»å‹
     auto *a = &x;
     auto b = &x;
     auto c = y;
@@ -107,14 +107,14 @@ void TestCase5() {
     cout << "c type: " << typeid(c).name() << ", is_reference: " << is_reference<decltype(c)>::value << ", value: " << c << endl;
     cout << "d type: " << typeid(d).name() << ", is_reference: " << is_reference<decltype(d)>::value << ", value: " << d << endl;
 
-    //ÒıÓÃÀàĞÍ
+    //å¼•ç”¨ç±»å‹
     auto &e = x;
     auto &f = bar();
     cout << "e type: " << typeid(e).name() << ", is_reference: " << is_reference<decltype(e)>::value << ", value: " << e << endl;
     cout << "f type: " << typeid(f).name() << ", is_reference: " << is_reference<decltype(f)>::value << ", value: " << f << endl;
 
-    //cvÏŞÖÆ·û
-    //ÒÅÁôÎÊÌâ: ÈçºÎÅĞ¶ÏÀàĞÍÊÇ·ñ´øÓĞcvÏŞÖÆ·û? 
+    //cvé™åˆ¶ç¬¦
+    //é—ç•™é—®é¢˜: å¦‚ä½•åˆ¤æ–­ç±»å‹æ˜¯å¦å¸¦æœ‰cvé™åˆ¶ç¬¦? 
     const auto g = foo();
     const auto &h = foo();
     auto i = g;
@@ -171,8 +171,8 @@ void TestCase7() {
     cout << "c type: " << typeid(c).name() << endl;
 
     using test_size_t = decltype(sizeof(0));
-    using ptrint_t = decltype((int*)0); //Ö¸ÕëÀàĞÍ
-    using ptrdiff_t = decltype((int*)0 - (int*)0);  //Ö¸ÕëµÄ²îÖµµÄÀàĞÍÎªint
+    using ptrint_t = decltype((int*)0); //æŒ‡é’ˆç±»å‹
+    using ptrdiff_t = decltype((int*)0 - (int*)0);  //æŒ‡é’ˆçš„å·®å€¼çš„ç±»å‹ä¸ºint
     using nullptr_t = decltype(nullptr);
     using NULL_t = decltype(NULL);
 
@@ -211,7 +211,7 @@ void TestCase8() {
     EXIT_FUNC;
 }
 
-//ÄäÃûÀàĞÍ
+//åŒ¿åç±»å‹
 enum {K1, K2, K3} anon_e;
 union {
     decltype(anon_e) key;
@@ -225,8 +225,8 @@ struct {
 void TestCase9() {
     ENTER_FUNC;
 
-    //ÖØÓÃÄäÃûÀàĞÍµÄ¿ÉÄÜĞÔ
-    //²»½¨ÒéµÄÓÃ·¨
+    //é‡ç”¨åŒ¿åç±»å‹çš„å¯èƒ½æ€§
+    //ä¸å»ºè®®çš„ç”¨æ³•
 
     decltype(anon_s) a;
     cout << "decltype(anon_s) type: " << typeid(a).name() << endl;
@@ -235,7 +235,7 @@ void TestCase9() {
 }
 
 
-//¶ÔÓ¦ÓÚTestCase3µÄSum¸ÄÔì
+//å¯¹åº”äºTestCase3çš„Sumæ”¹é€ 
 template<typename T1, typename T2>
 void Sum2(T1 & t1, T2 & t2, decltype(t1 + t2) & s) {
     s = t1 + t2;
@@ -244,7 +244,7 @@ void Sum2(T1 & t1, T2 & t2, decltype(t1 + t2) & s) {
     cout << "s = t1+t2, type: " << typeid(s).name() << ", value: " << s << endl;
 }
 
-void TestCase10() { //¿ÉÓëTestCase3 ¹ØÁªÒ»Æğ¿´
+void TestCase10() { //å¯ä¸TestCase3 å…³è”ä¸€èµ·çœ‹
     ENTER_FUNC;
 
     int a = 3;
@@ -258,7 +258,7 @@ void TestCase10() { //¿ÉÓëTestCase3 ¹ØÁªÒ»Æğ¿´
     EXIT_FUNC;
 }
 
-//Í¨¹ıº¯Êıµ÷ÓÃ±í´ïÊ½µÄĞÎÊ½ÍÆµ¼ÀàĞÍ, Êµ¼Ê²¢²»»áµ÷ÓÃº¯Êı
+//é€šè¿‡å‡½æ•°è°ƒç”¨è¡¨è¾¾å¼çš„å½¢å¼æ¨å¯¼ç±»å‹, å®é™…å¹¶ä¸ä¼šè°ƒç”¨å‡½æ•°
 int test_hash(char*);
 void TestCase11() {
     ENTER_FUNC;
@@ -276,7 +276,7 @@ void TestCase12() {
     result_of<func()>::type f;
     cout << "result_of<func()>::type type: " << typeid(f).name() << endl;
 
-    //TODO: ÒÅÁôÎÊÌâ, result_of µÄÊµÏÖÑĞ¾¿ÏÂ
+    //TODO: é—ç•™é—®é¢˜, result_of çš„å®ç°ç ”ç©¶ä¸‹
 
     EXIT_FUNC;
 }
@@ -296,13 +296,13 @@ void TestCase13() {
     int && RvalRef();
     const bool Func(int);
 
-    //¹æÔò1, ²»´øÀ¨ºÅµÄ±ê¼Ç·û±í´ïÊ½»òÕßÀà³ÉÔ±·ÃÎÊ±í´ïÊ½, ÍÆµ¼³ö±í´ïÊ½Ëù¶ÔÓ¦µÄÀàĞÍ
-    //²»ÄÜÖ±½ÓÊ¹ÓÃÖØÔØº¯ÊıµÄº¯ÊıÃû
+    //è§„åˆ™1, ä¸å¸¦æ‹¬å·çš„æ ‡è®°ç¬¦è¡¨è¾¾å¼æˆ–è€…ç±»æˆå‘˜è®¿é—®è¡¨è¾¾å¼, æ¨å¯¼å‡ºè¡¨è¾¾å¼æ‰€å¯¹åº”çš„ç±»å‹
+    //ä¸èƒ½ç›´æ¥ä½¿ç”¨é‡è½½å‡½æ•°çš„å‡½æ•°å
     decltype(arr) var1;
     decltype(ptr) var2;
     decltype(s.d) var3;
     decltype(Overloaded(10)) var4;
-    //decltype(Overloaded) var5;    //±àÒë²»¹ı, ²»Ö§³ÖÖØÔØµÄº¯Êı
+    //decltype(Overloaded) var5;    //ç¼–è¯‘ä¸è¿‡, ä¸æ”¯æŒé‡è½½çš„å‡½æ•°
     decltype(NoOverload) var6;
     cout << "var1 type: " << typeid(var1).name() << endl;
     cout << "var2 type: " << typeid(var2).name() << endl;
@@ -310,19 +310,19 @@ void TestCase13() {
     cout << "var4 type: " << typeid(var4).name() << endl;
     cout << "var6 type: " << typeid(var6).name() << endl;
 
-    //·ñÔò, ¹æÔò2, ½«ÍöÖµ, ÍÆµ¼³öT&&
-    //ÒıÓÃÀàĞÍÒ»¶¨Òª³õÊ¼»¯, ·ñÔò¹ı²»ÁË±àÒë
+    //å¦åˆ™, è§„åˆ™2, å°†äº¡å€¼, æ¨å¯¼å‡ºT&&
+    //å¼•ç”¨ç±»å‹ä¸€å®šè¦åˆå§‹åŒ–, å¦åˆ™è¿‡ä¸äº†ç¼–è¯‘
     decltype(RvalRef()) var7 = 1;
     cout << "var7 type: " << typeid(var7).name() << ", is_rvalue_reference: " << is_rvalue_reference<decltype(RvalRef())>::value << endl;
 
-    //·ñÔò, ¹æÔò3, ×óÖµ, ÍÆµ¼ÎªÀàĞÍµÄ×óÖµÒıÓÃ
-    //ÒıÓÃÀàĞÍÒ»¶¨Òª³õÊ¼»¯, ·ñÔò¹ı²»ÁË±àÒë
+    //å¦åˆ™, è§„åˆ™3, å·¦å€¼, æ¨å¯¼ä¸ºç±»å‹çš„å·¦å€¼å¼•ç”¨
+    //å¼•ç”¨ç±»å‹ä¸€å®šè¦åˆå§‹åŒ–, å¦åˆ™è¿‡ä¸äº†ç¼–è¯‘
     decltype(true ? i : i) var8 = i;
     decltype((i)) var9 = i;
     decltype(++i) var10 = i;
     decltype(arr[3]) var11 = i;
     decltype(*ptr) var12 = i;
-    decltype("lval") var13 = "lval";    //×ÖÃæÖµ³£Á¿Îª×óÖµ
+    decltype("lval") var13 = "lval";    //å­—é¢å€¼å¸¸é‡ä¸ºå·¦å€¼
     cout << "var8 type: " << typeid(var8).name() << ", is_lvalue_reference: " << is_lvalue_reference<decltype(true ? i : i)>::value << endl;
     cout << "var9 type: " << typeid(var9).name() << ", is_lvalue_reference: " << is_lvalue_reference<decltype((i))>::value << endl;
     cout << "var10 type: " << typeid(var10).name() << ", is_lvalue_reference: " << is_lvalue_reference<decltype(++i)>::value << endl;
@@ -330,7 +330,7 @@ void TestCase13() {
     cout << "var12 type: " << typeid(var12).name() << ", is_lvalue_reference: " << is_lvalue_reference<decltype(*ptr)>::value << endl;
     cout << "var13 type: " << typeid(var13).name() << ", is_lvalue_reference: " << is_lvalue_reference<decltype("lval")>::value << endl;
 
-    //·ñÔò, ¹æÔò4, ÍÆµ¼Îª±¾ÀàĞÍ
+    //å¦åˆ™, è§„åˆ™4, æ¨å¯¼ä¸ºæœ¬ç±»å‹
     decltype(1) var14;
     decltype(i++) var15;
     decltype((Func(1))) var16;
@@ -339,20 +339,20 @@ void TestCase13() {
     cout << "var16 type: " << typeid(var16).name() << endl;
 
 
-    //CVÏŞÖÆ·û
+    //CVé™åˆ¶ç¬¦
     const int ci = 0;
     const struct si { int i; } si1{0};
     cout << "decltype(ci) is_const: " << is_const<decltype(ci)>::value << endl;
     cout << "decltype(si1) is_const: " << is_const<decltype(si1)>::value << endl;
-    cout << "decltype(si1.i) is_const: " << is_const<decltype(si1.i)>::value << endl;   //³ÉÔ±²¢²»»áÊÇconst
+    cout << "decltype(si1.i) is_const: " << is_const<decltype(si1.i)>::value << endl;   //æˆå‘˜å¹¶ä¸ä¼šæ˜¯const
 
 
     EXIT_FUNC;
 }
 
-//×·×Ù/ÍÆµ¼·µ»ØÀàĞÍµÄÓÃ·¨, autoÓëdecltypeµÄ×éºÏ
+//è¿½è¸ª/æ¨å¯¼è¿”å›ç±»å‹çš„ç”¨æ³•, autoä¸decltypeçš„ç»„åˆ
 template<typename T1, typename T2>
-auto Sum3(T1& t1, T2& t2) -> decltype(t1 + t2) {    //ÓëTestCase3ºÍTestCase10Ò»Æğ¿´
+auto Sum3(T1& t1, T2& t2) -> decltype(t1 + t2) {    //ä¸TestCase3å’ŒTestCase10ä¸€èµ·çœ‹
     cout << __func__ << "t1 type: " << typeid(t1).name() << ", value: " << t1 << endl;
     cout << __func__ << "t2 type: " << typeid(t2).name() << ", value: " << t2 << endl;
     cout << __func__ << "t1+t2, type: " << typeid(decltype(t1 + t2)).name() << ", value: " << t1 + t2 << endl;
@@ -382,7 +382,7 @@ void TestCase14() {
     EXIT_FUNC;
 }
 
-//C¸´ÔÓÉùÃ÷µÄc++11 styleÍÆµ¼ÀàĞÍĞ´·¨
+//Cå¤æ‚å£°æ˜çš„c++11 styleæ¨å¯¼ç±»å‹å†™æ³•
 int(*(*pf())())() {
     return nullptr;
 }
@@ -396,7 +396,7 @@ void TestCase15() {
     EXIT_FUNC;
 }
 
-// ×ª·¢
+// è½¬å‘
 double foo(int a) {
     return (double)a + 0.1;
 }
