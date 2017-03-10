@@ -11,6 +11,7 @@
 #include <type_traits>
 #include <typeinfo>
 #include <utility>
+#include <algorithm>
 #if defined(_MSC_VER)
 #include <conio.h>
 #endif
