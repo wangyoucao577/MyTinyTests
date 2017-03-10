@@ -39,6 +39,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SFINEA", "SFINEA\SFINEA.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "auto_decltype", "auto_decltype\auto_decltype.vcxproj", "{3F9D2493-1466-440D-96CB-CE8C131B19CF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "range_for", "range_for\range_for.vcxproj", "{433F5D69-F8C0-4973-AAFD-9854967C4339}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -191,6 +193,14 @@ Global
 		{3F9D2493-1466-440D-96CB-CE8C131B19CF}.Release|x64.Build.0 = Release|x64
 		{3F9D2493-1466-440D-96CB-CE8C131B19CF}.Release|x86.ActiveCfg = Release|Win32
 		{3F9D2493-1466-440D-96CB-CE8C131B19CF}.Release|x86.Build.0 = Release|Win32
+		{433F5D69-F8C0-4973-AAFD-9854967C4339}.Debug|x64.ActiveCfg = Debug|x64
+		{433F5D69-F8C0-4973-AAFD-9854967C4339}.Debug|x64.Build.0 = Debug|x64
+		{433F5D69-F8C0-4973-AAFD-9854967C4339}.Debug|x86.ActiveCfg = Debug|Win32
+		{433F5D69-F8C0-4973-AAFD-9854967C4339}.Debug|x86.Build.0 = Debug|Win32
+		{433F5D69-F8C0-4973-AAFD-9854967C4339}.Release|x64.ActiveCfg = Release|x64
+		{433F5D69-F8C0-4973-AAFD-9854967C4339}.Release|x64.Build.0 = Release|x64
+		{433F5D69-F8C0-4973-AAFD-9854967C4339}.Release|x86.ActiveCfg = Release|Win32
+		{433F5D69-F8C0-4973-AAFD-9854967C4339}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
