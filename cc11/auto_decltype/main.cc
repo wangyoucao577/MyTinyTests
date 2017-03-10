@@ -350,6 +350,73 @@ void TestCase13() {
     EXIT_FUNC;
 }
 
+//追踪/推导返回类型的用法, auto与decltype的组合
+template<typename T1, typename T2>
+auto Sum3(T1& t1, T2& t2) -> decltype(t1 + t2) {    //与TestCase3和TestCase10一起看
+    cout << __func__ << "t1 type: " << typeid(t1).name() << ", value: " << t1 << endl;
+    cout << __func__ << "t2 type: " << typeid(t2).name() << ", value: " << t2 << endl;
+    cout << __func__ << "t1+t2, type: " << typeid(decltype(t1 + t2)).name() << ", value: " << t1 + t2 << endl;
+    return t1 + t2;
+}
+
+template<typename T1, typename T2>
+auto Mul(T1& t1, T2& t2) -> decltype(t1 * t2) {    
+    cout << __func__ << "t1 type: " << typeid(t1).name() << ", value: " << t1 << endl;
+    cout << __func__ << "t2 type: " << typeid(t2).name() << ", value: " << t2 << endl;
+    cout << __func__ << "t1 * t2, type: " << typeid(decltype(t1 * t2)).name() << ", value: " << t1 * t2 << endl;
+    return t1 * t2;
+}
+
+void TestCase14() {
+    ENTER_FUNC;
+
+    int a = 3;
+    long b = 5;
+    float c = 1.0f, d = 2.0f;
+    
+    auto e = Sum3(a, b);
+    auto f = Sum3(c, d);
+
+    auto g = Mul(a, b);
+
+    EXIT_FUNC;
+}
+
+//C复杂声明的c++11 style推导类型写法
+int(*(*pf())())() {
+    return nullptr;
+}
+auto pf1() -> auto (*)() -> int(*)() {
+    return nullptr;
+}
+
+void TestCase15() {
+    ENTER_FUNC;
+    cout << "is_same pf pf1: " << is_same<decltype(pf), decltype(pf1)>::value << endl;
+    EXIT_FUNC;
+}
+
+// 转发
+double foo(int a) {
+    return (double)a + 0.1;
+}
+int foo(double b) {
+    return (int)b;
+}
+
+template <class T>
+auto Forward(T t) -> decltype(foo(t)) {
+    return foo(t);
+}
+
+void TestCase16() {
+    ENTER_FUNC;
+
+    cout << Forward(2) << endl;
+    cout << Forward(0.5f) << endl;
+
+    EXIT_FUNC;
+}
 
 int main() {
 
@@ -367,6 +434,9 @@ int main() {
     TestCase11();
     TestCase12();
     TestCase13();
+    TestCase14();
+    TestCase15();
+    TestCase16();
 
     ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS;
 }
