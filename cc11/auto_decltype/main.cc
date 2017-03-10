@@ -341,7 +341,7 @@ void TestCase13() {
 
     //CV限制符
     const int ci = 0;
-    const struct si { int i; } si1;
+    const struct si { int i; } si1{0};
     cout << "decltype(ci) is_const: " << is_const<decltype(ci)>::value << endl;
     cout << "decltype(si1) is_const: " << is_const<decltype(si1)>::value << endl;
     cout << "decltype(si1.i) is_const: " << is_const<decltype(si1.i)>::value << endl;   //成员并不会是const
