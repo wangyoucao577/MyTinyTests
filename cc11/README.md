@@ -427,12 +427,21 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 
 - 杂项  
 	- `C++98`中的`auto_ptr`在`C++11`中废弃, 由上述三个指针替代之  
-	- 可以使用`get_pointer_safety()`接口获取编译器是否支持最小垃圾回收, 但我的实验平台上`GCC-4.8.5`连这个接口都未支持, `VS2015`上可以获取出不支持最小垃圾回收.. 
+	- 可以使用`get_pointer_safety()`接口获取编译器是否支持最小垃圾回收, 但我的实验平台上`GCC-4.8.5`连这个接口都未支持, `VS2015`和`clang++`上可以获取出不支持最小垃圾回收.. 
 
+
+## 其他杂项  
+- 区分三个编译器的宏  
+	- `VS2015`: `_MSC_VER`  
+	- `Clang`: `__clang__`  
+	- `GCC`: `!defined(__clang__) && defined(__GUNC__)`  
+	- 注: `Clang`编译器覆盖了`GNUC`的宏, 故同时需要区分时, 对于`GCC`要确定没有定义`__clang__`  
 
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008  
 - http://en.cppreference.com/w/cpp/compiler_support  
+- http://stackoverflow.com/questions/28166565/detect-gcc-as-opposed-to-msvc-clang-with-macro  
+
 
 ### Contacts
 Author's Email: wangyoucao577@gmail.com.
