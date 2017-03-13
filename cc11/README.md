@@ -403,6 +403,21 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 		- 枚举  
 		- 静态常量  
 
+### intelligent_pointer_and_gc  
+`C++11`中的智能指针用法, 及垃圾回收相关的一些讨论.  
+
+- main.cc  
+入口及示例代码.  
+
+- `C++11`中的智能指针  
+	- `unique_ptr`: 唯一地引用某个堆内存, 不能拷贝赋值给其他指针(即不能让其他指针同时引用), 可以move给其他`unique_ptr`  
+	- `shared_ptr`: 可以多个指向同一块堆内存, 实现上采用引用计数的方式, 引用计数减为0时指向的内存会被析构  
+	- `weak_ptr`: 可以指向`shared_ptr`引用的内存, 但不影响引用计数, 从而可以用来判断内存的有效性  
+	均可以调用`reset()`接口显式地标记指针不再引用内存   
+
+- 杂项  
+	- `C++98`中的`auto_ptr`在`C++11`中废弃, 由上述三个指针替代之  
+
 
 ## Reference Links
 - http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
