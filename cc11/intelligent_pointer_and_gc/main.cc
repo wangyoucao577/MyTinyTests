@@ -57,11 +57,33 @@ void TestCase2() {  //shared_ptr, weak_ptr
     EXIT_FUNC;
 }
 
+void TestCase3() {
+    ENTER_FUNC;
+
+#ifndef __GNUC__
+    pointer_safety ps = get_pointer_safety();
+    switch (ps) {
+    case pointer_safety::strict:
+        cout << "pointer_safety value: " << (int)ps << ", support minimum GC." << endl;
+        break;
+    case pointer_safety::preferred:
+    case pointer_safety::relaxed:
+    default:
+        cout << "pointer_safety value: " << (int)ps << ", does not support minimum GC." << endl;
+        break;
+    }
+
+#endif
+
+    EXIT_FUNC;
+}
+
 int main() {
 
     // test codes
     TestCase1();
     TestCase2();
+    TestCase3();
 
     ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS;
 }
