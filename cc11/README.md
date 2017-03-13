@@ -431,7 +431,8 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 
 
 ## Reference Links
-- http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008
+- http://stackoverflow.com/questions/70013/how-to-detect-if-im-compiling-code-with-visual-studio-2008  
+- http://en.cppreference.com/w/cpp/compiler_support  
 
 ### Contacts
 Author's Email: wangyoucao577@gmail.com.
