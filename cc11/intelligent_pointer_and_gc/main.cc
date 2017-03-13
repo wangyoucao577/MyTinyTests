@@ -60,7 +60,8 @@ void TestCase2() {  //shared_ptr, weak_ptr
 void TestCase3() {
     ENTER_FUNC;
 
-#ifndef __GNUC__
+//#ifndef __GUNC__  //clang also defined __GUNC__
+#if defined(__clang__) || defined(_MSC_VER_)
     pointer_safety ps = get_pointer_safety();
     switch (ps) {
     case pointer_safety::strict:
