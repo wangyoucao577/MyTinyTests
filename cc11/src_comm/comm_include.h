@@ -12,6 +12,7 @@
 #include <typeinfo>
 #include <utility>
 #include <algorithm>
+#include <memory>
 #if defined(_MSC_VER)
 #include <conio.h>
 #endif
