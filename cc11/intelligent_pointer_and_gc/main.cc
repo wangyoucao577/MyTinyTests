@@ -61,7 +61,7 @@ void TestCase3() {
     ENTER_FUNC;
 
 //#ifndef __GUNC__  //clang also defined __GUNC__
-#if defined(__clang__) || defined(_MSC_VER_)
+#if defined(__clang__) || defined(_MSC_VER)
     pointer_safety ps = get_pointer_safety();
     switch (ps) {
     case pointer_safety::strict:
