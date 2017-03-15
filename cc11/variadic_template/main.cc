@@ -41,6 +41,12 @@ void TestCase1() {
     EXIT_FUNC;
 }
 
+//用C++11的变长模板定义Printf, 书上的例子
+//用法定义: Printf(const char* format, ...);
+//      匹配字符串定义: '%%'输出'%', 其他'%'接任意字符代表一个变长参数的匹配
+//      错误: 若多提供/少提供参数, 调试时断言, 生产环境抛出运行时异常
+//   其他: 变长参数可接收任意对象, 但要求按std方式重载 operator <<
+
 //理论上的Printf终止, 即变长参数都用完了
 void Printf(const char* s) {
     while (*s) {
@@ -70,7 +76,10 @@ void Printf(const char* s, T val, Args... args) {
 
 void TestCase2() {
     ENTER_FUNC;
-    Printf("Hello %_ %_ %% %_\n", string("world"), 10, 5.0f);
+    Printf("Hello %a %_ %% %d\n", string("world"), 10, 5.0f);
+
+    //nullptr居然没有直接提供 operator<< 的重载
+    cout << "nullptr: " << static_cast<void*>(nullptr) << endl;
     EXIT_FUNC;
 }
 
