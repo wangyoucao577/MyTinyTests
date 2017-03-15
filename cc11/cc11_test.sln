@@ -47,6 +47,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "intelligent_pointer_and_gc"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "constexpr", "constexpr\constexpr.vcxproj", "{57C3F089-4AA6-4738-9867-E990306DFB39}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "variadic_template", "variadic_template\variadic_template.vcxproj", "{69E19457-AC97-4F3D-B5A8-10053C52FC6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -231,6 +233,14 @@ Global
 		{57C3F089-4AA6-4738-9867-E990306DFB39}.Release|x64.Build.0 = Release|x64
 		{57C3F089-4AA6-4738-9867-E990306DFB39}.Release|x86.ActiveCfg = Release|Win32
 		{57C3F089-4AA6-4738-9867-E990306DFB39}.Release|x86.Build.0 = Release|Win32
+		{69E19457-AC97-4F3D-B5A8-10053C52FC6E}.Debug|x64.ActiveCfg = Debug|x64
+		{69E19457-AC97-4F3D-B5A8-10053C52FC6E}.Debug|x64.Build.0 = Debug|x64
+		{69E19457-AC97-4F3D-B5A8-10053C52FC6E}.Debug|x86.ActiveCfg = Debug|Win32
+		{69E19457-AC97-4F3D-B5A8-10053C52FC6E}.Debug|x86.Build.0 = Debug|Win32
+		{69E19457-AC97-4F3D-B5A8-10053C52FC6E}.Release|x64.ActiveCfg = Release|x64
+		{69E19457-AC97-4F3D-B5A8-10053C52FC6E}.Release|x64.Build.0 = Release|x64
+		{69E19457-AC97-4F3D-B5A8-10053C52FC6E}.Release|x86.ActiveCfg = Release|Win32
+		{69E19457-AC97-4F3D-B5A8-10053C52FC6E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
