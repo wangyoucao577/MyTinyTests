@@ -18,6 +18,7 @@
 #endif
 #include <stdint.h>
 #include <stdlib.h>
+#include <assert.h>
 
 using namespace std;
 
