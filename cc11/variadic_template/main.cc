@@ -60,6 +60,7 @@ void Printf(const char* s) {
 }
 template <typename T, typename... Args>
 void Printf(const char* s, T val, Args... args) {
+    //cout << endl << "invoke printf sizeof...(args) " << sizeof...(args) << endl;  //可使用 `sizeof...` 计算参数个数
     while (*s) {
         if (*s == '%' && *++s != '%') {     //%任意接一个非%的字符, 代表需要取出一个参数输出
             //其实并不需要显式地指定输出类型, 因为变长参数中已经带了
