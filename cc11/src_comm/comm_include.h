@@ -37,5 +37,33 @@ using namespace std;
 #define ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS (0)
 #endif
 
+#if defined(_MSC_VER)
+#ifdef COMM_EXPORTS
+#define SRC_COMM_DLL_API __declspec(dllexport)
+#else
+#define SRC_COMM_DLL_API __declspec(dllimport)
+#endif
+#else
+#define SRC_COMM_DLL_API 
+#endif
+
+SRC_COMM_DLL_API void CC11Printf(const char*);
+
+template <typename T, typename... Args>
+void CC11Printf(const char* s, T val, Args... args) {
+    //cout << endl << "invoke printf sizeof...(args) " << sizeof...(args) << endl;  //可使用 `sizeof...` 计算参数个数
+    while (*s) {
+        if (*s == '%' && *++s != '%') {     //%任意接一个非%的字符, 代表需要取出一个参数输出
+                                            //其实并不需要显式地指定输出类型, 因为变长参数中已经带了
+            cout << val;
+            return CC11Printf(++s, args...);    //取出下一个参数
+        }
+        cout << *s++;
+    }
+
+    //提供了多余的参数
+    assert(false);
+    throw runtime_error("extra arguments provided to Printf");
+}
 
 #endif
