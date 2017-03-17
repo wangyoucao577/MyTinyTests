@@ -13,6 +13,7 @@
 #include <utility>
 #include <algorithm>
 #include <memory>
+#include <cstdlib>
 #if defined(_MSC_VER)
 #include <conio.h>
 #endif
