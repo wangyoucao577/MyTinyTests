@@ -4,21 +4,26 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 
 ## 阅读与运行
 - `Windows`: 可通过`cc_test.sln`(`VS2015`)打开所有的工程及代码, 选择某个工程进行编译及运行即可.   
-- `Linux`, `MacOSX`: 
+- `Linux`: 
 	- 编译生成`libcomm.so`, 并创建软链接  
 	```   
 	cd src_comm/
-	<g++|clang++> [-m32] -std=c++11 -fPIC -shared -Wl,-soname,libcomm.so.0 comm_tools.cc -o libcomm.so.0.0.1  
+	g++ [-m32] -std=c++11 -fPIC -shared -Wl,-soname,libcomm.so.0 comm_tools.cc -o libcomm.so.0.0.1  
 	sudo ln -s <absolute_path>/src_comm/libcomm.so.0.0.1 /usr/local/lib/libcomm.so.0  
 	cd ..  
 	```  
 
 	- 编译生成待运行代码, 并运行即可  
 	```  
-	`<g++|clang++> [-m32] -std=c++11 -I../src_comm/ xxx.cc -lcomm` 
+	g++ [-m32] -std=c++11 -I../src_comm/ xxx.cc -lcomm  
 	./a.out    
 	```
+- `MacOSX`  
 	- (注: `MacOSX`上暂未创建XCode工程, 直接命令行编译运行)     
+	- `MacOSX`上的动态链接方式有所区别, 有空研究下再做成`.so/dylib`, 目前`libcomm`先直接源码编译  
+	```
+	clang++ [-m32] -std=c++11 -I../src_comm/ ../src_comm/comm_tools.cc xxx.cc   
+	```
 
 
 ## 实验平台
