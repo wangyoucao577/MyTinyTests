@@ -6,16 +6,16 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 - `Windows`: 可通过`cc_test.sln`(`VS2015`)打开所有的工程及代码, 选择某个工程进行编译及运行即可.   
 - `Linux`, `MacOSX`: 
 	- 编译生成`libcomm.so`, 并创建软链接  
-```c++  
-		- cd src_comm/
-		- <g++|clang++> [-m32] -std=c++11 -fPIC -shared -Wl,-soname,libcomm.so.0 comm_tools.cc -o libcomm.so.0.0.1  
-		- sudo ln -s <absolute_path>/src_comm/libcomm.so.0.0.1 /usr/local/lib/libcomm.so.0  
-		- cd ..  
+```shell  
+cd src_comm/
+<g++|clang++> [-m32] -std=c++11 -fPIC -shared -Wl,-soname,libcomm.so.0 comm_tools.cc -o libcomm.so.0.0.1  
+sudo ln -s <absolute_path>/src_comm/libcomm.so.0.0.1 /usr/local/lib/libcomm.so.0  
+cd ..  
 ```  
 	- 编译生成待运行代码, 并运行即可  
-```c++
-		- `<g++|clang++> [-m32] -std=c++11 -I../src_comm/ xxx.cc -lcomm` 编译
-		- ./a.out    
+```shell
+`<g++|clang++> [-m32] -std=c++11 -I../src_comm/ xxx.cc -lcomm` 
+./a.out    
 ```
 	- (注: `MacOSX`上暂未创建XCode工程, 直接命令行编译运行)     
 
