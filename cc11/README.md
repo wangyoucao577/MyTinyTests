@@ -492,6 +492,22 @@ sample code.
 	- 可使用`sizeof...`获取变长参数包中的参数个数;  
 	- TODO: 积累一定经验后再回顾进阶的内容...   
 
+### quick_exit   
+`C++11`中新增的`quick_exit`, 理论上比`exit`更加快速退出, 因为不会去调用析构释放内存, 而直接丢给操作系统.   
+
+- main.cc  
+入口及示例代码.   
+
+- 退出的几个函数对比: `terminate/abort/exit/quick_exit`   
+	- `terminate/abort`: 异常退出   
+		- 通常`terminate`的实现是调用`abort`   
+		- `terminate通常在出现没有捕获的异常时调用   
+		- `abort`被调用时会有`SIGABRT`信号   
+	- `exit/quick_exit`: 正常退出   
+		- 理论区别: `exit`会调用析构函数, `quick_exit`不会; 正常退出时操作系统会回收内存, 故若程序想要快速退出, 可以不去做显式的内存回收工作. 此即`quick_exit`的目标用途.   
+		- 实验结果: `exit`与`quick_exit`都没有调用析构, 所以可以认为没区别...    
+
+
 ## 其他杂项  
 - 区分三个编译器的宏  
 	- `VS2015`: `_MSC_VER`  
