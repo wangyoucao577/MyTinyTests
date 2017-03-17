@@ -505,7 +505,7 @@ sample code.
 		- `abort`被调用时会有`SIGABRT`信号   
 	- `exit/quick_exit`: 正常退出   
 		- 理论区别: `exit`会调用析构函数, `quick_exit`不会; 正常退出时操作系统会回收内存, 故若程序想要快速退出, 可以不去做显式的内存回收工作. 此即`quick_exit`的目标用途.   
-		- 实验结果: `exit`与`quick_exit`都没有调用析构, 所以可以认为没区别...    
+		- 实验结果: `exit`与`quick_exit`在vs2015和GCC下都没有调用析构, 所以可以认为没区别... 用clang++编译时没有找到`quick_exit`的支持       
 
 
 ## 其他杂项  
