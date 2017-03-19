@@ -14,6 +14,8 @@
 #include <algorithm>
 #include <memory>
 #include <cstdlib>
+#include <atomic>
+#include <thread>
 #if defined(_MSC_VER)
 #include <conio.h>
 #endif
