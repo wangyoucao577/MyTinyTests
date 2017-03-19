@@ -60,7 +60,7 @@ void TestCase3() {
     long flock_init = flock.test_and_set();   //ÖÃtrue
     cout << "ATOMIC_FLAG_INIT " << flock_init << endl;
     thread t1(f, 1);
-    this_thread::sleep_for(std::chrono::milliseconds());
+    this_thread::sleep_for(std::chrono::milliseconds(5));
     thread t2(g, 2);
 
     t1.join();
