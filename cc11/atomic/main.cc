@@ -1,5 +1,6 @@
 
 #include "comm_include.h"
+#include "TestCase4.h"
 
 atomic_llong total{ 0 };
 
@@ -73,6 +74,7 @@ int main() {
     TestCase1();
     TestCase2();
     TestCase3();
+    TestCase4();
 
     ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS;
 }

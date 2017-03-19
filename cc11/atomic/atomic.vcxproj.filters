@@ -18,5 +18,13 @@
     <ClCompile Include="main.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="TestCase4.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestCase4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
