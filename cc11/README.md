@@ -15,7 +15,7 @@ C++11新特性尝试的一些代码及工程集合, 测试代码主要来源于�
 
 	- 编译生成待运行代码, 并运行即可  
 	```  
-	g++ [-m32] -std=c++11 -I../src_comm/ xxx.cc -pthread -lcomm    
+	g++ [-m32] -std=c++11 -I../src_comm/ xxx.cc -lpthread -lcomm    
 	./a.out    
 	```
 - `MacOSX`  
@@ -519,8 +519,6 @@ sample code.
 	- `C++11`已内置了一部分atomic类型, 也可以使用`atomic<T>`自定义(需删除拷贝构造、移动构造和拷贝赋值运算符)   
 	- 关于特殊的`atomic_flag`类型: lock free, 仅有`test_and_set`与`clear`两种操作, 可用于实现自旋锁.   
 
-- 杂项   
-	- `G++`编译时需要加上`-pthread`编译选项, 以支持多线程(注意: 不是链接选项`-lpthread`, 两者是完全不同的)   
 
 ## 其他杂项  
 - 区分三个编译器的宏  
