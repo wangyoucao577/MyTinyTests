@@ -509,7 +509,7 @@ sample code.
 
 
 ### atomic   
-`C++11`中支持的原子类型的使用示例.  
+`C++11`中支持的原子类型, 及有关memory_order的使用示例.  
 
 - main.cc  
 入口及示例代码.   
@@ -519,6 +519,23 @@ sample code.
 	- `C++11`已内置了一部分atomic类型, 也可以使用`atomic<T>`自定义(需删除拷贝构造、移动构造和拷贝赋值运算符)   
 	- 关于特殊的`atomic_flag`类型: lock free, 仅有`test_and_set`与`clear`两种操作, 可用于实现自旋锁.   
 
+- memory_order   
+	- 保证代码顺序一致性的两点:  
+		- 编译器保证原子操作的指令间顺序不变   
+		- 处理器对原子操作的汇编指令的执行顺序不变(weak order处理器出于优化性能的考虑, 会打乱看似不影响的指令的执行顺序)   
+	- `C++11`中memory_order七种枚举值   
+		- `memory_order_relaxed`: 不对执行顺序做任何保证   
+		- `memory_order_acquire`: 本线程中, 所有后续的读操作必须在本条原子操作完成后才能执行   
+		- `memory_order_release`: 本线程中, 所有之前的写操作完成后才能执行本条原子操作   
+		- `memory_order_acq_rel`: 同时包含`memory_order_acquire`和`memory_order_release`   
+		- `memory_order_consume`: 本线程中, 所有后续的有关本原子类型的操作, 必须在本条原子操作完成之后执行   
+		- `memory_order_seq_cst`: 全部存取都按顺序执行(默认值)   
+	- 典型的4种内存顺序模型:  
+		- 顺序一致的   
+		- 松散的(relax)   
+		- release-acquire   
+		- release-consume   
+	- 对于并行编程来说, 可能最根本的还是思考如何将大量计算的问题, 按需分解成多个独立的、能够同时运行的部分, 并找出真正需要在线程间共享的数据   
 
 ## 其他杂项  
 - 区分三个编译器的宏  
