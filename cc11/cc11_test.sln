@@ -60,6 +60,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quick_exit", "quick_exit\qu
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "atomic", "atomic\atomic.vcxproj", "{44962C05-F94E-4B51-AC08-CC37588504DA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thread_local_storage", "thread_local_storage\thread_local_storage.vcxproj", "{4E62F6B1-9FAC-4F64-8A2C-2E8B59E1D512}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -284,6 +286,14 @@ Global
 		{44962C05-F94E-4B51-AC08-CC37588504DA}.Release|x64.Build.0 = Release|x64
 		{44962C05-F94E-4B51-AC08-CC37588504DA}.Release|x86.ActiveCfg = Release|Win32
 		{44962C05-F94E-4B51-AC08-CC37588504DA}.Release|x86.Build.0 = Release|Win32
+		{4E62F6B1-9FAC-4F64-8A2C-2E8B59E1D512}.Debug|x64.ActiveCfg = Debug|x64
+		{4E62F6B1-9FAC-4F64-8A2C-2E8B59E1D512}.Debug|x64.Build.0 = Debug|x64
+		{4E62F6B1-9FAC-4F64-8A2C-2E8B59E1D512}.Debug|x86.ActiveCfg = Debug|Win32
+		{4E62F6B1-9FAC-4F64-8A2C-2E8B59E1D512}.Debug|x86.Build.0 = Debug|Win32
+		{4E62F6B1-9FAC-4F64-8A2C-2E8B59E1D512}.Release|x64.ActiveCfg = Release|x64
+		{4E62F6B1-9FAC-4F64-8A2C-2E8B59E1D512}.Release|x64.Build.0 = Release|x64
+		{4E62F6B1-9FAC-4F64-8A2C-2E8B59E1D512}.Release|x86.ActiveCfg = Release|Win32
+		{4E62F6B1-9FAC-4F64-8A2C-2E8B59E1D512}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
