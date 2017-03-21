@@ -10,6 +10,7 @@ void TestCase_IsTrivial() {
     cout << is_trivial<Trivial3>::value << endl;
     cout << is_trivial<Trivial4>::value << endl;
     cout << is_trivial<Trivial5>::value << endl;
+    cout << is_trivial<Trivial6>::value << endl;
     cout << is_trivial<NonTrivial1>::value << endl;
     cout << is_trivial<NonTrivial2>::value << endl;
     cout << is_trivial<NonTrivial3>::value << endl;

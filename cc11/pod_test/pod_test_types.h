@@ -22,6 +22,13 @@ struct Trivial5 {
     static int y;
 };
 
+struct Trivial6 {
+    Trivial6() = default;
+    Trivial6(int i) : z(i) {}   //带参数的构造函数, 不影响是否trivial的判断
+    int z;
+};
+
+
 struct NonTrivial1 {
     NonTrivial1() : z(42) {}
     int z;
