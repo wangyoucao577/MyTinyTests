@@ -64,6 +64,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thread_local_storage", "thr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nullptr", "nullptr\nullptr.vcxproj", "{7B489AC8-47C3-48E8-A74F-EC7AB997C32A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "default_delete_control", "default_delete_control\default_delete_control.vcxproj", "{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -304,6 +306,14 @@ Global
 		{7B489AC8-47C3-48E8-A74F-EC7AB997C32A}.Release|x64.Build.0 = Release|x64
 		{7B489AC8-47C3-48E8-A74F-EC7AB997C32A}.Release|x86.ActiveCfg = Release|Win32
 		{7B489AC8-47C3-48E8-A74F-EC7AB997C32A}.Release|x86.Build.0 = Release|Win32
+		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Debug|x64.ActiveCfg = Debug|x64
+		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Debug|x64.Build.0 = Debug|x64
+		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Debug|x86.ActiveCfg = Debug|Win32
+		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Debug|x86.Build.0 = Debug|Win32
+		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Release|x64.ActiveCfg = Release|x64
+		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Release|x64.Build.0 = Release|x64
+		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Release|x86.ActiveCfg = Release|Win32
+		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
