@@ -570,6 +570,17 @@ sample code.
 - 杂项   
 	- `(void*)0`为`C`的用法, `C++`中并不支持   
 
+### default_delete_control   
+`C++11`中的默认函数控制 `=default`,`=delete`的用法.   
+
+- main.cc  
+入口及示例代码.   
+
+- 关键点   
+	- `=default`: 显式定义默认的版本(让编译器自动生成实现)   
+	- `=delete`: 显式删除默认的版本(指示编译器不要自动实现)   
+	- `explicit`与`=delete`不要同时使用, 没有任何好处, 会带来问题   
+
 ## 其他杂项  
 - 区分三个编译器的宏  
 	- `VS2015`: `_MSC_VER`  
