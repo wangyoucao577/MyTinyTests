@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <memory>
 #include <cstdlib>
+#include <cstddef>
 #include <atomic>
 #include <thread>
 #if defined(_MSC_VER)
@@ -22,6 +23,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
+
 
 using namespace std;
 
