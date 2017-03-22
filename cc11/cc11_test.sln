@@ -66,6 +66,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nullptr", "nullptr\nullptr.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "default_delete_control", "default_delete_control\default_delete_control.vcxproj", "{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "align", "align\align.vcxproj", "{FCEF4E4F-0A2F-4F3A-B608-AB91FD963764}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -314,6 +316,14 @@ Global
 		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Release|x64.Build.0 = Release|x64
 		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Release|x86.ActiveCfg = Release|Win32
 		{2474B2F9-3D4B-4E3C-AD9F-EDB37F4E6EC0}.Release|x86.Build.0 = Release|Win32
+		{FCEF4E4F-0A2F-4F3A-B608-AB91FD963764}.Debug|x64.ActiveCfg = Debug|x64
+		{FCEF4E4F-0A2F-4F3A-B608-AB91FD963764}.Debug|x64.Build.0 = Debug|x64
+		{FCEF4E4F-0A2F-4F3A-B608-AB91FD963764}.Debug|x86.ActiveCfg = Debug|Win32
+		{FCEF4E4F-0A2F-4F3A-B608-AB91FD963764}.Debug|x86.Build.0 = Debug|Win32
+		{FCEF4E4F-0A2F-4F3A-B608-AB91FD963764}.Release|x64.ActiveCfg = Release|x64
+		{FCEF4E4F-0A2F-4F3A-B608-AB91FD963764}.Release|x64.Build.0 = Release|x64
+		{FCEF4E4F-0A2F-4F3A-B608-AB91FD963764}.Release|x86.ActiveCfg = Release|Win32
+		{FCEF4E4F-0A2F-4F3A-B608-AB91FD963764}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
