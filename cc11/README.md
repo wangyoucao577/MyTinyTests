@@ -597,7 +597,21 @@ sample code.
 - 杂项   
 	- `C`中经常有些超长结构体需要对齐, 原来的典型做法是手动加入`padding`数据. 现在则可以使用对齐关键字/宏(`C11`中也有对应的支持).   
    
+### attribute   
+`C++11`中支持的通用属性扩展.  
 
+- main.cc  
+入口及示例代码.   
+
+- 关键点   
+	- `C++11`中目前定义了两个属性, 以帮助编译器可做优化:   
+		- [[noreturn]]: 告知编译器此函数不会返回(如必然抛出异常、中断程序等)   
+		- [[carries_dependency]]: 可携带memory_order信息, 未深入研究, 需要时再研究      
+	- 编译器对属性的一些扩展   
+		- `GNUC`: __attribute__ (( attribute-list ))   
+			- 常用属性如 noreturn, format, const, aligned等   
+		- `MSVC`: __declspec(extended-decl-modifier)   
+			- 常用属性如 noreturn, oninline, align, dllimport, dllexport等   
 
 
 
