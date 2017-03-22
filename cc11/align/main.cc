@@ -75,6 +75,7 @@ void TestCase2() {
     EXIT_FUNC;
 }
 
+#if !defined(__clang__)
 //固定容量的数组
 template <typename T>
 class FixedCapacityArray {
@@ -83,7 +84,7 @@ public:
         //在data中加入t变量
     }
     //...
-    char alignas(T) data[1024] = { 0 }; //实验结果: 在G++上alignas(T)被忽略了, 在vs2015上无法查看变量的对齐
+    char alignas(T) data[1024] = { 0 }; //实验结果: 在G++上alignas(T)被忽略了, 在vs2015上无法查看变量的对齐, 在mac上clang++编译不过
 };
 
 void TestCase3() {
@@ -106,14 +107,15 @@ void TestCase3() {
 
     EXIT_FUNC;
 }
-
+#endif
 
 int main() {
 
     // test codes
     TestCase1();
     TestCase2();
+#if !defined(__clang__)
     TestCase3();
-
+#endif
     ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS;
 }
