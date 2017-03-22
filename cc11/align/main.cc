@@ -51,7 +51,7 @@ void TestCase2() {
     auto& c = b;
     char d[1024];
 #ifndef _MSC_VER
-    //NOTE: VS2015ÖĞalignof¾ÓÈ»²»Ö§³Ö±äÁ¿×÷Îª²ÎÊı?!
+    //NOTE: VS2015ä¸­alignofå±…ç„¶ä¸æ”¯æŒå˜é‡ä½œä¸ºå‚æ•°?!
     cout << "alignof(int a): " << alignof(a) << endl;
     cout << "alignof(long long b): " << alignof(b) << endl;
     cout << "alignof(auto& c = b): " << alignof(c) << endl;
@@ -69,21 +69,21 @@ void TestCase2() {
 #endif // _MSC_VER
 
 #ifdef _MSC_VER
-    //G++ 4.9°æ±¾Ã²ËÆ²ÅÓĞÁË
+    //G++ 4.9ç‰ˆæœ¬è²Œä¼¼æ‰æœ‰äº†
     cout << "alignof(std::max_align_t): " << alignof(std::max_align_t) << endl;
 #endif
     EXIT_FUNC;
 }
 
-//¹Ì¶¨ÈİÁ¿µÄÊı×é
+//å›ºå®šå®¹é‡çš„æ•°ç»„
 template <typename T>
 class FixedCapacityArray {
 public:
     void push_back(T t) {
-        //ÔÚdataÖĞ¼ÓÈët±äÁ¿
+        //åœ¨dataä¸­åŠ å…¥tå˜é‡
     }
     //...
-    char alignas(T) data[1024] = { 0 }; //ÊµÑé½á¹û: ÔÚG++ÉÏalignas(T)±»ºöÂÔÁË, ÔÚvs2015ÉÏÎŞ·¨²é¿´±äÁ¿µÄ¶ÔÆë
+    char alignas(T) data[1024] = { 0 }; //å®éªŒç»“æœ: åœ¨G++ä¸Šalignas(T)è¢«å¿½ç•¥äº†, åœ¨vs2015ä¸Šæ— æ³•æŸ¥çœ‹å˜é‡çš„å¯¹é½
 };
 
 void TestCase3() {
