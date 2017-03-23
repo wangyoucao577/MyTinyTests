@@ -17,6 +17,7 @@
 #include <cstddef>
 #include <atomic>
 #include <thread>
+#include <locale>
 #if defined(_MSC_VER)
 #include <cuchar>
 #include <conio.h>

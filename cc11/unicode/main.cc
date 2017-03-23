@@ -47,6 +47,42 @@ void C11_ConvertMBCSToUTF16(const string& src, u16string& dst) {
 }
 #endif
 
+void CheckCodecvtSupport(const locale& lc) {
+    
+    bool can_cvt = has_facet<codecvt<wchar_t, char, mbstate_t>>(lc);
+    if (!can_cvt) {
+        cout << "Do not support char-wchar_t facet!" << endl;
+    }
+    else {
+        cout << "Support char-wchar_t facet" << endl;
+    }
+
+    can_cvt = has_facet<codecvt<char, char, mbstate_t>>(lc);
+    if (!can_cvt) {
+        cout << "Do not support char-char facet!" << endl;
+    }
+    else {
+        cout << "Support char-char facet" << endl;
+    }
+
+#if !defined(_MSC_VER)
+    can_cvt = has_facet<codecvt<char16_t, char, mbstate_t>>(lc);
+    if (!can_cvt) {
+        cout << "Do not support char-char16_t facet!" << endl;
+    }
+    else {
+        cout << "Support char-char16_t facet" << endl;
+    }
+
+    can_cvt = has_facet<codecvt<char32_t, char, mbstate_t>>(lc);
+    if (!can_cvt) {
+        cout << "Do not support char-char32_t facet!" << endl;
+    }
+    else {
+        cout << "Support char-char32_t facet" << endl;
+    }
+#endif
+}
 
 void TestCase1() {
     ENTER_FUNC;
@@ -69,6 +105,17 @@ void TestCase1() {
     C11_ConvertMBCSToUTF16(out, u16out);
     assert(u16src == u16out);
 #endif
+
+    //C++11 style 的转换接口
+    locale lc;
+    locale::global(lc);
+    cout << "current locale: " << lc.name() << endl;
+#if !defined(_MSC_VER)
+    lc = locale("en_US.UTF-8");
+#endif
+    CheckCodecvtSupport(lc);
+
+    //TODO: C++11 style 的接口示例, 需要系统性地梳理清楚
 
     EXIT_FUNC;
 }
