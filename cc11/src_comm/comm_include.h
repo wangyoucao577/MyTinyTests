@@ -18,6 +18,7 @@
 #include <atomic>
 #include <thread>
 #if defined(_MSC_VER)
+#include <cuchar>
 #include <conio.h>
 #endif
 #include <stdint.h>
