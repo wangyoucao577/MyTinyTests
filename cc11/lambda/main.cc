@@ -143,6 +143,53 @@ void TestCase5() {
     EXIT_FUNC;
 }
 
+//有operator()的const仿函数, 可与lambda等价
+//仿函数的特点: 可以有初始状态
+class _functor {
+public:
+    int operator() (int x, int y) const { return x + y; }
+};
+
+void TestCase6() {
+    ENTER_FUNC;
+
+    int a = 3, b = 4;
+    _functor f;
+    cout << f(a, b) << endl;
+    cout << [=] {return a + b; }() << endl;
+
+    EXIT_FUNC;
+}
+
+class Tax {
+private:
+    float rate_;
+    int base_;
+public:
+    Tax(float r, int b): rate_(r), base_(b){}
+    float operator()(float money)const { return (money - base_) * rate_; }
+};
+
+void TestCase7() {
+    ENTER_FUNC;
+    Tax high(0.4, 30000);
+    Tax middle(0.25, 20000);
+    cout << "tax over 3w: " << high(37500) << endl;
+    cout << "tax over 2w: " << middle(27500) << endl;
+
+    float rate = 0.4;
+    int base = 30000;
+    auto tax_lambda = [&](int money) {
+        return (money - base) * rate;
+    };
+    cout << "tax_lambda over 3w: " << tax_lambda(37500) << endl;
+    rate = 0.25;
+    base = 20000;
+    cout << "tax_lambda over 2w: " << tax_lambda(27500) << endl;
+
+    EXIT_FUNC;
+}
+
 int main() {
 
     // test codes
@@ -151,6 +198,8 @@ int main() {
     TestCase3();
     TestCase4();
     TestCase5();
+    TestCase6();
+    TestCase7();
 
     ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS;
     return 0;
