@@ -190,6 +190,149 @@ void TestCase7() {
     EXIT_FUNC;
 }
 
+vector<int> largeNums;
+const int kBound = 10;
+inline void LargeNumberFunc(int i) {
+    if (i > kBound) {
+        largeNums.push_back(i);
+    }
+}
+
+class LNums {
+public:
+    LNums(int bound) : kBound_ {bound} {}
+
+    void operator () (int i) const {
+        if (i > kBound_) {
+            largeNums.push_back(i);
+        }
+    }
+private:
+    const int kBound_{0};
+};
+
+void TestCase8() {
+    ENTER_FUNC;
+
+    vector<int> nums;
+    for (int i = 0; i < 1000; ++i)
+    {
+        nums.push_back(rand() % 100);
+    }
+
+    largeNums.clear();
+
+    //传统的for循环
+    for (auto itr = nums.begin(); itr != nums.end(); ++itr)
+    {
+        LargeNumberFunc(*itr);
+    }
+    cout << "largeNums size: " << largeNums.size() << endl;
+    largeNums.clear();
+
+    //for_each + 函数指针遍历
+    for_each(nums.begin(), nums.end(), LargeNumberFunc);
+    cout << "largeNums size: " << largeNums.size() << endl;
+    largeNums.clear();
+
+    //for_each + 仿函数
+    for_each(nums.begin(), nums.end(), LNums(kBound));
+    cout << "largeNums size: " << largeNums.size() << endl;
+    largeNums.clear();
+
+    //for_each + lambda遍历
+    for_each(nums.begin(), nums.end(), [](int i) {
+        if (i > kBound) {
+            largeNums.push_back(i);
+        }
+    });
+    cout << "largeNums size: " << largeNums.size() << endl;
+    largeNums.clear();
+
+    EXIT_FUNC;
+}
+
+void TestCase9(){
+    ENTER_FUNC;
+
+    vector<int> nums;
+    for (int i = 0; i < 1000; ++i)
+    {
+        nums.push_back(rand() % 100);
+    }
+    const int kVal = 10;
+
+    for (auto itr = nums.begin(); itr != nums.end(); ++itr)
+    {
+        if (*itr == kVal) { 
+            cout << "for find val: " << *itr << endl;
+            break; 
+        }
+    }
+
+    auto itr1 = find_if(nums.begin(), nums.end(), bind2nd(equal_to<int>(), kVal));
+    if (itr1 == nums.end()) {
+        cout << "find_if with bind2nd not found." << endl;
+    }
+    else {
+        cout << "find_if with bind2nd find val: " << *itr1 << endl;
+    }
+
+    auto itr2 = find_if(nums.begin(), nums.end(), [kVal](int i) {
+        return i == kVal;
+    });
+    if (itr2 == nums.end()) {
+        cout << "find_if with lambda not found." << endl;
+    }
+    else {
+        cout << "find_if with lambda find val: " << *itr2 << endl;
+    }
+
+    EXIT_FUNC;
+}
+
+void TestCase10() {
+    ENTER_FUNC;
+    vector<int> nums;
+    for (int i = 0; i < 10; ++i)
+    {
+        nums.push_back(rand() % 100);
+    }
+    const int kPlusVal = 10;
+
+    auto nums_print = [&nums] {
+        for (auto& i : nums)
+        {
+            cout << i << "\t";
+        }
+        cout << endl;
+    };
+
+    nums_print();
+
+    //传统的for
+    for (auto i = nums.begin(); i != nums.end(); ++i)
+    {
+        *i += kPlusVal;
+    }
+    nums_print();
+
+    // plus<int>() 仅返回了加法结果, 而没有改变迭代器中的内容
+    for_each(nums.begin(), nums.end(), bind2nd(plus<int>(), kPlusVal));
+    nums_print();
+
+    // transform 会将结果写入到第三个参数的迭代中
+    transform(nums.begin(), nums.end(), nums.begin(), bind2nd(plus<int>(), kPlusVal));
+    nums_print();
+
+    for_each(nums.begin(), nums.end(), [kPlusVal](int &i) {
+        i += kPlusVal;
+    });
+    nums_print();
+
+    EXIT_FUNC;
+}
+
 int main() {
 
     // test codes
@@ -200,6 +343,9 @@ int main() {
     TestCase5();
     TestCase6();
     TestCase7();
+    TestCase8();
+    TestCase9();
+    TestCase10();
 
     ROUTINE_BEFORE_EXIT_MAIN_ON_WINOWS;
     return 0;
