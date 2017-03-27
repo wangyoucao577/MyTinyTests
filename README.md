@@ -122,6 +122,10 @@
 ### [C] matching_machine   
 TODO: 
 
+### [C/C++] epoll_test   
+高性能IO的实验, 包括Linux下`epoll`的使用, 及规划中的windows下的`IOCP`的实验.   
+- [epoll_test](epoll_test/README.md)   
+
 ### [C++11] cc11
 `C++11`新特性尝试的一些代码及工程集合.  
 - [cc11_test](cc11/README.md)
