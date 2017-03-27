@@ -191,3 +191,6 @@ Wechat刚刚开源的`Mars`库, 学习与测试的一些实验代码.
 
 ### [Windows_bat] automatic_power_on_off.bat
   自动定时开关机测试的小工具, 使用`serial_power_on_off.py`控制继电器进行实际的上电/断电控制, 在`Windows_bat`中实现定时循环.
+
+### [Tools] vimrc   
+我的`.vimrc`文件, 慢慢攒使用习惯及进阶.   
