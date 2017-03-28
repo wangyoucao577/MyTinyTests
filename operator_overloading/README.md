@@ -10,11 +10,12 @@
 			- `VIM - Vi IMproved 7.4 (2013 Aug 10, compiled Jun 10 2014 06:55:55)`    
 
 	- 阅读  
-		- `vim -S mysession.vim`   
+		- `vim -S SalesData_session.vim`   
+		- `vim -S StrVec_session.vim`   
 
 	- 编译与运行   
 		```
-		g++ -std=c++11 SalesData.cc main.cc    
+		g++ -std=c++11 SalesData.cc StrVec.cc main.cc    
 		./a.out   
 		```   
 
@@ -53,6 +54,7 @@
 - 杂项   
 	- 复合赋值运算符, 如`operator +=`, 既可以定义为类的成员函数, 也可以定义为普通的函数, 未调用时可以同时定义, 但一旦有调用代码就会分不清重载的哪个. 定义为类的成员函数, 实现上会更方便, 使用上没有区别. 故定义为类的成员函数更好.      
 	- 输入运算符`>>`重载时, 应注意检查并处理输入错误.   
+	- `C++11`在传递`const T& a`时, 要求`a`只能调用带`const`标示的函数, 否则默认会报`error: passing ‘xxx’ as ‘this’ argument of ‘xxxxx’ discards qualifiers [-fpermissive]`, 需要注意   
 
 ## Reference Links
 
