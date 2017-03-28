@@ -29,9 +29,11 @@ std::istream& operator >> (std::istream& in, SalesData& data){
 
 
 SalesData operator + (const SalesData& first, const SalesData& second){
-    SalesData d(0, 0);
-    d.set_price(first.price() + second.price());
-    d.set_quantity(first.quantity() + second.quantity());
+    SalesData d = first;
+    
+    // 使用 operator += 来实现 operator + 的技巧
+    // 因为若要定义 operator +, 一般都会定义 operator +=
+    d += second;
     return d;
 }
 
