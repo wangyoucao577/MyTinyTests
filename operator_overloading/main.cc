@@ -10,6 +10,13 @@ int main(){
     cin >> d;
     cout << d << endl;
 
+    SalesData a(10, 100), b(11, 101);
+    d = a + b;
+    cout << d << endl;
+
+    d += a;
+    cout << d << endl;
+
     return 0;
 }
 

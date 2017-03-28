@@ -16,6 +16,9 @@ public:
     void set_price(int p) { price_ = p; }
     void set_quantity(int q) { quantity_ = q; } 
 
+public:  
+    SalesData& operator += (const SalesData& second);
+
 private:
     int price_ {0};
     int quantity_ {0};
@@ -24,7 +27,7 @@ private:
 std::ostream& operator << (std::ostream& out, const SalesData& data);
 std::istream& operator >> (std::istream& in, SalesData& data);
 SalesData operator + (const SalesData& first, const SalesData& second);
-SalesData& operator += (SalesData& first, const SalesData& second);
+//SalesData& operator += (SalesData& first, const SalesData& second);
 
 #endif
 
