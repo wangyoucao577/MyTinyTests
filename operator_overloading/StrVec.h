@@ -10,7 +10,9 @@ class StrVec{
 public:
     // 重载 operator= 以支持initializer_list赋值(不是初始化)
     StrVec& operator = (std::initializer_list<std::string>);
-
+    
+    // 重载 operator= 以支持拷贝赋值
+    StrVec& operator= (const StrVec&);
 public:
     std::string ToString() const;
 

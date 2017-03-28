@@ -11,6 +11,11 @@ StrVec& StrVec::operator = (initializer_list<string> il){
 }
 
 
+StrVec& StrVec::operator= (const StrVec& sv){
+    cout << "invoke copy operator= sample" << endl;
+    return *this;
+}
+
 string StrVec::ToString() const{
     string s{"{ "};
     for (auto & i : this->vec_){

@@ -29,6 +29,9 @@ void TestCase2(){
     cout << "sv = " << sv << endl;
     sv = {"abc", "efg", "testtest"};
     cout << "sv = " << sv << endl;
+    
+    StrVec sv2;
+    sv2 = sv;
 }
 
 int main(){
