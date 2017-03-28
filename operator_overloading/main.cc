@@ -1,8 +1,9 @@
 
 #include "SalesData.h"
+#include "StrVec.h"
 using namespace std;
 
-int main(){
+void TestCase1(){
 
     SalesData d(100, 1000);
     cout << d << endl;
@@ -20,6 +21,20 @@ int main(){
     cout << "a == b ? " << (a == b ? "True" : "False") << endl;
     cout << "a != b ? " << (a != b ? "True" : "False") << endl;
 
-    return 0;
 }
 
+void TestCase2(){
+
+    StrVec sv;
+    cout << "sv = " << sv << endl;
+    sv = {"abc", "efg", "testtest"};
+    cout << "sv = " << sv << endl;
+}
+
+int main(){
+
+    TestCase1();
+    TestCase2();
+
+    return 0;
+}
