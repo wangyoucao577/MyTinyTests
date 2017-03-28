@@ -55,6 +55,7 @@ bool operator == (const SalesData& first, const SalesData& second){
 
 
 bool operator != (const SalesData& first, const SalesData& second){
-    return !operator==(first, second);
-
+    //既可以直接运算符隐式调用, 也可以显式调用
+    return !(first == second);
+    //return !operator==(first, second);
 }
