@@ -17,12 +17,13 @@ std::ostream& operator << (std::ostream& out, const SalesData& data)
 
 
 std::istream& operator >> (std::istream& in, SalesData& data){
-    int val = 0;
-    in >> val;
-    data.set_price(val);
+    int val1, val2;
+    in >> val1 >> val2;
+    if (in){    //若输入失败, 则忽略
+        data.set_price(val1);
+        data.set_quantity(val2);
+    }
 
-    in >> val;
-    data.set_quantity(val);
     return in;
 }
 
