@@ -43,3 +43,18 @@ SalesData& operator += (SalesData& first, const SalesData& second){
     first.set_quantity(first.quantity() + second.quantity());
     return first;
 }*/
+
+
+bool operator == (const SalesData& first, const SalesData& second){
+    if (first.price() == second.price()
+        &&  first.quantity() == second.quantity()){
+        return true;
+    }
+    return false;
+}
+
+
+bool operator != (const SalesData& first, const SalesData& second){
+    return !operator==(first, second);
+
+}

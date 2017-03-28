@@ -27,7 +27,11 @@ private:
 std::ostream& operator << (std::ostream& out, const SalesData& data);
 std::istream& operator >> (std::istream& in, SalesData& data);
 SalesData operator + (const SalesData& first, const SalesData& second);
+// operator += 应定义为类的成员函数更加合适, 因为改动了对象本身
 //SalesData& operator += (SalesData& first, const SalesData& second);
+
+bool operator == (const SalesData& first, const SalesData& second);
+bool operator != (const SalesData& first, const SalesData& second);
 
 #endif
 

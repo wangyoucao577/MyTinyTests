@@ -17,6 +17,9 @@ int main(){
     d += a;
     cout << d << endl;
 
+    cout << "a == b ? " << (a == b ? "True" : "False") << endl;
+    cout << "a != b ? " << (a != b ? "True" : "False") << endl;
+
     return 0;
 }
 
