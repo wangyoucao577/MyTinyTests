@@ -1,6 +1,8 @@
 
 #include "SalesData.h"
 #include "StrVec.h"
+#include "PrintString.h"
+#include "ReadString.h"
 using namespace std;
 
 void TestCase1(){
@@ -50,10 +52,39 @@ void TestCase2(){
     cout << sv3[0] << endl;
 } 
 
+void TestCase3(){
+
+    string s1 = "test1";
+    string s2 = "test2";    
+
+    PrintString info;
+    info(s1);
+    info(s2);
+    PrintString err(cerr, '\n');
+    err(s1);
+    err(s2);
+
+    vector<string> vs;
+    ReadString r;
+    while (true){
+        string s = r();
+        if (s.empty() || s == string("quit")){
+            break;
+        }
+        vs.push_back(s);
+    }
+
+    for(auto i : vs){
+        info(i);
+    }
+
+}
+
 int main(){
 
     TestCase1();
     TestCase2();
+    TestCase3();
 
     return 0;
 }
