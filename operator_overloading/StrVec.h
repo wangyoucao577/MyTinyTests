@@ -13,6 +13,16 @@ public:
     
     // 重载 operator= 以支持拷贝赋值
     StrVec& operator= (const StrVec&);
+
+    // 重载 operator[] 的常量与非常量版本
+    // 以供const和非const的StrVec对象调用
+    std::string& operator[](std::size_t n){
+        return vec_[n];
+    }
+    const std::string& operator[](std::size_t n) const{
+        return vec_[n];
+    }
+
 public:
     std::string ToString() const;
 

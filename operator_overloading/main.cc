@@ -32,7 +32,12 @@ void TestCase2(){
     
     StrVec sv2;
     sv2 = sv;
-}
+
+    const StrVec sv3 = sv;
+    sv[0] = "zero";
+    cout << sv[0] << endl;
+    cout << sv3[0] << endl;
+} 
 
 int main(){
 
