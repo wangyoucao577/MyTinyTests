@@ -19,6 +19,15 @@ public:
 public:  
     SalesData& operator += (const SalesData& second);
 
+    // operator ++/-- overloading
+    // NOTE: 以这个类的含义, 本不应该定义这两个操作符, 这里仅做示例, 懒得定义新类了
+    // operator++/-- 前置
+    // operator++/--(int) 后置
+    SalesData& operator++();
+    SalesData& operator--();
+    SalesData operator++(int);
+    SalesData operator--(int);
+
 private:
     int price_ {0};
     int quantity_ {0};

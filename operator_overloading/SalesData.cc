@@ -59,3 +59,29 @@ bool operator != (const SalesData& first, const SalesData& second){
     return !(first == second);
     //return !operator==(first, second);
 }
+
+SalesData& SalesData::operator++(){
+    ++price_;
+    ++quantity_;
+    return *this;
+}
+
+
+SalesData& SalesData::operator--(){
+    --price_;
+    --quantity_;
+    return *this;
+}
+
+SalesData SalesData::operator++(int){
+    SalesData tmp(*this);
+    ++(*this);
+    return tmp;
+}
+
+SalesData SalesData::operator--(int){
+    SalesData tmp(*this);
+    --(*this);
+    return tmp;
+}
+

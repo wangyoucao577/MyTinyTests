@@ -21,6 +21,17 @@ void TestCase1(){
     cout << "a == b ? " << (a == b ? "True" : "False") << endl;
     cout << "a != b ? " << (a != b ? "True" : "False") << endl;
 
+    // 自增自减
+    SalesData aaa(123, 4567);
+    cout << "orginal aaa(123, 4567): " << aaa << endl;
+    cout << "++aaa : " << ++aaa << endl;
+    cout << "--aaa : " << --aaa << endl;
+    cout << "aaa++ : " << aaa++ << endl;
+    cout << "aaa-- : " << aaa-- << endl;
+    cout << "aaa : " << aaa << endl;
+    //显式调用
+    cout << "aaa.operator++() : " << aaa.operator++() << endl;  //前置 
+    cout << "aaa.operator++(0): " << aaa.operator++(0) << endl; //后置
 }
 
 void TestCase2(){
