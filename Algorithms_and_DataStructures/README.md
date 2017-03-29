@@ -20,8 +20,8 @@
   
 ### [C] matching_machine_hankerrank.c   
 
-
 ### [C++] sparse_arrays_hankerrank.cc   
+### [C++] dynamic_array_hankerrank.cc   
 
 
 ## Reference Links
