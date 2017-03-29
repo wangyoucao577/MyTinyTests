@@ -27,6 +27,12 @@
 ### [C++] tree_preorder_traversal_hankerrank.cc   
 hankerrank上的"Tree: Preorder Traversal" challenge. 本程序在此处仅编译, 无运行相关代码. 因为需要构造树, 故仅在Hankerrank上进行运行测试.   
 
+- `preOrder`   
+普通的非递归实现, 不允许用STL的`set`, 逻辑有点复杂.   
+
+- `preOrder2`   
+递归实现, 简洁明了.    
+
 
 ## Reference Links
 - https://www.hackerrank.com/   
