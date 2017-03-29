@@ -49,6 +49,17 @@ void preOrder(node *root) {
     
 }
 
+// 递归的实现, 简洁明了...
+void preOrder2(node* root){
+
+    if (root){
+        cout << root->data << " ";
+
+        preOrder2(root->left);
+        preOrder2(root->right);
+    }
+
+}
     
 int main(){
 
