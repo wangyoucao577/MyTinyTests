@@ -4,6 +4,10 @@
 
 # 说明
 
+### [C/C++] Alogrithms_and_DataStructures   
+算法与数据结构的一些实验代码, 来源包括但不限于《算法导论》、hankerrank、leecode, etc.   
+[alogrithms_and_datastructures](Alogrithms_and_DataStructures/README.md)   
+
 ### [C#] CheckGateway
 
 基于C#的Console, VS2015中实现, 检查本机Gateway设置. 网络初学者经常会出现误设置多个网关导致一些网络异常的情况，此小工具可检查本机Gateway设置是否仅为一条，若为一条则认为设置正确，否则提示设置错误.
@@ -117,10 +121,8 @@
   `Windows`上原生支持单字符获取, 但`Unix`系系统上一般都需要按回车后整行供程序获取. 这两个小例子实验了下`Linux`上单字符获取的方法(来源《Expert C Programming》 8.6节), 其中`c_getchar_sttyraw.c`是通过`stty`程序改变`terminal`属性的方法, `c_getchar_curses.c`则是基于`libcurses`库实现, 链接时应加上`-lcurses`. (此功能很少的可能性用到, 故未深究其原理. 有需要时再研究.)
 
 - c_determin_sign.c  
-  `C`语言判断变量/值/类型是有符号还是无符号类型的实验, 来自《Expert C Programming》. 综合书上和网上的一些提示, 给出的三种方法. 其中方法1和方法2都有其固有的缺陷, 主要是不能支持`char/unsigned char/short/unsigned short`这几种低于4字节的类型, 因为`C`的表达式默认类型提升. 方法三目前基本比较完美, 原理也简单. (实验环境:`CentOS 7 64bit, GCC-4.8.5`)
-  
-### [C] matching_machine   
-TODO: 
+  `C`语言判断变量/值/类型是有符号还是无符号类型的实验, 来自《Expert C Programming》. 综合书上和网上的一些提示, 给出的三种方法. 其中方法1和方法2都有其固有的缺陷, 主要是不能支持`char/unsigned char/short/unsigned short`这几种低于4字节的类型, 因为`C`的表达式默认类型提升. 方法三目前基本比较完美, 原理也简单. (实验环境:`CentOS 7 64bit, GCC-4.8.5`)   
+
 
 ### [C/C++] epoll_test   
 高性能IO的实验, 包括Linux下`epoll`的使用, 及规划中的windows下的`IOCP`的实验.   
