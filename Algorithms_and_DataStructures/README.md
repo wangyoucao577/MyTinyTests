@@ -21,7 +21,11 @@
 ### [C] matching_machine_hankerrank.c   
 
 ### [C++] sparse_arrays_hankerrank.cc   
+
 ### [C++] dynamic_array_hankerrank.cc   
+
+### [C++] tree_preorder_traversal_hankerrank.cc   
+hankerrank上的"Tree: Preorder Traversal" challenge. 本程序在此处仅编译, 无运行相关代码. 因为需要构造树, 故仅在Hankerrank上进行运行测试.   
 
 
 ## Reference Links
