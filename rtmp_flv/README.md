@@ -37,10 +37,19 @@ FLV协议规定, 每个FlvTag, 总是以FlvTagHeader开始. 根据FLV标准进�
 - FlvCommon.cc/h       
 此功能中的一些通用功能实现, 包括`FlvException`及时间计算等.   
 
-## Flv标准图例   
-TODO:   
+## 音视频码流层次与Flv标准图例(参考自雷霄骅的blog)   
+- 封装格式数据在视频播放器中的位置如下所示   
+![1](1.png)  
+
+- FLV封装格式是由一个FLV Header文件头和一个一个的Tag组成的。Tag中包含了音频数据以及视频数据。 FLV的结构如下图所示, 具体可参照FLV标准      
+![2](2.png)
 
 ## Reference Link:  
+- http://blog.csdn.net/leixiaohua1020/article/details/17934487   
+- http://blog.csdn.net/leixiaohua1020/article/details/50535082   
+- https://rtmpdump.mplayerhq.hu/   
+- https://rtmpdump.mplayerhq.hu/librtmp.3.html   
+
 
 ### Contacts   
 Author's Email: wangyoucao577@gmail.com.
