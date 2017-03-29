@@ -3,6 +3,7 @@
 #include "StrVec.h"
 #include "PrintString.h"
 #include "ReadString.h"
+#include <algorithm>
 using namespace std;
 
 void TestCase1(){
@@ -73,11 +74,9 @@ void TestCase3(){
         }
         vs.push_back(s);
     }
-
-    for(auto i : vs){
-        info(i);
-    }
-
+    
+    for_each(vs.begin(), vs.end(), info);
+    cout << endl;
 }
 
 int main(){
