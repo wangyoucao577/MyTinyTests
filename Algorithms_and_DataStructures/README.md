@@ -40,6 +40,15 @@ leecode上的 String to Integer (atoi).
 ### [C++] reversewords_leecode.cc 
 leecode上的 Reverse Words in a String.   
 
+### [C++] divide_two_integers.cc   
+leecode上的 Divide Two Integers, 要求不用已带的除、乘、模操作来实现十进制的除法. 
+
+- 我的实现方法1:   
+	本是直接用十进制循环减法来做, 但数字较大时计算很慢, 超出了leecode的Time Limit;   
+- 我的实现方法2:   
+	改进方法是转为二进制后, 用二进制减法来替代. 二进制的移位操作大大减少了原十进制的循环次, 从而提高了效率;   
+
+- TODO: 实现逻辑过于复杂, 且过多的特殊处理, 试试是否有更简便直观的实现    
 
 ## Reference Links
 - https://www.hackerrank.com/   
