@@ -48,8 +48,6 @@ leecode上的 Divide Two Integers, 要求不用已带的除、乘、模操作来
 - 我的实现方法2:   
 	改进方法是转为二进制后, 用二进制减法来替代. 二进制的移位操作大大减少了原十进制的循环次, 从而提高了效率;   
 
-- TODO: 实现逻辑过于复杂, 且过多的特殊处理, 试试是否有更简便直观的实现    
-
 ## Reference Links
 - https://www.hackerrank.com/   
 - https://leetcode.com/   
