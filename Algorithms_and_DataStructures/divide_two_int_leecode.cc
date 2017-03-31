@@ -2,97 +2,54 @@
 #include <iostream>
 #include <climits>
 #include <assert.h>
+#include <stdlib.h>
 using namespace std;
 
 class Solution {
 public:
     int divide(int dividend, int divisor) {
-        if (divisor == 0){ 
+        if (divisor == 0 || (dividend == INT_MIN && divisor == -1)){ 
             return INT_MAX;
-        }   
-        if (dividend == divisor){
-            return 1;
         }  
-        if (divisor == INT_MIN){
-            return 0;
-        }
-        if (divisor == 1){
-            return dividend;
-        }else if (divisor == -1){
-            return dividend == INT_MIN ? INT_MAX : -dividend;
-        }
-                                                                                                                                    
-        bool val_positive = true;
-        int val = 0;
 
-        bool append_1 = false;
-        if (dividend == INT_MIN){
-            append_1 = true;
-            dividend += 1;
-        }
-                 
-        //convert to positive to calculate
-        if ((dividend > 0 && divisor < 0)){
+        bool val_positive = true;
+        if ((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)){
             val_positive = false;
-            divisor = -divisor;
-        }else if (dividend < 0 && divisor > 0){
-            val_positive = false;
-            dividend = -dividend;
-        }else if (dividend < 0 && divisor < 0){
-            dividend = -dividend;
-            divisor = -divisor;
-        }
+        }    
+    
+        long long int lldividend = llabs(dividend);
+        long long int lldivisor = llabs(divisor);
+        long long int val = 0;
+        cout << lldividend << endl; 
         
         /* 二进制左右移位计算除法  */ 
         
-        //先取得divisor的二进制位数
-        int divisor_bits = 0;
-        int tmp_divisor = divisor;
-        while (tmp_divisor != 0){
-            tmp_divisor >>= 1;
-            divisor_bits += 1;
-        }
-
-        //把被除数左移到手算的开始除的位置
         int left = 0;
-        int lefted_divisor = divisor;
-        while (     dividend > lefted_divisor 
-                &&  dividend > ((lefted_divisor << 1) & 0x7FFFFFFF)
-                //已经忽略了符号位的影响, 故最多左移30bits
-                &&  left + 1 + divisor_bits < (sizeof(int) * 8))
+        long long int lefted_divisor = lldivisor;
+        while (     lldividend > lefted_divisor 
+                &&  lldividend >= ((lefted_divisor << 1)))
         {
             lefted_divisor <<= 1;
             left += 1;
         }
+        cout << left << ", " << lefted_divisor << endl;
 
         //二进制除
         do {
-            if (dividend >= lefted_divisor){
-                val += 1 << left;
-                dividend -= lefted_divisor;
+            if (lldividend >= lefted_divisor){
+                val |= ((long long int)1 << left);
+                lldividend -= lefted_divisor;
             }
             --left;
             lefted_divisor >>= 1; 
         }while(left >= 0);         
         /* 二进制左右移位计算除法  */ 
         
-        /* 加法判断接近除数
-        while (dividend >= divisor){
-            dividend -= divisor;
-            val += 1;
-        }  */ 
-        
         if (!val_positive){
             val = -val;
-        }  
-         
-        if (append_1 && dividend + 1 >= divisor){
-            if (val_positive){
-                if (val != INT_MAX){
-                    val += 1;
-                }
-            }else {
-                val += (-1);
+        }else {  
+            if (val > INT_MAX){
+                val = INT_MAX;
             }
         }
         return val;
