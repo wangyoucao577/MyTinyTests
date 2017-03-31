@@ -20,7 +20,6 @@ public:
         long long int lldividend = llabs(dividend);
         long long int lldivisor = llabs(divisor);
         long long int val = 0;
-        cout << lldividend << endl; 
         
         /* 二进制左右移位计算除法  */ 
         
@@ -32,7 +31,6 @@ public:
             lefted_divisor <<= 1;
             left += 1;
         }
-        cout << left << ", " << lefted_divisor << endl;
 
         //二进制除
         do {
@@ -47,11 +45,7 @@ public:
         
         if (!val_positive){
             val = -val;
-        }else {  
-            if (val > INT_MAX){
-                val = INT_MAX;
-            }
-        }
+        } 
         return val;
     }
 };
