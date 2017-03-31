@@ -22,25 +22,19 @@ public:
         long long int val = 0;
         
         /* 二进制左右移位计算除法  */ 
-        
-        int left = 0;
-        long long int lefted_divisor = lldivisor;
-        while (     lldividend > lefted_divisor 
-                &&  lldividend >= ((lefted_divisor << 1)))
-        {
-            lefted_divisor <<= 1;
-            left += 1;
+       
+        while (lldividend >= lldivisor){ 
+            long long int llv = lldivisor; 
+            int offset = 0;
+
+            while (lldividend >= (llv << 1)){
+                llv <<= 1;
+                offset += 1;
+            }
+            lldividend -= llv;
+            val |= ((long long int)1 << offset);
         }
 
-        //二进制除
-        do {
-            if (lldividend >= lefted_divisor){
-                val |= ((long long int)1 << left);
-                lldividend -= lefted_divisor;
-            }
-            --left;
-            lefted_divisor >>= 1; 
-        }while(left >= 0);         
         /* 二进制左右移位计算除法  */ 
         
         if (!val_positive){
