@@ -58,7 +58,7 @@ def main():
     #get indicated files
     to_check_files_path_list = []
     for suffix in to_check_files_suffix:
-        (file_name_list, file_path_list) = scan_folder_to_get_indicated_files(dirpath, suffix)
+        (file_name_list, file_path_list) = scan_folder_to_get_indicated_files(dirpath, suffix, False)
         to_check_files_path_list += file_path_list
     #print "to check files path: "
     #print to_check_files_path_list
