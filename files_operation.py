@@ -92,22 +92,22 @@ def do_mkdir(dir_path):
 """
     return file name and file path list
 """
-def scan_folder_to_get_indicated_files(folder_path, wildcard, look_in_sub_folders):
+def scan_folder_to_get_indicated_files(folder_path, wildcard):
     file_name_list = []
     file_path_list = []
     #print "Start Scan \"" + folder_path + "\", suffix--->\"" + wildcard + "\""
     for root, dirs, files in os.walk(folder_path):
-        for folder in dirs:
-            (sub_file_name_list, sub_file_path_list) = scan_folder_to_get_indicated_files(os.path.join(folder_path, folder), wildcard, look_in_sub_folders)
-            file_name_list += sub_file_name_list
-            file_path_list += sub_file_path_list
         for name in files:
             #if wildcard in name:
             name_suffix = "." + name.split('.')[-1]
             if name_suffix == wildcard:
-                #print(name)
-                file_name_list.append(name)
-                file_path_list.append(os.path.join(root,name))
+                file_path = os.path.join(root,name)
+                if file_path in file_path_list:
+                    print "Warning: repeated file found, path-->" + file_path
+                else:
+                    #print(name)
+                    file_name_list.append(name)
+                    file_path_list.append(file_path)
           
     #print "End Scan \"" + folder_path + "\", suffix--->\"" + wildcard + "\"\n\n"
     return (file_name_list, file_path_list)
