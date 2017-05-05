@@ -1,6 +1,8 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include "math_lib/math_lib.h"
+
 using namespace std;
 
 int power(int base, int exponent){
@@ -29,7 +31,7 @@ int main(int argc, char* argv[]){
     int base = atoi(argv[1]);
     int exponent = atoi(argv[2]);
 
-    cout << power(base, exponent) << endl;
+    cout << power2(base, exponent) << endl;
 
     return 0;
 }
