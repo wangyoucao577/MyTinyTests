@@ -17,7 +17,7 @@ if [ ! -d ${BUILD_FOLDER} ]; then
 fi
 
 cd ${BUILD_FOLDER}
-cmake ..
+cmake -DCMAKE_CONFIG_FILE=${CMAKE_GENERATED_CONFIG} ..
 make
 cd ..
 

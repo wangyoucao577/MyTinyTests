@@ -21,8 +21,8 @@ option(USE_MY_MATH_LIB "use my math lib" ON)
 
 # configs for project, should after default value definition in option
 configure_file (
-    "${PROJECT_SOURCE_DIR}/cmake_config.h.in"
-    "${PROJECT_SOURCE_DIR}/cmake_config.h"
+    "${PROJECT_SOURCE_DIR}/${CMAKE_CONFIG_FILE}.in"
+    "${PROJECT_SOURCE_DIR}/${CMAKE_CONFIG_FILE}"
 )
 
 if (USE_MY_MATH_LIB)
