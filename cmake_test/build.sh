@@ -1,10 +1,12 @@
 #!/bin/bash
 
+CMAKE_GENERATED_CONFIG="cmake_config.h"
 BUILD_FOLDER="./build"
 
 if [ $# -ge 1 ]; then
     if [ $1 = "clean" ]; then
         rm -rf ${BUILD_FOLDER}
+        rm -f ${CMAKE_GENERATED_CONFIG}
         exit 0
     fi
 fi
