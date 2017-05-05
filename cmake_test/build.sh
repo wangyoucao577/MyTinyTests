@@ -3,11 +3,16 @@
 CMAKE_GENERATED_CONFIG="cmake_config.h"
 BUILD_FOLDER="./build"
 
+BUILD_TYPE="Release"
+
 if [ $# -ge 1 ]; then
     if [ $1 = "clean" ]; then
         rm -rf ${BUILD_FOLDER}
         rm -f ${CMAKE_GENERATED_CONFIG}
         exit 0
+    fi
+    if [ $1 = "debug" ]; then
+        BUILD_TYPE="Debug"
     fi
 fi
 
@@ -17,7 +22,7 @@ if [ ! -d ${BUILD_FOLDER} ]; then
 fi
 
 cd ${BUILD_FOLDER}
-cmake -DCMAKE_CONFIG_FILE=${CMAKE_GENERATED_CONFIG} ..
+cmake -DCMAKE_CONFIG_FILE=${CMAKE_GENERATED_CONFIG} -DCMAKE_BUILD_TYPE=${BUILD_TYPE}  ..
 make
 cd ..
 

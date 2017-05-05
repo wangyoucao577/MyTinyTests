@@ -1,6 +1,7 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <typeinfo>
 #include "math_lib/math_lib.h"
 #include "cmake_config.h"
 
@@ -22,6 +23,9 @@ int power(int base, int exponent){
 int main(int argc, char* argv[]){
 
     if (argc < 3){
+#if defined(DEBUG)
+        cout << "DEBUG mode" << endl;
+#endif
         cout << "Usage: " << endl;
         cout << "   my_pow <base> <exponent>" << endl;
         cout << "Sample: " << endl;
@@ -32,11 +36,13 @@ int main(int argc, char* argv[]){
     int base = atoi(argv[1]);
     int exponent = atoi(argv[2]);
 
+    using pow_t = int(*)(int ,int);
+    pow_t pow = power; 
+
 #if defined(USE_MY_MATH_LIB)
-    cout << "USE_MY_MATH_LIB power2() "  << power2(base, exponent) << endl;
-#else
-    cout << "use power() " << power(base, exponent) << endl;
+    pow = power2;
 #endif
+    cout << "pow function type " << typeid(pow).name() << ", result " << pow(base, exponent) << endl;
 
     return 0;
 }
