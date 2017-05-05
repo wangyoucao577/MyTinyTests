@@ -11,3 +11,8 @@ a.out
 *.obj
 *.vcxproj.user
 *.suo
+
+*/CMakeCache.txt
+*/cmake_install.cmake
+*/CMakeFiles
+
