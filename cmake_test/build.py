@@ -1,13 +1,17 @@
+#!/usr/bin/python2.7
 
 import os
 import sys
 import shutil
 import commands
 
-#parameters
+
+# pre-set parameters
 kCMakeGeneratedConfig = "cmake_config.h"
 kBuildFolder = "./build/"
-kBuildType = "Release"
+kBuildTypesDebug = "Debug"
+kBuildTypeRelease = "Release"
+
 
 # Quit
 kQuit = "Quit"
@@ -18,12 +22,10 @@ def cmake_clean():
     return kQuit
 
 def initialize_debug_parameters():
-    kBuildType = "Debug"
-    return
+    return kBuildTypesDebug
 
 def initialize_release_parameters():
-    # now do nothing
-    return
+    return kBuildTypeRelease
 
 def do_cmd(cmd):
     print cmd
@@ -70,6 +72,9 @@ def main():
     cmd_behavior_list = {'--help' : build_help, 'clean': cmake_clean, 
                         'debug' : initialize_debug_parameters, 'release' : initialize_release_parameters}
 
+    build_type = kBuildTypeRelease
+
+    # handle options from command
     if len(sys.argv) >= 2:
         if sys.argv[1] not in cmd_behavior_list:
             print "Error: Invalid options!"
@@ -79,11 +84,13 @@ def main():
         cmd_ret = cmd_behavior_list[sys.argv[1]]()
         if cmd_ret == kQuit:
             return
-
+        elif cmd_ret == kBuildTypeRelease or cmd_ret == kBuildTypesDebug:
+            build_type = cmd_ret
+    
     # do cmake
     do_mkdir(kBuildFolder)
     os.chdir(kBuildFolder)
-    do_cmd("cmake -DCMAKE_CONFIG_FILE=" + kCMakeGeneratedConfig + " -DCMAKE_BUILD_TYPE=" + kBuildType + " ..")
+    do_cmd("cmake -DCMAKE_CONFIG_FILE=" + kCMakeGeneratedConfig + " -DCMAKE_BUILD_TYPE=" + build_type + " ..")
     do_cmd("make")
     os.chdir("..")
 
