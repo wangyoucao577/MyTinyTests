@@ -18,20 +18,35 @@ def cmake_clean():
     return kQuit
 
 def initialize_debug_parameters():
-    print "TODO DEBUG"
+    kBuildType = "Debug"
     return
 
 def initialize_release_parameters():
-    print "TODO RELEASE"
+    # now do nothing
     return
 
 def do_cmd(cmd):
+    print cmd
     (exec_status, content) = commands.getstatusoutput(cmd)
     if 0 == exec_status:    #exit correctly
+        print content
         return True
     else:
         print "execute cmd: '" + cmd + "'' failed, error msg: " + content
         return False
+
+def do_mkdir(dir_path):
+    if os.path.isdir(dir_path):
+        #print "Dir Already Exist: " + dir_path
+        pass
+    else:
+        try:
+            os.mkdir(dir_path)
+            print "Succeed mkdir: " + dir_path
+        except os.error:
+            print "[ERROR]Failed mkdir: " + dir_path
+            return False
+    return True
 
 
 def build_help():
@@ -66,7 +81,11 @@ def main():
             return
 
     # do cmake
-    print "TODO cmake"
+    do_mkdir(kBuildFolder)
+    os.chdir(kBuildFolder)
+    do_cmd("cmake -DCMAKE_CONFIG_FILE=" + kCMakeGeneratedConfig + " -DCMAKE_BUILD_TYPE=" + kBuildType + " ..")
+    do_cmd("make")
+    os.chdir("..")
 
 if __name__ == '__main__':
     main()
