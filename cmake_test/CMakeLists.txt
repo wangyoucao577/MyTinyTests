@@ -11,7 +11,13 @@ set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -std=c++11")
 
 # find files automatically, and set to var DIR_SRCS and DIR_MATH_LIB_SRCS
 aux_source_directory(. DIR_SRCS)
-aux_source_directory(math_lib DIR_MATH_LIB_SRCS)
+#aux_source_directory(math_lib DIR_MATH_LIB_SRCS)
+
+# add subfolder (will refer CMakeLists.txt file in subfolder)
+add_subdirectory(math_lib)
 
 # target
-add_executable (pow main.cc ${DIR_MATH_LIB_SRCS} ${DIR_SRCS})
+add_executable (pow main.cc  ${DIR_SRCS})
+
+# link lib in subfolder
+target_link_libraries(pow math)
