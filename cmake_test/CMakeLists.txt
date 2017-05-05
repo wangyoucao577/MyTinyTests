@@ -2,9 +2,11 @@
 # CMake 最低版本要求
 cmake_minimum_required (VERSION 3.8)
 
-# project
+# project basic information
 project (cmake_test)
-
+set (CMAKE_TEST_VERSION_MAJOR "0")
+set (CMAKE_TEST_VERSION_MINOR "1")
+set (CMAKE_TEST_VERSION_PATCH "0")
 
 # compile toolchains and flags
 set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -std=c++11")
