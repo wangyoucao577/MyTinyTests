@@ -20,9 +20,14 @@ set (CMAKE_TEST_VERSION_PATCH "0")
 aux_source_directory(. DIR_SRCS)
 #aux_source_directory(math_lib DIR_MATH_LIB_SRCS)
 
-# option for default
+####### option for default ###########
 option(USE_MY_MATH_LIB "use my math lib" ON)
 
+# 对于这个命令，若默认使用shared lib, cmake连运行时的链接关系都会设置好
+# 意味着 .so 被链接过之后, 不需要安装到系统目录即可查找到并运行 
+option(BUILD_SHARED_LIBS "build shared libraries" OFF)
+
+####### option for default ##########
 
 # configs for project, should after default value definition in option
 configure_file (
