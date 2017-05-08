@@ -13,6 +13,7 @@
 ## 使用上的一些小结  
 - 注意点  
   - `CMAKE_CXX_COMPILER/CMAKE_C_COMPILER` 此指定编译器的宏必须在`project()`之前设置, 且若要修改, 必须要重新生成(即不能增量更新此宏参数)  
+  - `CMAKE_CXX_FLAGS/CMAKE_CXX_FLAGS_DEBUG/CMAKE_CXX_FLAGS_RELEASE` 这些设置编译参数的宏， 必须在`project()`之后设置, 否则可能不会work. 也可以用`add_compile_options()` or `add_definitions()`来代替     
   - `option()`指定参数默认值, 必须在其对应的`if()`之前, 否则`if()`获取不到对应的值   
   - `BUILD_SHARED_LIBS`参数可选择项目中单独编译的`libs`是否生成动态库(默认都是静态库), 若生成动态库, 在linux都不需要把`.so`去install到系统目录中即可运行, 看来已经做好了链接关系(TODO: 还没明白怎么做的)   
 
