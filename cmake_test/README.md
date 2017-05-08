@@ -20,6 +20,10 @@
 - 杂项  
   - cmake中也有带入版本号给`config.h`的方法, 但个人意见不太好用, 不如像原来那样通过脚本直接获取并生成单独的`version.h`文件  
 
+### Reference links   
+- http://stackoverflow.com/questions/15100351/changing-cmake-cxx-flags-in-project  
+- https://cmake.org/Wiki/CMake_Useful_Variables  
+
 ## TODO:  
 - windows上的实验(生成vs工程等)  
 - 与原版本管理系统相结合  
