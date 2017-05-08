@@ -50,6 +50,9 @@ def do_mkdir(dir_path):
             return False
     return True
 
+def dump_version():
+    do_cmd("g++ --version")
+    return kQuit
 
 def build_help():
     print "Call cmake to build codes on indicated platform. Default build with release."
@@ -61,15 +64,18 @@ def build_help():
     print "     python build.py release"
     print "     python build.py clean"
     print "     python build.py --help"
+    print "     python build.py --version"
     print "Options: "
     print "     debug    :    compile with -g, -DDEBUG"
     print "     release  :    compile with -O2, -UDEBUG"
     print "     clean    :    clean all output from cmake"
     print "     --help   :    display help information"
+    print "     --version:    display related versions, such as GCC version"
     return kQuit
 
 def main():
-    cmd_behavior_list = {'--help' : build_help, 'clean': cmake_clean, 
+    cmd_behavior_list = {'--help' : build_help, '--version' : dump_version,
+                        'clean': cmake_clean, 
                         'debug' : initialize_debug_parameters, 'release' : initialize_release_parameters}
 
     build_type = kBuildTypeRelease
