@@ -100,7 +100,7 @@ def main():
     os.chdir(build_type)
  
     # do cmake
-    do_cmd("cmake -DCMAKE_CONFIG_FILE=" + kCMakeGeneratedConfig + " -DCMAKE_BUILD_TYPE=" + build_type + " ../..")
+    do_cmd("cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_CONFIG_FILE=" + kCMakeGeneratedConfig + " -DCMAKE_BUILD_TYPE=" + build_type + " ../..")
     do_cmd("make")
     os.chdir("../../")
 
