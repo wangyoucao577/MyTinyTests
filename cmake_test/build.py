@@ -93,12 +93,16 @@ def main():
         elif cmd_ret == kBuildTypeRelease or cmd_ret == kBuildTypesDebug:
             build_type = cmd_ret
     
-    # do cmake
-    do_mkdir(kBuildFolder)
+    # prepare folders 
+    do_mkdir(kBuildFolder) 
     os.chdir(kBuildFolder)
-    do_cmd("cmake -DCMAKE_CONFIG_FILE=" + kCMakeGeneratedConfig + " -DCMAKE_BUILD_TYPE=" + build_type + " ..")
+    do_mkdir(build_type) # also use as the subfolder name
+    os.chdir(build_type)
+ 
+    # do cmake
+    do_cmd("cmake -DCMAKE_CONFIG_FILE=" + kCMakeGeneratedConfig + " -DCMAKE_BUILD_TYPE=" + build_type + " ../..")
     do_cmd("make")
-    os.chdir("..")
+    os.chdir("../../")
 
 if __name__ == '__main__':
     main()
