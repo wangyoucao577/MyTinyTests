@@ -5,9 +5,6 @@ cmake_minimum_required (VERSION 3.8)
 # compile toolchain (should set before `project()`)
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_C_COMPILER "gcc")
-set(CMAKE_CXX_FLAGS "$ENV{CMAKE_CXX_FLAGS} -std=c++11")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -DDEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -UDEBUG")
 
 # project basic information
 project (cmake_test)
@@ -15,6 +12,13 @@ set (CMAKE_TEST_VERSION_MAJOR "0")
 set (CMAKE_TEST_VERSION_MINOR "1")
 set (CMAKE_TEST_VERSION_PATCH "0")
 
+# compile options, should set after `project()`, otherwise it won't work
+set(CMAKE_CXX_FLAGS "$ENV{CMAKE_CXX_FLAGS} -std=c++11") # also coult replace with `add_compile_options(-std=c++11)`
+set(CMAKE_CXX_FLAGS_DEBUG "-g -DDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -UDEBUG")
+message("CMAKE_CXX_FLAGS " is ${CMAKE_CXX_FLAGS})
+message("CMAKE_CXX_FLAGS_DEBUG " is ${CMAKE_CXX_FLAGS_DEBUG})
+message("CMAKE_CXX_FLAGS_RELEASE " is ${CMAKE_CXX_FLAGS_RELEASE})
 
 # find source files automatically, then set to var DIR_SRCS
 aux_source_directory(. DIR_SRCS)
