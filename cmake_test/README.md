@@ -16,6 +16,7 @@
   - `CMAKE_CXX_FLAGS/CMAKE_CXX_FLAGS_DEBUG/CMAKE_CXX_FLAGS_RELEASE` 这些设置编译参数的宏， 必须在`project()`之后设置, 否则可能不会work. 也可以用`add_compile_options()` or `add_definitions()`来代替     
   - `option()`指定参数默认值, 必须在其对应的`if()`之前, 否则`if()`获取不到对应的值   
   - `BUILD_SHARED_LIBS`参数可选择项目中单独编译的`libs`是否生成动态库(默认都是静态库), 若生成动态库, 在linux都不需要把`.so`去install到系统目录中即可运行, 看来已经做好了链接关系(TODO: 还没明白怎么做的)   
+  - 在windows上`cmake`为`MSVC`生成的工程文件, 一份中会同时包含`Debug/Release/RelWithDebugInfo/MinSizeRel`等几个配置. 意味着在windows上不需要根据不同的`CMAKE_BUILD_TYPE`而生成不同的工程文件(`cmake`实际上在生成`MSVC`工程文件时会忽略`CMAKE_BUILD_TYPE`).  
 
 - 杂项  
   - cmake中也有带入版本号给`config.h`的方法, 但个人意见不太好用, 不如像原来那样通过脚本直接获取并生成单独的`version.h`文件  
