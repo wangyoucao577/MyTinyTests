@@ -107,6 +107,7 @@ def main():
     cmake_build_cmd = ""
     if platform.system() == 'Windows':
         sub_dir_name = platform.system()
+        cmake_cmd += " -A x64"  # default use x64
         cmake_build_cmd = "cmake --build . -- /p:Configuration=" + build_type 
     elif platform.system() == 'Linux':
         sub_dir_name = build_type
