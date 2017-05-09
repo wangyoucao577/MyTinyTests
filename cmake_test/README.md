@@ -21,6 +21,21 @@
 - 杂项  
   - cmake中也有带入版本号给`config.h`的方法, 但个人意见不太好用, 不如像原来那样通过脚本直接获取并生成单独的`version.h`文件  
 
+## 目录文件结构  
+- _build/  
+  - Windows           # 生成 MSVC 工程的目录, Debug/Release等配置在同一份工程中  
+  - Release           # linux 上生成 Release 时的目录   
+  - Debug             # linux 上生成 Debug 时的目录  
+- build.py            # 生成脚本文件, 调用`cmake/make`  
+- cmake_config.h.in   # `cmake` 将根据此文件生成 `cmake_config.h`, 以供源码使用  
+- CMakeLists.txt      # `cmake` 的关键配置文件  
+- main.cc             # 源码入口  
+  - CMakeLists.txt    # 子 lib 的 `cmake` 配置文件  
+  - math_lib.cc       # 函数实现  
+  - math_lib.h        # 头文件  
+- math_lib/           # `power2()` 的实现源码, 将编译成 static/shared lib  
+- README.md           # 说明文件  
+
 ### Reference links   
 - http://stackoverflow.com/questions/15100351/changing-cmake-cxx-flags-in-project  
 - https://cmake.org/Wiki/CMake_Useful_Variables  
