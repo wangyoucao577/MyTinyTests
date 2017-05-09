@@ -27,7 +27,7 @@ endif(UNIX)
 if (WIN32)
 add_compile_options("/MP")  #multi-processor compile
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /D \"DEBUG\"")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /U \"DEBUG\"")
+#set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
 endif(WIN32)
 message("CMAKE_CXX_FLAGS " is ${CMAKE_CXX_FLAGS})
 message("CMAKE_CXX_FLAGS_DEBUG " is ${CMAKE_CXX_FLAGS_DEBUG})
