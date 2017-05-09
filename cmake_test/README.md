@@ -41,5 +41,4 @@
 - https://cmake.org/Wiki/CMake_Useful_Variables  
 
 ## TODO:  
-- windows上的实验(生成vs工程等)  
 - 与原版本管理系统相结合  
