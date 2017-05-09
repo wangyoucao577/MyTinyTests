@@ -8,7 +8,7 @@ import platform
 
 # pre-set parameters
 kCMakeGeneratedConfig = "cmake_config.h"
-kBuildFolder = "./build/"
+kBuildFolder = "./_build/"
 kBuildTypesDebug = "Debug"
 kBuildTypeRelease = "Release"
 
