@@ -4,7 +4,7 @@ import os
 import sys
 import shutil
 import subprocess
-
+import platform
 
 # pre-set parameters
 kCMakeGeneratedConfig = "cmake_config.h"
@@ -97,15 +97,31 @@ def main():
         elif cmd_ret == kBuildTypeRelease or cmd_ret == kBuildTypesDebug:
             build_type = cmd_ret
     
-    # prepare folders 
+    # prepare build folders 
     do_mkdir(kBuildFolder) 
     os.chdir(kBuildFolder)
-    do_mkdir(build_type) # also use as the subfolder name
-    os.chdir(build_type)
  
-    # do cmake
-    do_cmd("cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_CONFIG_FILE=" + kCMakeGeneratedConfig + " -DCMAKE_BUILD_TYPE=" + build_type + " ../..")
-    do_cmd("make")
+    # prepare cmake commands
+    sub_dir_name = ""
+    cmake_cmd = "cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_CONFIG_FILE=" + kCMakeGeneratedConfig
+    cmake_build_cmd = ""
+    if platform.system() == 'Windows':
+        sub_dir_name = platform.system()
+        cmake_build_cmd = "cmake --build . -- /p:Configuration=" + build_type 
+    elif platform.system() == 'Linux':
+        sub_dir_name = build_type
+        cmake_cmd += " -DCMAKE_BUILD_TYPE=" + build_type
+        cmake_build_cmd = "make"
+    else:
+        print "Unknown platform: " + platform.system()
+        exit(-1)
+    cmake_cmd += " ../.."
+
+    # do make
+    do_mkdir(sub_dir_name)
+    os.chdir(sub_dir_name)
+    do_cmd(cmake_cmd)
+    do_cmd(cmake_build_cmd)
     os.chdir("../../")
 
 if __name__ == '__main__':
