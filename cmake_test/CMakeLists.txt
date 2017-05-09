@@ -3,8 +3,14 @@
 cmake_minimum_required (VERSION 3.8)
 
 # compile toolchain (should set before `project()`)
+if (UNIX)
+message("UNIX-like OS")
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_C_COMPILER "gcc")
+endif(UNIX)
+if (WIN32)
+message("Windows")
+endif(WIN32)
 
 # project basic information
 project (cmake_test)
@@ -13,9 +19,16 @@ set (CMAKE_TEST_VERSION_MINOR "1")
 set (CMAKE_TEST_VERSION_PATCH "0")
 
 # compile options, should set after `project()`, otherwise it won't work
+if (UNIX)
 set(CMAKE_CXX_FLAGS "$ENV{CMAKE_CXX_FLAGS} -std=c++11") # also coult replace with `add_compile_options(-std=c++11)`
 set(CMAKE_CXX_FLAGS_DEBUG "-g -DDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -UDEBUG")
+endif(UNIX)
+if (WIN32)
+add_compile_options("/MP")  #multi-processor compile
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /D \"DEBUG\"")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /U \"DEBUG\"")
+endif(WIN32)
 message("CMAKE_CXX_FLAGS " is ${CMAKE_CXX_FLAGS})
 message("CMAKE_CXX_FLAGS_DEBUG " is ${CMAKE_CXX_FLAGS_DEBUG})
 message("CMAKE_CXX_FLAGS_RELEASE " is ${CMAKE_CXX_FLAGS_RELEASE})
