@@ -17,8 +17,12 @@ kBuildTypeRelease = "Release"
 kQuit = "Quit"
 
 def cmake_clean():
-    do_cmd("rm -rf " + kBuildFolder)
-    do_cmd("rm -f " + kCMakeGeneratedConfig)
+    if os.path.isdir(kBuildFolder):
+        shutil.rmtree(kBuildFolder)
+    if os.path.isfile(kCMakeGeneratedConfig):
+        os.remove(kCMakeGeneratedConfig)
+    #do_cmd("rm -rf " + kBuildFolder)
+    #do_cmd("rm -f " + kCMakeGeneratedConfig)
     return kQuit
 
 def initialize_debug_parameters():
