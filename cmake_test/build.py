@@ -112,7 +112,7 @@ def main():
     elif platform.system() == 'Linux':
         sub_dir_name = build_type
         cmake_cmd += " -DCMAKE_BUILD_TYPE=" + build_type
-        cmake_build_cmd = "make"
+        cmake_build_cmd = "make -j"
     else:
         print "Unknown platform: " + platform.system()
         exit(-1)
