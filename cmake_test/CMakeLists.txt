@@ -10,6 +10,8 @@ set(CMAKE_C_COMPILER "gcc")
 endif(UNIX)
 if (WIN32)
 message("Windows")
+set(CMAKE_GENERATOR "Visual Studio 14 2015 Win64")
+message("Expect to use: " ${CMAKE_GENERATOR})
 endif(WIN32)
 
 # project basic information
