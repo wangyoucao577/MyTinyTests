@@ -3,7 +3,7 @@
 import os
 import sys
 import shutil
-import commands
+import subprocess
 
 
 # pre-set parameters
@@ -21,8 +21,6 @@ def cmake_clean():
         shutil.rmtree(kBuildFolder)
     if os.path.isfile(kCMakeGeneratedConfig):
         os.remove(kCMakeGeneratedConfig)
-    #do_cmd("rm -rf " + kBuildFolder)
-    #do_cmd("rm -f " + kCMakeGeneratedConfig)
     return kQuit
 
 def initialize_debug_parameters():
@@ -33,13 +31,15 @@ def initialize_release_parameters():
 
 def do_cmd(cmd):
     print cmd
-    (exec_status, content) = commands.getstatusoutput(cmd)
-    if 0 == exec_status:    #exit correctly
-        print content
-        return True
-    else:
-        print "execute cmd: '" + cmd + "'' failed, error msg: " + content
-        return False
+    
+    args = cmd.split(' ')
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    while True:
+        line = p.stdout.readline()
+        if line != '':    
+            print line.rstrip() 
+        else:   # done
+            break
 
 def do_mkdir(dir_path):
     if os.path.isdir(dir_path):
