@@ -148,6 +148,11 @@ Wechat刚刚开源的`Mars`库, 学习与测试的一些实验代码.
 RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流拉取, 并自己实现FLV的协议分析(参照FLV的协议标准 "Adobe Flash Video File Format Specification Version 10.1").     
 - [rtmp_flv](rtmp_flv/README.md)
 
+### [cmake/C++] cmake_test   
+学习使用`cmake`构建跨平台的编译系统, 支持直接在`Windows`上生成`Visual Studio`工程文件, 在`Linux`上生成`Makefile`等. 详见:   
+- [cmake_test](cmake_test/README.md)  
+
+
 ### [C++] C++的一些小例子
 - cc_polymorphism.cc   
   `C++`多态的一个小实验. 
