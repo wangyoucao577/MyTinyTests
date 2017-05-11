@@ -28,8 +28,11 @@
 - https://github.com/wangyoucao577/MyTinyTests/blob/master/c_interpositioning/Readme.md
 
 ### [C] multicast
-`multicast client`的一个实验, 程序主要实现的就是基于`UDP`的`multicast`组播推流, 支持指定网卡和设置`TTL`. 代码本身支持`Windows`和`Linux`, 实验主要是在`Windows`下验证了多网卡时该如何设置组播路由. `Linux`下仅使用`gcc`试了下编译代码, 暂未实施具体实验. 
+`multicast client`的一个实验, 程序主要实现的就是基于`UDP`的`multicast`组播推流, 支持指定网卡和设置`TTL`. 代码本身支持`Windows`和`Linux`, 实验主要是在`Windows`下验证了多网卡时该如何设置组播路由. `Linux`下仅使用`gcc`试了下编译代码, 暂未实施具体实验.
 
+### [C] zlog_test  
+学习及尝试`zlog`.   
+[zlog_test](./zlog_test/README.md)
 
 ### [C] TheCProgrammingLanguage
 
@@ -135,7 +138,7 @@
 ### [C++] Mars_test
 Wechat刚刚开源的`Mars`库, 学习与测试的一些实验代码.   
 - [Mars_Test](mars_test/Readme.md)  
-  
+
 ### [C++] char_system
   character system相关的一些小实验, 及windows下的MultiBytes字符编码与UTF-8字符编码的转换接口. linux与windows下默认的字符编码一般都是扩展的ANSI, 即所谓的MultiBytes. C++中支持wchar_t的类型定义, 其在linux下实现使用UTF-32即4字节, 在windows下实现使用UTF-16即2字节(windows下所谓的Unicode默认即UTF-16, 而不是UTF-8).
   代码文件保存为UTF-8, 在代码中写入的中文字符串编码方式即为UTF-8, vs中编译后printf输出为乱码, 需转换为MBCS方可正常显示. 而linux下貌似不受此限制, 无论代码文件保存为UTF-8还是GB2312, 都可以直接用printf正确输出.
@@ -155,7 +158,7 @@ RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流
 
 ### [C++] C++的一些小例子
 - cc_polymorphism.cc   
-  `C++`多态的一个小实验. 
+  `C++`多态的一个小实验.
 	- 基类和子类定义同名方法, 若基类忘了加`virtual`，则是overload, 不会有多态的特性;  
 	- 基类和子类定义同名方法, 基类加上virtual, 则是override(`C++11`可显式加上`override`关键字), 具备多态特性(即运行时绑定: 基类指针指向派生类对象, 相当于绑定到派生类的方法);   
 	- 基类的析构函数总是应加上`virtual`, 以使其具备多态特性(`delete`时总是能够调用到派生类的析构函数);  
@@ -204,7 +207,7 @@ RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流
   `lambda`表达式和函数式编程的`map`学习小例子.
 
 ### [Python2/Python3] serial_power_on_off.py
-  通过串口控制继电器上电/断电的小工具, 便于自动开关机测试. 此脚本本身功能比较简单, 做了兼容可同时支持`python2`和`python3`解释执行, 以方便使用. 
+  通过串口控制继电器上电/断电的小工具, 便于自动开关机测试. 此脚本本身功能比较简单, 做了兼容可同时支持`python2`和`python3`解释执行, 以方便使用.
 
 ### [JavaScript/Python2] get_info_from_maps
 通过各地图提供商(`AMap`, `BaiduMap`, `Googlemap`, etc)提供的`JavaScript API`抓取信息并制定信息并写入文件至`Chrome file system`.   
