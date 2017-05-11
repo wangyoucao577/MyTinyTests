@@ -20,9 +20,9 @@
   - 通过`*.conf`文件来配置`zlog`的行为, 支持输出到`std/syslog/file/...`等, 支持定义格式等. 详见 [zlog使用手册](https://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc1)
 
 ## 编译运行   
-`g++ main.cc -L. -pthread -lzlog`  
+`g++ main.cc -Llib/inux -pthread -lzlog`  
 or   
-`g++ dzlog_main.cc -L. -pthread -lzlog`   
+`g++ dzlog_main.cc -Llib/linux -pthread -lzlog`   
 `./a.out`
 
 ## 优劣势分析(个人观点)  
