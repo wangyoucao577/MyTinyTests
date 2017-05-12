@@ -29,6 +29,7 @@ or
 
 - Windows(Visual Studio 2015)  
   - 生成VS工程  
+  注: 依赖于`cmake`生成`vs2015`工程, 实验用的`cmake`版本为`cmake 3.8.1`  
     - win32  
   ```  
   cd build/win32
@@ -52,9 +53,8 @@ or
   - 不支持以时间/大小的fsync(目前仅支持按日志行数), 比较不方便   
   - 不支持跨平台  
     - 目前原生为Linux(包括Unix系系统)   
-    - 看到过有`Winzlog`的实现, 待尝试  
-    - 貌似没看到有`iOS/Android`的支持   
-    - 或者其实是`C`代码，只是差个跨平台的构建?   
+    - `Windows`上有作者推荐的`Winzlog`实现, 实验中已包含    
+    - 主要貌似没看到有`iOS/Android`的支持? 或者其实是`C`代码，只是差个跨平台的构建?   
 
 
 ### Reference Links  
