@@ -17,13 +17,30 @@
   - 程序结束时调用 `zlog_fini`清理内存   
 
 - 配置  
-  - 通过`*.conf`文件来配置`zlog`的行为, 支持输出到`std/syslog/file/...`等, 支持定义格式等. 详见 [zlog使用手册](https://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc1)
+  - 通过`*.conf`文件来配置`zlog`的行为, 支持输出到`std/syslog/file/...`等, 支持定义格式等. 详见 [zlog使用手册](https://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc1)  
+  - 注: 配置文件应先用`zlog-chk-conf`工具检查确保正确  
 
 ## 编译运行   
-`g++ main.cc -Llib/inux -pthread -lzlog`  
+- Linux  
+`g++ main.cc -Iinclude/zlog/ -Llib/inux -pthread -lzlog`  
 or   
-`g++ dzlog_main.cc -Llib/linux -pthread -lzlog`   
+`g++ dzlog_main.cc -Iinclude/zlog/ -Llib/linux -pthread -lzlog`   
 `./a.out`
+
+- Windows(Visual Studio 2015)  
+  - 生成VS工程  
+    - win32  
+  ```  
+  cd build/win32
+  cmake ../../
+  ```   
+    - win64  
+  ```  
+  cd build/win64  
+  cmake -A x64 ../../  
+  ```  
+  - 打开`zlog_test.slh`编译运行  
+
 
 ## 优劣势分析(个人观点)  
 - 优势   
