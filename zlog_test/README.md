@@ -59,4 +59,5 @@ or
 
 ### Reference Links  
 - https://github.com/HardySimpson/zlog  
+- https://github.com/lopsd07/WinZlog  
 - [zlog使用手册](https://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc1)  
