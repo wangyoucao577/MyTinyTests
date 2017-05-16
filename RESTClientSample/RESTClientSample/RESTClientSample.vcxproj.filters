@@ -30,6 +30,9 @@
     <ClCompile Include="Json_samples.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="rapidjson_sample.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json_samples.h">
