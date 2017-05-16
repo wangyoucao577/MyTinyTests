@@ -144,8 +144,8 @@ Wechat刚刚开源的`Mars`库, 学习与测试的一些实验代码.
   代码文件保存为UTF-8, 在代码中写入的中文字符串编码方式即为UTF-8, vs中编译后printf输出为乱码, 需转换为MBCS方可正常显示. 而linux下貌似不受此限制, 无论代码文件保存为UTF-8还是GB2312, 都可以直接用printf正确输出.
 
 ### [C++] RESTClientSample
-  通过HTTP发送JSON格式数据的小例子, 熟悉JsonCpp库和libcurl库的使用.
-  工程文件基于VS2015(VC14), 目前仅配置了x64_debug版本.
+  通过HTTP发送JSON格式数据的小例子, 熟悉`JsonCpp`库和`libcurl`库的使用, 同时新增了`RapidJson`的简单用法.
+  工程文件基于`VS2015(VC14)``, 目前仅配置了`x64_debug`版本.
 
 ### [C++] rtmp_flv   
 RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流拉取, 并自己实现FLV的协议分析(参照FLV的协议标准 "Adobe Flash Video File Format Specification Version 10.1").     
