@@ -2,13 +2,18 @@
 #include <stdio.h>
 #include <assert.h>
 #include "json_samples.h"
+
 #include "rapidjson\document.h"
+#include "rapidjson\stringbuffer.h"
+#include "rapidjson\writer.h"
 
 using namespace rapidjson;
 
-void rapid_unserialize_sample_1() {
+void rapidjson_ample_1() {
 
     const char * str = "{    \"hello\": \"world\",    \"t\": true ,   \"f\": false, \"n\": null,\"i\": 123, \"pi\": 3.1416,\"a\": [1, 2, 3, 4]}";
+    
+    //unserialize
     Document doc;
     doc.Parse(str);
 
@@ -76,6 +81,12 @@ void rapid_unserialize_sample_1() {
     doc.AddMember("Contact sample", contact, doc.GetAllocator());
     doc.RemoveMember("t");
     printf("doc empty: %s\n", doc.ObjectEmpty() ? "true" : "false");
+    
+    //serialize
+    StringBuffer buff;
+    Writer<StringBuffer> writer(buff);
+    doc.Accept(writer);
+    printf("out: %s\n", buff.GetString());
 }
 
 
@@ -83,5 +94,5 @@ void rapid_unserialize_sample_1() {
 
 void rapidjson_sample() {
 
-    rapid_unserialize_sample_1();
+    rapidjson_ample_1();
 }
