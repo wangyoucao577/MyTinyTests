@@ -2,7 +2,8 @@
 #ifndef _MY_TINY_TEST_SHM_TEST_SHM_UTILS_BASE_H_
 #define _MY_TINY_TEST_SHM_TEST_SHM_UTILS_BASE_H_
 
-#include <string>
+#include <stdio.h>
+#include <sys/stat.h>        /* For mode constants */
 
 #define shm_log(...) printf(__VA_ARGS__)
 #define INVALID_FILE_DESCRIPTOR (-1)
@@ -11,7 +12,7 @@
 namespace shm_test{
 	class ShmBase {
 	public:
-		ShmBase(std::string name, int bytes) : name_(name), bytes_(bytes){}
+		ShmBase(int bytes) : bytes_(bytes){}
 		virtual ~ShmBase() {}
 
 		/**
@@ -53,8 +54,11 @@ namespace shm_test{
 		void* address_{ nullptr };
 
 		int bytes_{ 0 };
-		std::string name_;
+		
 
+		char err_str_[256]{ 0 };	//for print error log string
+
+		const int mode_{ S_IRWXU | S_IRWXG | S_IRWXO };
 	};
 }
 

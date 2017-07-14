@@ -11,7 +11,7 @@
 
 namespace shm_test {
 
-	PosixShm::PosixShm(std::string name, int bytes) : ShmBase(name, bytes)
+	PosixShm::PosixShm(std::string name, int bytes) : ShmBase(bytes)
 	{
 	}
 
@@ -42,7 +42,8 @@ namespace shm_test {
 
 		int ret = munmap(address_, bytes_);
 		if (ret != 0) {
-			shm_log("munmap failed, address_ %p, bytes %d\n", address_, bytes_);
+			shm_log("munmap failed, address_ %p, bytes %d, errno %d %s\n", address_, bytes_,
+				errno, strerror_r(errno, err_str_, sizeof(err_str_)));
 			return;
 		}
 		shm_log("unmap succeed, address_ %p, bytes %d\n", address_, bytes_);
