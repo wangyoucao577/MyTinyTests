@@ -8,18 +8,43 @@
 
 ## 几种方法的主要接口  
 - `Posix Shared Memory`  
-  - `shm_open`: 创建一个新的共享内存块, 创建后在`tmpfs`中可见且可当做文件操作(创建时传入的name即在`tmpfs`中看到的文件名)       
+  - `shm_open`: 创建一个新的共享内存块, 创建后在`tmpfs`的挂载目录中可见且可当做文件操作(创建时传入的name即在`tmpfs`中看到的文件名)       
   - `shm_unlink`: 删除共享内存块     
   - `ftruncate`: 创建后需要用此接口调整`size`      
   - `mmap`: 将`shm_open`创建后的共享内存块映射到进程的虚拟内存地址中. 此接口其实也可以直接映射一个`open`打开的文件到内存中, 从而不需要`read/write`.  
   - `munmap`: 取消映射(不影响共享内存块的存在与否, 仅仅让进程看不到映射而已)     
 - `System V Shared Memory`   
-  - `shmget`: 创建一个新的共享内存块, 在`tmpfs`中不可见. 以`key`为索引.    
+  - `shmget`: 创建一个新的共享内存块, 在`tmpfs`的挂载目录中不可见. 以`key`为索引.    
   - `shmat`: 映射`shmget`打开的内存块到进程的虚拟内存地址空间     
   - `shmdt`: 取消映射     
   - `shmctl`: 删除共享内存块, 也可以进行一些其他操作        
 - `Boost Shared Memory`    
   - TODO:  
+
+## 编译运行  
+- compile  
+```
+cd build/linux/
+cmake ../../
+make
+```
+- run  
+```
+./shm link
+./shm unlink
+./shm link read
+./shm link write 12345
+```
+- 生成vs工程方便coding(On windows)
+```
+cd build/win32/  
+cmake ../../  
+```  
+
+## 原理  
+
+
+## 应用   
 
 
 ### Reference links   
