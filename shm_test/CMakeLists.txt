@@ -10,7 +10,7 @@ set(CMAKE_C_COMPILER "gcc")
 endif(UNIX)
 if (WIN32)
 message("Windows")
-set(CMAKE_GENERATOR "Visual Studio 15 2017")
+#set(CMAKE_GENERATOR "Visual Studio 15 2017")
 message("Expect to use: " ${CMAKE_GENERATOR})
 endif(WIN32)
 
