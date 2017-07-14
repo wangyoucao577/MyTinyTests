@@ -11,27 +11,27 @@ using namespace shm_test;
 
 int main(int argc, char* argv[]){
 
-	PosixShm sm("jay_test_01", 1025);
+	ShmBase* sm = new PosixShm("jay_test_01", 1025);
 
 	if (argc >= 2) {
 		if (0 == strcmp(argv[1], "link")) {
-			bool ret = sm.Link();
+			bool ret = sm->Link();
 			assert(ret == true);
 
 			if (argc >= 4 && 0 == strcmp(argv[2], "write")) {
 
-				memcpy(sm.address(), argv[3], strlen(argv[3]));
+				memcpy(sm->address(), argv[3], strlen(argv[3]));
 
 			}else if (argc >= 3 && 0 == strcmp(argv[2], "read")) {
-				sm.dump();
+				sm->Dump();
 			}
 			
 		}
 		else if (0 == strcmp(argv[1], "unlink")) {
-			sm.Unlink();
+			sm->Unlink();
 		}
 	}
 	
-
+	delete sm;
     return 0;
 }

@@ -11,9 +11,7 @@
 
 namespace shm_test {
 
-	PosixShm::PosixShm(std::string name, int bytes) : 
-		name_(name), 
-		bytes_(bytes)
+	PosixShm::PosixShm(std::string name, int bytes) : ShmBase(name, bytes)
 	{
 	}
 
@@ -94,17 +92,6 @@ namespace shm_test {
 		shm_log("mmap fd %d to address %p succeed\n", fd_, address_);
 		
 		return true;
-	}
-
-	void PosixShm::dump() const {
-
-		if (nullptr == address_) {
-			return;
-		}
-
-		assert(nullptr != address_);
-		shm_log("address %p, size %d\n", address_, bytes_);
-		shm_log("%s\n", (char*)address_);
 	}
 
 }
