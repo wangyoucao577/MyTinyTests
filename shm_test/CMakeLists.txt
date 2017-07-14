@@ -10,9 +10,14 @@ set(CMAKE_C_COMPILER "gcc")
 endif(UNIX)
 if (WIN32)
 message("Windows")
-#set(CMAKE_GENERATOR "Visual Studio 15 2017")
-message("Expect to use: " ${CMAKE_GENERATOR})
+# NOTE: use `cmake -G "Visual Studio 14 2015"` instead set the `CMAKE_GENERATOR` here
+#        copy `rc.exe, rc.dll` into visual studio vc bin folder, then it works
+#     https://stackoverflow.com/questions/14372706/visual-studio-cant-build-due-to-rc-exe%22
+#set(CMAKE_GENERATOR "Visual Studio 14 2015")
 endif(WIN32)
+message("CMAKE_GENERATOR: " ${CMAKE_GENERATOR})
+message("CMAKE_CXX_COMPILER: " ${CMAKE_CXX_COMPILER})
+message("CMAKE_C_COMPILER: " ${CMAKE_C_COMPILER})
 
 # project basic information
 project (shm)
