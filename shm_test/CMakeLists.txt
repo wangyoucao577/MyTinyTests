@@ -37,15 +37,22 @@ message("CMAKE_CXX_FLAGS " is ${CMAKE_CXX_FLAGS})
 message("CMAKE_CXX_FLAGS_DEBUG " is ${CMAKE_CXX_FLAGS_DEBUG})
 message("CMAKE_CXX_FLAGS_RELEASE " is ${CMAKE_CXX_FLAGS_RELEASE})
 
+add_definitions(-DBOOST_DATE_TIME_NO_LIB)
+set (THIRD_PARTY_BOOST_PATH "./boost_1_64_0/")
+include_directories(${THIRD_PARTY_BOOST_PATH})
+if (WIN32)
+include_directories(D:/MyWorkspace/centos7_usr_headers/include)
+endif(WIN32)
 # find source files automatically, then set to var DIR_SRCS
 aux_source_directory(. DIR_SRCS)
 source_group("src" FILES ${DIR_SRCS})
 
 # add headers also into the visual studio project
-file(GLOB_RECURSE HEADER_FILES "*.h")
+file(GLOB HEADER_FILES "*.h")
 #message(${HEADER_FILES})
 source_group("headers" FILES ${HEADER_FILES})
-
+file(GLOB_RECURSE BOOST_INTERPROCESS_HEADER_FILES "${THIRD_PARTY_BOOST_PATH}/boost/interprocess/*.hpp")
+source_group("boost_interprocess_headers" FILES ${BOOST_INTERPROCESS_HEADER_FILES})
 
 ####### option for default ###########
 #option(USE_MY_MATH_LIB "use my math lib" ON)
@@ -57,7 +64,7 @@ source_group("headers" FILES ${HEADER_FILES})
 ####### option for default ##########
 
 # target
-add_executable (shm  ${DIR_SRCS} ${HEADER_FILES})
+add_executable (shm  ${DIR_SRCS} ${HEADER_FILES} ${BOOST_INTERPROCESS_HEADER_FILES})
 
 # link lib in subfolder
 if (UNIX)
