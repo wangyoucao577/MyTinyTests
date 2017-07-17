@@ -61,6 +61,7 @@ cmake ../../
 - [boost - Sharing memory between processes](http://www.boost.org/doc/libs/1_55_0/doc/html/interprocess/sharedmemorybetweenprocesses.html#interprocess.sharedmemorybetweenprocesses.sharedmemory.shared_memory_mapping_shared_memory_segments)  
 - [两种Linux共享内存](http://blog.jqian.net/post/linux-shm.html)  
 - [浅析Linux的共享内存与tmpfs文件系统](http://hustcat.github.io/shared-memory-tmpfs/)  
+- [Boost IPC共享内存的使用总结](https://my.oschina.net/lday/blog/724458)
 
 ## TODO:  
 - `boost shared memory`    
