@@ -6,7 +6,7 @@
 
 #include "posix_shm_utils.h"
 #include "system_v_shm_utils.h"
-#include "boost_shm_utils.h"
+#include "boost_posix_shm_utils.h"
 
 using namespace std;
 using namespace shm_test;
@@ -15,7 +15,7 @@ int main(int argc, char* argv[]){
 
 	//ShmBase* sm = new PosixShm("jay_test_01", 1025);
 	//ShmBase* sm = new SystemVShm(11, 1026);
-	ShmBase* sm = new BoostShm("jay_test_02", 1026);
+	ShmBase* sm = new BoostPosixShm("jay_test_02", 1026);
 
 	if (argc >= 2) {
 		if (0 == strcmp(argv[1], "link")) {

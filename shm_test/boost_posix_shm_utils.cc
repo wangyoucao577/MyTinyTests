@@ -3,22 +3,22 @@
 
 #include <iostream>
 
-#include "boost_shm_utils.h"
+#include "boost_posix_shm_utils.h"
 
 namespace shm_test {
 
-	BoostShm::BoostShm(std::string name, int bytes)
+	BoostPosixShm::BoostPosixShm(std::string name, int bytes)
 		: ShmBase(bytes),
 		name_(name)
 	{
 		
 	}
 
-	BoostShm::~BoostShm() {
+	BoostPosixShm::~BoostPosixShm() {
 		UnMap();
 	}
 
-	bool BoostShm::LinkShmObject() {
+	bool BoostPosixShm::LinkShmObject() {
 
 		assert(nullptr == shm_);
 
@@ -38,7 +38,7 @@ namespace shm_test {
 		return true;
 	}
 
-	bool BoostShm::Link() {
+	bool BoostPosixShm::Link() {
 		
 		if (!LinkShmObject()) {
 			return false;
@@ -54,7 +54,7 @@ namespace shm_test {
 		return true;
 	}
 
-	void BoostShm::Unlink() {
+	void BoostPosixShm::Unlink() {
 
 		UnMap();
 
@@ -65,7 +65,7 @@ namespace shm_test {
 		shm_log("unlink %s succeed\n", name_.c_str());
 		
 	}
-	void BoostShm::UnMap() {
+	void BoostPosixShm::UnMap() {
 
 		address_ = nullptr;
 
@@ -82,7 +82,7 @@ namespace shm_test {
 		}
 	}
 
-	void BoostShm::Dump() const {
+	void BoostPosixShm::Dump() const {
 		if (!Valid()) {
 			return;
 		}

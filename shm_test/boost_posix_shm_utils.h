@@ -2,16 +2,16 @@
 
 /**
 * @file       boost_shm_utils.h
-* @brief      major interfaces: `boost::interprocess::managed_shared_memory`
-*				actually if prefer raw memory address link native Posix/SystemV shm interfaces, 
-*					use `boost::interprocess::managed_xsi_shared_memory` instead. 
+* @brief      major interfaces: `boost::interprocess::shared_memory_object`, `boost::interprocess::mapped_region`
 *				
+* @note	      boost will based on Posix interfaces(such as shm_open, shm_unlink, etc.) to implement shared memory function. 
+*			  Actually `System V` style also availbile in `boost::interprocess::managed_xsi_shared_memory`
 * @author     wangyoucao577@gmail.com
 *
 */
 
-#ifndef _MY_TINY_TEST_SHM_TEST_BOOST_SHM_UTILS_H_
-#define _MY_TINY_TEST_SHM_TEST_BOOST_SHM_UTILS_H_
+#ifndef _MY_TINY_TEST_SHM_TEST_BOOST_POSIX_SHM_UTILS_H_
+#define _MY_TINY_TEST_SHM_TEST_BOOST_POSIX_SHM_UTILS_H_
 
 #include "boost/interprocess/shared_memory_object.hpp"
 #include "boost/interprocess/mapped_region.hpp"
@@ -20,10 +20,10 @@
 
 namespace shm_test {
 
-    class BoostShm : public ShmBase {
+    class BoostPosixShm : public ShmBase {
 	public:
-		BoostShm(std::string name, int bytes);
-		~BoostShm();
+		BoostPosixShm(std::string name, int bytes);
+		~BoostPosixShm();
 
 	public:
 		/**
