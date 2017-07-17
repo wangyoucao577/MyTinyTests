@@ -24,7 +24,8 @@ namespace shm_test {
 
 		try
 		{
-			shm_ = new boost::interprocess::managed_shared_memory(boost::interprocess::open_or_create, name_.c_str(), bytes_);
+			shm_ = new boost::interprocess::shared_memory_object(boost::interprocess::open_or_create, 
+				name_.c_str(), boost::interprocess::read_write);
 		}
 		catch (const boost::interprocess::interprocess_exception& ex)
 		{
@@ -32,8 +33,7 @@ namespace shm_test {
 			return false;
 		}
 
-		shm_log("link managed_shared_memory succeed, name %s bytes %d actual_size %d free_memory %d\n", 
-			name_.c_str(), bytes_, shm_->get_size(), shm_->get_free_memory());
+		shm_log("link managed_shared_memory succeed, name %s bytes %d\n", name_.c_str(), bytes_);
 
 		return true;
 	}
@@ -45,13 +45,11 @@ namespace shm_test {
 		}
 		assert(Valid());
 
-		// we cost all valid bytes in this mode
-		// todo: find the reason why can not allocate all free_memory, `80` is just a guess
-		int addr_size = shm_->get_free_memory() - 80;
-		shm_log("free memory before shm allocate: %d\n", shm_->get_free_memory());
-		//address_ = shm_->allocate(100);	
-		address_ = shm_->find_or_construct<char>("address")[addr_size] (0);
-		shm_log("free memory after  shm allocate: %d\n", shm_->get_free_memory());
+		shm_->truncate(bytes_);
+
+		map_region_ = new boost::interprocess::mapped_region(*shm_, boost::interprocess::read_write);
+
+		address_ = map_region_->get_address();
 
 		return true;
 	}
@@ -71,6 +69,11 @@ namespace shm_test {
 
 		address_ = nullptr;
 
+		if (map_region_) {
+			delete map_region_;
+			map_region_ = nullptr;
+		}
+
 		if (shm_) {
 			delete shm_;
 			shm_ = nullptr;
@@ -84,13 +87,12 @@ namespace shm_test {
 			return;
 		}
 
-		shm_log("free bytes %d\n", shm_->get_free_memory());
-
 		if (nullptr == address_) {
 			return;
 		}
 
-		shm_log("address %p, size %d\n", address_, bytes_);
+		assert(map_region_);
+		shm_log("address %p, size %d\n", address_, map_region_->get_size());
 		shm_log("%s\n", (char*)address_);
 	}
 

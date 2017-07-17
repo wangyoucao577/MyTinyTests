@@ -13,7 +13,8 @@
 #ifndef _MY_TINY_TEST_SHM_TEST_BOOST_SHM_UTILS_H_
 #define _MY_TINY_TEST_SHM_TEST_BOOST_SHM_UTILS_H_
 
-#include "boost/interprocess/managed_shared_memory.hpp"
+#include "boost/interprocess/shared_memory_object.hpp"
+#include "boost/interprocess/mapped_region.hpp"
 
 #include "shm_utils_base.h"
 
@@ -50,7 +51,8 @@ namespace shm_test {
 	private:
 		std::string name_;
 	
-		boost::interprocess::managed_shared_memory* shm_{ nullptr };
+		boost::interprocess::shared_memory_object* shm_{ nullptr };
+		boost::interprocess::mapped_region*	map_region_{ nullptr };
 	};
 
 }
