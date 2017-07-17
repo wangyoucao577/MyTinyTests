@@ -2,7 +2,10 @@
 
 /**
 * @file       boost_shm_utils.h
-* @brief      major interfaces: 
+* @brief      major interfaces: `boost::interprocess::managed_shared_memory`
+*				actually if prefer raw memory address link native Posix/SystemV shm interfaces, 
+*					use `boost::interprocess::managed_xsi_shared_memory` instead. 
+*				
 * @author     wangyoucao577@gmail.com
 *
 */
@@ -22,13 +25,33 @@ namespace shm_test {
 		~BoostShm();
 
 	public:
+		/**
+		* @brief These 3 interfaces have the same behavior come from ShmBase. 
+		*      But for boost::interprocess features, we'll have some other interfaces.
+		*/
 		bool Link() override;
 		void Unlink() override;
 		void UnMap() override;
-        
+
+		void Dump() const override;
+
+		/**
+		* @brief Only link boost managed_shared_memory object, but won't get raw pointer. 
+		*	   So that we could map some structures/classes on this memory.
+		*/
+		bool LinkShmObject();
+
+		/**
+		* @brief Check whether shm object valid.
+		* @return true if valid, false if invalid
+		*/
+		bool Valid() const { return nullptr == shm_ ? false : true; }
+
 	private:
 		std::string name_;
-    }
+	
+		boost::interprocess::managed_shared_memory* shm_{ nullptr };
+	};
 
 }
 
