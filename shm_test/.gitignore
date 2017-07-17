@@ -1,0 +1,11 @@
+
+
+
+a.out
+*.o
+*.obj
+*.vcxproj.user
+*.suo
+
+./build/*
+
