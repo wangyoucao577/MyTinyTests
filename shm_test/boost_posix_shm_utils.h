@@ -36,17 +36,20 @@ namespace shm_test {
 
 		void Dump() const override;
 
+	public:
+		/**
+		* @brief Check whether shm object valid.
+		* @return true if valid, false if invalid
+		*/
+		bool Valid() const { return nullptr == shm_ ? false : true; }
+
+	private:
 		/**
 		* @brief Only link boost managed_shared_memory object, but won't get raw pointer. 
 		*	   So that we could map some structures/classes on this memory.
 		*/
 		bool LinkShmObject();
 
-		/**
-		* @brief Check whether shm object valid.
-		* @return true if valid, false if invalid
-		*/
-		bool Valid() const { return nullptr == shm_ ? false : true; }
 
 	private:
 		std::string name_;
