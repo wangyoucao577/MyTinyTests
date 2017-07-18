@@ -38,7 +38,7 @@ message("CMAKE_CXX_FLAGS_DEBUG " is ${CMAKE_CXX_FLAGS_DEBUG})
 message("CMAKE_CXX_FLAGS_RELEASE " is ${CMAKE_CXX_FLAGS_RELEASE})
 
 add_definitions(-DBOOST_DATE_TIME_NO_LIB)
-set (THIRD_PARTY_BOOST_PATH "./boost_1_64_0/")
+set (THIRD_PARTY_BOOST_PATH "../third_party/boost_1_64_0/")
 include_directories(${THIRD_PARTY_BOOST_PATH})
 if (WIN32)
 include_directories(D:/MyWorkspace/centos7_usr_headers/include)
