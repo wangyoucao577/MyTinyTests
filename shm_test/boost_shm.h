@@ -17,12 +17,19 @@
 #include <vector>
 
 #include "boost/interprocess/managed_shared_memory.hpp"
+#include <boost/interprocess/allocators/allocator.hpp>
 
 #include "shm_utils_base.h"
 
 #include "sample_structures.h"
 
 namespace shm_test {
+
+	template <typename T>
+	using ShmAllocator = boost::interprocess::allocator<T, boost::interprocess::managed_shared_memory::segment_manager>;
+
+	template <typename T>
+	using ShmVector = std::vector<T, ShmAllocator<T>>;
 
 	class BoostShm : public ShmBase {
 	public:
@@ -40,10 +47,15 @@ namespace shm_test {
 		bool Valid() const { return nullptr == shm_ ? false : true; }
 		bool Grow(uint32_t grow_size);
 
+		uint64_t GetFreeMemory() const;
+
 	public:
 
 		template <typename T>
 		bool Construct(T*& obj, const std::string& obj_name, uint32_t count = 1);
+
+		template <typename T>
+		bool ConstructVector(ShmVector<T>*& obj, const std::string& obj_name);
 		
 		template <typename T>
 		bool Find(T*& obj, uint32_t& count, const std::string& obj_name);
@@ -80,6 +92,33 @@ namespace shm_test {
 
 			shm_log("find_or_construct %s %s, type %s, is_pod %d, address %p free_memory %d cost memory %d\n",
 				obj_name.c_str(), obj ? "succeed" : "failed", typeid(T).name(), std::is_pod<T>::value,
+				obj, shm_->get_free_memory(), before_memory - shm_->get_free_memory());
+
+		} while (!obj && Grow(bytes_per_growth_));
+
+		return obj ? true : false;
+	}
+
+	template <typename T>
+	bool BoostShm::ConstructVector(ShmVector<T>*& obj, const std::string& obj_name) {
+		if (!Valid()) {
+			return false;
+		}
+
+		int before_memory = shm_->get_free_memory();
+
+		shm_log("try construct %s, type %s, sizeof(ShmVector<T>) %d, is_pod %d, free_memory %d\n",
+			obj_name.c_str(), typeid(ShmVector<T>).name(), sizeof(ShmVector<T>), 
+			std::is_pod<ShmVector<T>>::value, before_memory);
+
+
+		const ShmAllocator<T> alloc_inst(shm_->get_segment_manager());
+
+		do {
+			obj = shm_->find_or_construct<ShmVector<T>>(obj_name.c_str())(alloc_inst);
+
+			shm_log("find_or_construct %s %s, type %s, is_pod %d, address %p free_memory %d cost memory %d\n",
+				obj_name.c_str(), obj ? "succeed" : "failed", typeid(ShmVector<T>).name(), std::is_pod<ShmVector<T>>::value,
 				obj, shm_->get_free_memory(), before_memory - shm_->get_free_memory());
 
 		} while (!obj && Grow(bytes_per_growth_));

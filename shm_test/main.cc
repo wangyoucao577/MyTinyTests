@@ -65,6 +65,7 @@ int main(int argc, char* argv[]) {
 		bool ret = shm.Link();
 		assert(ret == true);
 
+		//POD
 		TestType1* test1 = nullptr;
 		int count = 1;
 		if (shm.Construct<TestType1>(test1, VNAME(test1), count)) {
@@ -76,6 +77,7 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
+		//not POD
 		TestType2* test2 = nullptr;
 		count = 3;
 		if (shm.Construct<TestType2>(test2, VNAME(test2), count)) {
@@ -87,6 +89,15 @@ int main(int argc, char* argv[]) {
 			}
 		}
 		
+		//vector, not POD
+		ShmVector<TestType3>* test3 = nullptr;
+		if (shm.ConstructVector<TestType3>(test3, VNAME(test3))) {
+			shm_log("shm get free memory %lld\n", shm.GetFreeMemory());
+			test3->push_back(TestType3(3.1415926535f));
+			test3->push_back(TestType3(3.1415926535f));
+			test3->push_back(TestType3(3.1415926535f));
+			shm_log("shm get free memory %lld\n", shm.GetFreeMemory());
+		}
 	}
 	else if (argc >= 2 && 0 == strcmp(argv[1], "read")) {
 		bool ret = shm.Link();
@@ -113,6 +124,21 @@ int main(int argc, char* argv[]) {
 				test2->dump();
 			}
 		}
+
+		ShmVector<TestType3>* test3 = nullptr;
+		uint32_t test3_count = 0;
+		if (shm.Find<ShmVector<TestType3>>(test3, test3_count, VNAME(test3))) {
+			assert(test3);
+			assert(test3_count > 0);
+
+			for (size_t i = 0; i < test3_count; i++, test3++)
+			{
+				const ShmVector<TestType3>& test3_vec = *test3;
+				for (const auto& val : test3_vec) {
+					val.dump();
+				}
+			}
+		}
 		
 	}
 	else if (argc >= 2 && 0 == strcmp(argv[1], "destory_obj")) {
@@ -121,6 +147,7 @@ int main(int argc, char* argv[]) {
 
 		shm.Destory<TestType1>(VNAME(test1));
 		shm.Destory<TestType2>(VNAME(test2));
+		shm.Destory<ShmVector<TestType3>>(VNAME(test3));
 	}
 	else if (argc >= 2 && 0 == strcmp(argv[1], "unlink")) {
 		shm.Unlink();

@@ -84,4 +84,12 @@ namespace shm_test {
 		return ret;
 	}
 
+	uint64_t BoostShm::GetFreeMemory() const {
+		if (!Valid()) {
+			return 0LL;
+		}
+
+		return shm_->get_free_memory();
+	}
+
 }

@@ -12,7 +12,7 @@ namespace shm_test{
 		int a;
 		int b;
 
-		void dump() {
+		void dump() const {
 			shm_log("type %s %s=%d %s=%d\n", VNAME(TestType1), VNAME(a), a, VNAME(b), b);
 		}
 	};
@@ -24,16 +24,19 @@ namespace shm_test{
 		int a;
 		float b;
 
-		void dump() {
+		void dump() const {
 			shm_log("type %s %s=%d %s=%f\n", VNAME(TestType2), VNAME(a), a, VNAME(b), b);
 		}
 	};
 
 	struct TestType3 {
-		char a[16];
 
-		void dump() {
-			shm_log("type %s %s=%s\n", VNAME(TestType3), VNAME(a), a);
+		TestType3(double val) : dd(val) {}
+
+		double dd;
+
+		void dump() const {
+			shm_log("type %s %s=%lf\n", VNAME(TestType3), VNAME(dd), dd);
 		}
 	};
 
