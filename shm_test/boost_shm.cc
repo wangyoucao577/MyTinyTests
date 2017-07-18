@@ -27,7 +27,8 @@ namespace shm_test {
 
 		try
 		{
-			shm_ = new boost::interprocess::managed_shared_memory(boost::interprocess::open_or_create, name_.c_str(), bytes_);
+			shm_ = new boost::interprocess::managed_shared_memory(boost::interprocess::open_or_create, name_.c_str(), bytes_, 
+				nullptr, boost::interprocess::permissions(0600));
 		}
 		catch (const boost::interprocess::interprocess_exception& ex)
 		{
