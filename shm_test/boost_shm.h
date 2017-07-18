@@ -72,8 +72,8 @@ namespace shm_test {
 
 		int before_memory = shm_->get_free_memory();
 
-		shm_log("try construct %s, type %s, is_pod %d, free_memory %d\n", 
-			obj_name.c_str(), typeid(T).name(), std::is_pod<T>::value, before_memory);
+		shm_log("try construct %s, type %s, sizeof(T) %d, is_pod %d, free_memory %d\n", 
+			obj_name.c_str(), typeid(T).name(), sizeof(T), std::is_pod<T>::value, before_memory);
 
 		do {
 			obj = shm_->find_or_construct<T>(obj_name.c_str(), std::nothrow)[count]();

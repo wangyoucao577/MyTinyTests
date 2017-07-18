@@ -66,13 +66,24 @@ int main(int argc, char* argv[]) {
 		assert(ret == true);
 
 		TestType1* test1 = nullptr;
-		int count = 3;
+		int count = 1;
 		if (shm.Construct<TestType1>(test1, VNAME(test1), count)) {
 			for (size_t i = 0; i < count; i++)
 			{
 				test1->a = -11;
 				test1->b = 12;
 				test1++;
+			}
+		}
+
+		TestType2* test2 = nullptr;
+		count = 3;
+		if (shm.Construct<TestType2>(test2, VNAME(test2), count)) {
+			for (size_t i = 0; i < count; i++)
+			{
+				test2->a = -13;
+				test2->b = 15.5f;
+				test2++;
 			}
 		}
 		
@@ -91,6 +102,17 @@ int main(int argc, char* argv[]) {
 				test1->dump();
 			}
 		}
+
+		TestType2* test2 = nullptr;
+		uint32_t test2_count = 0;
+		if (shm.Find<TestType2>(test2, test2_count, VNAME(test2))) {
+			assert(test2);
+			assert(test2_count > 0);
+
+			for (int i = 0; i < test2_count; ++i, ++test2) {
+				test2->dump();
+			}
+		}
 		
 	}
 	else if (argc >= 2 && 0 == strcmp(argv[1], "destory_obj")) {
@@ -98,6 +120,7 @@ int main(int argc, char* argv[]) {
 		assert(ret == true);
 
 		shm.Destory<TestType1>(VNAME(test1));
+		shm.Destory<TestType2>(VNAME(test2));
 	}
 	else if (argc >= 2 && 0 == strcmp(argv[1], "unlink")) {
 		shm.Unlink();

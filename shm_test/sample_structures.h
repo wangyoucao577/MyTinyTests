@@ -18,6 +18,9 @@ namespace shm_test{
 	};
 
 	struct TestType2 {
+
+		TestType2(){}	// make it not POD
+
 		int a;
 		float b;
 
