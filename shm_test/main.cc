@@ -65,10 +65,16 @@ int main(int argc, char* argv[]) {
 		bool ret = shm.Link();
 		assert(ret == true);
 
-		TestType1 test1;
-		test1.a = -11;
-		test1.b = 12;
-		shm.Write(test1, VNAME(test1), 3);
+		TestType1* test1 = nullptr;
+		int count = 3;
+		if (shm.Construct<TestType1>(test1, VNAME(test1), count)) {
+			for (size_t i = 0; i < count; i++)
+			{
+				test1->a = -11;
+				test1->b = 12;
+				test1++;
+			}
+		}
 		
 	}
 	else if (argc >= 2 && 0 == strcmp(argv[1], "read")) {
@@ -77,7 +83,7 @@ int main(int argc, char* argv[]) {
 
 		TestType1* test1 = nullptr;
 		uint32_t test1_count = 0;
-		if (shm.Find(test1, test1_count, VNAME(test1))) {
+		if (shm.Find<TestType1>(test1, test1_count, VNAME(test1))) {
 			assert(test1);
 			assert(test1_count > 0);
 
@@ -91,7 +97,7 @@ int main(int argc, char* argv[]) {
 		bool ret = shm.Link();
 		assert(ret == true);
 
-		shm.Destory(VNAME(test1), TestType1());
+		shm.Destory<TestType1>(VNAME(test1));
 	}
 	else if (argc >= 2 && 0 == strcmp(argv[1], "unlink")) {
 		shm.Unlink();
