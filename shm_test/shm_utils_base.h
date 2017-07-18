@@ -6,6 +6,7 @@
 #include <sys/stat.h>        /* For mode constants */
 
 #define shm_log(...) printf(__VA_ARGS__)
+#define VNAME(name) (#name)
 #define INVALID_FILE_DESCRIPTOR (-1)
 
 

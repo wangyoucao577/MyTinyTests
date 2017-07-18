@@ -7,9 +7,14 @@
 #include "posix_shm_utils.h"
 #include "system_v_shm_utils.h"
 #include "boost_posix_shm_utils.h"
+#include "boost_shm.h"
 
 using namespace std;
 using namespace shm_test;
+
+//#define COMPARE_POSIX_SYSTEMV_BOOSTNATIVE
+
+#ifdef COMPARE_POSIX_SYSTEMV_BOOSTNATIVE
 
 int main(int argc, char* argv[]){
 
@@ -39,3 +44,65 @@ int main(int argc, char* argv[]){
 	delete sm;
     return 0;
 }
+
+#else
+
+void print_usage() {
+	shm_log("Usage:\n");
+	shm_log("    ./shm <cmd>\n");
+	shm_log("Sample:\n");
+	shm_log("    ./shm write\n");
+	shm_log("    ./shm read\n");
+	shm_log("    ./shm destory_obj\n");
+	shm_log("    ./shm unlink\n");
+}
+
+int main(int argc, char* argv[]) {
+
+	BoostShm shm("jay_test_03", 10000);
+
+	if (argc >= 2 && 0 == strcmp(argv[1], "write")) {
+		bool ret = shm.Link();
+		assert(ret == true);
+
+		TestType1 test1;
+		test1.a = -11;
+		test1.b = 12;
+		shm.Write(test1, VNAME(test1), 3);
+		
+	}
+	else if (argc >= 2 && 0 == strcmp(argv[1], "read")) {
+		bool ret = shm.Link();
+		assert(ret == true);
+
+		TestType1* test1 = nullptr;
+		uint32_t test1_count = 0;
+		if (shm.Find(test1, test1_count, VNAME(test1))) {
+			assert(test1);
+			assert(test1_count > 0);
+
+			for (int i = 0; i < test1_count; ++i, ++test1) {
+				test1->dump();
+			}
+		}
+		
+	}
+	else if (argc >= 2 && 0 == strcmp(argv[1], "destory_obj")) {
+		bool ret = shm.Link();
+		assert(ret == true);
+
+		shm.Destory(VNAME(test1), TestType1());
+	}
+	else if (argc >= 2 && 0 == strcmp(argv[1], "unlink")) {
+		shm.Unlink();
+	}
+	else {
+		print_usage();
+	}
+	
+	
+	return 0;
+}
+
+#endif // COMPARE_POSIX_SYSTEMV_BOOSTNATIVE
+

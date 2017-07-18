@@ -20,6 +20,8 @@
 
 #include "shm_utils_base.h"
 
+#include "sample_structures.h"
+
 namespace shm_test {
 
 	class BoostShm : public ShmBase {
@@ -39,8 +41,13 @@ namespace shm_test {
 		bool Grow(uint32_t grow_size);
 
 	public:
-		bool PassVector(const std::string& obj_name, const std::vector<std::string>& value);
-		bool PassVector(const std::string& obj_name, const std::vector<float>& value);
+		typedef TestType1* PointerOfTestType1;
+
+		bool Construct(PointerOfTestType1& obj, const std::string& obj_name, uint32_t count = 1);
+		bool Write(const TestType1& obj, const std::string& obj_name, uint32_t count = 1);
+		bool Find(PointerOfTestType1& obj, uint32_t& count, const std::string& obj_name);
+
+		bool Destory(const std::string& obj_name, const TestType1& obj);
 
 	private:
 		boost::interprocess::managed_shared_memory* shm_{ nullptr };
