@@ -16,3 +16,18 @@ a.out
 */cmake_install.cmake
 */CMakeFiles
 
+zlog_test/build/*
+     
+cmake_test/_build/
+cmake_test/cmake_config.h
+
+cc11/*/Debug/
+cc11/*/x64/
+cc11/.vs/
+cc11/Debug/
+cc11/cc11_test.VC.db
+
+RESTClientSample/x64/Debug/
+RESTClientSample/RESTClientSample.VC.db
+RESTClientSample/RESTClientSample/x64/
+ 
