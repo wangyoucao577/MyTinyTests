@@ -68,5 +68,6 @@ add_executable (boost_test  ${DIR_SRCS} ${HEADER_FILES} ${BOOST_INTERPROCESS_HEA
 
 # link lib in subfolder
 if (UNIX)
-#target_link_libraries(shm librt.so)
+set (BOOST_LIB_PATH "/usr/local/boost_1_64_0/lib/")
+target_link_libraries(boost_test ${BOOST_LIB_PATH}/libboost_date_time.so)
 endif()
