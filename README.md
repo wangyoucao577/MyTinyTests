@@ -186,6 +186,11 @@ RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流
 - boost 1.64.0:    
   - ./third_party/boost_1_64_0/      
 
+### [Python2] cmd_args_test.py  
+尝试`argparse`库的使用, 居然以前都不知道有这么方便易用的命令行选项解析的工具. 果然还是应该多思考, 觉得不爽的时候`python`里面总归会有让你爽的方法.官网的指南和手册就已经非常好了, 极力推荐.  
+- [python2.7 argparse manual](https://docs.python.org/2.7/library/argparse.html)  
+- [python2.7 argparse tutorial](https://docs.python.org/2.7/howto/argparse.html)  
+
 ### [Python2] cdeclare.py
   参考《Expert C Programming》书中的规则实现的`cdecl`程序, 未按照书中用`C`实现, 而是用更方便的`python`实现了下. 支持较为复杂的函数声明的分析, 未支持包括`struct`, `enum`,`union`等类型. 比上文中《The C Programming Language》中的`cdcl`实现支持更为全面些. 不过对`C`声明的一些细节规则还是不太理解的，再要深入可能需要看标准了.
 
