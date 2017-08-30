@@ -5,29 +5,21 @@ import sys
 import shutil
 import subprocess
 import platform
+import argparse
 
 # pre-set parameters
 kCMakeGeneratedConfig = "cmake_config.h"
 kBuildFolder = "./_build/"
 kBuildTypesDebug = "Debug"
 kBuildTypeRelease = "Release"
+kBuildTypes = {'debug' : kBuildTypesDebug, 'release' : kBuildTypeRelease}
 
-
-# Quit
-kQuit = "Quit"
 
 def cmake_clean():
     if os.path.isdir(kBuildFolder):
         shutil.rmtree(kBuildFolder)
     if os.path.isfile(kCMakeGeneratedConfig):
         os.remove(kCMakeGeneratedConfig)
-    return kQuit
-
-def initialize_debug_parameters():
-    return kBuildTypesDebug
-
-def initialize_release_parameters():
-    return kBuildTypeRelease
 
 def do_cmd(cmd):
     print cmd
@@ -56,46 +48,42 @@ def do_mkdir(dir_path):
 
 def dump_version():
     do_cmd("g++ --version")
-    return kQuit
+    
 
-def build_help():
-    print "Call cmake to build codes on indicated platform. Default build with release."
-    print "Usage: "
-    print "     python build.py [option]"
-    print "Sample: "
-    print "     python build.py"
-    print "     python build.py debug"
-    print "     python build.py release"
-    print "     python build.py clean"
-    print "     python build.py --help"
-    print "     python build.py --version"
-    print "Options: "
-    print "     debug    :    compile with -g, -DDEBUG"
-    print "     release  :    compile with -O2, -UDEBUG"
-    print "     clean    :    clean all output from cmake"
-    print "     --help   :    display help information"
-    print "     --version:    display related versions, such as GCC version"
-    return kQuit
+
+class BuildArgs:
+
+    def __init__(self):
+        self.__parser = argparse.ArgumentParser(description='Call cmake to build codes on indicated platform. Default build with release.')
+        
+        # version
+        # not use normal version action here, because we hope to dump gcc version here actually
+        self.__parser.add_argument('-v', '--version', action='store_true', help='display version info')
+        #self.__parser.add_argument('-v', '--version', action='version', help='display version info', version='%(prog)s 0.0.1')
+
+        # clean
+        self.__parser.add_argument('-c', '--clean', action='store_true', help='clean all output from cmake')
+
+        # build_type
+        self.__parser.add_argument('-b', '--build_type', help='build as debug(-g -DDEBUG) or release(-O2 -UDEBUG), default release', \
+            choices=['debug', 'release'], default='release')
+
+        # parse
+        self.__args = self.__parser.parse_args()
+
+    def get_args(self):
+        return self.__args
 
 def main():
-    cmd_behavior_list = {'--help' : build_help, '--version' : dump_version,
-                        'clean': cmake_clean, 
-                        'debug' : initialize_debug_parameters, 'release' : initialize_release_parameters}
 
-    build_type = kBuildTypeRelease
-
-    # handle options from command
-    if len(sys.argv) >= 2:
-        if sys.argv[1] not in cmd_behavior_list:
-            print "Error: Invalid options!"
-            build_help()
-            return      
-        # handle options, may quit then  
-        cmd_ret = cmd_behavior_list[sys.argv[1]]()
-        if cmd_ret == kQuit:
-            return
-        elif cmd_ret == kBuildTypeRelease or cmd_ret == kBuildTypesDebug:
-            build_type = cmd_ret
+    args = BuildArgs().get_args()
+    if args.version:
+        dump_version()
+        exit(0)
+    if args.clean:
+        cmake_clean()
+        exit(0)
+    build_type = kBuildTypes[args.build_type]   # set cmake build_type for compile
     
     # prepare build folders 
     do_mkdir(kBuildFolder) 
