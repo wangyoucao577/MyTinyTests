@@ -1,25 +1,32 @@
 
 import argparse
 
+class MyArgs:
+
+    def __init__(self):
+        self.parser = argparse.ArgumentParser(description='test for python cmd argparse module, maybe also optional getopt module.')
+
+        # default positional arguments
+        self.parser.add_argument('square', help='display a square of a given number', type=int)
+
+        # `-*` or `--*` means optional arguments
+        #parser.add_argument('--echo', help='echo the string you use enter') # require follow content unless set one by action
+        
+        # cannot both exist due to `add_mutually_exclusive_group`
+        self.verbose_group = self.parser.add_mutually_exclusive_group()
+        self.verbose_group.add_argument('-v', '--verbose', action='count', default=0, help='display verbose log') 
+        self.verbose_group.add_argument('-q', '--quiet', action='store_true', help='display less log') 
+        #parser.add_argument('-v', '--verbose', action='count', default=0, help='display verbose log') 
+
+        # parse args
+        self.arguments = self.parser.parse_args()
+
+    def args(self):
+        return self.arguments
 
 def main():
-
-    parser = argparse.ArgumentParser(description='test for python cmd argparse module, maybe also optional getopt module.')
+    args = MyArgs().args()   # construct and parse cmd args  
     
-    # default positional arguments
-    parser.add_argument('square', help='display a square of a given number', type=int)
-
-    # `-*` or `--*` means optional arguments
-    #parser.add_argument('--echo', help='echo the string you use enter') # require follow content unless set one by action
-    
-    # cannot both exist by `add_mutually_exclusive_group`
-    verbose_group = parser.add_mutually_exclusive_group()
-    verbose_group.add_argument('-v', '--verbose', action='count', default=0, help='display verbose log') 
-    verbose_group.add_argument('-q', '--quiet', action='store_true', help='display less log') 
-    #parser.add_argument('-v', '--verbose', action='count', default=0, help='display verbose log') 
-    
-    args = parser.parse_args()
-        
     if args.square:
         answer = args.square ** 2
 
