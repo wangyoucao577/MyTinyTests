@@ -19,11 +19,14 @@ kAutogen = "./autogen.sh"
 kAutoclean = "./autoclean.sh" 
 
 
-def cmake_clean():
+def clean_all():
+    # cmake output
     if os.path.isdir(kBuildFolder):
         shutil.rmtree(kBuildFolder)
     if os.path.isfile(kCMakeGeneratedConfig):
         os.remove(kCMakeGeneratedConfig)
+
+    # autotools output
     if os.path.isfile(kAutoclean):
         #do_cmd(kAutoclean)
         subprocess.call(kAutoclean, shell=True)
@@ -146,7 +149,7 @@ def main():
         dump_version()
         exit(0)
     if args.clean:
-        cmake_clean()
+        clean_all()
         exit(0)
     build_type = kBuildTypes[args.build_type]   # set cmake build_type for compile
     
