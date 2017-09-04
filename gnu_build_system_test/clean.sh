@@ -1,5 +1,6 @@
 
-make clean
+rm -f hello
+rm -f *.o
 
 rm -f aclocal.m4
 rm -rf autom4te.cache/

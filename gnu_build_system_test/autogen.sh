@@ -4,6 +4,7 @@ autoconf
 autoheader
 automake -i
 
-mkdir _build/
-
+if [ ! -d _build ]; then 
+    mkdir _build/
+fi
 
