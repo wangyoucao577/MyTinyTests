@@ -155,6 +155,10 @@ RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流
 学习使用`cmake`构建跨平台的编译系统, 支持直接在`Windows`上生成`Visual Studio`工程文件, 在`Linux`上生成`Makefile`等. 详见:   
 - [cmake_test](cmake_test/README.md)  
 
+### [Autotools/C++] gnu_build_system_test  
+学习使用 The GNU Build System, 即 `autotools`相关工具, 以生成跨平台的编译系统. 工具包括`autoconf/autoheader/automake/autoreconf/aclocal/...`.   
+- [GNU Build System Test](gnu_build_system_test/README.md)  
+
 ### [C/C++] shm_test     
 学习使用共享内存在`Linux`上的使用, `shm`即`shared memroy`. 含`Posix Shared Memory`, `System V Shared Memory`, `Boost Shared Memory`等多种接口/使用方式. 详见:   
 - [shm_test](shm_test/README.md)  
