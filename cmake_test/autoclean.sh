@@ -1,3 +1,4 @@
+#!/bin/sh
 
 rm -f hello
 rm -f *.o

@@ -14,12 +14,19 @@ kBuildTypesDebug = "Debug"
 kBuildTypeRelease = "Release"
 kBuildTypes = {'debug' : kBuildTypesDebug, 'release' : kBuildTypeRelease}
 
+# for autotools
+kAutogen = "./autogen.sh"
+kAutoclean = "./autoclean.sh" 
+
 
 def cmake_clean():
     if os.path.isdir(kBuildFolder):
         shutil.rmtree(kBuildFolder)
     if os.path.isfile(kCMakeGeneratedConfig):
         os.remove(kCMakeGeneratedConfig)
+    if os.path.isfile(kAutoclean):
+        #do_cmd(kAutoclean)
+        subprocess.call(kAutoclean, shell=True)
 
 def do_cmd(cmd):
     print cmd
@@ -48,21 +55,26 @@ def do_mkdir(dir_path):
 
 def dump_version():
     do_cmd("g++ --version")
+    do_cmd("cmake --version")
+    do_cmd("m4 --version")
+    do_cmd("aclocal --version")
+    do_cmd("autoconf --version")
+    do_cmd("automake --version")
     
 
 
 class BuildArgs:
 
     def __init__(self):
-        self.__parser = argparse.ArgumentParser(description='Call cmake to build codes on indicated platform. Default build with release.')
+        self.__parser = argparse.ArgumentParser(description='Call cmake/autotools to build codes on indicated platform. Default build with cmake/release.')
         
         # version
         # not use normal version action here, because we hope to dump gcc version here actually
-        self.__parser.add_argument('-v', '--version', action='store_true', help='display version info')
+        self.__parser.add_argument('-v', '--version', action='store_true', help='display cmake/autotools version info')
         #self.__parser.add_argument('-v', '--version', action='version', help='display version info', version='%(prog)s 0.0.1')
 
         # clean
-        self.__parser.add_argument('-c', '--clean', action='store_true', help='clean all output from cmake')
+        self.__parser.add_argument('-c', '--clean', action='store_true', help='clean all output from cmake/autotools')
 
         # build_type
         self.__parser.add_argument('-b', '--build_type', help='build as debug(-g -DDEBUG) or release(-O2 -UDEBUG), default release', \
