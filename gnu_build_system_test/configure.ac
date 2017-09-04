@@ -5,6 +5,9 @@ AC_PREREQ([2.69])
 AC_INIT([my_gnu_build_system_test], [0.1.0], [BUG-REPORT-ADDRESS])
 AC_CONFIG_SRCDIR([config.h.in])
 
+# Use automake to generate `Makefile.in` from `Makefile.am`
+AM_INIT_AUTOMAKE
+
 # generate config.h from config.h.in
 AC_CONFIG_HEADERS([config.h])
 
