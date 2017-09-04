@@ -11,3 +11,10 @@ make
 ./hello
 ```
 
+```
+./autogen.sh
+cd _build/
+../configure
+make
+./hello
+```
