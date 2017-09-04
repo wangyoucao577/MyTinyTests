@@ -11,6 +11,7 @@
 using namespace std;
 
 int power(int base, int exponent){
+    cout << "called function: \'" << __func__ << "\' in file: " << __FILE__ << endl;
 
     if (exponent == 0){
         return 1.0;
