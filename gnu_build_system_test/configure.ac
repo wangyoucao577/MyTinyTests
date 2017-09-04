@@ -13,6 +13,7 @@ AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs(compilers, etc).
 AC_PROG_CC
+AC_PROG_CXX
 
 # Checks for libraries.
 
