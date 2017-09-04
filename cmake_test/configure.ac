@@ -10,6 +10,7 @@ AM_INIT_AUTOMAKE
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
+AC_PROG_RANLIB
 
 # check for c++11
 #m4_include([ax_cxx_compile_stdcxx.m4])
@@ -25,6 +26,6 @@ AC_CHECK_HEADERS([stdlib.h])
 # Checks for library functions.
 #AC_CHECK_FUNCS([pow])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile math_lib/Makefile])
 
 AC_OUTPUT
