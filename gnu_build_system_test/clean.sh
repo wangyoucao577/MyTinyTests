@@ -11,3 +11,4 @@ rm -f config.status
 rm -f configure
 rm -f Makefile
 rm -f Makefile.in
+rm -f stamp-h1
