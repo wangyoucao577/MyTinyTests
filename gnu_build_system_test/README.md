@@ -1,0 +1,10 @@
+
+
+
+```
+autoconf
+./configure
+make
+./hello
+```
+
