@@ -35,6 +35,7 @@ message("CMAKE_CXX_FLAGS " is ${CMAKE_CXX_FLAGS})
 message("CMAKE_CXX_FLAGS_DEBUG " is ${CMAKE_CXX_FLAGS_DEBUG})
 message("CMAKE_CXX_FLAGS_RELEASE " is ${CMAKE_CXX_FLAGS_RELEASE})
 
+
 # find source files automatically, then set to var DIR_SRCS
 aux_source_directory(. DIR_SRCS)
 #aux_source_directory(math_lib DIR_MATH_LIB_SRCS)
@@ -49,6 +50,7 @@ option(BUILD_SHARED_LIBS "build shared libraries" OFF)
 ####### option for default ##########
 
 # configs for project, should after default value definition in option
+add_definitions(-DCMAKE_CONFIG_IN)
 configure_file (
     "${PROJECT_SOURCE_DIR}/${CMAKE_CONFIG_FILE}.in"
     "${PROJECT_SOURCE_DIR}/${CMAKE_CONFIG_FILE}"

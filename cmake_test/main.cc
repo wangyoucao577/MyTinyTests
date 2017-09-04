@@ -3,7 +3,10 @@
 #include <iostream>
 #include <typeinfo>
 #include "math_lib/math_lib.h"
+
+#ifdef CMAKE_CONFIG_IN
 #include "cmake_config.h"
+#endif
 
 using namespace std;
 
