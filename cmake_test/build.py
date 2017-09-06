@@ -26,10 +26,12 @@ def clean_all():
     if os.path.isfile(kCMakeGeneratedConfig):
         os.remove(kCMakeGeneratedConfig)
 
-    # autotools output
-    if os.path.isfile(kAutoclean):
-        #do_cmd(kAutoclean)
-        subprocess.call(kAutoclean, shell=True)
+    if platform.system() != 'Windows':
+        # autotools output
+        if os.path.isfile(kAutoclean):
+            #do_cmd(kAutoclean)
+            subprocess.call(kAutoclean, shell=True)
+
 
 def do_cmd(cmd):
     print cmd
@@ -154,7 +156,10 @@ def main():
     build_type = kBuildTypes[args.build_type]   # set cmake build_type for compile
     
     if args.build_system == 'autotools':
-        autotools_build(build_type)
+        if platform.system() == 'Windows':
+            print "[ERROR] Windows doesn't support Autotools."
+        else:
+            autotools_build(build_type)
     else:
         cmake_build(build_type)
 
