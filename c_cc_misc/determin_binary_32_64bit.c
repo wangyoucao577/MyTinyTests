@@ -5,7 +5,7 @@
 
 int main()
 {
-	printf("sizeof(int) %d, sizeof(long int) %d, sizeof(void*) %d\n", sizeof(int), sizeof(long int), sizeof(void*));
+    printf("sizeof(int) %d, sizeof(long int) %d, sizeof(void*) %d\n", sizeof(int), sizeof(long int), sizeof(void*));
 
     const int k64bitSize = 8 * sizeof(char);
     const int k32bitSize = 4 * sizeof(char);
@@ -18,5 +18,5 @@ int main()
         printf("Unknown bit of this binary.\n");
     }
 
-	return 0;
+    return 0;
 }
