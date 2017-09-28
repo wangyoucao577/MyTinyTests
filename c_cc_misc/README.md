@@ -23,6 +23,10 @@
 - endian.c  
   判断本机字节序.
 
+- determin_binary_32_64bit.c  
+  通过`sizeof(void*)`即指针长度来判断当前的binary时`32-bit`or`64bit`编译. 其实一般情况下更多是通过宏来编译时判断, 而这个方法可以在运行时判断, 暂时没有遇到不成立的情况.  
+
+
 - minimum_int_test.c  
   来自stackoverflow上的一个例子，`int`型最小整数的验证. `gcc -m32 minimum_int_test.c`, `./a.out`可发现此负数已超出了`int`的限制, 故而返回了true. 进行整数大小判断时, 需注意溢出的问题.
 
