@@ -1,7 +1,7 @@
 # TryRedis 
 熟悉 [Redis - REmote DIctionary Server](https://redis.io/) 的使用.    
 
-# 实验平台    
+## 实验平台    
 - Linux: `Ubuntu 16.04.4 LTS`    
     - Kernel: `Linux ubuntu 4.13.0-36-generic #40~16.04.1-Ubuntu SMP Fri Feb 16 23:25:58 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux`    
     - `gcc (Ubuntu 5.4.0-6ubuntu1~16.04.9) 5.4.0 20160609`    
@@ -9,8 +9,8 @@
     - `go version go1.9.4 linux/amd64`
     - `Python 2.7.12`
 
-# 我的实验   
-## Install Redis  
+## 我的实验   
+### Install Redis  
 Find latest version on [Download Page](https://redis.io/download) if needed.    
 ```sh
 $ mkdir redis
@@ -21,14 +21,14 @@ $ cd redis-4.0.10/
 $ make
 ```
 
-### Install ReJSON - Redis as a JSON store (optional)
+#### Install ReJSON - Redis as a JSON store (optional)
 Refer to the perfect introduction [Tech Blog - Redis as a JSON store](https://redislabs.com/blog/redis-as-a-json-store/).
 ```sh
 $ cd redis
 $ git clone https://github.com/RedisLabsModules/rejson.git
 $ cd rejson
 $ make
-$ ll -lh src/ | grep so
+$ ll -lh src/ | grep rejson
 -rw-rw-r--  1 user user 955K Jun 20 02:39 librejson.a
 -rw-rw-r--  1 user user  70K Jun 20 02:38 rejson.c
 -rw-rw-r--  1 user user 2.5K Jun 20 02:38 rejson.h
@@ -36,13 +36,13 @@ $ ll -lh src/ | grep so
 -rwxrwxr-x  1 user user 447K Jun 20 02:39 rejson.so*
 ```
 
-## Run Redis Server
+### Run Redis Server
 - Simplest run, default port 6379    
 `./src/redis-server`    
 - Or run with conf file    
 `./src/redis-server ./redis.conf`
 
-### Run Redis Server with ReJSON
+#### Run Redis Server with ReJSON (optional)
 ```sh
 $ cd redis
 $ ll
@@ -50,10 +50,11 @@ drwxrwxr-x  5 user user     4096 Jun 20 02:19 hiredis/
 drwxrwxr-x  6 user user     4096 Jun 20 02:38 redis-4.0.10/
 -rw-rw-r--  1 user user  1738465 Jun 13 09:51 redis-4.0.10.tar.gz
 drwxrwxr-x 10 user user     4096 Jun 20 02:38 rejson/
+$
 $ ./redis-4.0.10/src/redis-server --loadmodule ./rejson/src/rejson.so
 ```
 
-## Try with Redis Cli
+### Try with Redis Cli
 Check this [interactive tutorial](https://try.redis.io/) that will walk you through the most important features of Redis.   
 ```sh
 $ ./src/redis-cli
@@ -83,8 +84,11 @@ OK
 "10"
 ```
 
-## Try with Python Redis Client    
-## Try with C/C++ Redis Client 
+### Try with Python Redis Client    
+- TODO
+
+
+### Try with C/C++ Redis Client 
 Official C client [hiredis](https://github.com/redis/hiredis). Support for the whole command set, pipelining, event driven programming.	
 - Build `hiredis`    
 ```sh
