@@ -92,11 +92,11 @@ Refer to [Commands](https://redis.io/commands) for full commands list.
 
 ## links 
 - [Redis](https://redis.io/)
-- [Download Page](https://redis.io/download)
-- [interactive tutorial](https://try.redis.io/)
-- [Commands](https://redis.io/commands)
-- https://redis.io/clients
-- https://redis.io/documentation
+- [Redis Download Page](https://redis.io/download)
+- [Redis Interactive Tutorial](https://try.redis.io/)
+- [Redis Commands](https://redis.io/commands)
+- [Redis Clients](https://redis.io/clients)   
+- [Redis Documentation](https://redis.io/documentation)
 - http://www.runoob.com/redis/redis-tutorial.html
 
 ## Contacts 
