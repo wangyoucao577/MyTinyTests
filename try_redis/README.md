@@ -21,11 +21,37 @@ $ cd redis-4.0.10/
 $ make
 ```
 
+### Install ReJSON - Redis as a JSON store (optional)
+Refer to the perfect introduction [Tech Blog - Redis as a JSON store](https://redislabs.com/blog/redis-as-a-json-store/).
+```sh
+$ cd redis
+$ git clone https://github.com/RedisLabsModules/rejson.git
+$ cd rejson
+$ make
+$ ll -lh src/ | grep so
+-rw-rw-r--  1 user user 955K Jun 20 02:39 librejson.a
+-rw-rw-r--  1 user user  70K Jun 20 02:38 rejson.c
+-rw-rw-r--  1 user user 2.5K Jun 20 02:38 rejson.h
+-rw-rw-r--  1 user user 218K Jun 20 02:39 rejson.o
+-rwxrwxr-x  1 user user 447K Jun 20 02:39 rejson.so*
+```
+
 ## Run Redis Server
 - Simplest run, default port 6379    
 `./src/redis-server`    
 - Or run with conf file    
 `./src/redis-server ./redis.conf`
+
+### Run Redis Server with ReJSON
+```sh
+$ cd redis
+$ ll
+drwxrwxr-x  5 user user     4096 Jun 20 02:19 hiredis/
+drwxrwxr-x  6 user user     4096 Jun 20 02:38 redis-4.0.10/
+-rw-rw-r--  1 user user  1738465 Jun 13 09:51 redis-4.0.10.tar.gz
+drwxrwxr-x 10 user user     4096 Jun 20 02:38 rejson/
+$ ./redis-4.0.10/src/redis-server --loadmodule ./rejson/src/rejson.so
+```
 
 ## Try with Redis Cli
 Check this [interactive tutorial](https://try.redis.io/) that will walk you through the most important features of Redis.   
@@ -131,8 +157,14 @@ Refer to [Commands](https://redis.io/commands) for full commands list.
 - [Redis Commands](https://redis.io/commands)
 - [Redis Clients](https://redis.io/clients)   
 - [Redis Documentation](https://redis.io/documentation)
-- [hiredis](https://github.com/redis/hiredis)   
+- [Offical C Client - hiredis](https://github.com/redis/hiredis)   
 - http://www.runoob.com/redis/redis-tutorial.html
+- [Tech Blog - Redis as a JSON store](https://redislabs.com/blog/redis-as-a-json-store/)
+- [ReJSON](https://github.com/redislabsmodules/rejson)
+- https://oss.redislabs.com/rejson/
+- https://oss.redislabs.com/rejson/#building-and-loading-the-module
+
+
 
 ## Author 
 wangyoucao577@gmail.com    
