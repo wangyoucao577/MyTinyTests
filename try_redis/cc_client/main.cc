@@ -44,7 +44,9 @@ void printReply(const redisReply* reply, char sep = '\n'){
 
 }
 
-void test1(redisContext *rc){
+void test1_basic_commands(redisContext *rc){
+    printf("enter %s\n", __func__);
+
     assert(rc);
 
     redisReply* reply = NULL;
@@ -105,6 +107,34 @@ void test1(redisContext *rc){
     printReply(reply);
     freeReplyObject(reply);
 
+    printf("exit %s\n\n", __func__);
+}
+
+void test2_rejson(redisContext *rc) {
+    printf("enter %s\n", __func__);
+
+    const char* json_str = "{\"key1\":\"value\", \"array\":[{\"key2\":\"value2\"}, {\"key2\":\"value3\"}, {\"key2\":\"value4\"}]}";
+
+    redisReply* reply = NULL;
+
+    reply = (redisReply*)redisCommand(rc, "JSON.SET json1 . %s", json_str);
+    printReply(reply);
+    freeReplyObject(reply);
+
+    reply = (redisReply*)redisCommand(rc, "JSON.GET json1 . ");
+    printReply(reply);
+    freeReplyObject(reply);
+
+    reply = (redisReply*)redisCommand(rc, "JSON.GET json1 .key1");
+    printReply(reply);
+    freeReplyObject(reply);
+
+    reply = (redisReply*)redisCommand(rc, "JSON.GET json1 .array");
+    printReply(reply);
+    freeReplyObject(reply);
+
+
+    printf("exit %s\n\n", __func__);
 }
 
 int main() {
@@ -122,7 +152,8 @@ int main() {
     }
 
     //test with execute commands 
-    test1(rc);
+    test1_basic_commands(rc);
+    test2_rejson(rc);
 
     //Redis Disconnect
     redisFree(rc);
