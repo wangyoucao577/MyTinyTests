@@ -54,7 +54,10 @@ $
 $ ./redis-4.0.10/src/redis-server --loadmodule ./rejson/src/rejson.so
 ```
 
-### Try with Redis Cli
+### Try with Redis Client
+We can try Redis with Redis CLI client. Also, [Redis Clients](https://redis.io/clients) lists lots of Redis clients for various languages. I'll pick up several of them in my test.    
+
+#### Try with Redis Cli
 Check this [interactive tutorial](https://try.redis.io/) that will walk you through the most important features of Redis.   
 ```sh
 $ ./src/redis-cli
@@ -84,11 +87,11 @@ OK
 "10"
 ```
 
-### Try with Python Redis Client    
+#### Try with Python Redis Client    
 - TODO
 
 
-### Try with C/C++ Redis Client 
+#### Try with C/C++ Redis Client 
 Official C client [hiredis](https://github.com/redis/hiredis). Support for the whole command set, pipelining, event driven programming.	
 - Build `hiredis`    
 ```sh
