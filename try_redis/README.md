@@ -88,12 +88,24 @@ OK
 ```
 
 #### Try with Python Redis Client    
-- TODO
+Offical recommended client for python [redis-py](https://github.com/andymccurdy/redis-py), both for Python2 and Python3.    
+- Install `redis-py`
+```sh
+$ sudo pip install redis
+...
+Successfully installed redis-2.10.6
+$
+```
 
+- Run `test.py`
+```sh
+$ cd python_client
+$ python ./test.py
+```
 
 #### Try with C/C++ Redis Client 
 Official C client [hiredis](https://github.com/redis/hiredis). Support for the whole command set, pipelining, event driven programming.	
-- Build `hiredis`    
+- Build and install `hiredis`    
 ```sh
 $ cd redis
 $ git clone https://github.com/redis/hiredis.git
@@ -168,9 +180,10 @@ Refer to [Commands](https://redis.io/commands) for full commands list.
 - http://www.runoob.com/redis/redis-tutorial.html
 - [Tech Blog - Redis as a JSON store](https://redislabs.com/blog/redis-as-a-json-store/)
 - [ReJSON](https://github.com/redislabsmodules/rejson)
-- https://oss.redislabs.com/rejson/
+- [ReJSON documentation](https://oss.redislabs.com/rejson/)
 - https://oss.redislabs.com/rejson/#building-and-loading-the-module
-
+- [redis-py](https://github.com/andymccurdy/redis-py)
+- [redis-py documentation](https://redis-py.readthedocs.io/en/latest/)
 
 
 ## Author 
