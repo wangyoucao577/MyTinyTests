@@ -137,6 +137,31 @@ void test2_rejson(redisContext *rc) {
     printf("exit %s\n\n", __func__);
 }
 
+void test3_hashes(redisContext *rc){
+    printf("enter %s\n", __func__);
+
+    redisReply* reply = NULL;
+
+    reply = (redisReply*)redisCommand(rc, "HSET hashkey2 name %s age %d", "Peter", 3);
+    printReply(reply);
+    freeReplyObject(reply);
+
+    reply = (redisReply*)redisCommand(rc, "HGET hashkey2 name");
+    printReply(reply);
+    freeReplyObject(reply);
+
+    reply = (redisReply*)redisCommand(rc, "HGET hashkey2 age");
+    printReply(reply);
+    freeReplyObject(reply);
+
+    reply = (redisReply*)redisCommand(rc, "HGETALL hashkey2");
+    printReply(reply);
+    freeReplyObject(reply);
+
+
+    printf("exit %s\n\n", __func__);
+}
+
 int main() {
     
     //Redis Connect
@@ -154,6 +179,7 @@ int main() {
     //test with execute commands 
     test1_basic_commands(rc);
     test2_rejson(rc);
+    test3_hashes(rc);
 
     //Redis Disconnect
     redisFree(rc);
