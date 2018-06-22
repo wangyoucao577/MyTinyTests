@@ -176,6 +176,7 @@ Refer to [Commands](https://redis.io/commands) for full commands list.
 - [Redis Commands](https://redis.io/commands)
 - [Redis Clients](https://redis.io/clients)   
 - [Redis Documentation](https://redis.io/documentation)
+- [An introduction to Redis data types and abstractions](https://redis.io/topics/data-types-intro)
 - [Offical C Client - hiredis](https://github.com/redis/hiredis)   
 - http://www.runoob.com/redis/redis-tutorial.html
 - [Tech Blog - Redis as a JSON store](https://redislabs.com/blog/redis-as-a-json-store/)
