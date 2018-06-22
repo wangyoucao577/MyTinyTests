@@ -134,8 +134,33 @@ $ cmake --build .
 $ ./tryredis
 ```
 
+### Redis Persistence
+- 支持两种方式:     
+    - RDB: 即snapshot的方式, 默认启用. 也可以使用命令如`SAVE`手动保存snapshot.    
+    - AOF: 持续增量记录每条修改命令, 默认关闭    
+- 注意事项:     
+    - 若要从RDB文件恢复, 则需要先disable AOF; 否则默认会是从AOF文件进行恢复.    
+    - RDB和AOF可以同时使用, 也建议同时使用.    
+Refer to [Redis Persistence](https://redis.io/topics/persistence) and [Redis 持久化](https://segmentfault.com/a/1190000002906345) for more details, e.g. advantages vs. disadvantages, how to use, etc.    
 
-## Commands    
+实验步骤:    
+- 修改`redis.conf`, 启用`AOF`: `appendonly yes`    
+- 启动`Redis`: `./src/redis-server ./redis.conf`    
+- 写入一些 `key/value`    
+- 查看是否生成`.aof`和`.rdb`文件
+```sh
+$ ll
+-rw-r--r--  1 user user       93 Jun 22 08:52 try_redis_appendonly.aof
+-rw-rw-r--  1 user user      122 Jun 22 08:39 try_redis_dump.rdb
+```
+- `kill`掉`redis-server`进程 
+- 再启动`redis-server`进程, 可以查询刚刚设置的`key/value`依然存在, 此时是通过`.aof`恢复
+- `kill`掉`redis-server`进程 
+- 修改`redis.conf`, 禁用`AOF`
+- 再启动`redis-server`进程, 可以查询刚刚设置的`key/value`依然存在, 此时是通过`.rdb`恢复
+
+
+### Common Commands    
 Refer to [Commands](https://redis.io/commands) for full commands list.    
 - General Commands
     - SET    
@@ -144,6 +169,9 @@ Refer to [Commands](https://redis.io/commands) for full commands list.
     - INCR/INCRBY: atomically increment a number stored at a given key    
     - EXPIRE    
     - TTL    
+    - KEYS
+    - TYPE
+    - SCAN
 - Commands for List    
     - RPUSH
     - LPUSH
@@ -177,6 +205,8 @@ Refer to [Commands](https://redis.io/commands) for full commands list.
 - [Redis Clients](https://redis.io/clients)   
 - [Redis Documentation](https://redis.io/documentation)
 - [An introduction to Redis data types and abstractions](https://redis.io/topics/data-types-intro)
+- [Redis Persistence](https://redis.io/topics/persistence)
+- [Redis 持久化](https://segmentfault.com/a/1190000002906345)
 - [Offical C Client - hiredis](https://github.com/redis/hiredis)   
 - http://www.runoob.com/redis/redis-tutorial.html
 - [Tech Blog - Redis as a JSON store](https://redislabs.com/blog/redis-as-a-json-store/)
