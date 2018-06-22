@@ -75,5 +75,20 @@ def main():
     test_basic_commands(r)
     test_rejson(r)
 
+    # query all keys in Redis 
+    reply = r.keys()
+    print reply 
+    for item in reply:
+        print r.type(item)
+
+    # better way to scan all keys in Redis
+    while(True):
+        reply = r.scan()
+        print reply
+        for item in reply[1]:
+            print r.type(item)
+        if reply[0] == 0:
+            break
+            
 
 main()
