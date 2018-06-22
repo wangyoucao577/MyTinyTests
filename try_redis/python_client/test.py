@@ -58,7 +58,7 @@ def test_hashes(r):
     print reply
     reply = r.hset('hashkey1', 'email', 'bob@example.com')
     print reply
-    
+
     reply = r.hget('hashkey1', 'name')
     print reply
 
@@ -99,13 +99,15 @@ def main():
         print r.type(item)
 
     # better way to scan all keys in Redis
+    cursor = 0
     while(True):
-        reply = r.scan()
+        reply = r.scan(cursor)
         print reply
         for item in reply[1]:
             print r.type(item)
         if reply[0] == 0:
             break
+        cursor = reply[0]
             
 
 main()
