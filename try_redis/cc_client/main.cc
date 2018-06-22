@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include <string.h>
+#include <stdlib.h>
 
 extern "C" {
     #include "hiredis/hiredis.h"
@@ -14,6 +15,7 @@ void printReply(const redisReply* reply, char sep = '\n'){
         return;
     }
 
+    //printf("type: %d %c", reply->type, sep);
     switch (reply->type){
         case REDIS_REPLY_STATUS:
         case REDIS_REPLY_STRING:
@@ -36,6 +38,7 @@ void printReply(const redisReply* reply, char sep = '\n'){
             for (int i = 0; i < reply->elements; ++i){
                 printReply(reply->element[i], ' ');
             }
+            printf("\n");
             break;
         default:
             printf("unknown reply type %d%c", reply->type, sep);
@@ -180,6 +183,34 @@ int main() {
     test1_basic_commands(rc);
     test2_rejson(rc);
     test3_hashes(rc);
+
+    redisReply *reply = NULL;
+
+    // query all keys in Redis 
+    reply = (redisReply*)redisCommand(rc, "KEYS *");
+    printReply(reply);
+    freeReplyObject(reply);
+
+    // better way to scan all keys in Redis
+    int cursor = 0;
+    while(true){
+        printf("new cursor for scan: %d\n", cursor);
+        reply = (redisReply*)redisCommand(rc, "SCAN %d", cursor);
+        printReply(reply);
+        
+        if (    !reply 
+            || (    reply->type == REDIS_REPLY_ARRAY
+                &&  reply->elements > 0
+                &&  reply->element[0]->type == REDIS_REPLY_STRING
+                &&  0 == strcmp(reply->element[0]->str, "0"))){
+                    break;
+                }
+
+        cursor = atoi(reply->element[0]->str);
+
+        freeReplyObject(reply);
+    }
+    
 
     //Redis Disconnect
     redisFree(rc);
