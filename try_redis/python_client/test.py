@@ -51,6 +51,22 @@ def test_basic_commands(r):
 
     print "exit " + test_basic_commands.__name__ 
 
+def test_hashes(r):
+    print "enter " + test_hashes.__name__ 
+
+    reply = r.hset('hashkey1', 'name', 'Bob')
+    print reply
+    reply = r.hset('hashkey1', 'email', 'bob@example.com')
+    print reply
+    
+    reply = r.hget('hashkey1', 'name')
+    print reply
+
+    reply = r.hgetall('hashkey1')
+    print reply
+
+    print "exit  " + test_hashes.__name__ 
+
 def test_rejson(r):
     print "enter " + test_rejson.__name__ 
 
@@ -74,6 +90,7 @@ def main():
     r = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
     test_basic_commands(r)
     test_rejson(r)
+    test_hashes(r)
 
     # query all keys in Redis 
     reply = r.keys()
