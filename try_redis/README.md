@@ -134,14 +134,14 @@ $ cmake --build .
 $ ./tryredis
 ```
 
-### Redis Persistence
+### Redis Persistence 持久化
+Refer to [Redis Persistence](https://redis.io/topics/persistence) and [Redis 持久化](https://segmentfault.com/a/1190000002906345) for more details, e.g. advantages vs. disadvantages, how to use, etc.    
 - 支持两种方式:     
     - RDB: 即snapshot的方式, 默认启用. 也可以使用命令如`SAVE`手动保存snapshot.    
     - AOF: 持续增量记录每条修改命令, 默认关闭    
 - 注意事项:     
     - 若要从RDB文件恢复, 则需要先disable AOF; 否则默认会是从AOF文件进行恢复.    
     - RDB和AOF可以同时使用, 也建议同时使用.    
-Refer to [Redis Persistence](https://redis.io/topics/persistence) and [Redis 持久化](https://segmentfault.com/a/1190000002906345) for more details, e.g. advantages vs. disadvantages, how to use, etc.    
 
 实验步骤:    
 - 修改`redis.conf`, 启用`AOF`: `appendonly yes`    
