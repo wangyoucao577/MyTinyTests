@@ -1,5 +1,5 @@
-# TryRedis 
-熟悉 [Redis - REmote DIctionary Server](https://redis.io/) 的使用.    
+# Try Memory Caching System - Redis vs. Memcached 
+熟悉常用的 Memory Caching System [Redis - REmote DIctionary Server](https://redis.io/) 和 [Memcached](https://memcached.org) 的使用.    
 
 ## 实验平台    
 - Linux: `Ubuntu 16.04.4 LTS`    
@@ -9,7 +9,7 @@
     - `go version go1.9.4 linux/amd64`
     - `Python 2.7.12`
 
-## 我的实验   
+## 我的实验 - Redis   
 ### Install Redis  
 Find latest version on [Download Page](https://redis.io/download) if needed.    
 ```sh
@@ -159,6 +159,8 @@ $ ll
 - 修改`redis.conf`, 禁用`AOF`
 - 再启动`redis-server`进程, 可以查询刚刚设置的`key/value`依然存在, 此时是通过`.rdb`恢复
 
+### Redis High Availability 高可用性
+TODO: 
 
 ### Common Commands    
 Refer to [Commands](https://redis.io/commands) for full commands list.    
@@ -197,6 +199,12 @@ Refer to [Commands](https://redis.io/commands) for full commands list.
     - HINCRBY
     - HDEL
 
+## 我的实验 - Memcached
+TODO: 
+
+## 我的对比 Redis vs. Memcached 
+TODO: 
+
 ## links 
 - [Redis](https://redis.io/)
 - [Redis Download Page](https://redis.io/download)
@@ -215,6 +223,8 @@ Refer to [Commands](https://redis.io/commands) for full commands list.
 - https://oss.redislabs.com/rejson/#building-and-loading-the-module
 - [redis-py](https://github.com/andymccurdy/redis-py)
 - [redis-py documentation](https://redis-py.readthedocs.io/en/latest/)
+- [Memcached](https://memcached.org)
+- [Memcached on Github](https://github.com/memcached/memcached)
 
 
 ## Author 
