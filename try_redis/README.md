@@ -200,7 +200,19 @@ Refer to [Commands](https://redis.io/commands) for full commands list.
     - HDEL
 
 ## 我的实验 - Memcached
-TODO: 
+
+### Install Memcached  
+Find latest version on [Memcached Download Page](https://memcached.org/downloads) if needed.    
+Refer to [Memcached Install](https://github.com/memcached/memcached/wiki/Install) for further information.     
+```sh
+$ sudo apt install libevent-dev
+$ 
+$ wget https://memcached.org/files/memcached-1.5.8.tar.gz
+$ tar -zxf memcached-1.5.8.tar.gz
+$ cd memcached-1.5.8/
+$ ./configure
+$ make
+```
 
 ## 我的对比 Redis vs. Memcached 
 TODO: 
@@ -225,7 +237,8 @@ TODO:
 - [redis-py documentation](https://redis-py.readthedocs.io/en/latest/)
 - [Memcached](https://memcached.org)
 - [Memcached on Github](https://github.com/memcached/memcached)
-
+- [Memcached Wiki](https://github.com/memcached/memcached/wiki)
+- [Memcached Install](https://github.com/memcached/memcached/wiki/Install)
 
 ## Author 
 wangyoucao577@gmail.com    
