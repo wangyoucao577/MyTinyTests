@@ -24,10 +24,12 @@ int main(){
     memcached_return_t err;
     char* got_value = memcached_get(memc, key, strlen(key), &value_length, &flags, &err);
     if (err != MEMCACHED_SUCCESS) {
+        assert(NULL == got_value);
         printf("memcached_get failed, error %d\n", err);
     } else {
         assert(NULL != got_value);
         printf("VALUE %s %s %u %ld\n", key, got_value, flags, value_length);
+        free(got_value);
     }
     
     memcached_free(memc);
