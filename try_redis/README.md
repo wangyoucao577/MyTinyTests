@@ -162,7 +162,7 @@ $ ll
 ### Redis High Availability 高可用性
 TODO: 
 
-### Common Commands    
+### Redis Common Commands    
 Refer to [Commands](https://redis.io/commands) for full commands list.    
 - General Commands
     - SET    
@@ -200,6 +200,7 @@ Refer to [Commands](https://redis.io/commands) for full commands list.
     - HDEL
 
 ## 我的实验 - Memcached
+NOTE: The [Memcached Official Wiki](https://github.com/memcached/memcached/wiki) is slowly being ported over from the [Memcached old google code wiki](https://github.com/memcached/old-wiki/), please check there if you can't find something here. 
 
 ### Install Memcached  
 Find latest version on [Memcached Download Page](https://memcached.org/downloads) if needed.    
@@ -213,6 +214,18 @@ $ cd memcached-1.5.8/
 $ ./configure
 $ make
 ```
+
+### Run Memcached Server 
+```sh
+cd memcached-1.5.8/
+./memcached
+```
+
+### Try with Memcached Client
+We can try Memcached with telnet(as client). Also, [Memcached Clients](https://github.com/memcached/old-wiki/blob/master/Clients.wiki) lists lots of Memcached clients for various languages. I'll pick up several of them in my test.    
+
+#### Try with Telnet as Memcached Client
+
 
 ## 我的对比 Redis vs. Memcached 
 TODO: 
@@ -237,8 +250,12 @@ TODO:
 - [redis-py documentation](https://redis-py.readthedocs.io/en/latest/)
 - [Memcached](https://memcached.org)
 - [Memcached on Github](https://github.com/memcached/memcached)
-- [Memcached Wiki](https://github.com/memcached/memcached/wiki)
+- [Memcached Official Wiki](https://github.com/memcached/memcached/wiki)
 - [Memcached Install](https://github.com/memcached/memcached/wiki/Install)
+- [Memcached old google code wiki](https://github.com/memcached/old-wiki/)
+- [Memcached Clients](https://github.com/memcached/old-wiki/blob/master/Clients.wiki)
+- [libmemcached](http://libmemcached.org)
+
 
 ## Author 
 wangyoucao577@gmail.com    
