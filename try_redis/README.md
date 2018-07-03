@@ -231,6 +231,8 @@ $ telnet localhost 11211
 Trying 127.0.0.1...
 Connected to localhost.
 Escape character is '^]'.
+version
+VERSION 1.5.8
 get key1
 END
 set key1 1 0 5
