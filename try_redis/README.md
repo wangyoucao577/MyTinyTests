@@ -269,6 +269,44 @@ get key1
 END
 ```
 
+#### Try with C/C++ Memcached Client
+[libmemcached](http://libmemcached.org) is an open source C/C++ client library and tools for the [memcached server](http://memcached.org/), refer to [libmemcached Documentation](http://docs.libmemcached.org/) for API details.     
+- Build and Install `libmemcached`
+```sh
+$ cd memcached
+$ wget https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
+$ tar -zxf libmemcached-1.0.18.tar.gz
+$ cd libmemcached-1.0.18
+$ ./configure
+$ make
+$ sudo make install
+$ ll /usr/local/include/ | grep memcached
+drwxr-xr-x  2 root root 4096 Jul  3 00:24 libmemcached/
+drwxr-xr-x  4 root root 4096 Jul  3 00:24 libmemcached-1.0/
+drwxr-xr-x  2 root root 4096 Jul  3 00:24 libmemcachedutil-1.0/
+$ ll /usr/local/lib/ | grep memcached
+-rw-r--r--  1 root   root   3101616 Jul  3 00:24 libmemcached.a
+-rwxr-xr-x  1 root   root       961 Jul  3 00:24 libmemcached.la*
+lrwxrwxrwx  1 root   root        22 Jul  3 00:24 libmemcached.so -> libmemcached.so.11.0.0*
+lrwxrwxrwx  1 root   root        22 Jul  3 00:24 libmemcached.so.11 -> libmemcached.so.11.0.0*
+-rwxr-xr-x  1 root   root   1342080 Jul  3 00:24 libmemcached.so.11.0.0*
+-rw-r--r--  1 root   root    212528 Jul  3 00:24 libmemcachedutil.a
+-rwxr-xr-x  1 root   root      1025 Jul  3 00:24 libmemcachedutil.la*
+lrwxrwxrwx  1 root   root        25 Jul  3 00:24 libmemcachedutil.so -> libmemcachedutil.so.2.0.0*
+lrwxrwxrwx  1 root   root        25 Jul  3 00:24 libmemcachedutil.so.2 -> libmemcachedutil.so.2.0.0*
+-rwxr-xr-x  1 root   root    106192 Jul  3 00:24 libmemcachedutil.so.2.0.0*
+```
+
+- Build and Run `main.cc`
+```sh
+$ cd try_redis/memcached_cc_client
+$ mkdir build
+$ cd build
+$ cmake ..
+$ cmake --build .
+$ ./trymemcached
+```
+
 ### Memcached Common Commands    
 Refer to [Memcached Commands](https://github.com/memcached/memcached/wiki/Commands) for more details. 
 - Storage Commands  
@@ -320,7 +358,8 @@ TODO:
 - [Memcached Clients](https://github.com/memcached/old-wiki/blob/master/Clients.wiki)
 - [Memcached Commands](https://github.com/memcached/memcached/wiki/Commands)
 - [libmemcached](http://libmemcached.org)
-
+- [libmemcached download page](https://launchpad.net/libmemcached/+download)
+- [libmemcached Documentation](http://docs.libmemcached.org/)
 
 ## Author 
 wangyoucao577@gmail.com    
