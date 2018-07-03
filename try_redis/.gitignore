@@ -1,2 +1,2 @@
-cc_client/build
+redis_cc_client/build
 memcached_cc_client/build

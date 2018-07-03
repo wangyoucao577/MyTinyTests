@@ -99,7 +99,7 @@ $
 
 - Run `test.py`
 ```sh
-$ cd python_client
+$ cd redis_python_client
 $ python ./test.py
 ```
 
@@ -126,7 +126,7 @@ cp -pPR hiredis.pc /usr/local/lib/pkgconfig
 
 - Build and Run `main.cc`
 ```sh
-$ cd try_redis/cc_client
+$ cd try_redis/redis_cc_client
 $ mkdir build
 $ cd build
 $ cmake ..
