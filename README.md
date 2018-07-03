@@ -105,6 +105,10 @@ RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流
 - boost 1.64.0:    
   - ./third_party/boost_1_64_0/      
 
+### [C/C++/Python2] Try Memory Caching System - Redis vs. Memcached 
+熟悉常用的 Memory Caching System [Redis - REmote DIctionary Server](https://redis.io/) 和 [Memcached](https://memcached.org) 的使用, 以及一些基本的区别.    
+- ./try_memory_caching_system/
+
 ### [Python2] cmd_args_test.py  
 尝试`argparse`库的使用, 居然以前都不知道有这么方便易用的命令行选项解析的工具. 果然还是应该多思考, 觉得不爽的时候`python`里面总归会有让你爽的方法.官网的指南和手册就已经非常好了, 极力推荐.  
 - [python2.7 argparse manual](https://docs.python.org/2.7/library/argparse.html)  
