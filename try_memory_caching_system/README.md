@@ -1,12 +1,14 @@
 # Try Memory Caching System - Redis vs. Memcached 
-熟悉常用的 Memory Caching System [Redis - REmote DIctionary Server](https://redis.io/) 和 [Memcached](https://memcached.org) 的使用.    
+熟悉常用的 Memory Caching System [Redis - REmote DIctionary Server](https://redis.io/) 和 [Memcached](https://memcached.org) 的使用, 以及一些明显的区别.    
+
+## 我的对比 Redis vs. Memcached 
+TODO: 
 
 ## 实验平台    
 - Linux: `Ubuntu 16.04.4 LTS`    
     - Kernel: `Linux ubuntu 4.13.0-36-generic #40~16.04.1-Ubuntu SMP Fri Feb 16 23:25:58 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux`    
     - `gcc (Ubuntu 5.4.0-6ubuntu1~16.04.9) 5.4.0 20160609`    
     - `cmake version 3.10.2`
-    - `go version go1.9.4 linux/amd64`
     - `Python 2.7.12`
 
 ## 我的实验 - Redis   
@@ -160,6 +162,7 @@ $ ll
 - 再启动`redis-server`进程, 可以查询刚刚设置的`key/value`依然存在, 此时是通过`.rdb`恢复
 
 ### Redis High Availability 高可用性
+主要参考官方文档 [Redis Sentinel Documentation](https://redis.io/topics/sentinel).    
 TODO: 
 
 ### Redis Common Commands    
@@ -329,10 +332,8 @@ Refer to [Memcached Commands](https://github.com/memcached/memcached/wiki/Comman
     - incr/decr
     - flush_all
 
-## 我的对比 Redis vs. Memcached 
-TODO: 
 
-## links 
+## Reference links 
 - [Redis](https://redis.io/)
 - [Redis Download Page](https://redis.io/download)
 - [Redis Interactive Tutorial](https://try.redis.io/)
@@ -342,6 +343,7 @@ TODO:
 - [An introduction to Redis data types and abstractions](https://redis.io/topics/data-types-intro)
 - [Redis Persistence](https://redis.io/topics/persistence)
 - [Redis 持久化](https://segmentfault.com/a/1190000002906345)
+- [Redis Sentinel Documentation](https://redis.io/topics/sentinel)
 - [Offical C Client - hiredis](https://github.com/redis/hiredis)   
 - http://www.runoob.com/redis/redis-tutorial.html
 - [Tech Blog - Redis as a JSON store](https://redislabs.com/blog/redis-as-a-json-store/)
