@@ -2,7 +2,16 @@
 熟悉常用的 Memory Caching System [Redis - REmote DIctionary Server](https://redis.io/) 和 [Memcached](https://memcached.org) 的使用, 以及一些明显的区别.    
 
 ## 我的对比 Redis vs. Memcached 
-TODO: 
+- 对比点
+    - `Redis`和`Memcached`两者都是应用非常广泛的基于内存的`key-value`缓存方案, 区别于数据库的持久存储;    
+    - `Redis`支持更多类型的数据结构(`String/List/Set/Sorted-Set/Hashes`), 也已经通过扩展支持了的`JSON`类型, 而`memcached`仅支持`bytes`; 
+    - `Redis`和`Memcached`都支持多种语言的`Client`接口, 命令行模式`Redis`有`redis-cli`, 而`Memcached`可以直接使用`telnet`, 故而貌似没太多区别. 而`Client`接口的易用性上, `Redis`更好一些;       
+    - `Redis`原生支持持久化, 从而进程`crash`后重启数据不会丢失, 更易于恢复, 而`memcached`不支持;   
+- 小结
+    - 总体看来, 更倾向于在项目中使用 `Redis`.    
+- 遗留`topic`
+    - `High Available`: 两者的应用都非常广泛, 相信必然都有对应的高可用性的解决方案, 有空时再深入研究.    
+
 
 ## 实验平台    
 - Linux: `Ubuntu 16.04.4 LTS`    
