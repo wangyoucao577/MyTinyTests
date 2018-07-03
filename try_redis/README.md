@@ -225,7 +225,69 @@ cd memcached-1.5.8/
 We can try Memcached with telnet(as client). Also, [Memcached Clients](https://github.com/memcached/old-wiki/blob/master/Clients.wiki) lists lots of Memcached clients for various languages. I'll pick up several of them in my test.    
 
 #### Try with Telnet as Memcached Client
+Memcached can use Telnet as simplest client for the test. Refer to [Memcached Commands Standard Protocol](https://github.com/memcached/memcached/wiki/Commands#standard-protocol) for the command format.      
+```sh
+$ telnet localhost 11211
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+get key1
+END
+set key1 1 0 5
+12345
+STORED
+get key1
+VALUE key1 1 5
+12345
+END
+add key2 2 0 10
+1234567890
+STORED
+get key2
+VALUE key2 2 10
+1234567890
+END
+add key2 2 0 1
+a
+NOT_STORED
+replace key2 2 0 10
+abcedfghij
+STORED
+get key2
+VALUE key2 2 10
+abcedfghij
+END
+delete key2
+DELETED
+get key2
+END
+flush_all
+OK
+get key1
+END
+```
 
+### Memcached Common Commands    
+Refer to [Memcached Commands](https://github.com/memcached/memcached/wiki/Commands) for more details. 
+- Storage Commands  
+    - set
+    - add
+    - replace
+    - append
+    - prepend
+    - cas  
+- Retrieval Commands
+    - get
+    - gets
+- Statistcs Commands
+    - stats
+    - stats items
+    - stats slabs
+    - stats sizes
+- Others
+    - delete
+    - incr/decr
+    - flush_all
 
 ## 我的对比 Redis vs. Memcached 
 TODO: 
@@ -254,6 +316,7 @@ TODO:
 - [Memcached Install](https://github.com/memcached/memcached/wiki/Install)
 - [Memcached old google code wiki](https://github.com/memcached/old-wiki/)
 - [Memcached Clients](https://github.com/memcached/old-wiki/blob/master/Clients.wiki)
+- [Memcached Commands](https://github.com/memcached/memcached/wiki/Commands)
 - [libmemcached](http://libmemcached.org)
 
 
