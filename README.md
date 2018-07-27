@@ -168,3 +168,7 @@ RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流
 ### [docker] docker_test  
 学习docker的原理与使用.   
 - [docker_test](./docker_test/README.md)  
+
+### [Mermaid] Try Mermaid
+类似`Markdown`设计思路的文本化画图玩法学习下.   
+- [Try Mermaid](./try_mermaid/README.md)
