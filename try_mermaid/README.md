@@ -116,6 +116,7 @@ sequenceDiagram
     Alice ->> John: Hello John, how are you?
     John -->> Alice: Great!
 ```
+![sequencediagram_first_sample](sequencediagram_first_sample.svg)
 - change participants order
 ```mermaid
 sequenceDiagram
@@ -124,6 +125,7 @@ sequenceDiagram
     Alice ->> John: Hello John, how are you?
     John -->> Alice: Great!
 ```
+![sequencediagram_change_participants_order](sequencediagram_change_participants_order.svg)
 - alias
 ```mermaid
 sequenceDiagram
@@ -132,6 +134,7 @@ sequenceDiagram
     A ->> J: Hello John, how are you?
     J -->> A: Great!
 ```
+![sequencediagram_alias](sequencediagram_alias.svg)
 - Message Format    
 `[Actor][Arrow][Actor]:Message Text`
     - 6 types of arrows    
@@ -154,6 +157,7 @@ sequenceDiagram
     Alice ->>+ John: Hello John, how are you?
     John -->>- Alice: Great!
 ```
+![sequencediagram_activation](sequencediagram_activation.svg)
 - Activations Stack
 ```mermaid
 sequenceDiagram
@@ -162,6 +166,7 @@ sequenceDiagram
     John -->>- Alice: Yes, I can hear you!
     John -->>- Alice: I free great!
 ```
+![sequencediagram_activation_stack](sequencediagram_activation_stack.svg)
 - Notes
 ```mermaid
 sequenceDiagram
@@ -170,6 +175,7 @@ sequenceDiagram
     John -->>- Alice: Great!
     Note over Alice,John: text over both
 ```
+![sequencediagram_note](sequencediagram_note.svg)
 - Loop
 ```mermaid
 sequenceDiagram
@@ -178,6 +184,7 @@ sequenceDiagram
     John -->>- Alice: Great!
     end
 ```
+![sequencediagram_loop](sequencediagram_loop.svg)
 - Alt(if/else), Opt(if without else)    
 TODO:    
 
