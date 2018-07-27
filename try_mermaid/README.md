@@ -8,8 +8,7 @@
 我的应用场景主要是需要画图时, 直接简单编辑一个`Mermaid`格式的文本, 然后生成图片. 所以主要尝试[Mermaid CLI](https://github.com/mermaidjs/mermaid.cli), [Mermaid Live Editor](https://mermaidjs.github.io/mermaid-live-editor) 以及 [Mermaid Preview For VSCode](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview) 这几个工具. 
 
 ### 实验环境
-- `Ubuntu 18.04 LTS (Bionic Beaver)`
-    - `node v8.11.3`
+- `Mermaid Live Editor powered by mermaid 8.0.0-rc.8`
 - `VSCode 1.25.1 on Win10 1803`
 
 ### Install
@@ -52,6 +51,7 @@ C((a node in a circel))
 D>a node in an asymetric shape]
 E{a node in rhombus}
 ```
+![flowchart_single_node](flowchart_single_node.svg)
 - Link between nodes
 ```mermaid
 graph LR
@@ -70,12 +70,14 @@ W === X
 Y == text === Z
 AA == text ==> AB
 ```
-- With speical characters
+![flowchart_link_between_nodes](flowchart_link_between_nodes.svg)
+- With special characters
 ```mermaid
 graph RL
 A["With Speical (Characters) Text"]
 B["A double quoto:#quot;"] --> C["A dec char:#9829;"]
 ```    
+![flowchart_with_special_characters](flowchart_with_special_characters.svg)
 - Subgraphs
 ```mermaid
 graph TB
@@ -90,6 +92,7 @@ graph TB
     c1-->c2
     end
 ```
+![flowchart_subgraphs](flowchart_subgraphs.svg)
 - Sample with title
 ```mermaid
 graph LR
@@ -104,8 +107,12 @@ C -->|One| D[Result one]
 C --> |Two| E[Result two]
 
 ```
+![flowchart_with_title](flowchart_with_title.svg)
 
-
+### NOTE
+- `Github`的`Markdown`还没有支持嵌入`Mermaid`, 所以还是得先转为图片再插入`Markdown`.    
+    - 在`VSCode`中可以以代码形式来写`mermaid`嵌入在`Markdown`中, Preview 时可支持直接预览为图片(需要安装 [Mermaid Preview For VSCode](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)). 如本文档中所写格式.   
+    - 所以在`VSCode`的`Markdown`中写`Mermaid`代码, 最后用[Mermaid Live Editor](https://mermaidjs.github.io/mermaid-live-editor) 或 [Mermaid CLI](https://github.com/mermaidjs/mermaid.cli) 来根据`mermaid`内容生成图片是一个不错的选择.    
 
 ## Reference links
 - [Mermaid Documentation](https://mermaidjs.github.io/)
