@@ -109,6 +109,81 @@ C --> |Two| E[Result two]
 ```
 ![flowchart_with_title](flowchart_with_title.svg)
 
+### Try to Draw Sequence Diagram
+- first sample
+```mermaid
+sequenceDiagram
+    Alice ->> John: Hello John, how are you?
+    John -->> Alice: Great!
+```
+- change participants order
+```mermaid
+sequenceDiagram
+    participant John
+    participant Alice
+    Alice ->> John: Hello John, how are you?
+    John -->> Alice: Great!
+```
+- alias
+```mermaid
+sequenceDiagram
+    participant J as John
+    participant A as Alice
+    A ->> J: Hello John, how are you?
+    J -->> A: Great!
+```
+- Message Format
+`[Actor][Arrow][Actor]:Message Text`
+    - 6 types of arrows    
+| ->   | 实线 无箭头  |    
+| -->  | 虚线 无箭头  |    
+| ->>  | 实线 有箭头  |    
+| -->> | 虚线 有箭头  |    
+| -x   | 实线 最后带x |    
+| --x  | 虚线 最后带x |    
+- Activations (两种方法, 同样的效果)
+```mermaid
+sequenceDiagram
+    Alice ->> John: Hello John, how are you?
+    activate John
+    John -->> Alice: Great!
+    deactivate John
+```
+```mermaid
+sequenceDiagram
+    Alice ->>+ John: Hello John, how are you?
+    John -->>- Alice: Great!
+```
+- Activations Stack
+```mermaid
+sequenceDiagram
+    Alice ->>+ John: Hello John, how are you?
+    Alice ->>+ John: Can you hear me?
+    John -->>- Alice: Yes, I can hear you!
+    John -->>- Alice: I free great!
+```
+- Notes
+```mermaid
+sequenceDiagram
+    Alice ->>+ John: Hello John, how are you?
+    Note right of John: Text in note
+    John -->>- Alice: Great!
+    Note over Alice,John: text over both
+```
+- Loop
+```mermaid
+sequenceDiagram
+    Alice ->>+ John: Hello John, how are you?
+    Loop Every minute
+    John -->>- Alice: Great!
+    end
+```
+- Alt(if/else), Opt(if without else)    
+TODO:    
+
+### Try to Draw Gantt Diagram
+这个暂时用不到, 先不玩了. 有需要的时候再来玩玩.    
+
 ### NOTE
 - `Github`的`Markdown`还没有支持嵌入`Mermaid`, 所以还是得先转为图片再插入`Markdown`.    
     - 在`VSCode`中可以以代码形式来写`mermaid`嵌入在`Markdown`中, Preview 时可支持直接预览为图片(需要安装 [Mermaid Preview For VSCode](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)). 如本文档中所写格式.   
