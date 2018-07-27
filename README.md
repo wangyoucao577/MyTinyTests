@@ -170,5 +170,5 @@ RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流
 - [docker_test](./docker_test/README.md)  
 
 ### [Mermaid] Try Mermaid
-类似`Markdown`设计思路的文本化画图玩法学习下.   
+类似`Markdown`设计思路的文本化画图玩法学习下. 又多了一个画`Flowchart`,`Sequence Diagram`,`Gantt Diagram`的利器.      
 - [Try Mermaid](./try_mermaid/README.md)
