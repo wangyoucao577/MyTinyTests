@@ -132,15 +132,15 @@ sequenceDiagram
     A ->> J: Hello John, how are you?
     J -->> A: Great!
 ```
-- Message Format
+- Message Format    
 `[Actor][Arrow][Actor]:Message Text`
     - 6 types of arrows    
-| ->   | 实线 无箭头  |    
-| -->  | 虚线 无箭头  |    
-| ->>  | 实线 有箭头  |    
-| -->> | 虚线 有箭头  |    
-| -x   | 实线 最后带x |    
-| --x  | 虚线 最后带x |    
+        - `->  ` 实线 无箭头
+        - `--> ` 虚线 无箭头
+        - `->> ` 实线 有箭头    
+        - `-->>` 虚线 有箭头  
+        - `-x  ` 实线 最后带x   
+        - `--x ` 虚线 最后带x     
 - Activations (两种方法, 同样的效果)
 ```mermaid
 sequenceDiagram
