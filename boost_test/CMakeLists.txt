@@ -37,12 +37,8 @@ message("CMAKE_CXX_FLAGS " is ${CMAKE_CXX_FLAGS})
 message("CMAKE_CXX_FLAGS_DEBUG " is ${CMAKE_CXX_FLAGS_DEBUG})
 message("CMAKE_CXX_FLAGS_RELEASE " is ${CMAKE_CXX_FLAGS_RELEASE})
 
-add_definitions(-DBOOST_DATE_TIME_NO_LIB)
-set (THIRD_PARTY_BOOST_PATH "../third_party/boost_1_64_0/")
-include_directories(${THIRD_PARTY_BOOST_PATH})
-if (WIN32)
-#include_directories(D:/MyWorkspace/centos7_usr_headers/include)
-endif(WIN32)
+add_definitions(-DBOOST_ALL_NO_LIB)
+
 # find source files automatically, then set to var DIR_SRCS
 aux_source_directory(. DIR_SRCS)
 source_group("src" FILES ${DIR_SRCS})
@@ -51,8 +47,6 @@ source_group("src" FILES ${DIR_SRCS})
 file(GLOB HEADER_FILES "*.h")
 #message(${HEADER_FILES})
 source_group("headers" FILES ${HEADER_FILES})
-file(GLOB_RECURSE BOOST_DATETIME_HEADER_FILES "${THIRD_PARTY_BOOST_PATH}/boost/date_time/*.hpp")
-source_group("boost_datetime_headers" FILES ${BOOST_INTERPROCESS_HEADER_FILES})
 
 ####### option for default ###########
 #option(USE_MY_MATH_LIB "use my math lib" ON)
@@ -64,10 +58,9 @@ source_group("boost_datetime_headers" FILES ${BOOST_INTERPROCESS_HEADER_FILES})
 ####### option for default ##########
 
 # target
-add_executable (boost_test  ${DIR_SRCS} ${HEADER_FILES} ${BOOST_INTERPROCESS_HEADER_FILES})
+add_executable (boost_test  ${DIR_SRCS} ${HEADER_FILES} )
 
 # link lib in subfolder
 if (UNIX)
-set (BOOST_LIB_PATH "/usr/local/boost_1_64_0/lib/")
-target_link_libraries(boost_test ${BOOST_LIB_PATH}/libboost_date_time.so)
+target_link_libraries(boost_test libboost_date_time.so)
 endif()
