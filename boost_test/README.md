@@ -1,22 +1,21 @@
 # boost_test   
 学习及尝试`boost`库, 熟悉其behavior及原理.  
 
-## 编译运行
-- `Windows`:  
-TODO   
+## 实验环境
+- `Linux`:    
+	- `Ubuntu 18.04 LTS`: `WSL(Windows Subsystem for Linux) on Win10 1803-17134.228`    
+	- `cmake version 3.10.2`    
+	- `gcc (Ubuntu 7.3.0-16ubuntu3) 7.3.0`    
+	- `boost 1_65_1`(`sudo apt-get install libboost-all-dev`)    
 
-- `Linux`:   
-		`CentOS7 64bit, Kernel 3.10.0-229.el7.x86_64, gcc 4.8.5 20150623`   
-
-	- 编译运行代码   
-	注: 大部分`boost`库的内容直接通过`.h`引用即可, 但有部分需要链接使用的, 需提前编译安装至`/usr/local/boost_1_64_0/lib/`中   
+### 编译运行
+- `Linux`:    
+注: 大部分`boost`库的内容直接通过`.h`引用即可, 少部分需要链接使用.    
 	```   
-	mkdir build
-	cd build
-	mkdir linux  
-	cd linux
+	mkdir -p build/linux
+	cd build/linux
 	cmake ../../
-	make
+	cmake --build . -- -j
 	./boost_test
 	```   
 
