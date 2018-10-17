@@ -1,7 +1,9 @@
 
 #include <string>
 #include <iostream>
-#include "boost/date_time/posix_time/posix_time.hpp"
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+#include "heaps_test.h"
 
 using namespace std;
 
@@ -23,6 +25,8 @@ void posix_time_test(){
 int main(){
 
     posix_time_test();
+
+    heaps_test::heaps_test();
 
     return 0;
 }
