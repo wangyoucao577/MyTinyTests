@@ -100,11 +100,6 @@ RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流
 
 - [operator_overloading](./operator_overloading/README.md)   
 
-### [C++] third_party  
-实验过程中一些常用的第三方库, 集中放在这里, 以便不同的实验时同时参考.   
-- boost 1.64.0:    
-  - ./third_party/boost_1_64_0/      
-
 ### [C/C++/Python2] Try Memory Caching System - Redis vs. Memcached 
 熟悉常用的 Memory Caching System [Redis - REmote DIctionary Server](https://redis.io/) 和 [Memcached](https://memcached.org) 的使用, 以及一些基本的区别.    
 - [Try Memory Caching System - Redis vs. Memcached](./try_memory_caching_system/)
