@@ -2,6 +2,9 @@
 #include "heaps_test.h"
 
 #include <iostream>
+#include <queue>
+#include <boost/heap/d_ary_heap.hpp>
+#include <boost/heap/fibonacci_heap.hpp>
 
 namespace heaps_test {
     struct HeapNode {
@@ -32,21 +35,30 @@ namespace heaps_test {
         // boost::heap::d_ary_heap
         boost::heap::d_ary_heap<HeapNode, boost::heap::arity<2>> boost_2ary_heap;
 
+        boost::heap::fibonacci_heap<HeapNode> boost_fibonacci_heap;
+
         for (auto &v: test_nodes) {
             std_pq.push(v);
             boost_2ary_heap.push(v);
+            boost_fibonacci_heap.push(v);
         }
 
-        std::cout << "std priority queue : {";
+        std::cout << "std priority queue   : {";
         while (!std_pq.empty()) {
             std::cout << "{" << std_pq.top().key << "," << std_pq.top().payload << "},";
             std_pq.pop();
         }
         std::cout << "}" << std::endl;
-        std::cout << "boost_2ary_heap    : {";
+        std::cout << "boost_2ary_heap      : {";
         while (!boost_2ary_heap.empty()) {
             std::cout << "{" << boost_2ary_heap.top().key << "," << boost_2ary_heap.top().payload << "},";
             boost_2ary_heap.pop();
+        }
+        std::cout << "}" << std::endl;
+        std::cout << "boost_fibonacci_heap : {";
+        while (!boost_fibonacci_heap.empty()) {
+            std::cout << "{" << boost_fibonacci_heap.top().key << "," << boost_fibonacci_heap.top().payload << "},";
+            boost_fibonacci_heap.pop();
         }
         std::cout << "}" << std::endl;
 
