@@ -1,3 +1,8 @@
+/*
+    command to generate shared lib: 
+    `gcc -shared -fPIC -o libc_module.so c_module.c`
+*/
+
 
 #include <stdio.h>
 
