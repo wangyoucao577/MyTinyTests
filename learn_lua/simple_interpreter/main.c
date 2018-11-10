@@ -15,7 +15,11 @@ void stack_dump(lua_State *L) {
         int t = lua_type(L, i);
         switch (t) {
             case LUA_TNUMBER:
-                printf("%g", lua_tonumber(L, i));
+                if (lua_isinteger(L, i)){
+                    printf("%lld", lua_tointeger(L, i));
+                }else {
+                    printf("%g", lua_tonumber(L, i));
+                }
                 break;
             case LUA_TBOOLEAN:
                 printf(lua_toboolean(L, i) ? "true" : "false");
