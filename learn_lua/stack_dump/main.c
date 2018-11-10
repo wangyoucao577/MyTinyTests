@@ -48,6 +48,16 @@ int main() {
     lua_State *L = luaL_newstate();
     stack_dump(L);
 
+    // push...
+
+    lua_pushnumber(L, 10.2);
+    lua_pushinteger(L, 10);
+    stack_dump(L);
+
+    lua_pushnil(L);
+    lua_pushstring(L, "push string");
+    stack_dump(L);
+
     lua_pushboolean(L, 0);
     stack_dump(L);
 
@@ -58,12 +68,23 @@ int main() {
     lua_pushboolean(L, -2);
     stack_dump(L);
 
-    lua_pushnumber(L, 10.2);
-    lua_pushinteger(L, 10);
+    // stack operations ...
+
+    lua_settop(L, -1);
     stack_dump(L);
 
-    lua_pushnil(L);
-    lua_pushstring(L, "push string");
+    lua_settop(L, 7);
     stack_dump(L);
 
+    lua_pushvalue(L, 2);
+    stack_dump(L);
+
+    lua_replace(L, 1);
+    stack_dump(L);
+
+    lua_rotate(L, 3, 3);
+    stack_dump(L);
+
+    lua_remove(L, 2);
+    stack_dump(L);
 }
