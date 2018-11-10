@@ -19,6 +19,19 @@ $ cd ..
 $ ./c_module_test.lua
 ```
 
+- simple_interpreter: 一个简单的`Lua`解释器    
+通过`C`命令行交互地获取`Lua`指令, 并实时编译传递给`Lua`进行执行.    
+```
+gcc main.c `pkg-config --cflags --libs lua5.3`
+./a.out
+```
+
+- stack_dump: 通过`C API`对虚拟栈进行操作及观察    
+```
+gcc main.c `pkg-config --cflags --libs lua5.3`
+./a.out
+```
+
 ## References
 - https://www.lua.org
 - https://www.lua.org/manual/5.3/manual.html
