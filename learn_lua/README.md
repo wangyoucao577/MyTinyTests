@@ -32,6 +32,15 @@ gcc main.c `pkg-config --cflags --libs lua5.3`
 ./a.out
 ```
 
+- window_config:     
+《Programming in lua - 4th》ch28.1的小示例, 用`Lua`作为配置文件来使用.    
+```
+gcc main.c `pkg-config --cflags --libs lua5.3`
+./a.out config.lua
+env DISPLAY=LARGER ./a.out config.lua
+./a.out err_config.lua
+```
+
 ## References
 - https://www.lua.org
 - https://www.lua.org/manual/5.3/manual.html
