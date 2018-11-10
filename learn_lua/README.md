@@ -4,7 +4,7 @@
 ## 实验环境
 - `Linux`:    
     - `Ubuntu 18.04 LTS`(`WSL(Windows Subsystem for Linux) on Win10 1803-17134.228`)    
-    - `Lua 5.2.4  Copyright (C) 1994-2015 Lua.org, PUC-Rio`
+    - `Lua 5.3.3  Copyright (C) 1994-2016 Lua.org, PUC-Rio`
     - `gcc (Ubuntu 7.3.0-16ubuntu3) 7.3.0`    
 
 ## 实验代码   
