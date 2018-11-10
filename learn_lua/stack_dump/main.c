@@ -12,6 +12,7 @@ void stack_dump(lua_State *L) {
 
     int top = lua_gettop(L);    
     for (int i = 1; i <= top; i++) {
+        printf("[%d|%d] ", i, i - 1 - top);
         int t = lua_type(L, i);
         switch (t) {
             case LUA_TNUMBER:
@@ -87,4 +88,18 @@ int main() {
 
     lua_remove(L, 2);
     stack_dump(L);
+
+    lua_close(L);
+
+    // practice 27.2 & 27.3
+    L = luaL_newstate();
+    lua_pushnumber(L, 3.5);
+    lua_pushstring(L, "hello");
+    lua_pushnil(L);
+    lua_rotate(L, 1, -1);
+    lua_pushvalue(L, -2);
+    lua_remove(L, 1);
+    lua_insert(L, -2);
+    stack_dump(L);
+    lua_close(L);
 }
