@@ -33,7 +33,7 @@ gcc main.c `pkg-config --cflags --libs lua5.3`
 ```
 
 - window_config:     
-《Programming in lua - 4th》ch28.1的小示例, 用`Lua`作为配置文件来使用.    
+《Programming in lua - 4th》ch28.1 & ch28.2 的小示例, 用`Lua`作为配置文件来使用, 包括对`Lua`中`table`的一些操作和使用.    
 ```
 gcc main.c `pkg-config --cflags --libs lua5.3`
 ./a.out config.lua
