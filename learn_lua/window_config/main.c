@@ -7,6 +7,20 @@
 #include <lualib.h>
 #include <lauxlib.h>
 
+static const int MAX_RGB_VALUE = 255;
+struct RGB_t {
+    int red;
+    int green;
+    int blue;
+};
+
+struct config_t {
+    int width;
+    int height;
+    struct RGB_t background_color;
+};
+
+
 int getglobalint(lua_State *L, const char* var_name) {
     lua_getglobal(L, var_name);
 
@@ -22,28 +36,17 @@ int getglobalint(lua_State *L, const char* var_name) {
 }
 
 // 调用时table应位于栈顶
-double getcolorfield(lua_State *L, const char* key) {
+int getcolorfield(lua_State *L, const char* key) {
     lua_pushstring(L, key);
     lua_gettable(L, -2);    // get t[key]
 
     if (!lua_isnumber(L, -1)) {
         luaL_error(L, "value of key %s is not a float number in table", key);
     }
-    double result = lua_tonumber(L, -1);
+    int result = (int)(((double)lua_tonumber(L, -1)) * MAX_RGB_VALUE);
     lua_pop(L, 1);
     return result;
 }
-
-struct config_t {
-    int width;
-    int height;
-
-    struct {
-        double red;
-        double green;
-        double blue;
-    } background_color;
-};
 
 int load_config(struct config_t* cfg, const char* file_path) {
     assert(cfg && file_path);
@@ -80,9 +83,9 @@ void dump_config(const struct config_t* cfg) {
     printf("loaded config: \n");
     printf("    width = %d\n", cfg->width);
     printf("    height = %d\n", cfg->height);
-    printf("    background_color.red = %g\n", cfg->background_color.red);
-    printf("    background_color.green = %g\n", cfg->background_color.green);
-    printf("    background_color.blue = %g\n", cfg->background_color.blue);
+    printf("    background_color.red = %d\n", cfg->background_color.red);
+    printf("    background_color.green = %d\n", cfg->background_color.green);
+    printf("    background_color.blue = %d\n", cfg->background_color.blue);
 }
 
 int main(int argc, char* argv[]) {
