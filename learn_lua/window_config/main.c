@@ -7,7 +7,7 @@
 #include <lualib.h>
 #include <lauxlib.h>
 
-static const int MAX_RGB_VALUE = 255;
+#define MAX_RGB_VALUE 255
 struct RGB_t {
     int red;
     int green;
@@ -20,7 +20,20 @@ struct config_t {
     struct RGB_t background_color;
 };
 
+struct color_table_t {
+    char *name;
+    struct RGB_t color;
+} color_table[] = {
+    {"WHITE", {MAX_RGB_VALUE, MAX_RGB_VALUE, MAX_RGB_VALUE}},
+    {"RED", {MAX_RGB_VALUE, 0, 0}},
+    {"GREEN", {0, MAX_RGB_VALUE, 0}},
+    {"BLUE", {0, 0, MAX_RGB_VALUE}},
+    // other pre-defined colors... 
+    // ...
+    {NULL, {0, 0, 0}}   // 哨兵
+};
 
+// 从Lua中取出变量`var_name`的值并通过virtual stack传递到C中
 int getglobalint(lua_State *L, const char* var_name) {
     lua_getglobal(L, var_name);
 
@@ -35,6 +48,7 @@ int getglobalint(lua_State *L, const char* var_name) {
     return result;
 }
 
+// 从Lua中取出栈顶的table中`key`对应的值并传递到C中
 // 调用时table应位于栈顶
 int getcolorfield(lua_State *L, const char* key) {
     lua_pushstring(L, key);
@@ -48,16 +62,45 @@ int getcolorfield(lua_State *L, const char* key) {
     return result;
 }
 
+// 往Lua中栈顶的table中插入`key=value`
+// 调用时table应位于栈顶
+void setcolorfield(lua_State *L, const char* key, int value) {
+    lua_pushstring(L, key);
+    lua_pushnumber(L, (double)value / MAX_RGB_VALUE);
+    lua_settable(L, -3);    // set t[key] = value
+}
+
+// 在Lua中新建table, 并用color_table中的key/value进行初始化
+void setcolor(lua_State *L, struct color_table_t* ct) {
+    if (!ct) {
+        return;
+    }
+
+    lua_newtable(L);    // create a new table
+    setcolorfield(L, "red", ct->color.red);
+    setcolorfield(L, "green", ct->color.green);
+    setcolorfield(L, "blue", ct->color.blue);
+    lua_setglobal(L, ct->name);     // set `name` = the new table
+}
+
 int load_config(struct config_t* cfg, const char* file_path) {
     assert(cfg && file_path);
 
     lua_State* L = luaL_newstate();
     luaL_openlibs(L);
 
+    // 初始化pre-defined colors
+    // MUST be called before call .lua to initialize runtime for .lua
+    for (int i = 0; color_table[i].name != NULL; ++i) {
+        setcolor(L, &color_table[i]);
+    }
+
     int err = luaL_loadfile(L, file_path) || lua_pcall(L, 0, 0, 0);
     if (err != LUA_OK) {
         luaL_error(L, "load config file %s err: %s", file_path, lua_tostring(L, -1)); // will not return
     }
+
+    // Load configurations
 
     cfg->width = getglobalint(L, "width");
     cfg->height = getglobalint(L, "height");

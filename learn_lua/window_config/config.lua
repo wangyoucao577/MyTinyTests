@@ -9,7 +9,8 @@ if os.getenv("DISPLAY") == "LARGER" then
 end
 
 -- 背景颜色
-BlueRGB = {red = 0, green = 0, blue = 1.0}
-RedRGB = {red = 1.0, green = 0, blue = 0}
+-- BLUE = {red = 0, green = 0, blue = 1.0}
+-- RED = {red = 1.0, green = 0, blue = 0}
 
-background = BlueRGB
+-- BLUE, RED, GREEN, WHITE have been defined by C functions
+background = BLUE
