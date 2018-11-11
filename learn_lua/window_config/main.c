@@ -51,10 +51,11 @@ int getglobalint(lua_State *L, const char* var_name) {
 // 从Lua中取出栈顶的table中`key`对应的值并传递到C中
 // 调用时table应位于栈顶
 int getcolorfield(lua_State *L, const char* key) {
-    lua_pushstring(L, key);
-    lua_gettable(L, -2);    // get t[key]
+    //lua_pushstring(L, key);
+    //lua_gettable(L, -2);    // get t[key]
 
-    if (!lua_isnumber(L, -1)) {
+    //if (!lua_isnumber(L, -1)) {
+    if (lua_getfield(L, -1, key) != LUA_TNUMBER) {
         luaL_error(L, "value of key %s is not a float number in table", key);
     }
     int result = (int)(((double)lua_tonumber(L, -1)) * MAX_RGB_VALUE);
@@ -65,9 +66,10 @@ int getcolorfield(lua_State *L, const char* key) {
 // 往Lua中栈顶的table中插入`key=value`
 // 调用时table应位于栈顶
 void setcolorfield(lua_State *L, const char* key, int value) {
-    lua_pushstring(L, key);
+    //lua_pushstring(L, key);
     lua_pushnumber(L, (double)value / MAX_RGB_VALUE);
-    lua_settable(L, -3);    // set t[key] = value
+    //lua_settable(L, -3);    // set t[key] = value
+    lua_setfield(L, -2, key);
 }
 
 // 在Lua中新建table, 并用color_table中的key/value进行初始化
