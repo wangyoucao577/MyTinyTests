@@ -1,14 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
 
-#include <lua.h>
-#include <lualib.h>
-#include <lauxlib.h>
+#include "call_va.h"
 
 // 调用`Lua`中定义的函数`f`
-double f (lua_State *L, double x, double y) {
+double f_wrapper (lua_State *L, double x, double y) {
 
     // 函数压栈, 参数压栈
     lua_getglobal(L, "f");  // Lua中的函数`f`
@@ -38,8 +32,17 @@ int main() {
         luaL_error(L, "load Lua file %s err: %s", file_path, lua_tostring(L, -1)); // will not return
     }
 
-    printf("f(%g, %g) = %g\n", 1.0, 1.0, f(L, 1.0, 1.0));
+    // C call lua function
+    double x = 1.0, y = 1.0;
 
+    // way1. by a seprate f_wrapper
+    printf("f(%g, %g) = %g ... via f_wrapper() \n", x, y, f_wrapper(L, x, y));  
+
+    // way2. by a generic wrapper
+    double result = 0.0f;
+    call_va(L, "f", "dd>d", x, y, &result); 
+    printf("f(%g, %g) = %g ... via call_va(f) \n", x, y, result);
+    lua_pop(L, 1);  // NOTE: for this way, should pop from stack manually after call `call_va`
 
     lua_close(L);
     return 0;
