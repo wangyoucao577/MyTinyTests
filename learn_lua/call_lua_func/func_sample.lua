@@ -6,3 +6,6 @@ function f (x, y)
     -- return "str"
 end
 
+function f_bool_reverse (x)
+    return not x, x
+end

@@ -24,6 +24,8 @@ int call_va(lua_State *L, const char* lua_func_name, const char* fmt, ...){
             lua_pushinteger(L, va_arg(vl, int));
         }else if (param_type == 's'){
             lua_pushstring(L, va_arg(vl, char*));
+        }else if (param_type == 'b') {
+            lua_pushboolean(L, va_arg(vl, int));
         }else {
             luaL_error(L, "unknown paramter type: %c", param_type);
         }
@@ -56,7 +58,13 @@ int call_va(lua_State *L, const char* lua_func_name, const char* fmt, ...){
                 luaL_error(L, "expect string but actually not");
             }
             *va_arg(vl, const char**) = s;
-        }else {
+        }else if (param_type == 'b'){
+            if (!lua_isboolean(L, nres)){
+                luaL_error(L, "expect boolean but actually not");
+            }
+            *va_arg(vl, int*) = lua_toboolean(L, nres);
+        }
+        else {
             luaL_error(L, "unknown result type: %c", param_type);
         }
         nres++;

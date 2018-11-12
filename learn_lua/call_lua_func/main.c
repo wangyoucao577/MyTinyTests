@@ -32,7 +32,7 @@ int main() {
         luaL_error(L, "load Lua file %s err: %s", file_path, lua_tostring(L, -1)); // will not return
     }
 
-    // C call lua function
+    // C call lua function `f`
     double x = 1.0, y = 1.0;
 
     // way1. by a seprate f_wrapper
@@ -43,6 +43,12 @@ int main() {
     call_va(L, "f", "dd>d", x, y, &result); 
     printf("f(%g, %g) = %g ... via call_va(f) \n", x, y, result);
     lua_pop(L, 1);  // NOTE: for this way, should pop from stack manually after call `call_va`
+
+    // C call lua boolean function
+    int b_val = 1, b_res1 = -1, b_res2 = -1;
+    call_va(L, "f_bool_reverse", "b>bb", b_val, &b_res1, &b_res2);
+    printf("f_bool_reverse(%d) = %d, %d \n", b_val, b_res1, b_res2);
+    lua_pop(L, 2);
 
     lua_close(L);
     return 0;
