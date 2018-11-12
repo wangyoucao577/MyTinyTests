@@ -41,6 +41,13 @@ env DISPLAY=LARGER ./a.out config.lua
 ./a.out err_config.lua
 ```
 
+- call_lua_func:    
+《Programming in lua - 4th》ch28.3 & ch28.4 的小示例, 用`C`调用`Lua`中的函数, 通过`virtual stack`传递参数和返回值. 实现了专门的`wrapper`和更加灵活和相对通用的`wrapper`两种形式.     
+```
+gcc call_va.c main.c `pkg-config --cflags --libs lua5.3`
+./a.out
+```
+
 ## References
 - https://www.lua.org
 - https://www.lua.org/manual/5.3/manual.html
