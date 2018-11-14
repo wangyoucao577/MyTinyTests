@@ -40,12 +40,31 @@ static int l_dir(lua_State *L) {
     return 1;   // table
 }
 
+/************************ closure by upvalue *********************/
+
+static int counter(lua_State *L) {
+    int val = lua_tointeger(L, lua_upvalueindex(1));
+    lua_pushinteger(L, ++val);
+    lua_copy(L, -1, lua_upvalueindex(1));   // update to upvalue
+    return 1;
+}
+
+static int l_new_counter(lua_State *L) {
+    lua_pushinteger(L, 0);
+    lua_pushcclosure(L, counter, 1);
+    return 1;
+}
+
+/************************ closure by upvalue *********************/
+
+
 /************************ 以下为将我们自己实现的两个函数通过c模块的方式导出 *********************/
 
 // mylib支持的函数列表
 static const struct luaL_Reg mylib[] = {
     {"mydir", l_dir},
     {"mysin", l_sin}, 
+    {"newcounter", l_new_counter},
     {NULL, NULL}    //哨兵
 };
 
