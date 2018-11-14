@@ -1,1 +1,3 @@
 c_module/libc_module.so
+
+simple_interpreter/mylib.so
