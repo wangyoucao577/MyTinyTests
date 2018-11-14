@@ -20,13 +20,15 @@ $ ./c_module_test.lua
 ```
 
 - simple_interpreter: 一个简单的`Lua`解释器    
-通过`C`命令行交互地获取`Lua`指令, 并实时编译传递给`Lua`进行执行. 同时引入了《Programming in lua - 4th》 ch29.1 中介绍的将`C`语言中实现的函数注册到`Lua`中使用的方法(`l_sin`-->`mysin`).     
+通过`C`命令行交互地获取`Lua`指令, 并实时编译传递给`Lua`进行执行. 同时引入了《Programming in lua - 4th》 ch29.1 中介绍的将`C`语言中实现的函数注册到`Lua`中使用的方法(`l_sin`-->`mysin`, `l_dir`-->`mydir`).     
 ```
-gcc l_sin.c main.c -lm `pkg-config --cflags --libs lua5.3` 
+gcc l_sin.c l_dir.c main.c -lm `pkg-config --cflags --libs lua5.3` 
 ./a.out
 > m = require "math"
 > print(m.sin(5))
 > print(mysin(5))
+>
+> for k,v in pairs(mydir(".")) do print(v) end
 ```
 
 - stack_dump: 通过`C API`对虚拟栈进行操作及观察    

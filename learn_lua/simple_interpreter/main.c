@@ -8,6 +8,7 @@
 #include <lauxlib.h>
 
 #include "l_sin.h"
+#include "l_dir.h"
 
 int main() {
     
@@ -17,6 +18,11 @@ int main() {
     // 在Lua中注册自定义的`l_sin`函数, 以名字`mysin`
     lua_pushcfunction(L, l_sin);
     lua_setglobal(L, "mysin");
+
+    // 在Lua中注册自定义的`l_dir`函数, 以名字`mydir`
+    lua_pushcfunction(L, l_dir);
+    lua_setglobal(L, "mydir");
+
 
     char buff[256];
     while (fgets(buff, sizeof(buff), stdin)) {
