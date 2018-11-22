@@ -52,13 +52,13 @@ add_executable (${TARGET_BINARY} ${DIR_SRCS})
 # link lib in subfolder
 target_link_libraries(${TARGET_BINARY} 
     debug libtbb_debug.so 
-    debug libtbb_preview_debug.so
-    debug libtbbmalloc_debug.so
-    debug libtbbmalloc_proxy_debug.so
+    #debug libtbb_preview_debug.so
+    #debug libtbbmalloc_debug.so
+    #debug libtbbmalloc_proxy_debug.so
 
     optimized libtbb.so 
-    optimized libtbb_preview.so
-    optimized libtbbmalloc.so
-    optimized libtbbmalloc_proxy.so
+    #optimized libtbb_preview.so
+    #optimized libtbbmalloc.so
+    #optimized libtbbmalloc_proxy.so
 )
 
