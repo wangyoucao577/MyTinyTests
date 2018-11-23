@@ -50,6 +50,7 @@ aux_source_directory(. DIR_SRCS)
 add_executable (${TARGET_BINARY} ${DIR_SRCS})
 
 # link lib in subfolder
+if (UNIX)
 target_link_libraries(${TARGET_BINARY} 
     debug libtbb_debug.so 
     #debug libtbb_preview_debug.so
@@ -61,4 +62,4 @@ target_link_libraries(${TARGET_BINARY}
     #optimized libtbbmalloc.so
     #optimized libtbbmalloc_proxy.so
 )
-
+endif(UNIX)
