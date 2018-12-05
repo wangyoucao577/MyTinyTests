@@ -21,23 +21,13 @@ void SerialApplyFoo(float a[], size_t n, foo_func foo) {
     }
 }
 
-class ApplyFoo {
-private:
-    float * const a_;
-    foo_func foo_;
-
-public: 
-    void operator() (const tbb::blocked_range<size_t>& r) const {
-        float *a = a_;
-        for (size_t i = r.begin(); i != r.end(); ++i) {
-            foo_(a_[i]);
-        }
-    }
-    ApplyFoo(float a[], foo_func f) : a_(a), foo_(f) {}
-};
-
 void ParallelApplyFoo(float a[], size_t n, foo_func foo) {
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, n), ApplyFoo(a, foo));
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, n), 
+        [a, foo](const tbb::blocked_range<size_t>& r){
+        for (size_t i = r.begin(); i != r.end(); ++i) {
+            foo(a[i]);
+        }
+    });
 }
 
 int main(int argc, char* argv[]) {
