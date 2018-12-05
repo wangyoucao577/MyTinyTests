@@ -11,13 +11,18 @@
 
 ## 实验代码   
 - 运行    
-```
+```bash
 $ mkdir build
 $ cd build
 $ cmake -DCMAKE_BUILD_TYPE=Release ../            # or `cmake -DCMAKE_BUILD_TYPE=Debug ../`
 $ cmake --build .
-$ ./parallel_for_test
 ```
+
+`$ ./parallel_for_test`    
+or     
+`$ ./parallel_reduce_test`    
+
+
 
 ## References 
 - [Official Intel(R) Threading Building Blocks (Intel TBB) GitHub repository](https://github.com/01org/tbb)

@@ -49,6 +49,10 @@ aux_source_directory(. DIR_SRCS)
 set(PARALLEL_FOR_TEST_TARGET parallel_for_test)
 add_executable (${PARALLEL_FOR_TEST_TARGET} ${PARALLEL_FOR_TEST_TARGET}.cc)
 
+set(PARALLEL_REDUCE_TEST_TARGET parallel_reduce_test)
+add_executable (${PARALLEL_REDUCE_TEST_TARGET} ${PARALLEL_REDUCE_TEST_TARGET}.cc)
+
+
 # link lib in subfolder
 if (UNIX)
 target_link_libraries(${PARALLEL_FOR_TEST_TARGET} 
@@ -62,4 +66,17 @@ target_link_libraries(${PARALLEL_FOR_TEST_TARGET}
     #optimized libtbbmalloc.so
     #optimized libtbbmalloc_proxy.so
 )
+
+target_link_libraries(${PARALLEL_REDUCE_TEST_TARGET} 
+    debug libtbb_debug.so 
+    #debug libtbb_preview_debug.so
+    #debug libtbbmalloc_debug.so
+    #debug libtbbmalloc_proxy_debug.so
+
+    optimized libtbb.so 
+    #optimized libtbb_preview.so
+    #optimized libtbbmalloc.so
+    #optimized libtbbmalloc_proxy.so
+)
+
 endif(UNIX)
