@@ -16,7 +16,7 @@ $ mkdir build
 $ cd build
 $ cmake -DCMAKE_BUILD_TYPE=Release ../            # or `cmake -DCMAKE_BUILD_TYPE=Debug ../`
 $ cmake --build .
-$ ./learn_intel_tbb
+$ ./parallel_for_test
 ```
 
 ## References 

@@ -20,8 +20,7 @@ endif()
 message("CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
 
 # project basic information
-set (TARGET_BINARY learn_intel_tbb)
-project (${TARGET_BINARY})
+project (learn_intel_tbb)
 
 # compile options, should set after `project()`, otherwise it won't work
 if (UNIX)
@@ -47,11 +46,12 @@ aux_source_directory(. DIR_SRCS)
 
 
 # target
-add_executable (${TARGET_BINARY} ${DIR_SRCS})
+set(PARALLEL_FOR_TEST_TARGET parallel_for_test)
+add_executable (${PARALLEL_FOR_TEST_TARGET} ${PARALLEL_FOR_TEST_TARGET}.cc)
 
 # link lib in subfolder
 if (UNIX)
-target_link_libraries(${TARGET_BINARY} 
+target_link_libraries(${PARALLEL_FOR_TEST_TARGET} 
     debug libtbb_debug.so 
     #debug libtbb_preview_debug.so
     #debug libtbbmalloc_debug.so
