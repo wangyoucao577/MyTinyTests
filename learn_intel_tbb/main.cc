@@ -22,11 +22,15 @@ void SerialApplyFoo(float a[], size_t n, foo_func foo) {
 }
 
 void ParallelApplyFoo(float a[], size_t n, foo_func foo) {
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, n), 
-        [a, foo](const tbb::blocked_range<size_t>& r){
-        for (size_t i = r.begin(); i != r.end(); ++i) {
-            foo(a[i]);
-        }
+    // tbb::parallel_for(tbb::blocked_range<size_t>(0, n), 
+    //     [a, foo](const tbb::blocked_range<size_t>& r){
+    //     for (size_t i = r.begin(); i != r.end(); ++i) {
+    //         foo(a[i]);
+    //     }
+    // });
+
+    tbb::parallel_for(size_t(0), n, [a, foo](size_t i) {
+        foo(a[i]);
     });
 }
 
