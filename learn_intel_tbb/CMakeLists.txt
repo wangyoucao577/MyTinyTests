@@ -42,15 +42,16 @@ include_directories(${PROJECT_SOURCE_DIR}/modules/tbb2019_20181010oss/include/)
 link_directories(${PROJECT_SOURCE_DIR}/modules/tbb2019_20181010oss/lib/intel64/gcc4.7/)
 
 # find source files automatically, then set to var DIR_SRCS
-aux_source_directory(. DIR_SRCS)
+#aux_source_directory(src DIR_SRCS)
 
+set(SRC_PATH src)
 
 # target
 set(PARALLEL_FOR_TEST_TARGET parallel_for_test)
-add_executable (${PARALLEL_FOR_TEST_TARGET} ${PARALLEL_FOR_TEST_TARGET}.cc)
+add_executable (${PARALLEL_FOR_TEST_TARGET} ${SRC_PATH}/${PARALLEL_FOR_TEST_TARGET}.cc)
 
 set(PARALLEL_REDUCE_TEST_TARGET parallel_reduce_test)
-add_executable (${PARALLEL_REDUCE_TEST_TARGET} ${PARALLEL_REDUCE_TEST_TARGET}.cc)
+add_executable (${PARALLEL_REDUCE_TEST_TARGET} ${SRC_PATH}/${PARALLEL_REDUCE_TEST_TARGET}.cc)
 
 
 # link lib in subfolder
