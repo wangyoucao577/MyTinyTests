@@ -1,5 +1,5 @@
 # Learn Intel TBB
-学习 [Intel - Threading Building Blocks (TBB)](https://software.intel.com/en-us/tbb-documentation) 的基本概念和使用.     
+学习 [Intel - Threading Building Blocks (TBB)](https://software.intel.com/en-us/tbb-documentation) 的基本概念和使用. 其提供的通用算法可参考 [Tutorial: Generic Parallel Algorithms](https://www.threadingbuildingblocks.org/tutorial-intel-tbb-generic-parallel-algorithms), 思路非常的 **map&reduce**.       
 
 ## 实验环境
 - `Linux`:    
@@ -30,3 +30,4 @@ or
 - [tbb2019_20181010oss](./modules/tbb2019_20181010oss/README.md)
 - [Threading Building Blocks 2019 Update 2](https://github.com/01org/tbb/releases/tag/2019_U2)  
 - [Intel - Threading Building Blocks (TBB)](https://software.intel.com/en-us/tbb-documentation) 
+- [Tutorial: Generic Parallel Algorithms](https://www.threadingbuildingblocks.org/tutorial-intel-tbb-generic-parallel-algorithms)
