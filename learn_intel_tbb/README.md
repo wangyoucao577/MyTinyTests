@@ -22,6 +22,15 @@ $ cmake --build .
 or     
 `$ ./parallel_reduce_test`    
 
+## 原理理解及使用说明     
+### `tbb::parallel_for`
+- 设计上借鉴的即是 [MapReduce](https://en.wikipedia.org/wiki/MapReduce) 中的`Map`的概念. 基本思路即是输入一个可拆分的任务(通过`tbb::blocked_range<>`来描述任务范围以及是否可拆分), 函数内部自动进行拆分并通过不同的线程来运行, 从而达到并发的目的.      
+- 基于`lambda`来实现`tbb::parallel_for`的调用, 可以简化掉仿函数, 简洁不少.    
+
+### `tbb::parallel_reduce`
+- 设计上借鉴的即是 [MapReduce](https://en.wikipedia.org/wiki/MapReduce) 的概念. 基本思路即是输入一个可拆分的任务(通过`tbb::blocked_range<>`来描述任务范围以及是否可拆分), 函数内部自动进行拆分并通过不同的线程来运行, 从而达到并发的目的. 并发的子任务都运行完成后, 通过自定义的仿函数类中的`join()`函数来实现`reduce`的动作.       
+- 由于自定义的仿函数类中还需要额外的`join()`函数, 所以无法通过`lambda`函数来实现, 目测只能自定义配合用的仿函数, 使用有些啰嗦.     
+
 
 
 ## References 
@@ -31,3 +40,4 @@ or
 - [Threading Building Blocks 2019 Update 2](https://github.com/01org/tbb/releases/tag/2019_U2)  
 - [Intel - Threading Building Blocks (TBB)](https://software.intel.com/en-us/tbb-documentation) 
 - [Tutorial: Generic Parallel Algorithms](https://www.threadingbuildingblocks.org/tutorial-intel-tbb-generic-parallel-algorithms)
+- [MapReduce](https://en.wikipedia.org/wiki/MapReduce)
