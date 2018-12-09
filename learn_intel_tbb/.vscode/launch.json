@@ -8,7 +8,7 @@
             "name": "WSL (gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/mnt/d/workspace/MyTinyTests/learn_intel_tbb/build/learn_intel_tbb",
+            "program": "/mnt/d/workspace/MyTinyTests/learn_intel_tbb/build/parallel_for_test",
             "args": ["-fThreading"],
             "stopAtEntry": false,
             "cwd": "/mnt/d/workspace/MyTinyTests/learn_intel_tbb/build",
