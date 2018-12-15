@@ -3,7 +3,7 @@
 #include <chrono>
 
 #include "my_shared_ptr.hpp"
-#include "mock_classes.h"
+#include "mock_classes.hpp"
 
 
 template<typename AcceptT, typename SampleT>
