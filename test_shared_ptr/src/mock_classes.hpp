@@ -1,4 +1,8 @@
 
+
+#ifndef TEST_SHARED_PTR_MOCK_CLASSES_HPP_
+#define TEST_SHARED_PTR_MOCK_CLASSES_HPP_
+
 #include "my_shared_ptr.hpp"
 
 
@@ -32,3 +36,5 @@ public:
 private:
     my_shared_ptr<const T> sample_object_;
 };
+
+#endif
