@@ -27,7 +27,7 @@ message("CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
 if (UNIX)
 set(CMAKE_CXX_FLAGS "$ENV{CMAKE_CXX_FLAGS} -std=c++11") # also coult replace with `add_compile_options(-std=c++11)`
 set(CMAKE_CXX_FLAGS_DEBUG "-g -DDEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -UDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O0 -UDEBUG")
 endif(UNIX)
 if (WIN32)
 add_compile_options("/MP")  #multi-processor compile
