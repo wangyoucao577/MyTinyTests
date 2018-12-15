@@ -14,14 +14,14 @@ set(CMAKE_GENERATOR "Visual Studio 15 2017 Win64")
 message("Expect to use: " ${CMAKE_GENERATOR})
 endif(WIN32)
 
+# project basic information
+project (test_shared_ptr)
+
+# compile options, should set after `project()`, otherwise it won't work
 if (NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE "Release")
 endif()
 message("CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
-
-# project basic information
-project (test_shared_ptr)
-
 
 # compile options, should set after `project()`, otherwise it won't work
 if (UNIX)
