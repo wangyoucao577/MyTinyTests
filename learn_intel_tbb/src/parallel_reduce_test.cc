@@ -16,69 +16,44 @@ float SerialSumFoo(float a[], size_t n) {
     return sum;
 }
 
-class SumFoo {
-private:
-    float* my_a;
-public:
-    float my_sum;
-    void operator()(const tbb::blocked_range<size_t>& r) {
-        float *a = my_a;
-        float sum = my_sum;
-        size_t end = r.end();
-        for (size_t i = r.begin(); i != end; ++i) {
-            sum += foo(a[i]);
-        }
-        my_sum = sum;
-    }
-
-    SumFoo(SumFoo& x, tbb::split) : my_a(x.my_a), my_sum(0) {}
-
-    void join(const SumFoo& y) { my_sum += y.my_sum; }
-
-    SumFoo(float a[]) : my_a(a), my_sum(0) {}
-};
-
 float ParallelSumFoo(float a[], size_t n) {
-    SumFoo sf(a);
-    parallel_reduce(tbb::blocked_range<size_t>(0, n), sf);
-    return sf.my_sum;
+
+    return parallel_reduce(tbb::blocked_range<size_t>(0, n), 
+        float(0.f), 
+        [a](const tbb::blocked_range<size_t>& r, const float& x) -> float {
+            float sum = x;
+            for (size_t i = r.begin(); i != r.end(); ++i) {
+                sum += foo(a[i]);
+            }
+            
+            return sum;
+        }, 
+        [](const float& x, const float& y) -> float{
+            return x + y;
+        });
 }
 
-class MinFoo {
-    const float *const my_a;
-public:
-    float value_of_min;
-    long index_of_min;
-
-    void operator() (const tbb::blocked_range<size_t>& r) {
-        const float* a = my_a;
-        for (size_t i = r.begin(); i != r.end(); ++i){
-            float value = foo(a[i]);
-            if (value < value_of_min) {
-                value_of_min = value;
-                index_of_min = i;
-            }
-        }
-    }
-
-    MinFoo(MinFoo& x, tbb::split) : 
-        my_a(x.my_a), value_of_min(FLT_MAX), index_of_min(-1) {}
-
-    void join(const MinFoo& y) {
-        if (y.value_of_min < value_of_min) {
-            value_of_min = y.value_of_min;
-            index_of_min = y.index_of_min;
-        }
-    }
-
-    MinFoo(const float a[]) : 
-        my_a(a), value_of_min(FLT_MAX), index_of_min(-1) {}
-};
-
 float ParallelFindMinFoo(float a[], size_t n) {
-    MinFoo mf(a);
-    parallel_reduce(tbb::blocked_range<size_t>(0, n), mf);
-    return mf.value_of_min;
+
+    return parallel_reduce(tbb::blocked_range<size_t>(0, n), 
+        float(FLT_MAX), 
+        [a](const tbb::blocked_range<size_t>& r, const float& x) -> float {
+
+            float min = x;
+            for (size_t i = r.begin(); i != r.end(); ++i){
+                float value = foo(a[i]);
+                if (value < min) {
+                    min = value;
+                }
+            }
+            return min;
+        }, 
+        [](const float& x, const float& y) -> float{
+            if (x < y) {
+                return x;
+            }
+            return y;
+        });
 }
 
 
