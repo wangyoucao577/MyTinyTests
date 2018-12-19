@@ -32,15 +32,20 @@ void parallel_do_test(T a) {
 
 }
 
-int main(){
+int main(int argc, char* argv[]){
+
+    if (argc >= 2 && 0 == strcmp(argv[1], "list")){
+        std::list<float> b;     //try with non-random storage to enable parallel
+        b.resize(100000000);
+        parallel_do_test(b);
+
+        return 0;
+    }
 
     std::vector<float> a;   //use random storage to enable parallel
     a.resize(100000000);
     parallel_do_test(a);
 
-    std::list<float> b;     //try with non-random storage to enable parallel
-    b.resize(100000000);
-    parallel_do_test(b);
 
     return 0;
 }

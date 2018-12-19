@@ -22,7 +22,9 @@ $ cmake --build .
 or     
 `$ ./parallel_reduce_test`    
 or     
-`$ ./parallel_do_test`    
+```bash
+$ ./parallel_do_test   # or `./parallel_do_test list`    
+```
 
 ## 原理理解及使用说明     
 ### Gereric Parallel Algorithms
@@ -47,7 +49,7 @@ The [Structured Parallel Programming](http://parallelbook.com/) book by McCool, 
 #### `tbb::parallel_do`
 - 针对容器设计的并行操作接口, 输入可以是容器的`begin()/end()`. 且支持过程中追加需要处理的元素(`feeder.add()`), 适合执行前未知最终需要处理的全部内容的场景(典型的比如遍历一棵树).    
 - 需注意的是, 输入应尽量选用可随机访问的存储如`std::vector`等. 若输入为不可随机访问的存储如`std::list`, 那么从存储取内容这个步骤只能顺序执行, 后续的执行步骤可以并行.     
-  - 可以运行`./parallel_do_test`时观察下两种容器运行时的CPU和内存的表现.     
+  - 可以运行`./parallel_do_test`和`./parallel_do_test list`时观察下两种容器运行时的CPU和内存的表现.     
 
 
 
