@@ -4,6 +4,7 @@
 ## 实验环境
 - `macOS Mojave, Version 10.14.4 (18E226)`
 - `Apple LLVM version 10.0.1 (clang-1001.0.46.4)`
+- `cmake version 3.13.3`
 
 ### Installation
 Refer to [Protocol Buffers Compiler C++ Installation Instructions](https://github.com/protocolbuffers/protobuf/blob/master/src/README.md) for more details.    
@@ -42,7 +43,7 @@ $ protoc --python_out=. addressbook.proto
 ### C++ Sample Code
 ```bash
 # generate executable binaries
-$ cd proto2
+$ cd proto2  # or `cd proto3`
 $ mkdir build
 $ cd build
 $ cmake ..
