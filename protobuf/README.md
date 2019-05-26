@@ -29,14 +29,31 @@ libprotoc 3.7.1
 ### 生成protobuf的接口代码
 ```bash
 # generate codes for proto2
-$ protoc --cpp_out=. proto2/addressbook.proto 
-$ protoc --python_out=. proto2/addressbook.proto 
+$ cd proto2
+$ protoc --cpp_out=. addressbook.proto 
+$ protoc --python_out=. addressbook.proto 
 $ 
 # generate codes for proto3
-$ protoc --cpp_out=. proto3/addressbook.proto
-$ protoc --python_out=. proto3/addressbook.proto
+$ cd proto3
+$ protoc --cpp_out=. addressbook.proto
+$ protoc --python_out=. addressbook.proto
 ```
 
+### C++ Sample Code
+```bash
+# generate executable binaries
+$ cd proto2
+$ mkdir build
+$ cd build
+$ cmake ..
+$ cmake --build .
+$
+# test 
+$ ./write_main addressbook1
+# ...
+$ ./read_main addressbook1
+# ...
+```
 
 ## References
 - [protobuf repo on Github](https://github.com/protocolbuffers/protobuf)
