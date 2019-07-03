@@ -6,7 +6,7 @@
 
 ### [C/C++] Alogrithms_and_DataStructures   
 算法与数据结构的一些实验代码, 来源包括但不限于《算法导论》、hankerrank、leecode, etc.   
-[alogrithms_and_datastructures](Alogrithms_and_DataStructures/README.md)   
+- [alogrithms and data structures](./Algorithms_and_DataStructures/)   
 
 ### [C#] CheckGateway
 
