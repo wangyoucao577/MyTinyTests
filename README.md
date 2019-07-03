@@ -58,10 +58,6 @@
 高性能IO的实验, 包括Linux下`epoll`的使用, 及规划中的windows下的`IOCP`的实验.   
 - [epoll_test](epoll_test/README.md)   
 
-### [C++11] cc11
-`C++11`新特性尝试的一些代码及工程集合.  
-- [cc11_test](cc11/README.md)
-
 ### [C++11] learn_intel_tbb
 学习 [Intel - Threading Building Blocks (TBB)](https://software.intel.com/en-us/tbb-documentation) 的基本概念和使用.    
 - [Learn Intel TBB](./learn_intel_tbb/README.md)    
