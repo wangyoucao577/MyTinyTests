@@ -62,10 +62,6 @@
 学习 [Intel - Threading Building Blocks (TBB)](https://software.intel.com/en-us/tbb-documentation) 的基本概念和使用.    
 - [Learn Intel TBB](./learn_intel_tbb/README.md)    
 
-### [C++11] test_shared_ptr
-学习shared_ptr的使用和注意事项, 以及比较std::shared_ptr<T>, boost::shared_ptr<T>在不同场景下的表现.    
-- [Test shared_ptr](./test_shared_ptr/README.md)    
-
 
 ### [C++] Mars_test
 Wechat刚刚开源的`Mars`库, 学习与测试的一些实验代码.   
