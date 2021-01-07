@@ -5,6 +5,7 @@
 - `Debian GNU/Linux 9 (stretch)`
 - `gcc (Debian 6.3.0-18+deb9u1) 6.3.0 20170516`
 - `cmake version 3.7.2`
+- `go version go1.15.3 linux/amd64`
 - https://github.com/google/flatbuffers/commit/4363c1d2cb898768073128bb92db9d4c63b43300
 
 ## Test  
@@ -49,6 +50,11 @@ $ cat monster.json
 $ ${YOUR_WORKSPACE}/flatbuffers/flatc -b ../../monster.fbs monster.json
 $ ll monster.bin
 $ 
+$ # try out go
+$ cd go
+$ ${YOUR_WORKSPACE}/flatbuffers/flatc --go ../monster.fbs
+$ go build ./cmd/read_monster
+$ ./read_monster -f ../cpp/build/monster.bin
 ```
 
 ## 参考
