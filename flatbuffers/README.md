@@ -42,6 +42,13 @@ all characters read successfully.
 hp: 300
 mana: 150
 name: Orc
+$ 
+$ # binary to/from json
+$ ${YOUR_WORKSPACE}/flatbuffers/flatc --json --strict-json --raw-binary ../../monster.fbs -- ./monster.bin
+$ cat monster.json
+$ ${YOUR_WORKSPACE}/flatbuffers/flatc -b ../../monster.fbs monster.json
+$ ll monster.bin
+$ 
 ```
 
 ## 参考
