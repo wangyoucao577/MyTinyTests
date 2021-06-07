@@ -101,6 +101,10 @@ RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流
 
 - [operator_overloading](./operator_overloading/README.md)   
 
+### [C++] identical_template_symbols
+模板实例化的重复符号问题.    
+- [identical_template_symbols](./identical_template_symbols/)
+
 ### [C/C++/Python2] Try Memory Caching System - Redis vs. Memcached 
 熟悉常用的 Memory Caching System [Redis - REmote DIctionary Server](https://redis.io/) 和 [Memcached](https://memcached.org) 的使用, 以及一些基本的区别.    
 - [Try Memory Caching System - Redis vs. Memcached](./try_memory_caching_system/)
