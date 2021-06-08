@@ -51,3 +51,5 @@ b00
 - [How does the linker handle identical template instantiations across translation units?](https://stackoverflow.com/questions/44335046/how-does-the-linker-handle-identical-template-instantiations-across-translation)    
 - [Weak symbol](https://en.wikipedia.org/wiki/Weak_symbol)
 - [Duplicate c++ template instantiations](https://stackoverflow.com/questions/5537378/duplicate-c-template-instantiations)
+- [g++(1) — Linux manual page](https://man7.org/linux/man-pages/man1/g++.1.html)
+- [ld.so(8) — Linux manual page](https://man7.org/linux/man-pages/man8/ld.so.8.html)
