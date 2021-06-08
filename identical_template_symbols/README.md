@@ -41,8 +41,11 @@ b00
 ## 我的理解
 - 首先，`c++`的代码编译的几个过程顺序为：预处理 => 编译 => 链接;    
 - 编译针对每个`cpp`执行，模板的实例化即在编译任意一个具体的`cpp`时触发，并将符号记录在编译生成的`.o`文件中;   
-- 模板实例化的符号和普通的符号有点不同的是，模板实例化生成的符号为`weak symbol`，链接器可以自行决定在发现重复符号时对其的处理，`g++`的默认行为为选择第一个找到的符号，丢弃其他的(实验过程中也能看的出来); 但其他编译器如何处理，取决于编译器的具体实现，比如也可能选择最后一个这样的策略;         
+- 模板实例化的符号和普通的符号有点不同的是，模板实例化生成的符号为`weak symbol`，链接器可以自行决定在发现重复符号时对其的处理，`g++`的默认行为为选择第一个找到的符号，丢弃其他的(实验过程中也能看的出来); 但其他编译器如何处理，取决于编译器的具体实现，比如也可能选择最后一个这样的策略;      
 
+### 其他
+- `weak symbol`的另一个很重要的作用，即可以允许链接时找不到定义，从而在运行时注入实现;    
+- [Weak symbol](https://en.wikipedia.org/wiki/Weak_symbol)中提到的`In contrast, in the presence of two strong symbols by the same name, the linker resolves the symbol in favor of the first one found.`貌似并不正确。两个`strong symbol`编译器应该会报重复符号定义的错误? 还是depends on具体的编译器实现?    
 
 ## References
 - [How does the linker handle identical template instantiations across translation units?](https://stackoverflow.com/questions/44335046/how-does-the-linker-handle-identical-template-instantiations-across-translation)    
