@@ -75,10 +75,6 @@ Wechat刚刚开源的`Mars`库, 学习与测试的一些实验代码.
   通过HTTP发送JSON格式数据的小例子, 熟悉`JsonCpp`库和`libcurl`库的使用, 同时新增了`RapidJson`的简单用法.
   工程文件基于`VS2015(VC14)``, 目前仅配置了`x64_debug`版本.
 
-### [C++] rtmp_flv   
-RTMP接收并分析FLV的sample. 通过librtmp实现从RTMP服务器视音频流拉取, 并自己实现FLV的协议分析(参照FLV的协议标准 "Adobe Flash Video File Format Specification Version 10.1").     
-- [rtmp_flv](rtmp_flv/README.md)
-
 ### [C/C++] shm_test     
 学习使用共享内存在`Linux`上的使用, `shm`即`shared memroy`. 含`Posix Shared Memory`, `System V Shared Memory`, `Boost Shared Memory`等多种接口/使用方式. 详见:   
 - [shm_test](shm_test/README.md)  
